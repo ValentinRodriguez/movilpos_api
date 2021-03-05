@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Image;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Librerias\InvProductos;
-use App\Librerias\invtransaccionesmodel;
 use App\Librerias\Invtransaccdetallemodel;
 use App\Librerias\coOrdenesDetalle;
 use App\Librerias\ordenPedidoDetalle;
@@ -19,11 +16,26 @@ use App\Librerias\tipoProducto;
 use App\Librerias\medidas;
 use App\Librerias\Propiedadesprod;
 
+use App\Librerias\iptb00002;
+
 class InvProductosController extends ApiResponseController
 {
     public function index(Request $request)
     {
         $productos = InvProductos::ConDetalles();
+        return $this->successResponse($productos);
+    }
+
+    public function indexMovil(Request $request)
+    {
+        $productos = iptb00002::where('iptb00002.status_t','=',null)->
+                                join('iptb00020','iptb00020.cod_n','=','iptb00002.cod_n')->
+                                join('iptb00024','iptb00024.cod_tipo','=','iptb00002.cod_tipo')->
+                                join('iptb00029','iptb00029.cod_grupo','=','iptb00002.cod_grupo')->
+                                join('iptb00030','iptb00030.cod_sec','=','iptb00002.cod_sec')->
+                                select('iptb00002.*','iptb00020.producto as condicion','iptb00024.descripcion as modelo',
+                                       'iptb00029.descripcion as marca','iptb00030.descripcion as color')->
+                                get();
         return $this->successResponse($productos);
     }
 

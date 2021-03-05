@@ -4,11 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCoFacturasProveedoresCuentasTable extends Migration
-{    
+class CreateCoCuentasCxpTable extends Migration
+{
     public function up()
     {
-        Schema::create('co_facturas_proveedores_cuentas', function (Blueprint $table) {
+        Schema::create('co_cuentas_cxp', function (Blueprint $table) {
             $table->id();
             $table->datetime('fecha');
             $table->smallInteger('cod_sp');
@@ -34,6 +34,6 @@ class CreateCoFacturasProveedoresCuentasTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('co_facturas_proveedores_cuentas');
+        Schema::dropIfExists('co_cuentas_cxp');
     }
 }

@@ -18,17 +18,25 @@ class proveedoresController extends ApiResponseController
 {
     public function index()
     {
-        $datos= proveedores::join('ciudades', 'ciudades.id_ciudad','=','proveedores.id_ciudad')->
+        $proveedores = proveedores::join('ciudades', 'ciudades.id_ciudad','=','proveedores.id_ciudad')->
                              join('paises', 'paises.id_pais','=','proveedores.id_pais')->
                              select('proveedores.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
                              where('proveedores.estado','=','activo')->
                              get();
 
-        if ($datos == null or $datos == '') {
-            return $this->errorResponse('No existen datos');
+        foreach ($proveedores as $key => $value) {
+            $coCuentasProveedor = coCuentasProveedor::where([['co_cuentas_proveedores.cod_sp','=',$value->cod_sp],
+                                                             ['co_cuentas_proveedores.cod_sp_sec','=',$value->cod_sp_sec],
+                                                             ['co_cuentas_proveedores.estado','=','activo']])->
+                                                    
+                                                    get();
+            $value->cuentas_proveedor = $coCuentasProveedor;
+        }
+        if ($proveedores == null or $proveedores == '') {
+            return $this->errorResponse('No existen proveedores');
         }
         else{
-            return $this->successResponse($datos);
+            return $this->successResponse($proveedores);
         }
     }
 
