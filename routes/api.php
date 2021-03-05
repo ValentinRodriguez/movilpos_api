@@ -10,6 +10,12 @@ Route::post('logout', 'AuthController@logout');
 Route::group([
     'middleware' => 'jwt.auth'
 ], function ($router) {    
+    
+    // Route::group([
+    //     'middleware' => 'isLogged'
+    // ], function ($router) { 
+    // });
+    
     Route::post('lockLogin', 'AuthController@lockLogin');
     Route::post('usuario-logado', 'AuthController@getAuthUser');
     Route::post('unlocklogin', 'AuthController@unLockLogin');
@@ -20,10 +26,26 @@ Route::group([
     Route::post('act/usuario/{id}', 'AuthController@actualizar');
     Route::post('me', 'AuthController@me');
 
+    // PRODUCTOS EN EL INVENTARIO
+    Route::post('/act/productos/{id}', 'InvProductosController@updateProducts');
+    Route::get('/noexistencia/invproductos', 'InvProductosController@indexSinExistencia');
+    Route::get('/busqueda/invproductos', 'InvProductosController@busqueda');
+    Route::get('/busqueda/invproducto', 'InvProductosController@busquedaTitulo');
+    Route::get('/autollenado/invproducto', 'InvProductosController@autoLlenado');
+    Route::get('/tipo/invproducto', 'InvProductosController@tiposProductos');
+    Route::get('/medidas/invproducto', 'InvProductosController@medidasProductos');
+    Route::get('/propiedades/invproducto', 'InvProductosController@propiedadesProductos');
+    Route::get('/invproductos-movil', 'InvProductosController@indexMovil');
+    Route::apiresource('/invproductos', 'InvProductosController');
+
     //API WOOCOMMERCE
-    Route::apiresource('/woocommerce', 'WooCommerceController');
     Route::get('/woocommerce/actprecio/{page}', 'WooCommerceController@getProducts');
     Route::get('/woocommerce/contarprecio/{page}', 'WooCommerceController@countProducts');
+    Route::apiresource('/woocommerce', 'WooCommerceController');
+
+    // FACTURAS PROVEEDORES
+    Route::get('/autollenado/transacciones-cxp', 'CoTransaccionesCxpController@autollenado');
+    Route::apiresource('/transacciones-cxp', 'CoTransaccionesCxpController');
 
     // HOME
     Route::get('/autollenado/home', 'Home@autollenado');
@@ -39,13 +61,9 @@ Route::group([
     Route::get('/busqueda/invtipos', 'InvTiposController@busqueda');
     Route::apiresource('/invtipos', 'InvTiposController');
     
-    Route::group([
-        'middleware' => 'isLogged'
-    ], function ($router) { 
-        // TIPO DE MARCAS
-        Route::get('/busqueda/marca', 'BrandsController@busqueda');
-        Route::apiresource('/marca', 'BrandsController');
-    });
+    // TIPO DE MARCAS
+    Route::get('/busqueda/marca', 'BrandsController@busqueda');
+    Route::apiresource('/marca', 'BrandsController');
 
     // CATEGORIAS
     Route::get('/busqueda/categoria', 'CategoriasController@busqueda');
@@ -58,7 +76,7 @@ Route::group([
     Route::get('/roles/usuario/{usuario}/{email}', 'RolController@rolUsuario');
     Route::apiresource('/roles', 'RolController');
 
-    // PRODUCTOS EN EL INVENTARIO
+    // // PRODUCTOS EN EL INVENTARIO
     Route::post('/act/productos/{id}', 'InvProductosController@updateProducts');
     Route::get('/noexistencia/invproductos', 'InvProductosController@indexSinExistencia');
     Route::get('/busqueda/invproductos', 'InvProductosController@busqueda');

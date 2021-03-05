@@ -28,8 +28,8 @@ class MonedasSeeder extends Seeder
                         'usuario_modificador'=> ''
         );
 
-        tipoMonedas::create($dolares);
         tipoMonedas::create($pesos);
+        tipoMonedas::create($dolares);
         tipoMonedas::create($euros); 
     }
 }

@@ -4,7 +4,7 @@ namespace App\Librerias;
 
 use Illuminate\Database\Eloquent\Model;
 
-class iptb00002 extends Model
+class coTransacciones_cxp extends Model
 {
-    protected $table = 'iptb00002';
+    //
 }

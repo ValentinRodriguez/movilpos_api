@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\coFacturasProveedoresCuentas;
+use App\Librerias\coCuentas_cxp;
 use Illuminate\Http\Request;
 
-class CoFacturasProveedoresCuentasController extends Controller
+class CoCuentasCxpController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class CoFacturasProveedoresCuentasController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\coFacturasProveedoresCuentas  $coFacturasProveedoresCuentas
+     * @param  \App\coCuentas_cxp  $coCuentas_cxp
      * @return \Illuminate\Http\Response
      */
-    public function show(coFacturasProveedoresCuentas $coFacturasProveedoresCuentas)
+    public function show(coCuentas_cxp $coCuentas_cxp)
     {
         //
     }
@@ -52,10 +52,10 @@ class CoFacturasProveedoresCuentasController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\coFacturasProveedoresCuentas  $coFacturasProveedoresCuentas
+     * @param  \App\coCuentas_cxp  $coCuentas_cxp
      * @return \Illuminate\Http\Response
      */
-    public function edit(coFacturasProveedoresCuentas $coFacturasProveedoresCuentas)
+    public function edit(coCuentas_cxp $coCuentas_cxp)
     {
         //
     }
@@ -64,10 +64,10 @@ class CoFacturasProveedoresCuentasController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\coFacturasProveedoresCuentas  $coFacturasProveedoresCuentas
+     * @param  \App\coCuentas_cxp  $coCuentas_cxp
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, coFacturasProveedoresCuentas $coFacturasProveedoresCuentas)
+    public function update(Request $request, coCuentas_cxp $coCuentas_cxp)
     {
         //
     }
@@ -75,10 +75,10 @@ class CoFacturasProveedoresCuentasController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\coFacturasProveedoresCuentas  $coFacturasProveedoresCuentas
+     * @param  \App\coCuentas_cxp  $coCuentas_cxp
      * @return \Illuminate\Http\Response
      */
-    public function destroy(coFacturasProveedoresCuentas $coFacturasProveedoresCuentas)
+    public function destroy(coCuentas_cxp $coCuentas_cxp)
     {
         //
     }

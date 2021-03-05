@@ -4,11 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCoFacturasProveedoresTable extends Migration
+class CreateCoTransaccionesCxpTable extends Migration
 {
     public function up()
     {
-        Schema::create('co_facturas_proveedores', function (Blueprint $table) {
+        Schema::create('co_transacciones_cxp', function (Blueprint $table) {
             $table->id();
             $table->string('tipo_doc',2); 
             $table->string('num_doc',14);
@@ -36,6 +36,6 @@ class CreateCoFacturasProveedoresTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('co_facturas_proveedores');
+        Schema::dropIfExists('co_transacciones_cxp');
     }
 }
