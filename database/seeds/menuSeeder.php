@@ -290,6 +290,8 @@ class menuSeeder extends Seeder
             'estado' => 'ACTIVO'
         );
 
+
+
         // MODULO 6
         
         $menu16 = array(
@@ -392,6 +394,17 @@ class menuSeeder extends Seeder
         'estado' => 'ACTIVO'
         );
 
+        $menu39 = array(
+            'id_menu' => 1,
+            'modulo' => 7,
+            'status' => 1,
+            'codigo' => 'cgp4',
+            'nombre' => 'entradas de diario',
+            'descripcion' => 'menu de contabilidad general',
+            'url' => 'gestion-entradas-diario',
+            'estado' => 'ACTIVO'
+            );
+
         //MODULO 8
         
         $menu23 = array(
@@ -492,5 +505,6 @@ class menuSeeder extends Seeder
         Menu::create($menu36); 
         Menu::create($menu37); 
         Menu::create($menu38); 
+        Menu::create($menu39); 
     }
 }
