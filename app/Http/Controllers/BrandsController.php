@@ -37,7 +37,7 @@ class BrandsController extends ApiResponseController
                        "usuario_creador" =>$request->input("usuario_creador"),
                        "estado"          =>$request->input("estado"),
         );
-        return response()->json($datos);
+      //  return response()->json($datos);
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
