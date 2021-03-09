@@ -23,15 +23,16 @@ class proveedoresController extends ApiResponseController
                              select('proveedores.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
                              where('proveedores.estado','=','activo')->
                              get();
-
+     
         foreach ($proveedores as $key => $value) {
             $coCuentasProveedor = coCuentasProveedor::where([['co_cuentas_proveedores.cod_sp','=',$value->cod_sp],
                                                              ['co_cuentas_proveedores.cod_sp_sec','=',$value->cod_sp_sec],
                                                              ['co_cuentas_proveedores.estado','=','activo']])->
                                                     
                                                     get();
-            $value->cuentas_proveedor = $coCuentasProveedor;
+            $value->cuentas_proveedor = $coCuentasProveedor; 
         }
+            
         if ($proveedores == null or $proveedores == '') {
             return $this->errorResponse('No existen proveedores');
         }

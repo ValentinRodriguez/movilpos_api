@@ -27,6 +27,10 @@ class CreateCoTransaccionesCxpTable extends Migration
             $table->float('bienes'); 
             $table->float('servicios'); 
             $table->float('retencion');
+            $table->smallInteger('codigo_fiscal');
+            $table->char('ncf');
+            $table->float('monto_itbi');
+            $table->integer('cond_pago');
             $table->string('estado',20);
             $table->string('usuario_creador',50);
             $table->string('usuario_modificador',50)->nullable(); 

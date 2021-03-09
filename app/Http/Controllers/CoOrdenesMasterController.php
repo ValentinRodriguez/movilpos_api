@@ -11,7 +11,10 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
 use App\Librerias\Empresa;
-use App\Librerias\tipoMonedas;
+use App\Librerias\co_DireccionesEnvio;
+use App\Librerias\invtransaccionesmodel;
+use App\Librerias\Invtransaccdetallemodel;
+use App\Librerias\coCuentasProveedor;
 
 class CoOrdenesMasterController extends ApiResponseController
 {    
@@ -79,13 +82,21 @@ class CoOrdenesMasterController extends ApiResponseController
             $puertos = co_puerto::orderBy('created_at', 'desc')->
                                 get();
 
+            $direcciones = co_DireccionesEnvio::join('ciudades', 'ciudades.id_ciudad','=','co_direcciones_envios.id_ciudad')->
+                                join('paises', 'paises.id_pais','=','co_direcciones_envios.id_pais')->
+                                select('co_direcciones_envios.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
+                                where('co_direcciones_envios.estado','=','activo')->
+                                get();
+
             $_condiciones = array("label" => 'condiciones', "data" => $condiciones, "icono" => 'fas fa-dolly-flatbed');
             $_proveedores = array("label" => 'proveedores', "data" => $proveedores, "icono" => 'fas fa-dolly-flatbed');
             $_puertos     = array("label" => 'puertos', "data" => $puertos, "icono" => 'fas fa-dolly-flatbed');
+            $_direcciones     = array("label" => 'direcciones', "data" => $direcciones, "icono" => 'fas fa-dolly-flatbed');
 
             array_push($respuesta,$_condiciones);
             array_push($respuesta,$_proveedores);
             array_push($respuesta,$_puertos);
+            array_push($respuesta,$_direcciones);
 
             return $this->successResponse($respuesta);      
         } catch (\Exception $e ){
@@ -293,14 +304,51 @@ class CoOrdenesMasterController extends ApiResponseController
 
     public function buscaOrdenCompra($orden){
         $data = array();  
+        $valor = 0;
 
         $compra = coOrdenesMaster::where([['co_ordenes_masters.estado','=','activo'], 
                                           ['co_ordenes_masters.orden_cerrada','=','no'], 
                                           ['co_ordenes_masters.num_oc','=',$orden]])-> 
-                                   join('proveedores','co_ordenes_masters.cod_sp','=','proveedores.cod_sp')->
-                                   select('co_ordenes_masters.*','proveedores.nom_sp','proveedores.rnc','proveedores.email')->
+                                   join('proveedores',[['co_ordenes_masters.cod_sp','=','proveedores.cod_sp'],
+                                          ['co_ordenes_masters.cod_sp_sec','=','proveedores.cod_sp_sec']])->
+                                   select('co_ordenes_masters.*','proveedores.nom_sp','proveedores.documento','proveedores.email')->
                                    get();
 
+        $proveedor = proveedores::join('ciudades', 'ciudades.id_ciudad','=','proveedores.id_ciudad')->
+                                  join('paises', 'paises.id_pais','=','proveedores.id_pais')->
+                                  select('proveedores.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
+                                  where([['proveedores.estado','=','activo'],
+                                         ['proveedores.cod_sp','=',$compra[0]['cod_sp']],
+                                         ['proveedores.cod_sp_sec','=',$compra[0]['cod_sp_sec']]
+                                        ])->
+                                  get();
+        
+        foreach ($proveedor as $key => $value) {
+            $coCuentasProveedor = coCuentasProveedor::where([['co_cuentas_proveedores.cod_sp','=',$value->cod_sp],
+                                                            ['co_cuentas_proveedores.cod_sp_sec','=',$value->cod_sp_sec],
+                                                            ['co_cuentas_proveedores.estado','=','activo']])->
+                                                    
+                                                    get();
+            $value->cuentas_proveedor = $coCuentasProveedor;
+        } 
+
+        $transacciones = invtransaccionesmodel::where([['invtransaccionesmaster.estado','=','ACTIVO'],
+                                                       ['invtransaccionesmaster.num_doc','=',$compra[0]['num_oc']]])->
+                                                first();
+        
+        if ($transacciones != null){       
+            $transaccionesDetalle = Invtransaccdetallemodel::where([['invtransaccionesdetalle.estado','=','ACTIVO'],
+                                                                    ['invtransaccionesdetalle.num_doc','=',$transacciones->num_doc],
+                                                                    ['invtransaccionesdetalle.id_tipomov','=',$transacciones->id_tipomov],
+                                                                    ['invtransaccionesdetalle.id_bodega','=',$transacciones->id_bodega]])->  
+                                                             get();
+
+            for ($i=0; $i < count($transaccionesDetalle); $i++) { 
+                $valor += intval($transaccionesDetalle[$i]['precio_venta']);
+            }
+            
+        }        
+        
         $compraDetalle = coOrdenesDetalle::where([['co_ordenes_detalles.estado','=','activo'], 
                                                   ['co_ordenes_detalles.num_oc','=',$orden]])-> 
                                            join('inv_productos','co_ordenes_detalles.codigo','=','inv_productos.codigo')->
@@ -319,22 +367,22 @@ class CoOrdenesMasterController extends ApiResponseController
                                                   'categorias.descripcion as categoria',
                                                   'brands.descripcion as marca',
                                                   'invtipos_inventarios.descripcion as tipoinventario',
-                                                  'bodegas.descripcion as almacen'
-                                           )->
+                                                  'bodegas.descripcion as almacen')->
                                            get();       
-        
+       
         if ($compra == null){
             return $this->errorResponse('Esta orden de compra no existe');
         }
         else {
             foreach ($compra as $key => $value) {
                 $value->productos = $compraDetalle;
+                $value->proveedor = $proveedor;
+                $value->valor_recibido = $valor;
                 array_push($data, $value);
             }
-            return $this->successResponse($data[0]);
+            return $this->successResponse($data);
         }
     }
-
 
     public function busqueda($id){
         

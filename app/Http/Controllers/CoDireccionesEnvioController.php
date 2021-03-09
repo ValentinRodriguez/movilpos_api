@@ -10,13 +10,13 @@ class CoDireccionesEnvioController extends ApiResponseController
 {
     public function index()
     {
-        $categoria = co_DireccionesEnvio::join('ciudades', 'ciudades.id_ciudad','=','co_direcciones_envios.id_ciudad')->
+        $direcciones = co_DireccionesEnvio::join('ciudades', 'ciudades.id_ciudad','=','co_direcciones_envios.id_ciudad')->
                                         join('paises', 'paises.id_pais','=','co_direcciones_envios.id_pais')->
                                         select('co_direcciones_envios.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
                                         where('co_direcciones_envios.estado','=','activo')->
                                         get();
 
-        return $this->successResponse($categoria);
+        return $this->successResponse($direcciones);
     }
 
     public function store(Request $request)

@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Librerias\coTransacciones_cxp;
 use App\Librerias\proveedores;
-use App\Librerias\coCuentas_cxp;
+use App\Librerias\coCuentasProveedor;
 use App\Librerias\ve_CondicionesPago;
 use App\Librerias\tipoMonedas;
 
-class CoTransaccionesCxpController extends Controller
+class CoTransaccionesCxpController extends ApiResponseController
 {
     public function index()
     {
@@ -28,14 +28,17 @@ class CoTransaccionesCxpController extends Controller
                             select('proveedores.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
                             where('proveedores.estado','=','activo')->
                             get();
+
             foreach ($proveedores as $key => $value) {
-                $coCuentas_cxp = coCuentas_cxp::where([['co_cuentas_proveedores.cod_sp','=',$value->cod_sp],
-                                                                    ['co_cuentas_proveedores.cod_sp_sec','=',$value->cod_sp_sec],
-                                                                    ['co_cuentas_proveedores.estado','=','activo']])->
-                                                        
-                                                        get();
-                $value->cuentas_proveedor = $coCuentas_cxp;
+                $coCuentasProveedor = coCuentasProveedor::where([['co_cuentas_proveedores.cod_sp','=',$value->cod_sp],
+                                                                ['co_cuentas_proveedores.cod_sp_sec','=',$value->cod_sp_sec],
+                                                                ['co_cuentas_proveedores.estado','=','activo']])->
+                                                          join('cgcatalogo', 'cgcatalogo.cuenta_no','=','co_cuentas_proveedores.cuenta_no')->
+                                                          select('cgcatalogo.*','co_cuentas_proveedores.porciento','co_cuentas_proveedores.cod_sp','co_cuentas_proveedores.cod_sp_sec')->
+                                                          get();
+                $value->cuentas_proveedor = $coCuentasProveedor; 
             }
+
             $condiciones = ve_CondicionesPago::orderBy('id', 'asc')->where('estado','=','activo')->get();    
 
             $monedas     = tipoMonedas::orderBy('created_at', 'desc')->where('estado','=','ACTIVO')->get();

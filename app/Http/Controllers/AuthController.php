@@ -187,7 +187,7 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'access_type' => 'bearer',
             'sessionId' => $sessionId,
-            'expires_in' => auth::factory()->getTTL() * 1440,
+            'expires_in' => auth::factory()->getTTL() * 1,
             'bodegas_permisos' => $bodegas_permiso,
             'empleado' => $empleados,
             'empresa' => $empresa,

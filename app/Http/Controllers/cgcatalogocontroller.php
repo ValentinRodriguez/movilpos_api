@@ -23,8 +23,8 @@ class cgcatalogocontroller extends ApiResponseController
     public function cuentasAux()
     {
         $tipoProveedor = cgcatalogo::orderBy('id', 'asc')->
-                                    where([['nivel','=',3],['estado','=','ACTIVO']])->
-                                    get();
+                                     where([['nivel','=',3],['estado','=','ACTIVO']])->
+                                     get();
         
         return $this->successResponse($tipoProveedor);
     }

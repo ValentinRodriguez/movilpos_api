@@ -27,5 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TransContablesSeeder::class);        
         $this->call(zonasSeeder::class); 
         $this->call(PerfilesSeeder::class); 
+        $this->call(tipoGastosSeeder::class); 
     }
 }

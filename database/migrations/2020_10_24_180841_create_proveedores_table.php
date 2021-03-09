@@ -6,17 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateProveedoresTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('proveedores', function (Blueprint $table) {
+            $keys = array('cod_sp', 'cod_sp_sec');
             $table->integer('cod_sp');
             $table->integer('cod_sp_sec');
-            $table->primary('cod_sp','cod_sp_sec');
+            $table->primary($keys);
             $table->text('nom_sp');
             $table->text('dir_sp');
             $table->integer('id_ciudad')->foreign('id_ciudad')->reference('id_ciudad')->on('ciudad');
@@ -36,12 +32,7 @@ class CreateProveedoresTable extends Migration
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    
     public function down()
     {
         Schema::dropIfExists('proveedores');
