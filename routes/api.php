@@ -129,6 +129,10 @@ Route::group([
     Route::get('/busqueda/cuentas-auxiliares', 'cgcatalogocontroller@cuentasAux');
     Route::apiresource('/cgcatalogo', 'cgcatalogocontroller');
 
+    //ENTRADAS DE DIARIO
+    Route::apiresource('/cgentradasdiarios', 'CgEntradasDiarioMasterController');
+    Route::get('/ed/secuencia', 'CgEntradasDiarioMasterController@secuencia');
+
     // MODULOS DEL SISTEMA
     Route::apiresource('/modulos', 'ModulosController');
 
