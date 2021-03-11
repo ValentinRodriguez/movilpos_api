@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'AuthController@login');
 Route::post('logout', 'AuthController@logout');
 Route::get('/busqueda/ordenescompras/{orden}', 'CoOrdenesMasterController@buscaOrdenCompra');
+
 Route::group([
     'middleware' => 'jwt.auth'
 ], function ($router) {    
@@ -44,6 +45,7 @@ Route::group([
     Route::apiresource('/woocommerce', 'WooCommerceController');
 
     // FACTURAS PROVEEDORES
+    // Route::get('/reporte/transacciones-cxp/{id}', 'CoTransaccionesCxpController@verReporte');
     Route::get('/autollenado/transacciones-cxp', 'CoTransaccionesCxpController@autollenado');
     Route::apiresource('/transacciones-cxp', 'CoTransaccionesCxpController');
 

@@ -293,7 +293,7 @@ class CoOrdenesMasterController extends ApiResponseController
                     return $this->errorResponse(null,"Registro no Existe");
                 }
                 $ordenCompra->update(['estado' => 'eliminado']);
-                coOrdenesDetalle::where('num_oc','=',$ordenCompra->num_oc) ->update(['estado' => 'eliminado']);
+                coOrdenesDetalle::where('num_oc','=',$ordenCompra->num_oc)->update(['estado' => 'eliminado']);
                 
             DB::commit();
             return $this->successResponse(1);
@@ -321,17 +321,18 @@ class CoOrdenesMasterController extends ApiResponseController
                                          ['proveedores.cod_sp','=',$compra[0]['cod_sp']],
                                          ['proveedores.cod_sp_sec','=',$compra[0]['cod_sp_sec']]
                                         ])->
-                                  get();
+                                  first();
         
-        foreach ($proveedor as $key => $value) {
-            $coCuentasProveedor = coCuentasProveedor::where([['co_cuentas_proveedores.cod_sp','=',$value->cod_sp],
-                                                            ['co_cuentas_proveedores.cod_sp_sec','=',$value->cod_sp_sec],
-                                                            ['co_cuentas_proveedores.estado','=','activo']])->
-                                                    
-                                                    get();
-            $value->cuentas_proveedor = $coCuentasProveedor;
-        } 
-
+        $coCuentasProveedor = coCuentasProveedor::join('cgcatalogo','cgcatalogo.cuenta_no','=','co_cuentas_proveedores.cuenta_no')->
+                                                  select('co_cuentas_proveedores.*',
+                                                         'cgcatalogo.depto','cgcatalogo.catalogo','cgcatalogo.referencia',
+                                                         'cgcatalogo.tipo_cuenta','cgcatalogo.retencion')->      
+                                                  where([['co_cuentas_proveedores.cod_sp','=',$proveedor->cod_sp],
+                                                         ['co_cuentas_proveedores.cod_sp_sec','=',$proveedor->cod_sp_sec],
+                                                         ['co_cuentas_proveedores.estado','=','activo']])->                                                
+                                                get();
+        $proveedor->cuentas_proveedor = $coCuentasProveedor;
+    
         $transacciones = invtransaccionesmodel::where([['invtransaccionesmaster.estado','=','ACTIVO'],
                                                        ['invtransaccionesmaster.num_doc','=',$compra[0]['num_oc']]])->
                                                 first();
