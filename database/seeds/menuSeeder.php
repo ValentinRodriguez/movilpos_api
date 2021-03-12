@@ -17,7 +17,9 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp3','nombre' => 'mi empresa','descripcion' => 'menu de gestión de la empresa','url' => 'gestion-de-empresa','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp4','nombre' => 'gestión de tipo de negocios','descripcion' => 'menu de gestión de la empresa','url' => 'gestion-de-tipo-negocios','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp5','nombre' => 'gestión de tipo de clientes','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-de-tipo-clientes','estado' => 'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 3,'status' => 1,'codigo' => 'emp6','nombre' => 'gestión de actividades','descripcion' => 'menu de gestion de actividades','url' => 'gestion-de-actividades','estado' => 'ACTIVO'],
+            
+            // MISCELANEOS
+            ['id_menu' => 1,'modulo' => 3,'status' => 1,'codigo' => 'misc1','nombre' => 'gestión de actividades','descripcion' => 'menu de gestion de actividades','url' => 'gestion-de-actividades','estado' => 'ACTIVO'],
     
             // INVENTARIO 3
             ['id_menu' => 2,'modulo' => 4,'status' => 1,'codigo' => 'invr1','nombre' => 'Reporte de catalogo de productos','descripcion' => 'menu de inventario','url' => 'reporte-catalogo-productos','estado' => 'ACTIVO'],
@@ -55,6 +57,7 @@ class menuSeeder extends Seeder
             ['id_menu' => 2,'modulo' => 7,'status' => 1,'codigo' => 'cgp2','nombre' => 'Diario General','descripcion' => 'menu de contabilidad general','url' => 'diario_general','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp3','nombre' => 'periodo fiscales','descripcion' => 'menu de contabilidad general','url' => 'gestion-periodos-fiscales','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp4','nombre' => 'Entradas de diario','descripcion' => 'menu de contabilidad general','url' => 'gestion-entradas-diario','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp5','nombre' => 'Transacciones de pago','descripcion' => 'menu de contabilidad general','url' => 'gestion-transacciones-pago','estado' => 'ACTIVO'],
             
             //MODULO DE ENTRADAS AUTOMATICAS       
             ['id_menu' => 1,'modulo' => 8,'status' => 1,'codigo' => 'entp1','nombre' => 'Cobros','descripcion' => 'menu de entradas automaticas','url' => 'cobros','estado' => 'ACTIVO'],
@@ -62,10 +65,10 @@ class menuSeeder extends Seeder
             //MODULO DE RECURSOS HUMANOS
             ['id_menu' => 1,'modulo' => 9,'status' => 1,'codigo' => 'hrp1','nombre' => 'Gestion de empleados','descripcion' => 'Modulo RR.HH','url' => 'gestion-de-empleados','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 9,'status' => 1,'codigo' => 'hrp2','nombre' => 'Gestion de puestos','descripcion' => 'Modulo RR.HH','url' => 'gestion-de-puestos','estado' => 'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 9,'status' => 1,'codigo' => 'hrp3','nombre' => 'Gestion de departamentos','descripcion' => 'Modulo RR.HH','url' => 'gestion-de-departamentos','estado' =>'ACTIVO']
+            ['id_menu' => 1,'modulo' => 9,'status' => 1,'codigo' => 'hrp3','nombre' => 'Gestion de departamentos','descripcion' => 'Modulo RR.HH','url' => 'gestion-de-departamentos','estado' =>'ACTIVO'],
 
             //MODULO CUENTAS POR PAGAR
-
+            ['id_menu' => 2,'modulo' => 10,'status' => 1,'codigo' => 'cpp1','nombre' => 'Analisis de Saldo','descripcion' => 'Modulo Cuentas por pagar','url' => 'reporte-analisis-saldo','estado' =>'ACTIVO']
         );
 
         foreach ($menues as $key => $value) {

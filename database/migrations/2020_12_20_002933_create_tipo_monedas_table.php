@@ -18,7 +18,6 @@ class CreateTipoMonedasTable extends Migration
             $table->string("divisa",5);
             $table->string("descripcion",30);
             $table->string("simbolo",5);
-            $table->string("concurrencia",5);
             $table->string("estado",10);
             $table->string("usuario_creador",50);
             $table->string("usuario_modificador",50)->nullable();

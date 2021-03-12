@@ -8,18 +8,16 @@ Route::post('login', 'AuthController@login');
 Route::post('logout', 'AuthController@logout');
 Route::get('/busqueda/ordenescompras/{orden}', 'CoOrdenesMasterController@buscaOrdenCompra');
 
+// Route::group([
+//     'middleware' => ['isLogged']
+// ], function ($router) { 
+//     Route::apiresource('/invproductos', 'InvProductosController');
+// });
+
 Route::group([
-    'middleware' => 'jwt.auth'
-], function ($router) {    
-    
-    // Route::group([
-    //     'middleware' => 'isLogged'
-    // ], function ($router) { 
-    // });
-    
-    Route::post('lockLogin', 'AuthController@lockLogin');
+    'middleware' => ['jwt.auth','isLogged']
+], function ($router) {   
     Route::post('usuario-logado', 'AuthController@getAuthUser');
-    Route::post('unlocklogin', 'AuthController@unLockLogin');
     Route::post('desactivar', 'AuthController@unLockLogin');
     Route::post('signup', 'AuthController@signup');
     Route::post('refresh', 'AuthController@refresh');
@@ -78,16 +76,7 @@ Route::group([
     Route::get('/roles/usuario/{usuario}/{email}', 'RolController@rolUsuario');
     Route::apiresource('/roles', 'RolController');
 
-    // // PRODUCTOS EN EL INVENTARIO
-    Route::post('/act/productos/{id}', 'InvProductosController@updateProducts');
-    Route::get('/noexistencia/invproductos', 'InvProductosController@indexSinExistencia');
-    Route::get('/busqueda/invproductos', 'InvProductosController@busqueda');
-    Route::get('/busqueda/invproducto', 'InvProductosController@busquedaTitulo');
-    Route::get('/autollenado/invproducto', 'InvProductosController@autoLlenado');
-    Route::get('/tipo/invproducto', 'InvProductosController@tiposProductos');
-    Route::get('/medidas/invproducto', 'InvProductosController@medidasProductos');
-    Route::get('/propiedades/invproducto', 'InvProductosController@propiedadesProductos');
-    Route::apiresource('/invproductos', 'InvProductosController');
+
 
     // REQUISICIONES
     Route::apiresource('/requisiciones', 'RequisicionesMasterController');

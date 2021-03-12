@@ -224,7 +224,7 @@ class CoTransaccionesCxpController extends ApiResponseController
                                                'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
                                                'proveedores.nom_sp as proveedor_nombre')->
                                         orderBy('co_transacciones_cxp.created_at', 'desc')->
-                                        where('co_transacciones_cxp. id','=',$id)->
+                                        where('co_transacciones_cxp.id','=',$id)->
                                         first();
                                         
         $detalle = coTransaccionesDetalleCxp::join('nodepartamentos','nodepartamentos.id','=','co_transacciones_detalle_cxp.departamento')->

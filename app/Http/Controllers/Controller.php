@@ -6,10 +6,32 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Tymon\JWTAuth\JWTAuth;
+use Tymon\JWTAuth\Manager;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-   
+    /**
+     * @var JWTAuth
+     */
+    protected $jwt;
+
+    /**
+     * @var Manager
+     */
+    protected $manager;
+
+    /**
+     * Controller constructor.
+     *
+     * @param JWTAuth $jwt
+     * @param Manager $manager
+     */
+    public function __construct(JWTAuth $jwt, Manager $manager)
+    {
+        $this->jwt = $jwt;
+        $this->manager = $manager;
+    }
 }
