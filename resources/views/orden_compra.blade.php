@@ -88,24 +88,17 @@
     <div>
       <span></span>
     </div>
-    <div>
-      <span>{{strtoupper($datos->simbolo.' '.$datos->divisa)}}</span> <span></span>
-    </div>
+   
     <div>
       <span>----------------------------</span>
     </div>
     <div>
-      <span>BRUTO:</span> <span>{{$datos->simbolo.' '.$datos->total_bruto}}</span>
+      <span>BRUTO:</span> <span>{{}}</span>
     </div>
     <div>
-      <span>DESCUENTO:</span> <span>{{$datos->simbolo.' '.$datos->total_desc}}</span>
+      <span>DESCUENTO:</span> <span>{{}}</span>
     </div>
-    <div>
-      <span>ITBIS:</span> <span>{{$datos->simbolo.' '.$datos->total_itbis}}</span>
-    </div>
-    <div>
-      <span>NETO:</span> <span>{{$datos->simbolo.' '.$datos->total_neto}}</span>
-    </div>
+  
   </div>
 @endsection
 

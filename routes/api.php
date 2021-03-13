@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'AuthController@login');
 Route::post('logout', 'AuthController@logout');
 Route::get('/busqueda/ordenescompras/{orden}', 'CoOrdenesMasterController@buscaOrdenCompra');
+Route::get('/reporte/orden-compras/{id}', 'CoOrdenesMasterController@verReporte')->name('verPDF');
+Route::get('/reporte/entradas_diario/{id}/{sec}', 'CgEntradasDiarioMasterController@verReporte')->name('PDF');
 Route::group([
     'middleware' => 'jwt.auth'
 ], function ($router) {    
@@ -132,6 +134,7 @@ Route::group([
     //ENTRADAS DE DIARIO
     Route::apiresource('/cgentradasdiarios', 'CgEntradasDiarioMasterController');
     Route::get('/ed/secuencia', 'CgEntradasDiarioMasterController@secuencia');
+    Route::post('/act/entradas-diario/{id}/{sec}', 'InvProductosController@update');
 
     // MODULOS DEL SISTEMA
     Route::apiresource('/modulos', 'ModulosController');
@@ -235,7 +238,7 @@ Route::group([
     // Route::get('/busqueda/ordenescompras/{orden}', 'CoOrdenesMasterController@buscaOrdenCompra');
     Route::get('/autollenado/ordenescompras', 'CoOrdenesMasterController@autollenado');
     Route::post('/actualizarcompras/{id}', 'CoOrdenesMasterController@actualizar');
-    Route::get('/reporte/orden-compras/{id}', 'CoOrdenesMasterController@verReporte')->name('verPDF');
+   // Route::get('/reporte/orden-compras/{id}', 'CoOrdenesMasterController@verReporte')->name('verPDF');
     Route::get('/reporte/orden-comprash/{id}', 'CoOrdenesMasterController@verReporteH')->name('verPDFh');
     Route::apiresource('/ordenescompras', 'CoOrdenesMasterController');
 

@@ -240,7 +240,7 @@ class CoOrdenesMasterController extends ApiResponseController
                         return $this->errorResponse('No hay productos agragados a la transacción');
                     }               
                     DB::commit();
-                    return $this->successResponse(1);
+                    return $this->successResponse($datosd);
                 } 
                 catch (\Exception $e ){
                     return $this->errorResponse($e);
@@ -566,7 +566,7 @@ class CoOrdenesMasterController extends ApiResponseController
                                        've_cond_pagos.descripcion as descripcion_pago')->                                
                                 get();
 
-        
+                                
         $compraDetalle = coOrdenesDetalle::where([['co_ordenes_detalles.estado','=','activo'], 
                                         ['co_ordenes_detalles.num_oc','=', $compra[0]->num_oc]])-> 
                                 join('inv_productos','co_ordenes_detalles.codigo','=','inv_productos.codigo')->

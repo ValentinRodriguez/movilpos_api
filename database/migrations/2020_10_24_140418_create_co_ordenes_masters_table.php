@@ -18,7 +18,7 @@ class CreateCoOrdenesMastersTable extends Migration
             $table->integer('num_oc')->unique();
             $table->date('fecha')->nullable();
             $table->text('numero_proforma')->nullable();
-            $table->text('archivo');
+            $table->text('archivo')->nullable();
             $table->integer('cod_sp');
             $table->integer('cod_sp_sec');
             $table->integer('cond_pago')->reference('cond_pago')->on('condiciones');

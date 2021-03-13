@@ -16,16 +16,18 @@ class CreateCgEntradasDiarioMastersTable extends Migration
         Schema::create('cg_entradas_diario_masters', function (Blueprint $table) {
             $table->id();
             $table->date('fecha');
-            $table->Integer('secuencia_entrada');
+            $table->Integer('documento');
             $table->smallinteger('mes');
             $table->string('periodo');
             $table->string('ref');
             $table->string('detalle')->nullable();
-         //   $table->string('informacion',12)->nullable();
-          //  $table->smallInteger('cod_sp')->nullable();
-         //   $table->date('fecha_inicial');
-          //  $table->date('fecha_final');
-           // $table->string('cuenta_no');
+            $table->string('tipo_doc',2);
+            $table->integer('valor')->nullable();
+            $table->Integer('cod_sp')->nullable();
+            $table->Integer('cod_sp_sec')->nullable();
+            $table->string('nombre_sup',50);
+            $table->Integer('tasa')->nullable(); 
+            $table->Integer('cuenta_no')->nullable();
             $table->string('estado',20);
             $table->string('usuario_creador',50);
             $table->string('usuario_modificador',50)->nullable(); 
