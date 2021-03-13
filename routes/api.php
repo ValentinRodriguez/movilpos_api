@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'AuthController@login');
 Route::post('logout', 'AuthController@logout');
 Route::get('/busqueda/ordenescompras/{orden}', 'CoOrdenesMasterController@buscaOrdenCompra');
+Route::get('/reporte/analisis-cxp', 'CpAnalisisSaldoPendienteController@reporte');
 
 // Route::group([
 //     'middleware' => ['isLogged']
