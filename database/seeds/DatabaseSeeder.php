@@ -28,5 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(zonasSeeder::class); 
         $this->call(PerfilesSeeder::class); 
         $this->call(tipoGastosSeeder::class); 
+        $this->call(tipoordenseeders::class);         
     }
 }

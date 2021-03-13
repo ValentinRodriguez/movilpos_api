@@ -7,22 +7,25 @@ class MonedasSeeder extends Seeder
 {
     public function run()
     {
-        $pesos = array( 'divisa' => 'peso dominicano',
+        $pesos = array( 'divisa' => 'DOP',
                         'simbolo'=> '$RD',
+                        'descripcion' =>'peso dominicano',
                         'estado' => 'activo', 
                         'usuario_creador'=> 'movilsoluciones',
                         'usuario_modificador'=> ''
         );
 
-        $dolares = array('divisa' => 'dolar',
+        $dolares = array('divisa' => 'EUR',
                          'simbolo'=> '$',
+                         'descripcion' => 'dolar',
                          'estado' => 'activo', 
                          'usuario_creador'=> 'movilsoluciones',
                          'usuario_modificador'=> ''
         );
 
-        $euros = array( 'divisa' => 'euro',
+        $euros = array( 'divisa' => 'USD',
                         'simbolo'=> '€',
+                        'descripcion' => 'euro',
                         'estado' => 'activo', 
                         'usuario_creador'=> 'movilsoluciones',
                         'usuario_modificador'=> ''

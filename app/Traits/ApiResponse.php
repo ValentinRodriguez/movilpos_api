@@ -10,12 +10,9 @@ trait ApiResponse{
         return response()->json(array("data" => $data, "code" => $code, "msj" => $msj), $code);
     }
 
-    public function errorResponse($data, $msj = 'Repuesta con errores', $code = 501)
+    public function errorResponse($data = null, $msj = 'Respuesta con errores', $code = 501)
     {        
-        if ($data ==null){
-            $msj = 'El Registro que intenta eliminar no existe';
-        };
-        return response()->json(array("data" => $data, "code" => $code, "msj" => $msj), $code);
+        return response()->json(array("data" => $data, "msj" => $msj, "code" => $code), $code);
     }
 
     public function errorResponseParams($data, $msj = 'Error en parametros', $code = 502)

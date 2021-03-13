@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\RegisterAuthRequest;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-
 class AuthController extends Controller
 {
     // public function __construct()
@@ -50,53 +49,20 @@ class AuthController extends Controller
             User::where('email','=',$email)->update(['session_id' => $sessionId]);  
             return $this->respondWithToken($token, $email, $sessionId);
         }
-        catch (\Exception $e ){
-            return response()->json(array("data" => $e, "code" => 501, "msj" => "Error"), 501);
+        catch (JWTException $e ){
+            return response()->json(array("data" => false, "code" => 501, "msj" => $e->getMessage()), 501);
         }      
     }
 
     public function logout()
     {
-        try {
-            auth::logout();
-            return response()->json(array("data" => '', "code" => 200, "msj" => "Respuesta Exitosa"), 200);
-        }
-        catch (\Exception $e ){
-            return response()->json(array("data" => '', "code" => 501, "msj" => $e), 501);
-        }  
-    }
-
-    // public function getAuthUser(Request  $request) {
-    //     $this->validate($request, [
-    //         'token' => 'required'
-    //     ]);
-        
-    //     $user = JWTAuth::authenticate($request->token);
-    //     return  response()->json(['user' => $user]);
-    // }
-
-    public function lockLogin() {
-        try {                
-            DB::beginTransaction();                             
-                $email = request('email'); 
-                User::where('email','=',$email)->update(['isLogged' => 'logged']);                
-            DB::commit();            
-            return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Logueado"), 200);
-        } catch (\Exception $e ){
-            return response()->json(array("data" => $e, "code" => 501, "msj" => "Error"), 501);
-        }  
-    }
-
-    public function unLockLogin() {
-        try {                
-            DB::beginTransaction();                             
-                $email = request('email'); 
-                User::where('email','=',$email)->update(['isLogged' => NULL]);                
-            DB::commit();            
-            return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Bloqueado"), 200);
-        } catch (\Exception $e ){
-            return $this->errorResponse($e);
-        }  
+        $token = JWTAuth::getToken();
+        try { 
+            $token = JWTAuth::invalidate($token);
+            return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Delogueado"), 200);
+        } catch (JWTException $e ){
+            return response()->json(array("data" => false, "code" => 422, "msj" => $e->getMessage()), 501);
+        } 
     }
 
     public function desactivar() {
@@ -107,7 +73,7 @@ class AuthController extends Controller
             DB::commit();            
             return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Desactivado"), 200);
         } catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }  
     }
 
@@ -160,13 +126,22 @@ class AuthController extends Controller
     public function me()
     {
         return response()->json(auth()->user());
-    }
-
-    public function refresh()
-    {
-        return $this->respondWithToken(auth::refresh());
 
     }
+
+    // public function refresh()
+    // {
+    //     $token = JWTAuth::getToken();
+    //     try{
+    //         $token = JWTAuth::refresh($token);
+    //         $email = request('email');
+    //         $sessionId = request('sessionId');
+    //         return $this->respondWithToken($token,$email,$sessionId);
+    //     }catch (JWTException $e ){
+    //         return response()->json(array("data" => $e, "code" => 501, "msj" => "Error"), 501);
+    //     }
+
+    // }
 
     protected function respondWithToken($token, $email = null, $sessionId = null)
     {
@@ -176,8 +151,7 @@ class AuthController extends Controller
                                       where('bodegas_usuarios.email','=',$email)->
                                       get();
 
-            $empleados = noempleados::where('noempleados.email','=',$email)->
-                                      first();
+            $empleados = noempleados::where('noempleados.email','=',$email)->first();
 
             $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->get();
         }

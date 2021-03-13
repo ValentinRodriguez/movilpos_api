@@ -15,7 +15,8 @@ class CreateTipoMonedasTable extends Migration
     {
         Schema::create('tipo_monedas', function (Blueprint $table) {
             $table->id();
-            $table->string("divisa",30);
+            $table->string("divisa",5);
+            $table->string("descripcion",30);
             $table->string("simbolo",5);
             $table->string("estado",10);
             $table->string("usuario_creador",50);
