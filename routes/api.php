@@ -81,9 +81,13 @@ Route::group([
     // REQUISICIONES
     Route::apiresource('/requisiciones', 'RequisicionesMasterController');
 
-    // TRANSACCIONES CONTABLES
+    // TRANSACCIONES CUENTAS POR PAGAS
     Route::get('/deudores/cctransacciones', 'CcTransaccionesController@avisoPagos');
     Route::apiresource('/cctransacciones', 'CcTransaccionesController');
+
+    // TRANSACCIONES CUENTAS POR PAGAS
+    Route::get('/autollenado/cctransacciones', 'CgTransaccionesContablesController@autollenado');
+    Route::apiresource('/cctransacciones', 'CgTransaccionesContablesController');
 
     //MENSAJES SMS
     Route::get('/sms/deudores-cctransacciones', 'MensajeriaSMScontroller@send');
