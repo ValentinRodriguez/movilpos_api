@@ -11,8 +11,8 @@ class CreateCoTransaccionesCxpTable extends Migration
         Schema::create('co_transacciones_cxp', function (Blueprint $table) {
             $table->id();
             $table->string('num_doc',14);
-            $table->datetime('fecha_orig');
-            $table->datetime('fecha_proc'); 
+            $table->date('fecha_orig');
+            $table->date('fecha_proc'); 
             $table->float('valor'); 
             $table->integer('cond_pago');
             $table->integer('orden_no')->nullable();
@@ -23,9 +23,9 @@ class CreateCoTransaccionesCxpTable extends Migration
             $table->smallInteger('cod_sp'); 
             $table->smallInteger('cod_sp_sec'); 
             $table->string('moneda',3); 
-            $table->float('bienes'); 
-            $table->float('servicios'); 
-            $table->float('retencion');
+            $table->float('bienes')->nullable(); 
+            $table->float('servicios')->nullable(); 
+            $table->float('retencion')->nullable();
             $table->string('detalle',40); 
             $table->char('ncf');
             $table->smallInteger('cod_cia');    
