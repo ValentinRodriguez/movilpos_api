@@ -15,22 +15,48 @@ use App\Librerias\Empresa;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
 
-class CpTransaccionesController extends Controller
+class CpTransaccionesController extends ApiResponseController
 {
     public function index()
     {
-        $facturas = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','co_transacciones.moneda')->
-                                    join('proveedores',[['proveedores.cod_sp','=','co_transacciones.cod_sp'],['proveedores.cod_sp_sec','=','co_transacciones.cod_sp_sec']])->
-                                    select('co_transacciones.*','tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa','proveedores.nom_sp as proveedor_nombre')->
-                                    orderBy('co_transacciones.created_at', 'desc')->
-                                    where('co_transacciones.estado','=','ACTIVO')->
+        $facturas = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
+                                    join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
+                                    select('cp_transacciones.*','tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa','proveedores.nom_sp as proveedor_nombre')->
+                                    orderBy('cp_transacciones.created_at', 'desc')->
+                                    where('cp_transacciones.estado','=','ACTIVO')->
                                     get();
 
         foreach ($facturas as $key => $value) {
-            $detalle = cpTransaccionesDetalles::join('nodepartamentos','nodepartamentos.id','=','co_transacciones_detalles.departamento')->
-                                        select('co_transacciones_detalles.*','nodepartamentos.titulo as departamento_descripcion')->
-                                        where([['.co_transacciones_detalles.estado','=','activo'],
-                                                ['co_transacciones_detalles.num_doc','=',$value->num_doc]])->
+            $detalle = cpTransaccionesDetalles::join('nodepartamentos','nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
+                                        select('cp_transacciones_detalles.*','nodepartamentos.titulo as departamento_descripcion')->
+                                        where([['.cp_transacciones_detalles.estado','=','activo'],
+                                                ['cp_transacciones_detalles.num_doc','=',$value->num_doc]])->
+                                        get();
+            $value->detalle_factura = $detalle;
+        }
+        return $this->successResponse($facturas);
+    }
+
+    public function facturasPendientes()
+    {
+        $facturas = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
+                                    join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
+                                    select('cp_transacciones.num_doc','cp_transacciones.valor','cp_transacciones.monto_itbi','cp_transacciones.tipo_doc',
+                                           'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
+                                           'proveedores.nom_sp as proveedor_nombre',
+                                           DB::Raw('SUM(cp_transacciones.valor) as deuda'))->
+                                    groupby('cp_transacciones.num_doc','cp_transacciones.valor','cp_transacciones.monto_itbi','cp_transacciones.tipo_doc',
+                                            'tipo_monedas.descripcion','tipo_monedas.simbolo','tipo_monedas.divisa',
+                                            'proveedores.nom_sp')->
+                                    where([['cp_transacciones.estado','=','ACTIVO'],['cp_transacciones.tipo_doc','=','FT']])->
+                                    having('deuda', '>', 0)->
+                                    get();
+        
+        foreach ($facturas as $key => $value) {
+            $detalle = cpTransaccionesDetalles::join('nodepartamentos','nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
+                                        select('cp_transacciones_detalles.*','nodepartamentos.titulo as departamento_descripcion')->
+                                        where([['.cp_transacciones_detalles.estado','=','activo'],
+                                                ['cp_transacciones_detalles.num_doc','=',$value->num_doc]])->
                                         get();
             $value->detalle_factura = $detalle;
         }
@@ -217,25 +243,25 @@ class CpTransaccionesController extends Controller
     
     public function show($id)
     {
-        $factura = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','co_transacciones.moneda')->
-                                        join('proveedores',[['proveedores.cod_sp','=','co_transacciones.cod_sp'],
-                                                            ['proveedores.cod_sp_sec','=','co_transacciones.cod_sp_sec']])->
-                                        select('co_transacciones.*',
+        $factura = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
+                                        join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],
+                                                            ['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
+                                        select('cp_transacciones.*',
                                                'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
                                                'proveedores.nom_sp as proveedor_nombre')->
-                                        orderBy('co_transacciones.created_at', 'desc')->
-                                        where('co_transacciones.id','=',$id)->
+                                        orderBy('cp_transacciones.created_at', 'desc')->
+                                        where('cp_transacciones.id','=',$id)->
                                         first();
                                         
-        $detalle = cpTransaccionesDetalles::join('nodepartamentos','nodepartamentos.id','=','co_transacciones_detalles.departamento')->
-                                        join('cgcatalogo','cgcatalogo.cuenta_no','=','co_transacciones_detalles.cuenta_no')->
-                                        join('co_transacciones','co_transacciones.num_doc','=','co_transacciones_detalles.num_doc')->
-                                        select('co_transacciones_detalles.*',
+        $detalle = cpTransaccionesDetalles::join('nodepartamentos','nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
+                                        join('cgcatalogo','cgcatalogo.cuenta_no','=','cp_transacciones_detalles.cuenta_no')->
+                                        join('cp_transacciones','cp_transacciones.num_doc','=','cp_transacciones_detalles.num_doc')->
+                                        select('cp_transacciones_detalles.*',
                                                 'nodepartamentos.titulo as departamento_descripcion',
                                                 'cgcatalogo.descripcion','cgcatalogo.depto','cgcatalogo.catalogo','cgcatalogo.referencia',
                                                 'cgcatalogo.tipo_cuenta','cgcatalogo.retencion')->
-                                        where([['.co_transacciones_detalles.estado','=','activo'],
-                                                ['co_transacciones_detalles.num_doc','=',$factura->num_doc]])->
+                                        where([['.cp_transacciones_detalles.estado','=','activo'],
+                                                ['cp_transacciones_detalles.num_doc','=',$factura->num_doc]])->
                                         get();
         $factura->detalle_factura = $detalle;
         
@@ -319,10 +345,10 @@ class CpTransaccionesController extends Controller
                         
                         for ($i=0; $i < count($cuentas_no); $i++) {
 
-                            $coTransaccionesCxpDetalle = cpTransaccionesDetalles::where([['co_transacciones_detalles.num_doc','=',$num_doc],
+                            $coTransaccionesCxpDetalle = cpTransaccionesDetalles::where([['cp_transacciones_detalles.num_doc','=',$num_doc],
                                                                                            ['cuenta_no','=',$cuentas_no[$i]['cuenta_no']],
-                                                                                           ['co_transacciones_detalles.cod_sp','=',$cod_sp],
-                                                                                           ['co_transacciones_detalles.cod_sp_sec','=',$cod_sp_sec]])->
+                                                                                           ['cp_transacciones_detalles.cod_sp','=',$cod_sp],
+                                                                                           ['cp_transacciones_detalles.cod_sp_sec','=',$cod_sp_sec]])->
                                                                                     first();
                             
                             $datosd = array('fecha'           => $request->input('fecha_orig'),
@@ -390,14 +416,14 @@ class CpTransaccionesController extends Controller
     {
         try{
             DB::beginTransaction(); 
-                $facturas = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','co_transacciones.moneda')->
-                                                join('proveedores',[['proveedores.cod_sp','=','co_transacciones.cod_sp'],
-                                                                    ['proveedores.cod_sp_sec','=','co_transacciones.cod_sp_sec']])->
-                                                select('co_transacciones.*',
+                $facturas = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
+                                                join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],
+                                                                    ['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
+                                                select('cp_transacciones.*',
                                                     'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
                                                     'proveedores.nom_sp as proveedor_nombre')->
-                                                orderBy('co_transacciones.created_at', 'desc')->
-                                                where([['co_transacciones. id','=',$id],['co_transacciones.tipo_doc','!=','FT']])->
+                                                orderBy('cp_transacciones.created_at', 'desc')->
+                                                where([['cp_transacciones. id','=',$id],['cp_transacciones.tipo_doc','!=','FT']])->
                                                 get();
                 if (count($facturas) != 0) {
                     return $this->errorResponse(null, 'Esta transacción no puede ser eliminada porque ya tiene pagos realizados.');
@@ -412,14 +438,14 @@ class CpTransaccionesController extends Controller
                 $transaccionMaster->update(['estado' => 'eliminado']);
 
                 
-                $transaccionDetalle = cpTransaccionesDetalles::where([['co_transacciones_detalles.num_doc','=',$transaccionMaster->num_doc],
-                                                                        ['co_transacciones_detalles.cod_sp','=',$transaccionMaster->cod_sp],
-                                                                        ['co_transacciones_detalles.cod_sp_sec','=',$transaccionMaster->cod_sp_sec],
-                                                                        ['co_transacciones_detalles.estado','=', 'activo']])->
+                $transaccionDetalle = cpTransaccionesDetalles::where([['cp_transacciones_detalles.num_doc','=',$transaccionMaster->num_doc],
+                                                                        ['cp_transacciones_detalles.cod_sp','=',$transaccionMaster->cod_sp],
+                                                                        ['cp_transacciones_detalles.cod_sp_sec','=',$transaccionMaster->cod_sp_sec],
+                                                                        ['cp_transacciones_detalles.estado','=', 'activo']])->
                                                                 get();
                 
                 for ($i=0; $i < count($transaccionDetalle); $i++) {                   
-                    $transaccion = cpTransacciones::find($transaccionDetalle[$i]['id']);
+                    $transaccion = cpTransaccionesDetalles::find($transaccionDetalle[$i]['id']);
                     $transaccion->update(['estado' => 'eliminado']);
                 }
             DB::commit();
@@ -428,4 +454,26 @@ class CpTransaccionesController extends Controller
             return $this->errorResponse(null, $e->getMessage());
         }
     }
+
+    public function busqueda(Request $request){
+
+        $parametro = $request->get('factura');
+        // return response()->json($parametro);
+        $datos = cpTransacciones::where([['cp_transacciones.num_doc','=',$parametro],
+                                         ['cp_transacciones.tipo_doc','!=','FT'],
+                                         ['estado','=','ACTIVO']])->
+                                  get();      
+
+        if($datos == null){
+            return $this->errorResponse('No existe transacciones con esta condicion');
+        }
+        return $this->successResponse($datos);
+    }
 }
+
+
+// "SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as `moneda`, `tipo_monedas`.`simbolo`, `tipo_monedas`.`divisa`, `proveedores`.`n' at line 1 (SQL: select `cp_transacciones`.`num_doc`, `cp_transacciones`.`valor`, `cp_transacciones`.`monto_itbi`, `cp_transacciones`.`tipo_doc`, `tipo_monedas`.`descripcion` as `moneda`, `tipo_monedas`.`simbolo`, `tipo_monedas`.`divisa`, `proveedores`.`nom_sp` as `proveedor_nombre`, SUM(cp_transacciones.valor) as deuda from `cp_transacciones` 
+// inner join `tipo_monedas` on `tipo_monedas`.`id` = `cp_transacciones`.`moneda` 
+// inner join `proveedores` on (`proveedores`.`cod_sp` = `cp_transacciones`.`cod_sp` and `proveedores`.`cod_sp_sec` = `cp_transacciones`.`cod_sp_sec`) 
+// where (`cp_transacciones`.`estado` = ACTIVO and `cp_transacciones`.`tipo_doc` = FT) 
+// group by `cp_transacciones`.`num_doc`, `cp_transacciones`.`valor`, `cp_transacciones`.`monto_itbi`, `cp_transacciones`.`tipo_doc`, `tipo_monedas`.`descripcion` as `moneda`, `tipo_monedas`.`simbolo`, `tipo_monedas`.`divisa`, `proveedores`.`nom_sp` as `proveedor_nombre` having `deuda` > 0 order by `cp_transacciones`.`created_at` desc)"

@@ -54,7 +54,8 @@ class CcTransaccionesController extends ApiResponseController
 
         $deudores = cc_transacciones::select('cc_transacciones.cuenta_no','cc_transacciones.fecha_ven','cc_transacciones.aplica_a',
                                              'veclientes.nombre','veclientes.email','veclientes.celular','veclientes.telefono_casa',
-                                            DB::Raw('SUM(cc_transacciones.valor - cc_transacciones.monto_desc) as deuda'))->
+                                            DB::Raw('SUM(cc_transacciones.valor - cc_transacciones.monto_desc) as deuda')
+                                            )->
                                     join('veclientes',[['veclientes.tipo_cliente','=','cc_transacciones.tipo_cliente'],
                                                        ['veclientes.sec_cliente','=','cc_transacciones.sec_cliente']])->
                                     // wherebetween('cc_transacciones.fecha_ven',[$rango['desde'], $rango['hasta']])->  

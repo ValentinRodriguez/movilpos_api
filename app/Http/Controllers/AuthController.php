@@ -153,7 +153,7 @@ class AuthController extends Controller
 
             $empleados = noempleados::where('noempleados.email','=',$email)->first();
 
-            $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->get();
+            $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->first();
         }
 
         return response()->json([

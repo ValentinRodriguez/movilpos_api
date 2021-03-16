@@ -44,10 +44,10 @@ Route::group([
     Route::apiresource('/woocommerce', 'WooCommerceController');
 
     // FACTURAS PROVEEDORES
-    // Route::get('/reporte/transacciones-cxp/{id}', 'CpTransaccionesController@verReporte');
     Route::get('/autollenado/transacciones-cxp', 'CpTransaccionesController@autollenado');
+    Route::get('/busqueda/transacciones-cxp', 'CpTransaccionesController@busqueda');
+    Route::get('/facturas-pendientes/transacciones-cxp', 'CpTransaccionesController@facturasPendientes');
     Route::apiresource('/transacciones-cxp', 'CpTransaccionesController');
-
     
     // HOME
     Route::get('/autollenado/home', 'Home@autollenado');
@@ -233,7 +233,7 @@ Route::group([
     // Route::get('/busqueda/ordenescompras/{orden}', 'CoOrdenesMasterController@buscaOrdenCompra');
     Route::get('/autollenado/ordenescompras', 'CoOrdenesMasterController@autollenado');
     Route::post('/actualizarcompras/{id}', 'CoOrdenesMasterController@actualizar');
-   // Route::get('/reporte/orden-compras/{id}', 'CoOrdenesMasterController@verReporte')->name('verPDF');
+    Route::get('/reporte/orden-compras/{id}', 'CoOrdenesMasterController@verReporte')->name('verPDF');
     Route::get('/reporte/orden-comprash/{id}', 'CoOrdenesMasterController@verReporteH')->name('verPDFh');
     Route::apiresource('/ordenescompras', 'CoOrdenesMasterController');
 
