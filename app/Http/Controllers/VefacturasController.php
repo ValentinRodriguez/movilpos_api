@@ -47,8 +47,7 @@ class VefacturasController extends ApiResponseController
                 else{
                     $factura = $factura[0]['secuencia']+ 1;
                     secuenciaCobros::where('documento','=','FAC')->
-                                     update(['secuencia'=>$factura]);
-                                     
+                                     update(['secuencia'=>$factura]);                                     
                 }
                 
                 $datosm['factura'] = $factura;

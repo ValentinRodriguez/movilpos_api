@@ -35,7 +35,8 @@ class EmpresaController extends ApiResponseController
             "empresa_verde"       =>$request->input("empresa_verde"),
             "tipo_cuadre"         =>$request->input("tipo_cuadre"),
             "valuacion_inv"       =>$request->input("valuacion_inv"),
-            "estado"           =>$request->input("estado")
+            "usuario_creador"     =>$request->input("usuario_creador"),
+            "estado"              =>$request->input("estado")
        );
        
        $messages = [
@@ -55,6 +56,7 @@ class EmpresaController extends ApiResponseController
            "empresa_verde"      => 'required',
            "tipo_cuadre"        => 'required',
            "valuacion_inv"      => 'required',
+           "usuario_creador"    => 'required',
            "estado"             => 'required'
        ],$messages);
 

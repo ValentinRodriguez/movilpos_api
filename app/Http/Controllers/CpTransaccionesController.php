@@ -2,36 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Librerias\cpTransacciones;
+use App\Librerias\cpTransaccionesDetalles;
 use Illuminate\Http\Request;
-use App\Librerias\coTransacciones_cxp;
 use App\Librerias\proveedores;
 use App\Librerias\coCuentasProveedor;
 use App\Librerias\ve_CondicionesPago;
 use App\Librerias\tipoMonedas;
 use App\Librerias\cgTipoGastos;
-use App\Librerias\coTransaccionesDetalleCxp;
 use App\Librerias\Departamento;
 use App\Librerias\Empresa;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
 
-class CoTransaccionesCxpController extends ApiResponseController
+class CpTransaccionesController extends Controller
 {
     public function index()
     {
-        $facturas = coTransacciones_cxp::join('tipo_monedas','tipo_monedas.id','=','co_transacciones_cxp.moneda')->
-                                         join('proveedores',[['proveedores.cod_sp','=','co_transacciones_cxp.cod_sp'],['proveedores.cod_sp_sec','=','co_transacciones_cxp.cod_sp_sec']])->
-                                         select('co_transacciones_cxp.*','tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa','proveedores.nom_sp as proveedor_nombre')->
-                                         orderBy('co_transacciones_cxp.created_at', 'desc')->
-                                         where('co_transacciones_cxp.estado','=','ACTIVO')->
-                                         get();
+        $facturas = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','co_transacciones.moneda')->
+                                    join('proveedores',[['proveedores.cod_sp','=','co_transacciones.cod_sp'],['proveedores.cod_sp_sec','=','co_transacciones.cod_sp_sec']])->
+                                    select('co_transacciones.*','tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa','proveedores.nom_sp as proveedor_nombre')->
+                                    orderBy('co_transacciones.created_at', 'desc')->
+                                    where('co_transacciones.estado','=','ACTIVO')->
+                                    get();
 
         foreach ($facturas as $key => $value) {
-            $detalle = coTransaccionesDetalleCxp::join('nodepartamentos','nodepartamentos.id','=','co_transacciones_detalle_cxp.departamento')->
-                                                  select('co_transacciones_detalle_cxp.*','nodepartamentos.titulo as departamento_descripcion')->
-                                                  where([['.co_transacciones_detalle_cxp.estado','=','activo'],
-                                                         ['co_transacciones_detalle_cxp.num_doc','=',$value->num_doc]])->
-                                                  get();
+            $detalle = cpTransaccionesDetalles::join('nodepartamentos','nodepartamentos.id','=','co_transacciones_detalles.departamento')->
+                                        select('co_transacciones_detalles.*','nodepartamentos.titulo as departamento_descripcion')->
+                                        where([['.co_transacciones_detalles.estado','=','activo'],
+                                                ['co_transacciones_detalles.num_doc','=',$value->num_doc]])->
+                                        get();
             $value->detalle_factura = $detalle;
         }
         return $this->successResponse($facturas);
@@ -145,7 +145,7 @@ class CoTransaccionesCxpController extends ApiResponseController
             try{
                 DB::beginTransaction(); 
                     
-                    coTransacciones_cxp::create($datosm);
+                    cpTransacciones::create($datosm);
                     // return response()->json($datosm);
                     $cuentas_no = $request->cuentas_no;    
 
@@ -201,7 +201,7 @@ class CoTransaccionesCxpController extends ApiResponseController
                                 $errors = $validator->errors();
                             }                          
                             //return response()->json($datosd);              
-                            coTransaccionesDetalleCxp::create($datosd);                                                   
+                            cpTransaccionesDetalles::create($datosd);                                                   
                         }                        
                     }else{
                         return $this->errorResponse(null,'No hay cuentas agragadas a la transacción');
@@ -217,25 +217,25 @@ class CoTransaccionesCxpController extends ApiResponseController
     
     public function show($id)
     {
-        $factura = coTransacciones_cxp::join('tipo_monedas','tipo_monedas.id','=','co_transacciones_cxp.moneda')->
-                                        join('proveedores',[['proveedores.cod_sp','=','co_transacciones_cxp.cod_sp'],
-                                                            ['proveedores.cod_sp_sec','=','co_transacciones_cxp.cod_sp_sec']])->
-                                        select('co_transacciones_cxp.*',
+        $factura = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','co_transacciones.moneda')->
+                                        join('proveedores',[['proveedores.cod_sp','=','co_transacciones.cod_sp'],
+                                                            ['proveedores.cod_sp_sec','=','co_transacciones.cod_sp_sec']])->
+                                        select('co_transacciones.*',
                                                'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
                                                'proveedores.nom_sp as proveedor_nombre')->
-                                        orderBy('co_transacciones_cxp.created_at', 'desc')->
-                                        where('co_transacciones_cxp.id','=',$id)->
+                                        orderBy('co_transacciones.created_at', 'desc')->
+                                        where('co_transacciones.id','=',$id)->
                                         first();
                                         
-        $detalle = coTransaccionesDetalleCxp::join('nodepartamentos','nodepartamentos.id','=','co_transacciones_detalle_cxp.departamento')->
-                                        join('cgcatalogo','cgcatalogo.cuenta_no','=','co_transacciones_detalle_cxp.cuenta_no')->
-                                        join('co_transacciones_cxp','co_transacciones_cxp.num_doc','=','co_transacciones_detalle_cxp.num_doc')->
-                                        select('co_transacciones_detalle_cxp.*',
+        $detalle = cpTransaccionesDetalles::join('nodepartamentos','nodepartamentos.id','=','co_transacciones_detalles.departamento')->
+                                        join('cgcatalogo','cgcatalogo.cuenta_no','=','co_transacciones_detalles.cuenta_no')->
+                                        join('co_transacciones','co_transacciones.num_doc','=','co_transacciones_detalles.num_doc')->
+                                        select('co_transacciones_detalles.*',
                                                 'nodepartamentos.titulo as departamento_descripcion',
                                                 'cgcatalogo.descripcion','cgcatalogo.depto','cgcatalogo.catalogo','cgcatalogo.referencia',
                                                 'cgcatalogo.tipo_cuenta','cgcatalogo.retencion')->
-                                        where([['.co_transacciones_detalle_cxp.estado','=','activo'],
-                                                ['co_transacciones_detalle_cxp.num_doc','=',$factura->num_doc]])->
+                                        where([['.co_transacciones_detalles.estado','=','activo'],
+                                                ['co_transacciones_detalles.num_doc','=',$factura->num_doc]])->
                                         get();
         $factura->detalle_factura = $detalle;
         
@@ -244,7 +244,7 @@ class CoTransaccionesCxpController extends ApiResponseController
 
     public function update(Request $request, $id)
     {
-        $coTransaccionesCxp = coTransacciones_cxp::find($id);
+        $coTransaccionesCxp = cpTransacciones::find($id);
         
         $datosm =array('num_doc'         => $request->input('num_doc'),
                        'fecha_orig'      => $request->input('fecha_orig'),
@@ -319,10 +319,10 @@ class CoTransaccionesCxpController extends ApiResponseController
                         
                         for ($i=0; $i < count($cuentas_no); $i++) {
 
-                            $coTransaccionesCxpDetalle = coTransaccionesDetalleCxp::where([['co_transacciones_detalle_cxp.num_doc','=',$num_doc],
+                            $coTransaccionesCxpDetalle = cpTransaccionesDetalles::where([['co_transacciones_detalles.num_doc','=',$num_doc],
                                                                                            ['cuenta_no','=',$cuentas_no[$i]['cuenta_no']],
-                                                                                           ['co_transacciones_detalle_cxp.cod_sp','=',$cod_sp],
-                                                                                           ['co_transacciones_detalle_cxp.cod_sp_sec','=',$cod_sp_sec]])->
+                                                                                           ['co_transacciones_detalles.cod_sp','=',$cod_sp],
+                                                                                           ['co_transacciones_detalles.cod_sp_sec','=',$cod_sp_sec]])->
                                                                                     first();
                             
                             $datosd = array('fecha'           => $request->input('fecha_orig'),
@@ -390,20 +390,20 @@ class CoTransaccionesCxpController extends ApiResponseController
     {
         try{
             DB::beginTransaction(); 
-                $facturas = coTransacciones_cxp::join('tipo_monedas','tipo_monedas.id','=','co_transacciones_cxp.moneda')->
-                                                join('proveedores',[['proveedores.cod_sp','=','co_transacciones_cxp.cod_sp'],
-                                                                    ['proveedores.cod_sp_sec','=','co_transacciones_cxp.cod_sp_sec']])->
-                                                select('co_transacciones_cxp.*',
+                $facturas = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','co_transacciones.moneda')->
+                                                join('proveedores',[['proveedores.cod_sp','=','co_transacciones.cod_sp'],
+                                                                    ['proveedores.cod_sp_sec','=','co_transacciones.cod_sp_sec']])->
+                                                select('co_transacciones.*',
                                                     'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
                                                     'proveedores.nom_sp as proveedor_nombre')->
-                                                orderBy('co_transacciones_cxp.created_at', 'desc')->
-                                                where([['co_transacciones_cxp. id','=',$id],['co_transacciones_cxp.tipo_doc','!=','FT']])->
+                                                orderBy('co_transacciones.created_at', 'desc')->
+                                                where([['co_transacciones. id','=',$id],['co_transacciones.tipo_doc','!=','FT']])->
                                                 get();
                 if (count($facturas) != 0) {
                     return $this->errorResponse(null, 'Esta transacción no puede ser eliminada porque ya tiene pagos realizados.');
                 }
 
-                $transaccionMaster = coTransacciones_cxp::find($id);
+                $transaccionMaster = cpTransacciones::find($id);
 
                 if ($transaccionMaster == null){
                     return $this->errorResponse(null,"Registro no Existe");
@@ -412,14 +412,14 @@ class CoTransaccionesCxpController extends ApiResponseController
                 $transaccionMaster->update(['estado' => 'eliminado']);
 
                 
-                $transaccionDetalle = coTransaccionesDetalleCxp::where([['co_transacciones_detalle_cxp.num_doc','=',$transaccionMaster->num_doc],
-                                                                        ['co_transacciones_detalle_cxp.cod_sp','=',$transaccionMaster->cod_sp],
-                                                                        ['co_transacciones_detalle_cxp.cod_sp_sec','=',$transaccionMaster->cod_sp_sec],
-                                                                        ['co_transacciones_detalle_cxp.estado','=', 'activo']])->
+                $transaccionDetalle = cpTransaccionesDetalles::where([['co_transacciones_detalles.num_doc','=',$transaccionMaster->num_doc],
+                                                                        ['co_transacciones_detalles.cod_sp','=',$transaccionMaster->cod_sp],
+                                                                        ['co_transacciones_detalles.cod_sp_sec','=',$transaccionMaster->cod_sp_sec],
+                                                                        ['co_transacciones_detalles.estado','=', 'activo']])->
                                                                 get();
                 
                 for ($i=0; $i < count($transaccionDetalle); $i++) {                   
-                    $transaccion = coTransaccionesDetalleCxp::find($transaccionDetalle[$i]['id']);
+                    $transaccion = cpTransacciones::find($transaccionDetalle[$i]['id']);
                     $transaccion->update(['estado' => 'eliminado']);
                 }
             DB::commit();

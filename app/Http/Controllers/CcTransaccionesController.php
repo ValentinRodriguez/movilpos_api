@@ -67,7 +67,7 @@ class CcTransaccionesController extends ApiResponseController
         if (count($deudores) != 0) {
             Mail::to('vrodriguez@movilsoluciones.com.do')->send(new listaDeudoresMailable($deudores));
             // $SMS = new MensajeriaSMScontroller;
-            $WS = new  MensajeriaWScontroller;
+            // $WS = new  MensajeriaWScontroller;
 
             foreach ($deudores as $key => $value) {
                 Mail::to($value->email)->send(new pagosMailable($deudores));
