@@ -44,10 +44,11 @@ Route::group([
     Route::apiresource('/woocommerce', 'WooCommerceController');
 
     // FACTURAS PROVEEDORES
-    // Route::get('/reporte/transacciones-cxp/{id}', 'CoTransaccionesCxpController@verReporte');
-    Route::get('/autollenado/transacciones-cxp', 'CoTransaccionesCxpController@autollenado');
-    Route::apiresource('/transacciones-cxp', 'CoTransaccionesCxpController');
+    // Route::get('/reporte/transacciones-cxp/{id}', 'CpTransaccionesController@verReporte');
+    Route::get('/autollenado/transacciones-cxp', 'CpTransaccionesController@autollenado');
+    Route::apiresource('/transacciones-cxp', 'CpTransaccionesController');
 
+    
     // HOME
     Route::get('/autollenado/home', 'Home@autollenado');
 

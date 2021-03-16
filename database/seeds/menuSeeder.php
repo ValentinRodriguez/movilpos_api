@@ -50,7 +50,7 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 6,'status' => 1,'codigo' => 'comp3','nombre' => 'Gestión de requisiciones','descripcion' => 'menu de compras','url' => 'gestion-de-requisiciones','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 6,'status' => 1,'codigo' => 'comp4','nombre' => 'Gestión de puertos','descripcion' => 'menu de compras','url' => 'gestion-de-puertos','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 6,'status' => 1,'codigo' => 'comp5','nombre' => 'Gestión de direcciones de envío','descripcion' => 'menu de compras','url' => 'gestion-de-direcciones-envio','estado' => 'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 6,'status' => 1,'codigo' => 'comp7','nombre' => 'transacciones cuentas por cobrar','descripcion' => 'Modulo Compras','url' => 'gestion-transacciones-cpx','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 6,'status' => 1,'codigo' => 'comp7','nombre' => 'Facturas de proveedores','descripcion' => 'Modulo Compras','url' => 'gestion-factura-proveedores','estado' => 'ACTIVO'],
     
             //MODULO DE CONTABILIDAD GENERAL      
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp1','nombre' => 'gestión del catalogo cuentas','descripcion' => 'menu de contabilidad general','url' => 'gestion-catalogo-cuentas','estado' => 'ACTIVO'],

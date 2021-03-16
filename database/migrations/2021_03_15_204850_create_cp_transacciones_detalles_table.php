@@ -4,11 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCoTransaccionesDetalleCxpTable extends Migration
+class CreateCpTransaccionesDetallesTable extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
-        Schema::create('co_transacciones_detalle_cxp', function (Blueprint $table) {
+        Schema::create('cp_transacciones_detalles', function (Blueprint $table) {
             $table->id();
             $table->datetime('fecha');
             $table->smallInteger('cod_sp');
@@ -32,9 +37,14 @@ class CreateCoTransaccionesDetalleCxpTable extends Migration
             $table->timestamps();
         });
     }
-    
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
-        Schema::dropIfExists('co_cuentas_cxp');
+        Schema::dropIfExists('cp_transacciones_detalles');
     }
 }

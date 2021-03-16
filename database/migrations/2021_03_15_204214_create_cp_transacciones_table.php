@@ -4,11 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCoTransaccionesCxpTable extends Migration
+class CreateCpTransaccionesTable extends Migration
 {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
     public function up()
     {
-        Schema::create('co_transacciones_cxp', function (Blueprint $table) {
+        Schema::create('cp_transacciones', function (Blueprint $table) {
             $table->id();
             $table->string('num_doc',14);
             $table->date('fecha_orig');
@@ -40,9 +45,14 @@ class CreateCoTransaccionesCxpTable extends Migration
             $table->timestamps();
         });
     }
-    
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
-        Schema::dropIfExists('co_transacciones_cxp');
+        Schema::dropIfExists('cp_transacciones');
     }
 }
