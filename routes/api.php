@@ -87,6 +87,7 @@ Route::group([
 
     // TRANSACCIONES CUENTAS POR PAGAR
     Route::get('/autollenado/cgtransacciones', 'CgTransaccionesContablesController@autollenado');
+    Route::get('/secuencias/cgtransacciones', 'CgTransaccionesContablesController@secuencias');
     Route::apiresource('/cgtransacciones', 'CgTransaccionesContablesController');
 
     //MENSAJES SMS
