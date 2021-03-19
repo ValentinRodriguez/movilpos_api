@@ -58,7 +58,24 @@ class CpTransaccionesController extends ApiResponseController
                                         where([['.cp_transacciones_detalles.estado','=','activo'],
                                                 ['cp_transacciones_detalles.num_doc','=',$value->num_doc]])->
                                         get();
+
+            $pagado = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
+                                       join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
+                                       select('cp_transacciones.num_doc',
+                                              'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
+                                              'proveedores.nom_sp as proveedor_nombre',DB::Raw('SUM(cp_transacciones.valor) as valor'),
+                                              DB::Raw('SUM(cp_transacciones.monto_itbi) as itbi_pagado'))->
+                                       groupby('cp_transacciones.num_doc',
+                                              'tipo_monedas.descripcion','tipo_monedas.simbolo','tipo_monedas.divisa',
+                                              'proveedores.nom_sp')->
+                                       where([['cp_transacciones.estado','=','ACTIVO'],['cp_transacciones.tipo_doc','!=','FT'],['cp_transacciones.num_doc','=',$value->num_doc]])->
+                                       // having('pagado', '>', 0)->
+                                       first();     
+
+            // return response()->json($pagado);
+            
             $value->detalle_factura = $detalle;
+            $value->pagado = isset($pagado->valor) ? $pagado->valor : 0;
         }
         return $this->successResponse($facturas);
     }

@@ -15,7 +15,8 @@ class CreateCgTipoDocumentosTable extends Migration
     {
         Schema::create('cg_tipo_documentos', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion');
+            $table->string('descripcion',30);
+            $table->string('ref',3);
             $table->timestamps();
         });
     }

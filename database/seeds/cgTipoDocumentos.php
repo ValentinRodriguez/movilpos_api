@@ -7,9 +7,9 @@ class cgTipoDocumentos extends Seeder
 {
     public function run()
     {
-        $cheque = array('descripcion' => 'CHEQUE' );
-        $transferencia = array('descripcion' => 'TRANSAFERENCIA' );
-        $chequePrepagado = array('descripcion' => 'CHEQUE PREPAGADO' );
+        $cheque = array('descripcion' => 'CHEQUE','ref' => 'CK' );
+        $transferencia = array('descripcion' => 'TRANSAFERENCIA','ref' => 'TR' );
+        $chequePrepagado = array('descripcion' => 'CHEQUE PREPAGADO','ref' => 'CKP' );
 
         cgTipoDocumento::create($cheque);
         cgTipoDocumento::create($chequePrepagado);

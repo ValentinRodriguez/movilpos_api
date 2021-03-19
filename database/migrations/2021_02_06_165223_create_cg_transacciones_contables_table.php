@@ -11,14 +11,14 @@ class CreateCgTransaccionesContablesTable extends Migration
         Schema::create('cg_transacciones_contables', function (Blueprint $table) {
             $table->id();
             $table->datetime('fecha')->nullable();
-            $table->smallInteger('tipo')->nullable();
+            $table->string('tipo_doc',5)->nullable();
             $table->string('ref',14);
-            $table->string('cuenta_no',8)->nullable();
+            $table->string('cuenta_no',20)->nullable();
             $table->smallInteger('departamento')->nullable();
             $table->string('num_doc',12)->nullable();
-            $table->smallInteger('cod_aux')->nullable();
+            $table->string('cod_aux',30)->nullable();
             $table->smallInteger('cod_sec')->nullable();
-            $table->string('detalles',30)->nullable();
+            $table->string('cuenta_banco',30)->nullable();
             $table->string('detalle_1',100)->nullable();
             $table->string('detalle_2',40)->nullable();
             $table->float('debito')->nullable();
