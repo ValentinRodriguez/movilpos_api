@@ -21,10 +21,6 @@
     
         <div class="clearfix"></div>
         
-        <section id="invoice-info">
-          @yield('invoice-info')
-        </section>
-    
         <section id="invoice-info2">
           @yield('invoice-info2')
         </section>
