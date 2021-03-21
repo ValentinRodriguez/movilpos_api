@@ -16,7 +16,7 @@ Route::get('/reporte/analisis-cxp', 'CpAnalisisSaldoPendienteController@reporte'
 // });
 
 Route::group([
-    'middleware' => ['jwt.auth','isLogged']
+    'middleware' => ['jwt.auth']
 ], function ($router) {   
     Route::post('usuario-logado', 'AuthController@getAuthUser');
     Route::post('desactivar', 'AuthController@unLockLogin');
@@ -78,18 +78,17 @@ Route::group([
     Route::get('/roles/usuario/{usuario}/{email}', 'RolController@rolUsuario');
     Route::apiresource('/roles', 'RolController');
 
-
-
     // REQUISICIONES
     Route::apiresource('/requisiciones', 'RequisicionesMasterController');
 
-    // TRANSACCIONES CUENTAS POR PAGAS
+    // TRANSACCIONES CUENTAS POR COBRAR
     Route::get('/deudores/cctransacciones', 'CcTransaccionesController@avisoPagos');
     Route::apiresource('/cctransacciones', 'CcTransaccionesController');
 
-    // TRANSACCIONES CUENTAS POR PAGAS
-    Route::get('/autollenado/cctransacciones', 'CgTransaccionesContablesController@autollenado');
-    Route::apiresource('/cctransacciones', 'CgTransaccionesContablesController');
+    // TRANSACCIONES CUENTAS POR PAGAR
+    Route::get('/autollenado/cgtransacciones', 'CgTransaccionesContablesController@autollenado');
+    Route::get('/secuencias/cgtransacciones', 'CgTransaccionesContablesController@secuencias');
+    Route::apiresource('/cgtransacciones', 'CgTransaccionesContablesController');
 
     //MENSAJES SMS
     Route::get('/sms/deudores-cctransacciones', 'MensajeriaSMScontroller@send');

@@ -23,8 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(propiedadesSeeder::class);
         $this->call(departamentoSeeder::class);        
         $this->call(empleadosSeeder::class);  
-        $this->call(UsuarioSeeder::class);
-        $this->call(TransContablesSeeder::class);        
+        $this->call(UsuarioSeeder::class);      
         $this->call(zonasSeeder::class); 
         $this->call(PerfilesSeeder::class); 
         $this->call(tipoGastosSeeder::class); 

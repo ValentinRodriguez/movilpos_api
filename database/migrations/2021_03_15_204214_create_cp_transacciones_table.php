@@ -17,7 +17,7 @@ class CreateCpTransaccionesTable extends Migration
             $table->id();
             $table->string('num_doc',14);
             $table->date('fecha_orig');
-            $table->date('fecha_proc'); 
+            $table->date('fecha_proc');
             $table->float('valor'); 
             $table->integer('cond_pago');
             $table->integer('orden_no')->nullable();
@@ -38,7 +38,7 @@ class CreateCpTransaccionesTable extends Migration
             $table->string('aplica_a',10); 
             $table->string('cta_ctble',10)->nullable(); 
             $table->smallInteger('tipo_fact')->nullable();
-            $table->smallInteger('codigo_fiscal');
+            $table->smallInteger('codigo_fiscal')->nullable();
             $table->string('estado',20);
             $table->string('usuario_creador',50);
             $table->string('usuario_modificador',50)->nullable(); 

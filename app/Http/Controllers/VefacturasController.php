@@ -33,10 +33,10 @@ class VefacturasController extends ApiResponseController
                 $productos = $request->get('productos');
                 $datosm    = $request->all();            
                 
-                $factura = secuenciaCobros::where('documento','=','FAC')->get();
+                $factura = secuenciaCobros::where('documento','=','FC')->get();
                 
                 if(count($factura) == 0){                                      
-                    $data = ['documento' => 'FAC',
+                    $data = ['documento' => 'FC',
                              'secuencia' => 1,
                              'usuario_creador' => $datosm['usuario_creador']
                     ];
@@ -46,8 +46,7 @@ class VefacturasController extends ApiResponseController
                 }
                 else{
                     $factura = $factura[0]['secuencia']+ 1;
-                    secuenciaCobros::where('documento','=','FAC')->
-                                     update(['secuencia'=>$factura]);                                     
+                    secuenciaCobros::where('documento','=','FC')->update(['secuencia'=>$factura]);                                     
                 }
                 
                 $datosm['factura'] = $factura;
