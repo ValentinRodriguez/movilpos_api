@@ -29,5 +29,6 @@ class DatabaseSeeder extends Seeder
         $this->call(tipoGastosSeeder::class); 
         $this->call(tipoordenseeders::class);    
         $this->call(cgTipoDocumentos::class); 
+        $this->call(veCondPagosSeeder::class);
     }
 }

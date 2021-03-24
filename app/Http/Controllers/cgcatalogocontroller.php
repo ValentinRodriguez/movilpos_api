@@ -11,7 +11,8 @@ class cgcatalogocontroller extends ApiResponseController
 {
     public function index() {
         $catalogo = cgcatalogo::orderBy('nivel','asc')->
-                                where('estado','=','ACTIVO')->
+                                where('estado','=','ACTIVO')->                                
+                                select('cgcatalogo.*',DB::raw("CONCAT(cgcatalogo.cuenta_no,'-',cgcatalogo.descripcion) AS descripcion_c"))->
                                 get();
 
         if ($catalogo == null){
@@ -24,6 +25,7 @@ class cgcatalogocontroller extends ApiResponseController
     {
         $tipoProveedor = cgcatalogo::orderBy('id', 'asc')->
                                      where([['nivel','=',3],['estado','=','ACTIVO']])->
+                                     select('cgcatalogo.*',DB::raw("CONCAT(cgcatalogo.cuenta_no,'-',cgcatalogo.descripcion) AS descripcion_c"))->
                                      get();
         
         return $this->successResponse($tipoProveedor);

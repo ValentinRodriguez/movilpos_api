@@ -137,6 +137,7 @@ class CpTransaccionesController extends ApiResponseController
                        'valor_orden'     => $request->input('valor_orden'),
                        'valor_recibido'  => $request->input('valor_recibido'),
                        'tipo_doc'        => $request->input('tipo_doc'),
+                       'cuotas'          => $request->input('cuotas'),
                        'cod_sp'          => $request->input('cod_sp'),
                        'cod_sp_sec'      => $request->input('cod_sp_sec'),
                        'moneda'          => $request->input('moneda'),
@@ -187,9 +188,22 @@ class CpTransaccionesController extends ApiResponseController
         }else{
             try{
                 DB::beginTransaction(); 
-                    
-                    cpTransacciones::create($datosm);
-                    // return response()->json($datosm);
+                    if (isset($datosm['cuotas'])) {        
+                        $datosm['valor'] = $datosm['valor'] / $datosm['cuotas'];
+                        $datosm['monto_itbi'] = $datosm['monto_itbi'] / $datosm['cuotas'];
+                        
+                        for ($i=0; $i < $datosm['cuotas']; $i++) {                          
+                            $fecha = date_create($datosm['fecha_orig']);
+                            $mes = $i + 1;
+                            date_add($fecha, date_interval_create_from_date_string($mes." months"));
+                            $datosm['fecha_proc'] = date_format($fecha,"Y-m-d");
+                            $datosm['aplica_a'] = $datosm['num_doc'].'-'.$mes.'/'.$datosm['cuotas'];
+                            cpTransacciones::create($datosm);
+                        }
+                    } else {
+                        cpTransacciones::create($datosm);
+                    }
+
                     $cuentas_no = $request->cuentas_no;    
 
                     if ($request->cuentas_no !== 0) {
@@ -215,7 +229,7 @@ class CpTransaccionesController extends ApiResponseController
                                             'usuario_creador' => $request->input('usuario_creador'),
                                             'estado'          =>'activo',
                             );
-                            // return response()->json($datosd);
+                            
                             $messages = [
                                 'required' => 'El campo :attribute es requerido.',
                                 'unique'   => 'El campo :attribute debe ser unico',
@@ -487,10 +501,3 @@ class CpTransaccionesController extends ApiResponseController
         return $this->successResponse($datos);
     }
 }
-
-
-// "SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as `moneda`, `tipo_monedas`.`simbolo`, `tipo_monedas`.`divisa`, `proveedores`.`n' at line 1 (SQL: select `cp_transacciones`.`num_doc`, `cp_transacciones`.`valor`, `cp_transacciones`.`monto_itbi`, `cp_transacciones`.`tipo_doc`, `tipo_monedas`.`descripcion` as `moneda`, `tipo_monedas`.`simbolo`, `tipo_monedas`.`divisa`, `proveedores`.`nom_sp` as `proveedor_nombre`, SUM(cp_transacciones.valor) as deuda from `cp_transacciones` 
-// inner join `tipo_monedas` on `tipo_monedas`.`id` = `cp_transacciones`.`moneda` 
-// inner join `proveedores` on (`proveedores`.`cod_sp` = `cp_transacciones`.`cod_sp` and `proveedores`.`cod_sp_sec` = `cp_transacciones`.`cod_sp_sec`) 
-// where (`cp_transacciones`.`estado` = ACTIVO and `cp_transacciones`.`tipo_doc` = FT) 
-// group by `cp_transacciones`.`num_doc`, `cp_transacciones`.`valor`, `cp_transacciones`.`monto_itbi`, `cp_transacciones`.`tipo_doc`, `tipo_monedas`.`descripcion` as `moneda`, `tipo_monedas`.`simbolo`, `tipo_monedas`.`divisa`, `proveedores`.`nom_sp` as `proveedor_nombre` having `deuda` > 0 order by `cp_transacciones`.`created_at` desc)"

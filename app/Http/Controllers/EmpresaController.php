@@ -17,8 +17,6 @@ class EmpresaController extends ApiResponseController
     
     public function store(Request $request)
     {
-       
-
         $datos = array(
             "nombre"              =>$request->input("nombre"),
             "telefono_empresa"    =>$request->input("telefono_empresa"),
@@ -126,7 +124,8 @@ class EmpresaController extends ApiResponseController
             "logo"                =>$request->input("logo"),
             "empresa_verde"       =>$request->input("empresa_verde"),
             "tipo_cuadre"         =>$request->input("tipo_cuadre"),
-            "valuacion_inv"       =>$request->input("valuacion_inv")
+            "valuacion_inv"       =>$request->input("valuacion_inv"),
+            "usuario_modificador" =>$request->input("usuario_modificador")
        );
        
        $messages = [
@@ -136,16 +135,17 @@ class EmpresaController extends ApiResponseController
        ];
 
        $validator = validator($datos, [
-           "nombre"             => 'required|string',
-           "telefono_empresa"   => 'required|string',
-           "email_empresa"      => 'required|string',
-           "rnc"                => 'required|string',
-           "direccion"          => 'required|string',  
-           "contacto"           => 'required|string',   
-           "telefono_contacto"  => 'required|string',
-           "empresa_verde"      => 'required',
-           "tipo_cuadre"        => 'required',
-           "valuacion_inv"      => 'required',
+           "nombre"              => 'required|string',
+           "telefono_empresa"    => 'required|string',
+           "email_empresa"       => 'required|string',
+           "rnc"                 => 'required|string',
+           "direccion"           => 'required|string',  
+           "contacto"            => 'required|string',   
+           "telefono_contacto"   => 'required|string',
+           "empresa_verde"       => 'required',
+           "tipo_cuadre"         => 'required',
+           "valuacion_inv"       => 'required',
+           "usuario_modificador" => 'required',
        ],$messages);
 
        if ($validator->fails()) {
