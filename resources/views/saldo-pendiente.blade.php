@@ -6,12 +6,10 @@
 
 @section('company-info')
    <div style="font-size: 14px;"> 
-    <strong>{{strtoupper($entrada[0]->empresa->nombre)}}</strong>
+    <strong></strong>
   </div>
-  <div ><strong>Sistema De Contabilidad</strong></div>
-  <div ><strong>Entradas de Diario</strong></div>
-  <div ><strong>{{$entrada[0]->fecha}}</strong></div>
-  <div ><strong>MONEDA {{$entrada[0]->empresa[0]->moneda}}</strong></div>
+  <div ><strong>Cuentas Por Pagar</strong></div>
+  <div ><strong>Saldo Pendiente</strong></div>
   
 @endsection
 
@@ -20,14 +18,6 @@
  
 @endsection
 
-@section('invoice-info')
-  <div><strong>No. entrada {{$entrada[0]->ref}}</strong></div>
-  <div>
-      <span>DETALLE:</span> <span>{{ucwords($entrada[0]->detalle_1)}}</span>
-    </div>
-  </div>
-
-@endsection
 
 @section('items')
   <table cellpadding="0" cellspacing="0">  
@@ -43,14 +33,19 @@
     </thead>          
     <tbody>
     
-      @foreach ($entrada as $data) 
+      @foreach ($data as $data1) 
         <tr data-iterate="item">
           <td colspan="3"></td>
-          <td>{{$data->cuenta_no}}</td>
-          <td>{{$data->departamento}}</td>
-          <td></td>
-          <td>{{$data->debito}}</td>
-          <td>{{$data->credito}}</td>
+          <td>{{$data1->nom_sp}}</td>
+          @if ($data1->fecha) < 30)
+          <td>{{$data1->dia30}}</td>
+          @endif
+         
+         
+          <td>{{$data1->dia31a60}}</td>
+          <td>{{$data1->dia61a90}}</td>
+          <td>{{$data1->dia91a120}}</td>
+          <td>{{$data1->mas120}}</td>
         </tr>
       @endforeach
     </tbody>    
@@ -61,8 +56,8 @@
   <div style="float: right;">
 
     <div>
-      <span>{{$entrada[0]->tdebito}}</span>
-      <span>{{$entrada[0]->tcredito}}</span>
+      <span></span>
+      <span></span>
     </div>
   </div>
 @endsection

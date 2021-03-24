@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Librerias\cpAnalisisSaldoPendiente;
+use App\Librerias\Empresa;
 use Illuminate\Http\Request;
 use PDF;
 use DateTime;
@@ -92,9 +93,13 @@ class CpAnalisisSaldoPendienteController extends ApiResponseController
     public function reporte(request $request){
         
         $dia30=0;
-        $dia31a45=0;
+        $dia31a60=0;
+        $dia61a90=0;
+        $dia91a120=0;
+        $mas120=0;
 
         $data=array();
+     
         $fechainicial  =$request->get('fechainicial');
            
         $date = Carbon::parse($fechainicial);
@@ -110,30 +115,48 @@ class CpAnalisisSaldoPendienteController extends ApiResponseController
        
        // return response()->json($date);
         $cxp = cpAnalisisSaldoPendiente::    
-        where('a.fecha_orig','<=',$date)->
-        select('a.cod_sp','a.cod_sp_sec')->
-        groupby('a.cod_sp','a.cod_sp_sec')->
-        get();   
-  
-        for ($i=0; $i < count($cxp) ; $i++) {
-
-            $cxp1 = cpAnalisisSaldoPendiente::    
-            where([['a.fecha_orig','<=',$date],['a.cod_sp_sec','=',$cxp[$i]['cod_sp_sec']],
-            ['a.cod_sp','=',$cxp[$i]['cod_sp']]])->
-            select( 'a.cod_sp','a.cod_sp_sec',DB::raw('sum(a.valor) as valor'))->
-            groupby('a.cod_sp','a.cod_sp_sec')->
-            get(); 
-
-           array_push($data,$cxp1);
-        }
-        return response()->json($data);
-       // return response()->json($cxp1);
-        $fecha1 =$date->diffInDays($cxp[0]->fecha_orig);  
-        
+         where('a.fecha_orig','<=',$date)->
+         select('a.cod_sp','a.cod_sp_sec')->
+         groupby('a.cod_sp','a.cod_sp_sec')->
+         get();   
+         
     
+        
+         
+        
+        for ($i=0; $i < count($cxp) ; $i++) {
+            
+        
+            $cxp1 = cpAnalisisSaldoPendiente:: 
+            where([['a.fecha_orig','<=',$date],['a.cod_sp_sec','=',$cxp[$i]['cod_sp_sec']],
+                  ['a.cod_sp','=',$cxp[$i]['cod_sp']]])->
+            join('proveedores',function($join){
+                $join->on('a.cod_sp','=','proveedores.cod_sp')->
+                where('a.cod_sp_sec','=','1' );})-> 
+            select( 'proveedores.nom_sp',DB::raw('sum(a.valor) as valor'))->
+            groupby('proveedores.nom_sp')->
+            get(); 
+           
+           array_push($data,$cxp1);
+           
+         
+   
+        }
+        $empresa = Empresa::orderBy('created_at', 'desc')->first();
+     
+      #  $fecha1=$date->diffInDays($data[0]['fecha_orig']);
+        
+        foreach ($data as $key => $value) {
+            $value->empresa=$empresa;
+            //$value->fecha=$fecha1;
+            
+          
+         
+        }
+       
 
-        return response()->json($cxp1);
-        $pdf = PDF::loadView('cxp1', compact('cxp1'));
+          return response()->json($data);
+        $pdf = PDF::loadView('saldo-pendiente', compact('data'));
         return $pdf->stream('analisis-pendiente-pagoCxp.pdf');
     }
 }
