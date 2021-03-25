@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use phpDocumentor\Reflection\Types\Nullable;
+use Illuminate\Support\Facades\DB;
 
 class CreatePaisesTable extends Migration
 {
@@ -35,6 +35,8 @@ class CreatePaisesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('paises');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');        
+            Schema::dropIfExists('paises');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
