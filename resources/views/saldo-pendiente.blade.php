@@ -24,28 +24,30 @@
     <thead>
       <tr>
         <th colspan="3"></th>
-        <th>Cuenta No.</th>
-        <th>Departamento</th>
-        <th>Ref</th>
-        <th>Debe</th>
-        <th>Haber</th>
+        <th>Suplidor</th>
+        <th>De 1 a 30</th>
+        <th>De 31 a 60</th>
+        <th>De 61 a 90</th>
+        <th>De 91 a 120</th>
+        <th>Mas de 120</th>
+        <th>Total</th>
       </tr>
     </thead>          
     <tbody>
     
-      @foreach ($data as $data1) 
+     @foreach ($cxp as $data1) 
         <tr data-iterate="item">
           <td colspan="3"></td>
           <td>{{$data1->nom_sp}}</td>
-          @if ($data1->fecha) < 30)
-          <td>{{$data1->dia30}}</td>
+        <!--   @if ($data1->fecha) < 30)
+          <td>{{$data1->valor}}</td>
           @endif
          
          
           <td>{{$data1->dia31a60}}</td>
           <td>{{$data1->dia61a90}}</td>
           <td>{{$data1->dia91a120}}</td>
-          <td>{{$data1->mas120}}</td>
+          <td>{{$data1->mas120}}</td>-->
         </tr>
       @endforeach
     </tbody>    
