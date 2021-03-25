@@ -16,7 +16,7 @@ class MonedasSeeder extends Seeder
         );
 
         $dolares = array('divisa' => 'EUR',
-                         'simbolo'=> '$',
+                         'simbolo'=> '€',
                          'descripcion' => 'dolar',
                          'estado' => 'activo', 
                          'usuario_creador'=> 'movilsoluciones',
@@ -24,7 +24,7 @@ class MonedasSeeder extends Seeder
         );
 
         $euros = array( 'divisa' => 'USD',
-                        'simbolo'=> '€',
+                        'simbolo'=> '$',
                         'descripcion' => 'euro',
                         'estado' => 'activo', 
                         'usuario_creador'=> 'movilsoluciones',

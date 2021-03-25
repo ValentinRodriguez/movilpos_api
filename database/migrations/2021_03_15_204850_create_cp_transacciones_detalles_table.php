@@ -21,7 +21,7 @@ class CreateCpTransaccionesDetallesTable extends Migration
             $table->string('factura',14);
             $table->string('tipo_doc',2);
             $table->string('cuenta_no',8);
-            $table->smallInteger('departamento');
+            $table->smallInteger('departamento')->nullable();
             $table->string('num_doc',12);
             $table->smallInteger('cod_aux')->nullable(); 
             $table->smallInteger('cod_sec')->nullable(); 

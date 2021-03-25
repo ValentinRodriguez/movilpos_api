@@ -152,10 +152,11 @@ class CpTransaccionesController extends ApiResponseController
                        'cta_ctble'       => $request->input('cta_ctble'),
                        'tipo_fact'       => $request->input('tipo_fact'),
                        'codigo_fiscal'   => $request->input('codigo_fiscal'),
+                       'itbis'           => $request->input('itbis'),
                        'estado'          => $request->input('estado'),
                        'usuario_creador' => $request->input('usuario_creador'),
         );
-        
+        // return response()->json($datosm);
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
@@ -170,7 +171,8 @@ class CpTransaccionesController extends ApiResponseController
             'fecha_proc'    => 'required',
             'valor'         => 'required',
             'cond_pago'     => 'required',
-            'monto_itbi'    => 'required',            
+            'monto_itbi'    => 'required', 
+            'itbis'         => 'required',           
             'tipo_doc'      => 'required',
             'cod_sp'        => 'required',
             'cod_sp_sec'    => 'required',
@@ -191,6 +193,9 @@ class CpTransaccionesController extends ApiResponseController
                     if (isset($datosm['cuotas'])) {        
                         $datosm['valor'] = $datosm['valor'] / $datosm['cuotas'];
                         $datosm['monto_itbi'] = $datosm['monto_itbi'] / $datosm['cuotas'];
+                        $datosm['bienes'] = $datosm['bienes'] / $datosm['cuotas'];
+                        $datosm['servicios'] = $datosm['servicios'] / $datosm['cuotas'];
+                        $datosm['retencion'] = $datosm['retencion'] / $datosm['cuotas'];
                         
                         for ($i=0; $i < $datosm['cuotas']; $i++) {                          
                             $fecha = date_create($datosm['fecha_orig']);
@@ -203,7 +208,7 @@ class CpTransaccionesController extends ApiResponseController
                     } else {
                         cpTransacciones::create($datosm);
                     }
-
+                    
                     $cuentas_no = $request->cuentas_no;    
 
                     if ($request->cuentas_no !== 0) {
@@ -216,7 +221,7 @@ class CpTransaccionesController extends ApiResponseController
                                             'factura'         => $request->input('num_doc'),
                                             'tipo_doc'        => $request->input('tipo_doc'),
                                             'cuenta_no'       => $cuentas_no[$i]['cuenta_no'],
-                                            'departamento'    => $cuentas_no[$i]['departamento']['id'],
+                                            'departamento'    => isset($cuentas_no[$i]['departamento']['id']) ? $cuentas_no[$i]['departamento']['id'] : NULL,
                                             'num_doc'         => $request->input('num_doc'),
                                             'porciento'       => $cuentas_no[$i]['porciento'],
                                             // 'cod_aux'         => $request->input('cod_aux'),
@@ -229,7 +234,7 @@ class CpTransaccionesController extends ApiResponseController
                                             'usuario_creador' => $request->input('usuario_creador'),
                                             'estado'          =>'activo',
                             );
-                            
+                            // return response()->json($datosm); 
                             $messages = [
                                 'required' => 'El campo :attribute es requerido.',
                                 'unique'   => 'El campo :attribute debe ser unico',
