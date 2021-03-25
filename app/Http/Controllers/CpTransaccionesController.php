@@ -27,11 +27,11 @@ class CpTransaccionesController extends ApiResponseController
                                     get();
 
         foreach ($facturas as $key => $value) {
-            $detalle = cpTransaccionesDetalles::join('nodepartamentos','nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
-                                        select('cp_transacciones_detalles.*','nodepartamentos.titulo as departamento_descripcion')->
-                                        where([['.cp_transacciones_detalles.estado','=','activo'],
-                                                ['cp_transacciones_detalles.num_doc','=',$value->num_doc]])->
-                                        get();
+            $detalle = cpTransaccionesDetalles::leftjoin('nodepartamentos','cp_transacciones_detalles.departamento','=','nodepartamentos.id')->
+                                                select('cp_transacciones_detalles.*','nodepartamentos.titulo as departamento_descripcion')->
+                                                where([['.cp_transacciones_detalles.estado','=','activo'],
+                                                        ['cp_transacciones_detalles.num_doc','=',$value->num_doc]])->
+                                                get();
             $value->detalle_factura = $detalle;
         }
         return $this->successResponse($facturas);
@@ -280,25 +280,25 @@ class CpTransaccionesController extends ApiResponseController
     public function show($id)
     {
         $factura = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
-                                        join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],
-                                                            ['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
-                                        select('cp_transacciones.*',
-                                               'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
-                                               'proveedores.nom_sp as proveedor_nombre')->
-                                        orderBy('cp_transacciones.created_at', 'desc')->
-                                        where('cp_transacciones.id','=',$id)->
-                                        first();
+                                    join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],
+                                                        ['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
+                                    select('cp_transacciones.*',
+                                            'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
+                                            'proveedores.nom_sp as proveedor_nombre')->
+                                    orderBy('cp_transacciones.created_at', 'desc')->
+                                    where('cp_transacciones.id','=',$id)->
+                                    first();
                                         
-        $detalle = cpTransaccionesDetalles::join('nodepartamentos','nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
-                                        join('cgcatalogo','cgcatalogo.cuenta_no','=','cp_transacciones_detalles.cuenta_no')->
-                                        join('cp_transacciones','cp_transacciones.num_doc','=','cp_transacciones_detalles.num_doc')->
-                                        select('cp_transacciones_detalles.*',
-                                                'nodepartamentos.titulo as departamento_descripcion',
-                                                'cgcatalogo.descripcion','cgcatalogo.depto','cgcatalogo.catalogo','cgcatalogo.referencia',
-                                                'cgcatalogo.tipo_cuenta','cgcatalogo.retencion')->
-                                        where([['.cp_transacciones_detalles.estado','=','activo'],
-                                                ['cp_transacciones_detalles.num_doc','=',$factura->num_doc]])->
-                                        get();
+        $detalle = cpTransaccionesDetalles::leftjoin('nodepartamentos','cp_transacciones_detalles.departamento','=','nodepartamentos.id')->
+                                            join('cgcatalogo','cgcatalogo.cuenta_no','=','cp_transacciones_detalles.cuenta_no')->
+                                            join('cp_transacciones','cp_transacciones.num_doc','=','cp_transacciones_detalles.num_doc')->
+                                            select('cp_transacciones_detalles.*',
+                                                    'nodepartamentos.titulo as departamento_descripcion',
+                                                    'cgcatalogo.descripcion','cgcatalogo.depto','cgcatalogo.catalogo','cgcatalogo.referencia',
+                                                    'cgcatalogo.tipo_cuenta','cgcatalogo.retencion')->
+                                            where([['.cp_transacciones_detalles.estado','=','activo'],
+                                                    ['cp_transacciones_detalles.num_doc','=',$factura->num_doc]])->
+                                            get();
         $factura->detalle_factura = $detalle;
         
         return $this->successResponse($factura);
@@ -393,7 +393,7 @@ class CpTransaccionesController extends ApiResponseController
                                             'factura'         => $request->input('num_doc'),
                                             'tipo_doc'        => $request->input('tipo_doc'),
                                             'cuenta_no'       => $cuentas_no[$i]['cuenta_no'],
-                                            'departamento'    => $cuentas_no[$i]['departamento']['id'],
+                                            'departamento'    => isset($cuentas_no[$i]['departamento']['id']) ? $cuentas_no[$i]['departamento']['id'] : NULL,
                                             'num_doc'         => $request->input('num_doc'),
                                             'porciento'       => $cuentas_no[$i]['porciento'],
                                             // 'cod_aux'         => $request->input('cod_aux'),
