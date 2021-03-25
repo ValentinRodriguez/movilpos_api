@@ -261,6 +261,7 @@ class CpTransaccionesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
+                                return $this->errorResponseParams($errors->all()); 
                             }                          
                             //return response()->json($datosd);              
                             cpTransaccionesDetalles::create($datosd);                                                   
@@ -433,6 +434,7 @@ class CpTransaccionesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
+                                return $this->errorResponseParams($errors->all()); 
                             }        
                             $coTransaccionesCxpDetalle->update($datosd);                                                  
                         }                        

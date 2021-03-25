@@ -140,7 +140,8 @@ class proveedoresController extends ApiResponseController
                             ],$messages);
                          
                             if ($validator->fails()) {
-                                $errors = $validator->errors();                               
+                                $errors = $validator->errors();
+                                return $this->errorResponseParams($errors->all());                        
                             }                                                               
                             coCuentasProveedor::create($datosd);                                                   
                         }                        
@@ -161,80 +162,131 @@ class proveedoresController extends ApiResponseController
         $cod = $myArray[0];
         $codsec = $myArray[1];
         
-        $datos = proveedores::where([['cod_sp','=',$cod], ['cod_sp_sec','=',$codsec]])
-                             ->get();
-                             
-        if ($datos == null) {
+        $proveedor = proveedores::where([['cod_sp','=',$cod], ['cod_sp_sec','=',$codsec]])->first();
+                 
+        $cuentas = coCuentasProveedor::where([['cod_sp','=',$proveedor->cod_sp],
+                                              ['cod_sp_sec','=',$proveedor->cod_sp_sec],
+                                              ['co_cuentas_proveedores.estado','=','activo']])->
+                                       join('cgcatalogo','cgcatalogo.cuenta_no','=','co_cuentas_proveedores.cuenta_no')->
+                                       select('co_cuentas_proveedores.*','cgcatalogo.origen','cgcatalogo.tipo_cuenta')->
+                                       get();
+        
+        $proveedor->cuentas_proveedor = $cuentas;
+
+        if ($proveedor == null) {
             return $this->errorResponse('No existen datos');
         }
         else {
-            return $this->successResponse($datos);
+            return $this->successResponse($proveedor);
         }
     }
     
     public function update(Request $request, $id)
     {
-       
         $myArray = explode('-',$id);
+       
         $cod = $myArray[0];
         $codsec = $myArray[1];
-      //  $cod=$request->get('cod_sp');
-        //$codsec=$request->get('cod_sp_sec');
-       // return $this->successResponse($codspsec);
-        $proveedor = proveedores::where([['cod_sp','=',$cod],
-                                     ['cod_sp_sec','=',$codsec]
-                                         ]);
-                                
-              // return $this->successResponse($proveedor);
-       // $proveedor = proveedores::find($id);
-
-        $datos=array(
-            "cod_sp"              => $request->input("cod_sp"),
-            "nom_sp"              => $request->input("nom_sp"),
-            "dir_sp"              => $request->input("dir_sp"),
-            "id_ciudad"           => $request->input("id_ciudad"),
-            "id_pais"             => $request->input("id_pais"),
-            "tel_sp"              => $request->input("tel_sp"),
-            "fax_sp"              => $request->input("fax_sp"),
-            "cont_sp"             => $request->input("cont_sp"),
-            "cond_pago"           => $request->input("cond_pago"),
-            "rnc"                 => $request->input("rnc"),
-            "tipo_doc"            => $request->input("tipo_doc"),
-            "cuenta_no"           => $request->input("cuenta_no"),
-            "estado"              => 'activo',
-            "usuario_modificador" => $request->input("usuario_modificador"),
-          
-        );
         
+        $datos=array(
+            "cod_sp"           => $request->input("cod_sp"),
+            "cod_sp_sec"       => $request->input("cod_sp_sec"),
+            "nom_sp"           => $request->input("nom_sp"),
+            "dir_sp"           => $request->input("dir_sp"),
+            "id_ciudad"        => $request->input("id_ciudad"),
+            "id_pais"          => $request->input("id_pais"),
+            "tel_sp"           => $request->input("tel_sp"),
+            "fax_sp"           => $request->input("fax_sp"),
+            "cont_sp"          => $request->input("cont_sp"),
+            "cond_pago"        => $request->input("cond_pago"),
+            "documento"        => $request->input("documento"),
+            "moneda"           => $request->input("id_moneda"),
+            "email"            => $request->input("email"),
+            "tipo_doc"         => $request->input("tipo_doc"),
+            "cuenta_no"        => $request->input("cuenta_no"),
+            "estado"           => $request->input("estado"),
+            "usuario_creador"  => $request->input("usuario_creador"),
+            "usuario_modificador"  => $request->input("usuario_modificador")        
+        );
+
         $message=[
             'required'  => 'El campo: attribute es requerido',
             'unique'  => 'El campo: attribute debe ser unico',
             'numeric'  => 'El campo: attribute debe ser numerico'
         ];
-
+        
         $validator = validator($datos, [
-          //  'cod_sp_sec'          => 'required|numeric',
-            'cod_sp'              => 'required|numeric',
-            'nom_sp'              => 'required|string|max:500',
+            'cod_sp'              => 'required',
+            'nom_sp'              => 'required',
             'dir_sp'              => 'required',
             'tel_sp'              => 'required',
-            "fax_sp"              => 'required',
             "cont_sp"             => 'required',
             "cond_pago"           => 'required',
-            "rnc"                 => 'required',
+            "documento"           => 'required',
             "tipo_doc"            => 'required',
             "cuenta_no"           => 'required',
             "id_pais"             => 'required',
             "id_ciudad"           => 'required',
-            'usuario_modificador' => 'required|string'            
+            'usuario_modificador' => 'required'            
         ],$message);
-
+        
         if ($validator->fails()) {
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all());
         }else{
-            $proveedor->update($datos);
-            return $this->successResponse($proveedor);
+            try {
+                DB::beginTransaction();
+                    proveedores::where([['cod_sp','=',$cod], ['cod_sp_sec','=',$codsec]])->update($datos);
+                    // return response()->json();
+
+                    if (count($request->input("cuentas_no")) !== 0) {
+
+                        $datosd = null;
+                        $cuentas = $request->input("cuentas_no");
+
+                        for ($i=0; $i < count($cuentas); $i++) {
+                            
+                            $coCuentasProveedor = coCuentasProveedor::where([['cod_sp','=',$datos['cod_sp']],
+                                                                ['cod_sp_sec','=',$datos['cod_sp_sec']],
+                                                                ['cuenta_no','=',$cuentas[$i]['cuenta_no']],
+                                                                ['co_cuentas_proveedores.estado','=','activo']])->
+                                                            first();
+                                                            
+                            $datosd = array('descripcion'=> $cuentas[$i]['descripcion'],	
+                                            'cod_sp'	 => $datos['cod_sp'],
+                                            'cuenta_no'	 => $cuentas[$i]['cuenta_no'],
+                                            'porciento'  => $cuentas[$i]['porciento'],
+                                            "estado"     =>'activo',
+                            );
+                                                  
+                            $messages = [
+                                'required' => 'El campo :attribute es requerido.',
+                                'unique'   => 'El campo :attribute debe ser unico',
+                                'numeric'  => 'El campo :attribute debe ser numerico',
+                            ];
+            
+                            $validator = validator($datosd, [
+                                'descripcion' => 'required',
+                                'cod_sp'      => 'required',
+                                'cuenta_no'   => 'required',
+                                'porciento'   => 'required',
+                                'estado'      => 'required',
+                            ],$messages);
+                         
+                            if ($validator->fails()) {
+                                $errors = $validator->errors();
+                                return $this->errorResponseParams($errors->all());                             
+                            }              
+
+                            $coCuentasProveedor->update($datosd);                                                    
+                        }                        
+                    }
+                DB::commit();
+                return $this->successResponse(1);
+            }
+            catch (\Exception $e ){
+                return $this->errorResponse($e);
+            } 
         }
     }
     

@@ -232,7 +232,7 @@ class CoOrdenesMasterController extends ApiResponseController
                          
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                               
+                                return $this->errorResponseParams($errors->all()); 
                             }                                        
                             coOrdenesDetalle::create($datosd);                                                   
                         }                        
@@ -470,11 +470,9 @@ class CoOrdenesMasterController extends ApiResponseController
             'total_bruto'      => 'required'
             ],$messages);       
    
-            if ($validator->fails()) {
-                
-            $errors = $validator->errors();
-            
-            return $this->errorResponseParams($errors->all());
+            if ($validator->fails()) {                
+                $errors = $validator->errors();            
+                return $this->errorResponseParams($errors->all());
             }
             else{
                 try{
@@ -516,7 +514,7 @@ class CoOrdenesMasterController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                            
+                                return $this->errorResponseParams($errors->all());                             
                             }
                            //return response()->json($datosd['valor_neto']);
                            coOrdenesDetalle::where('co_ordenes_detalles.num_oc','=',$orden['num_oc'])->

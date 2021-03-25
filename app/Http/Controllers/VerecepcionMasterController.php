@@ -95,7 +95,8 @@ class VerecepcionMasterController extends ApiResponseController
                                 'id_inspeccion'    => 'required']);
                          
                             if ($validator->fails()) {
-                                $errors = $validator->errors();                               
+                                $errors = $validator->errors();
+                                return $this->errorResponseParams($errors->all());                           
                             }            
                            verecepcion_detalle::create($datosd);                       
                         } 
