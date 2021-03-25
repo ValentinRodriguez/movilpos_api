@@ -163,6 +163,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
+                                return $this->errorResponseParams($errors->all()); 
                             }                          
                             cpTransacciones::create($datosc);
                         }                        
@@ -206,6 +207,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
+                                return $this->errorResponseParams($errors->all()); 
                             }                          
                             cgTransaccionesContables::create($datosd);
                         }   
@@ -310,6 +312,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
+                                return $this->errorResponseParams($errors->all()); 
                             }                          
                             cpTransacciones::create($datosc);
                         }                        
@@ -353,6 +356,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
+                                return $this->errorResponseParams($errors->all()); 
                             }                          
                             cgTransaccionesContables::create($datosd);
                         }   

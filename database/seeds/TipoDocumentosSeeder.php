@@ -7,25 +7,22 @@ class TipoDocumentosSeeder extends Seeder
 {
     public function run()
     {
-        $cedula = array( 'tipo_documento' => 1,
-                            'descripcion' => 'cedula',
-                            'origen'=> 'debito',
-                            'estado' => 'activo', 
-                            'usuario_creador'=> 'movilsoluciones'
+        $cedula = array('descripcion' => 'cedula',
+                        'origen'=> 'debito',
+                        'estado' => 'activo', 
+                        'usuario_creador'=> 'movilsoluciones'
         );
 
-        $rnc = array( 'tipo_documento' => 2,
-                      'descripcion' => 'RNC',
-                      'origen'=> 'debito',
-                      'estado' => 'activo', 
-                      'usuario_creador'=> 'movilsoluciones'
+        $rnc = array('descripcion' => 'RNC',
+                     'origen'=> 'debito',
+                     'estado' => 'activo', 
+                     'usuario_creador'=> 'movilsoluciones'
         );
 
-        $pasaporte = array( 'tipo_documento' => 3,
-                         'descripcion' => 'pasaporte',
-                         'origen'=> 'debito',
-                         'estado' => 'activo', 
-                         'usuario_creador'=> 'movilsoluciones'
+        $pasaporte = array('descripcion' => 'pasaporte',
+                           'origen'=> 'debito',
+                           'estado' => 'activo', 
+                           'usuario_creador'=> 'movilsoluciones'
         );
         
         tipo_documento::create($pasaporte);

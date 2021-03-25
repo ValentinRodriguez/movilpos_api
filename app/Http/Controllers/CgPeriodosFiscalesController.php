@@ -90,6 +90,7 @@ class CgPeriodosFiscalesController extends ApiResponseController
                          
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
+                                return $this->errorResponseParams($errors->all()); 
                                
                             }                                        
                             cgPeriodosFiscales::create($datosd);                                               

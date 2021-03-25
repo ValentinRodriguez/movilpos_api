@@ -27,11 +27,11 @@ class CpTransaccionesController extends ApiResponseController
                                     get();
 
         foreach ($facturas as $key => $value) {
-            $detalle = cpTransaccionesDetalles::join('nodepartamentos','nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
-                                        select('cp_transacciones_detalles.*','nodepartamentos.titulo as departamento_descripcion')->
-                                        where([['.cp_transacciones_detalles.estado','=','activo'],
-                                                ['cp_transacciones_detalles.num_doc','=',$value->num_doc]])->
-                                        get();
+            $detalle = cpTransaccionesDetalles::leftjoin('nodepartamentos','cp_transacciones_detalles.departamento','=','nodepartamentos.id')->
+                                                select('cp_transacciones_detalles.*','nodepartamentos.titulo as departamento_descripcion')->
+                                                where([['.cp_transacciones_detalles.estado','=','activo'],
+                                                        ['cp_transacciones_detalles.num_doc','=',$value->num_doc]])->
+                                                get();
             $value->detalle_factura = $detalle;
         }
         return $this->successResponse($facturas);
@@ -137,6 +137,7 @@ class CpTransaccionesController extends ApiResponseController
                        'valor_orden'     => $request->input('valor_orden'),
                        'valor_recibido'  => $request->input('valor_recibido'),
                        'tipo_doc'        => $request->input('tipo_doc'),
+                       'cuotas'          => $request->input('cuotas'),
                        'cod_sp'          => $request->input('cod_sp'),
                        'cod_sp_sec'      => $request->input('cod_sp_sec'),
                        'moneda'          => $request->input('moneda'),
@@ -151,10 +152,11 @@ class CpTransaccionesController extends ApiResponseController
                        'cta_ctble'       => $request->input('cta_ctble'),
                        'tipo_fact'       => $request->input('tipo_fact'),
                        'codigo_fiscal'   => $request->input('codigo_fiscal'),
+                       'itbis'           => $request->input('itbis'),
                        'estado'          => $request->input('estado'),
                        'usuario_creador' => $request->input('usuario_creador'),
         );
-        
+        // return response()->json($datosm);
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
@@ -169,7 +171,8 @@ class CpTransaccionesController extends ApiResponseController
             'fecha_proc'    => 'required',
             'valor'         => 'required',
             'cond_pago'     => 'required',
-            'monto_itbi'    => 'required',            
+            'monto_itbi'    => 'required', 
+            'itbis'         => 'required',           
             'tipo_doc'      => 'required',
             'cod_sp'        => 'required',
             'cod_sp_sec'    => 'required',
@@ -187,9 +190,25 @@ class CpTransaccionesController extends ApiResponseController
         }else{
             try{
                 DB::beginTransaction(); 
+                    if (isset($datosm['cuotas'])) {        
+                        $datosm['valor'] = $datosm['valor'] / $datosm['cuotas'];
+                        $datosm['monto_itbi'] = $datosm['monto_itbi'] / $datosm['cuotas'];
+                        $datosm['bienes'] = $datosm['bienes'] / $datosm['cuotas'];
+                        $datosm['servicios'] = $datosm['servicios'] / $datosm['cuotas'];
+                        $datosm['retencion'] = $datosm['retencion'] / $datosm['cuotas'];
+                        
+                        for ($i=0; $i < $datosm['cuotas']; $i++) {                          
+                            $fecha = date_create($datosm['fecha_orig']);
+                            $mes = $i + 1;
+                            date_add($fecha, date_interval_create_from_date_string($mes." months"));
+                            $datosm['fecha_proc'] = date_format($fecha,"Y-m-d");
+                            $datosm['aplica_a'] = $datosm['num_doc'].'-'.$mes.'/'.$datosm['cuotas'];
+                            cpTransacciones::create($datosm);
+                        }
+                    } else {
+                        cpTransacciones::create($datosm);
+                    }
                     
-                    cpTransacciones::create($datosm);
-                    // return response()->json($datosm);
                     $cuentas_no = $request->cuentas_no;    
 
                     if ($request->cuentas_no !== 0) {
@@ -202,7 +221,7 @@ class CpTransaccionesController extends ApiResponseController
                                             'factura'         => $request->input('num_doc'),
                                             'tipo_doc'        => $request->input('tipo_doc'),
                                             'cuenta_no'       => $cuentas_no[$i]['cuenta_no'],
-                                            'departamento'    => $cuentas_no[$i]['departamento']['id'],
+                                            'departamento'    => isset($cuentas_no[$i]['departamento']['id']) ? $cuentas_no[$i]['departamento']['id'] : NULL,
                                             'num_doc'         => $request->input('num_doc'),
                                             'porciento'       => $cuentas_no[$i]['porciento'],
                                             // 'cod_aux'         => $request->input('cod_aux'),
@@ -215,7 +234,7 @@ class CpTransaccionesController extends ApiResponseController
                                             'usuario_creador' => $request->input('usuario_creador'),
                                             'estado'          =>'activo',
                             );
-                            // return response()->json($datosd);
+                            // return response()->json($datosm); 
                             $messages = [
                                 'required' => 'El campo :attribute es requerido.',
                                 'unique'   => 'El campo :attribute debe ser unico',
@@ -242,6 +261,7 @@ class CpTransaccionesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
+                                return $this->errorResponseParams($errors->all()); 
                             }                          
                             //return response()->json($datosd);              
                             cpTransaccionesDetalles::create($datosd);                                                   
@@ -261,25 +281,25 @@ class CpTransaccionesController extends ApiResponseController
     public function show($id)
     {
         $factura = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
-                                        join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],
-                                                            ['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
-                                        select('cp_transacciones.*',
-                                               'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
-                                               'proveedores.nom_sp as proveedor_nombre')->
-                                        orderBy('cp_transacciones.created_at', 'desc')->
-                                        where('cp_transacciones.id','=',$id)->
-                                        first();
+                                    join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],
+                                                        ['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
+                                    select('cp_transacciones.*',
+                                            'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
+                                            'proveedores.nom_sp as proveedor_nombre')->
+                                    orderBy('cp_transacciones.created_at', 'desc')->
+                                    where('cp_transacciones.id','=',$id)->
+                                    first();
                                         
-        $detalle = cpTransaccionesDetalles::join('nodepartamentos','nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
-                                        join('cgcatalogo','cgcatalogo.cuenta_no','=','cp_transacciones_detalles.cuenta_no')->
-                                        join('cp_transacciones','cp_transacciones.num_doc','=','cp_transacciones_detalles.num_doc')->
-                                        select('cp_transacciones_detalles.*',
-                                                'nodepartamentos.titulo as departamento_descripcion',
-                                                'cgcatalogo.descripcion','cgcatalogo.depto','cgcatalogo.catalogo','cgcatalogo.referencia',
-                                                'cgcatalogo.tipo_cuenta','cgcatalogo.retencion')->
-                                        where([['.cp_transacciones_detalles.estado','=','activo'],
-                                                ['cp_transacciones_detalles.num_doc','=',$factura->num_doc]])->
-                                        get();
+        $detalle = cpTransaccionesDetalles::leftjoin('nodepartamentos','cp_transacciones_detalles.departamento','=','nodepartamentos.id')->
+                                            join('cgcatalogo','cgcatalogo.cuenta_no','=','cp_transacciones_detalles.cuenta_no')->
+                                            join('cp_transacciones','cp_transacciones.num_doc','=','cp_transacciones_detalles.num_doc')->
+                                            select('cp_transacciones_detalles.*',
+                                                    'nodepartamentos.titulo as departamento_descripcion',
+                                                    'cgcatalogo.descripcion','cgcatalogo.depto','cgcatalogo.catalogo','cgcatalogo.referencia',
+                                                    'cgcatalogo.tipo_cuenta','cgcatalogo.retencion')->
+                                            where([['.cp_transacciones_detalles.estado','=','activo'],
+                                                    ['cp_transacciones_detalles.num_doc','=',$factura->num_doc]])->
+                                            get();
         $factura->detalle_factura = $detalle;
         
         return $this->successResponse($factura);
@@ -374,7 +394,7 @@ class CpTransaccionesController extends ApiResponseController
                                             'factura'         => $request->input('num_doc'),
                                             'tipo_doc'        => $request->input('tipo_doc'),
                                             'cuenta_no'       => $cuentas_no[$i]['cuenta_no'],
-                                            'departamento'    => $cuentas_no[$i]['departamento']['id'],
+                                            'departamento'    => isset($cuentas_no[$i]['departamento']['id']) ? $cuentas_no[$i]['departamento']['id'] : NULL,
                                             'num_doc'         => $request->input('num_doc'),
                                             'porciento'       => $cuentas_no[$i]['porciento'],
                                             // 'cod_aux'         => $request->input('cod_aux'),
@@ -414,6 +434,7 @@ class CpTransaccionesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
+                                return $this->errorResponseParams($errors->all()); 
                             }        
                             $coTransaccionesCxpDetalle->update($datosd);                                                  
                         }                        
@@ -487,10 +508,3 @@ class CpTransaccionesController extends ApiResponseController
         return $this->successResponse($datos);
     }
 }
-
-
-// "SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as `moneda`, `tipo_monedas`.`simbolo`, `tipo_monedas`.`divisa`, `proveedores`.`n' at line 1 (SQL: select `cp_transacciones`.`num_doc`, `cp_transacciones`.`valor`, `cp_transacciones`.`monto_itbi`, `cp_transacciones`.`tipo_doc`, `tipo_monedas`.`descripcion` as `moneda`, `tipo_monedas`.`simbolo`, `tipo_monedas`.`divisa`, `proveedores`.`nom_sp` as `proveedor_nombre`, SUM(cp_transacciones.valor) as deuda from `cp_transacciones` 
-// inner join `tipo_monedas` on `tipo_monedas`.`id` = `cp_transacciones`.`moneda` 
-// inner join `proveedores` on (`proveedores`.`cod_sp` = `cp_transacciones`.`cod_sp` and `proveedores`.`cod_sp_sec` = `cp_transacciones`.`cod_sp_sec`) 
-// where (`cp_transacciones`.`estado` = ACTIVO and `cp_transacciones`.`tipo_doc` = FT) 
-// group by `cp_transacciones`.`num_doc`, `cp_transacciones`.`valor`, `cp_transacciones`.`monto_itbi`, `cp_transacciones`.`tipo_doc`, `tipo_monedas`.`descripcion` as `moneda`, `tipo_monedas`.`simbolo`, `tipo_monedas`.`divisa`, `proveedores`.`nom_sp` as `proveedor_nombre` having `deuda` > 0 order by `cp_transacciones`.`created_at` desc)"

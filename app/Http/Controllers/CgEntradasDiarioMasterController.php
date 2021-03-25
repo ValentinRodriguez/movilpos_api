@@ -129,7 +129,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                
+                                return $this->errorResponseParams($errors->all());                                
                             }     
                            // return response()->json($datosd);                                   
                             cgTransaccionesContables::create($datosd);                                                   
@@ -241,7 +241,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                
+                                return $this->errorResponseParams($errors->all()); 
                             }     
                           //  return  response()->json($datosd);                
                             cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$entrada['ref'])->
