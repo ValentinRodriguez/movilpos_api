@@ -83,12 +83,13 @@ class InvProductosController extends ApiResponseController
             "precio_compra"         =>$request->input("precio_compra"),
             "precio_venta"          =>$request->input("precio_venta"),
             "costo"                 =>$request->input("costo"),
+            "galeriaImagenes"       =>$request->input("galeriaImagenes"),
             "descuento"             =>$request->input("descuento"),
             "porcientodescuento"    =>$request->input("porcientodescuento"),
             "estado"                =>$request->input("estado"),
             "usuario_creador"       =>$request->input("usuario_creador")
         );
-        // return response()->json($datos);
+        
         // SI EL EL TIPO DE PRODUCTO ES DIGITAL
         if ($datos["tipo_producto"] == 2) {
             $datos["id_brand"] = 2;
@@ -106,7 +107,6 @@ class InvProductosController extends ApiResponseController
         $codigo =  $datos["tipo_producto"].$datos["id_categoria"].$datos["id_brand"].$idsecuencia;
         $datos["codigo"] = $codigo;
         
-        //return response()->json($datos);
         $messages = [
              'required' => 'El campo :attribute es requerido.',
              'unique'   => 'El campo :attribute debe ser unico',
@@ -147,7 +147,7 @@ class InvProductosController extends ApiResponseController
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all());
         }else {    
-            //return response()->json($datos);
+            
             if ($datos['tipo_producto'] != 1) {
                 $datos['chasis'] = 'no requerido';
                 $datos['motor'] = 'no requerido';
@@ -159,22 +159,29 @@ class InvProductosController extends ApiResponseController
                 $datos['existenciaMaxima'] = 0;
                 $datos['id_bodega'] = 1;
             }
+            // return response()->json($request->imagesSec);
+            // if ($request->imagesSec !== 0) {
+            //     $galeriaImagenes = [];
+            //     $imagesSec =  $request->imagesSec;
 
-            if ($request->imagesSec !== 0) {
-                $galeriaImagenes = [];
-                $imagesSec =  $request->imagesSec;
+            //     for ($i=0; $i < $imagesSec; $i++) {
+            //         $img[$i] = $request->file('galeriaImagenes'.$i);
 
-                for ($i=0; $i < $imagesSec; $i++) {
-                    $img[$i] = $request->file('galeriaImagenes'.$i);
+            //         $nombreImagen2 = uniqid().'.'.$img[$i]->getClientOriginalExtension();
 
-                    $nombreImagen2 = uniqid().'.'.$img[$i]->getClientOriginalExtension();
-
-                    $tempImage = $img[$i]->storeAs('uploads', 'productos/'.$nombreImagen2, 'public');
-                    array_push($galeriaImagenes, $tempImage);
-                }
-                $datos['galeriaImagenes'] = json_encode($galeriaImagenes);
+            //         $tempImage = $img[$i]->storeAs('uploads', 'productos/'.$nombreImagen2, 'public');
+            //         array_push($galeriaImagenes, $tempImage);
+            //     }
+            //     $datos['galeriaImagenes'] = json_encode($galeriaImagenes);
+            // }
+            
+            if ($request->hasFile('galeriaImagenes')) {
+                // Storage::delete('public/'.$producto->imagen);
+                $imagen = $request->file('galeriaImagenes');
+                $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
+                $datos['galeriaImagenes'] = $request->file('galeriaImagenes')->storeAs('uploads', 'productos/'.$nombreImagen, 'public');
             }
-        
+            
             try {   
                 InvProductos::create($datos);              
                 return $this->successResponse($datos);
@@ -183,12 +190,6 @@ class InvProductosController extends ApiResponseController
                 return $this->errorResponse($e);
             } 
         }
-    }
-
-    public function upload_global($file, $nombreImagen){
-        $nombreImagen3 = uniqid().'.'.$file->getClientOriginalExtension();
-        $filename = $file->storeAs('uploads', 'productos/'.$nombreImagen3, 'public');
-        return $filename;
     }
 
     // public function resize_image($file) {
@@ -207,11 +208,6 @@ class InvProductosController extends ApiResponseController
         return $this->successResponse($producto);
     }
 
-    // public function update(Request $request, $id)
-    // {
-       
-    // }
-
     public function updateProducts(Request $request, $id)
     {
         $producto = InvProductos::find($id);
@@ -229,32 +225,37 @@ class InvProductosController extends ApiResponseController
             'id_tipoinventario'   => 'required|numeric',
             'id_brand'            => 'required|numeric',
             'usuario_modificador' => 'required|string'
-        ],$messages);
-
-        
+        ],$messages);        
 
         if ($validator->fails()) {
             $errors = $validator->errors();            
             return $this->errorResponseParams($errors->all());
         }else{      
 
-            if (intval($request->imagesSec) !== 0) {
+            // if (intval($request->imagesSec) !== 0) {
 
-                $galeriaImagenes = [];
-                $imagesSec =  $request->imagesSec;
+            //     $galeriaImagenes = [];
+            //     $imagesSec =  $request->imagesSec;
 
-                for ($i=0; $i < $imagesSec; $i++) {
-                    $img[$i] = $request->file('galeriaImagenes'.$i);
+            //     for ($i=0; $i < $imagesSec; $i++) {
+            //         $img[$i] = $request->file('galeriaImagenes'.$i);
 
-                    $nombreImagen2 = uniqid().'.'.$img[$i]->getClientOriginalExtension();
+            //         $nombreImagen2 = uniqid().'.'.$img[$i]->getClientOriginalExtension();
 
-                    $tempImage = $img[$i]->storeAs('uploads', 'productos/'.$nombreImagen2, 'public');
-                    array_push($galeriaImagenes, $tempImage);
-                }
-                $datos['galeriaImagenes'] = json_encode($galeriaImagenes);
+            //         $tempImage = $img[$i]->storeAs('uploads', 'productos/'.$nombreImagen2, 'public');
+            //         array_push($galeriaImagenes, $tempImage);
+            //     }
+            //     $datos['galeriaImagenes'] = json_encode($galeriaImagenes);
+            // }
+            
+            if ($request->hasFile('galeriaImagenes')) {
+                // Storage::delete('public/'.$producto->imagen);
+                $imagen = $request->file('galeriaImagenes');
+                $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
+                $datos['galeriaImagenes'] = $request->file('galeriaImagenes')->storeAs('uploads', 'productos/'.$nombreImagen, 'public');
             }
-            //return response()->json($datos);
-            $producto->update($request->all());
+            // return response()->json($datos);
+            $producto->update($datos);
             return $this->successResponse($datos);
         }
     }
