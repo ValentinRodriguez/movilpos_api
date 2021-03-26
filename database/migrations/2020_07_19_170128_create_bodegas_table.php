@@ -18,9 +18,9 @@ class CreateBodegasTable extends Migration
             $table->integer('id_bodega')->index();
             $table->string('descripcion',100);
             $table->integer('id_pais');
-            $table->foreign('id_pais')->references('id_pais')->on('paises');
+            // $table->foreign('id_pais')->references('id_pais')->on('paises');
             $table->integer('id_ciudad');
-            $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
+            // $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
             $table->string('usuario_creador',100);
             $table->string('usuario_modificador',100)->nullable();
             $table->string('estado',100);

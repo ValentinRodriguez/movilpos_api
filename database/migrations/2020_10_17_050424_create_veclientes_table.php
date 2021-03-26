@@ -34,11 +34,11 @@ class CreateVeclientesTable extends Migration
             $table->string('urbanizacion',500)->nullable();
             $table->string('telefono_oficina')->nullable();
             $table->integer('id_pais')->nullable();
-            $table->foreign('id_pais')->references('id_pais')->on('paises');
+            // $table->foreign('id_pais')->references('id_pais')->on('paises');
             $table->integer('id_zonalocal')->nullable();
             $table->foreign('id_zonalocal')->references('id_zonalocal')->on('zonas_local');
             $table->integer('id_ciudad')->nullable();
-            $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
+            // $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
             $table->string('celular')->nullable();
             $table->string('telefono_casa',50);
             $table->string('email',100);

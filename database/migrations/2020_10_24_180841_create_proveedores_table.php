@@ -15,8 +15,10 @@ class CreateProveedoresTable extends Migration
             $table->primary($keys);
             $table->string('nom_sp',50);
             $table->string('dir_sp');
-            $table->integer('id_ciudad')->foreign('id_ciudad')->reference('id_ciudad')->on('ciudad');
-            $table->integer('id_pais')->foreign('id_pais')->reference('id_pais')->on('pais');
+            $table->integer('id_ciudad');
+            $table->integer('id_pais');
+            // $table->foreign('cod_provincia')->references('id_ciudad')->on('ciudades');
+            // $table->foreign('id_pais')->references('id_pais')->on('paises');
             $table->string('tel_sp',20);
             $table->string('fax_sp',20)->nullable();
             $table->string('cont_sp');

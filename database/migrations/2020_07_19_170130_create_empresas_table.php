@@ -28,9 +28,9 @@ class CreateEmpresasTable extends Migration
             $table->string('valuacion_inv',10);
             $table->char('tipo_cuadre',2);
             $table->integer('id_pais');
-            $table->foreign('id_pais')->references('id_pais')->on('paises');
+            // $table->foreign('id_pais')->references('id_pais')->on('paises');
             $table->integer('id_ciudad');
-            $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
+            // $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
             $table->string('rnc',30);
             $table->string('estado',30);
             $table->char('empresa_verde',2);

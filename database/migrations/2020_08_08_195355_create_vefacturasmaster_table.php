@@ -30,10 +30,12 @@ class CreateVefacturasmasterTable extends Migration
             $table->integer('sec_cliente')->foreign('sec_cliente')->references('sec_cliente')->on('veclientes')->nullable();
             $table->text('nombre_cli')->nullable();
             $table->text('direccion')->nullable();
-            $table->integer('id_pais')->foreign('id_pais')->references('id_pais')->on('paises')->nullable();
-            $table->text('id_ciudad')->foreign('id_ciudad')->references('id_ciudad')->on('ciudades')->nullable();
+            $table->integer('id_pais')->nullable();
+            $table->text('id_ciudad')->nullable();
             $table->text('id_zonalocal')->foreign('id_zonalocal')->references('id_zonalocal')->on('zonaslocal')->nullable();
             $table->integer('num_emp')->foreign('num_emp')->references('num_emp')->on('noempleados');
+            // $table->foreign('cod_provincia')->references('id_ciudad')->on('ciudades');
+            // $table->foreign('id_pais')->references('id_pais')->on('paises');
             $table->float('total_bruto');
             $table->float('descuento')->nullable();
             $table->float('monto_itbis');

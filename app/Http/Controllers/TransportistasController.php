@@ -115,6 +115,8 @@ class TransportistasController extends ApiResponseController
             "usuario_creador"   => 'required',
             "usuario_modificador"   => 'required'
         ],$messages);
+
+        // return response()->json($datos);
         
         if ($validator->fails()) {
             $errors = $validator->errors();

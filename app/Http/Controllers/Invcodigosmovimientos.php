@@ -70,7 +70,7 @@ class Invcodigosmovimientos extends ApiResponseController
         if ($datos['control_orden_compra'] == null) {
             $datos['control_orden_compra'] = 'no';
         }
-        
+        // return response()->json($datos);
         $messages = [
              'required' => 'El campo :attribute es requerido.',
              'unique'   => 'El campo :attribute debe ser unico',
@@ -205,6 +205,7 @@ class Invcodigosmovimientos extends ApiResponseController
             try {
                 DB::beginTransaction();
                     $producto = Invtiposmovimientos::where([['id_tipomov','=',$id],['estado','=','activo']])->first();
+                    
                     $producto->
                     update(["descripcion"           =>$request->input("descripcion")],
                             ["titulo"                =>$request->input("titulo")],
@@ -221,12 +222,14 @@ class Invcodigosmovimientos extends ApiResponseController
                     );
                     
                     $totalCuentas = count($datos['cuenta_no']);
-                    
+
                     for ($i=0; $i < $totalCuentas; $i++) {
+                        
                         $cuenta = array("id_tipomov" => $id,
-                                         "cuenta_no" => $cuentas[$i]['cuenta_no'],
+                                         "cuenta_no" => $cuentas[$i],
                                          "estado"    => 'activo',
                         );                        
+                        
                         $messages = [
                             'required' => 'El campo :attribute es requerido.',
                             'unique'   => 'El campo :attribute debe ser unico',
@@ -243,8 +246,8 @@ class Invcodigosmovimientos extends ApiResponseController
                             $errors = $validator->errors();
                             return $this->errorResponseParams($errors->all());
                         }
-                        DB::table('invcuentasmovimientos')->where([ ['id_tipomov','=',$id], ['cuenta_no','=',$cuentas[$i]['cuenta_no']] ])->delete();
-                        Invcuentasmovimientos::create($cuenta);
+                        Invcuentasmovimientos::where([ ['id_tipomov','=',$id], ['cuenta_no','=',$cuentas[$i]] ])->update($cuenta);
+                        // Invcuentasmovimientos::create($cuenta);
                     }
 
                 DB::commit();

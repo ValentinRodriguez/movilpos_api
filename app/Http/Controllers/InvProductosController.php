@@ -88,7 +88,7 @@ class InvProductosController extends ApiResponseController
             "estado"                =>$request->input("estado"),
             "usuario_creador"       =>$request->input("usuario_creador")
         );
-
+        // return response()->json($datos);
         // SI EL EL TIPO DE PRODUCTO ES DIGITAL
         if ($datos["tipo_producto"] == 2) {
             $datos["id_brand"] = 2;

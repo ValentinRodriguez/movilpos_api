@@ -10,9 +10,7 @@ class pais extends Model
 
     protected $fillable = ["id_pais","descripcion","longitud","latitud","usuario_creador","usuario_modificador"];
 
-    public function bodegas(){
-
-        return $this->belongsTo('App\Librerias\Bodegas', 'foreign_key');
-
-    }
+    // public function bodegas(){
+    //     return $this->belongsTo('App\Librerias\Bodegas', 'foreign_key');
+    // }
 }

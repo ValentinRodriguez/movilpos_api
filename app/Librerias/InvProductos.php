@@ -10,7 +10,7 @@ class InvProductos extends Model
     protected $table = 'inv_productos';
 
     protected $fillable = ["titulo","tipo", "id_categoria","id_brand","id_tipoinventario","descripcion", "chasis","motor",     
-                           "fabricacion","asientos","id_propiedad","descripcion_us","codigo","codigo_referencia", "origen","existenciaMinima",                          
+                           "fabricacion","asientos","asientosAd","id_propiedad","descripcion_us","codigo","codigo_referencia", "origen","existenciaMinima",                          
                            "existenciaMaxima","controlDeExistencias","unidadMed","factor_c","controlItbis","bodegaRecepcion","centroDeCostos",
                            "usuario_modificador","tipo_producto","despiece","ultimoproveedor","ultimaFechaCompra","precio_compra","id_bodega",
                            "precio_venta","costo","fechaInicioDescuento","fechaFinDescuento","porcientodescuento","ventas","devoluciones", 

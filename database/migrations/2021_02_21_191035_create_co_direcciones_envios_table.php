@@ -14,9 +14,9 @@ class CreateCoDireccionesEnviosTable extends Migration
             $table->text('direccion_a');
             $table->text('direccion_b');
             $table->integer('id_pais');
-            $table->foreign('id_pais')->references('id_pais')->on('paises');
+            // $table->foreign('id_pais')->references('id_pais')->on('paises');
             $table->integer('id_ciudad');
-            $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
+            // $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
             $table->text('telefono');
             $table->string('estado',20);
             $table->string('usuario_creador',50);
@@ -27,6 +27,6 @@ class CreateCoDireccionesEnviosTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('co__direcciones_envios');
+        Schema::dropIfExists('co_direcciones_envios');
     }
 }

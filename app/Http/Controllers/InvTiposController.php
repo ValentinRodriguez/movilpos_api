@@ -89,7 +89,7 @@ class InvTiposController extends ApiResponseController
             "usuario_modificador" =>$request->input("usuario_modificador"),
             "estado"              =>"activo"
         );
-
+        // return response($datos);
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',

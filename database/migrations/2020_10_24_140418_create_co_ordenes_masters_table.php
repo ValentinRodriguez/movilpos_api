@@ -30,9 +30,9 @@ class CreateCoOrdenesMastersTable extends Migration
             $table->integer('id_moneda');
             $table->text('nombre');
             $table->integer('id_pais');
-            $table->foreign('id_pais')->references('id_pais')->on('paises');
+            // $table->foreign('id_pais')->references('id_pais')->on('paises');
             $table->integer('id_ciudad');
-            $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
+            // $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
             $table->text('direccion_a');
             $table->text('direccion_b');
             $table->string('telefono',30);

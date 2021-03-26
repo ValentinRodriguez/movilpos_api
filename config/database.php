@@ -63,6 +63,26 @@ return [
             ]) : [],
         ],
 
+        'dgii' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DGII_HOST', '127.0.0.1'),
+            'port' => env('DGII_PORT', '3306'),
+            'database' => env('DGII_DATABASE', 'forge'),
+            'username' => env('DGII_USERNAME', 'forge'),
+            'password' => env('DGII_PASSWORD', ''),
+            'unix_socket' => env('DGII_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

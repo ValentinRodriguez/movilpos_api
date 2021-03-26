@@ -10,7 +10,9 @@ class MenuController extends ApiResponseController
 
     public function index()
     {
-        $menu = Menu::orderBy('id_menu', 'asc')->get();
+        $menu = Menu::join('modulos','modulos.id','=','menus.modulo')->
+                      select('menus.*','modulos.icon','modulos.modulo as nombre_modulo')->
+                      get();
         if ($menu == null){
             return $this->errorResponse($menu);
         }

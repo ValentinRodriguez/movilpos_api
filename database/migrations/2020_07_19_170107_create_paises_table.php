@@ -3,8 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use phpDocumentor\Reflection\Types\Nullable;
 use Illuminate\Support\Facades\DB;
-
 class CreatePaisesTable extends Migration
 {
     /**
@@ -16,11 +16,12 @@ class CreatePaisesTable extends Migration
     {
         Schema::create('paises', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_pais')->unsigned();
+            // $table->unique('id_pais');
             $table->string('descripcion');
             $table->string('gentilicio');
             $table->float('latitud');
             $table->float('longitud');
-            $table->integer('id_pais')->unique();
             $table->string('estado');
             $table->string('usuario_creador', 50);
             $table->string('usuario_modificador', 50)->nullable();

@@ -104,8 +104,8 @@ class EmpresaController extends ApiResponseController
     }
     
     public function update(Request $request){
-        //
-     }
+    
+    }
 
     public function actualizar(Request $request, $id)
     {
@@ -127,7 +127,9 @@ class EmpresaController extends ApiResponseController
             "valuacion_inv"       =>$request->input("valuacion_inv"),
             "usuario_modificador" =>$request->input("usuario_modificador")
        );
-       
+
+    //    return response()->json( $datos);
+
        $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',

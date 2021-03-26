@@ -25,9 +25,9 @@ class CreateTransportistasTable extends Migration
             $table->text('urbanizacion');
             $table->integer('cod_zona');
             $table->integer('cod_provincia');
-            $table->foreign('cod_provincia')->references('id_ciudad')->on('ciudades');
+            // $table->foreign('cod_provincia')->references('id_ciudad')->on('ciudades');
             $table->integer('id_pais');
-            $table->foreign('id_pais')->references('id_pais')->on('paises');
+            // $table->foreign('id_pais')->references('id_pais')->on('paises');
             $table->text('telefono');
             $table->text('estado');
             $table->text('usuario_creador');
