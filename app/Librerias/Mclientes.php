@@ -8,9 +8,9 @@ class Mclientes extends Model
 {
     protected $table = "veclientes";
 
-    protected $fillable = ["tipo_cliente","sec_cliente","nombre","tipo_documento","num_rnc","vendedor","limite_credito","cond_pago",
+    protected $fillable = ["tipo_cliente","sec_cliente","nombre","tipo_documento","vendedor","limite_credito","cond_pago",
                            "tipo_negocio","ncf","generico","direccion","urbanizacion","id_pais","id_zonalocal","id_ciudad","telefono_oficina",
-                           "celular","telefono_casa","email","url","usuario_creador","cedula","usuario_modificador","estado"];
+                           "celular","telefono_casa","email","url","usuario_creador","documento","usuario_modificador","estado"];
 
     public function ScopeParametro($query, $parametro) { 
         if ($parametro) {

@@ -21,8 +21,9 @@ class CreateVeclientesTable extends Migration
             $table->string('nombre',100);
             $table->integer('tipo_documento');
             $table->foreign('tipo_documento')->references('tipo_documento')->on('tipo_documento');
-            $table->string('num_rnc',15);
-            $table->string('cedula',15);
+            // $table->string('num_rnc',15);
+            // $table->string('cedula',15);
+            $table->string('documento',25);
             $table->integer('vendedor');
             $table->integer('limite_credito')->nullable();
             $table->integer('cond_pago')->nullable();
@@ -39,8 +40,8 @@ class CreateVeclientesTable extends Migration
             $table->foreign('id_zonalocal')->references('id_zonalocal')->on('zonas_local');
             $table->integer('id_ciudad')->nullable();
             // $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
-            $table->string('celular')->nullable();
-            $table->string('telefono_casa',50);
+            $table->string('celular');
+            $table->string('telefono_casa',50)->nullable();
             $table->string('email',100);
             $table->string('url',100)->nullable();
             $table->string('estado',20)->nullable();

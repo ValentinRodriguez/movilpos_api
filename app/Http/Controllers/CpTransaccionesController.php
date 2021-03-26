@@ -156,7 +156,7 @@ class CpTransaccionesController extends ApiResponseController
                        'estado'          => $request->input('estado'),
                        'usuario_creador' => $request->input('usuario_creador'),
         );
-        // return response()->json($datosm);
+        
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
@@ -234,7 +234,7 @@ class CpTransaccionesController extends ApiResponseController
                                             'usuario_creador' => $request->input('usuario_creador'),
                                             'estado'          =>'activo',
                             );
-                            // return response()->json($datosm); 
+                            // return response()->json($datosd); 
                             $messages = [
                                 'required' => 'El campo :attribute es requerido.',
                                 'unique'   => 'El campo :attribute debe ser unico',
@@ -242,7 +242,7 @@ class CpTransaccionesController extends ApiResponseController
                             ];
             
                             $validator = validator($datosd, [
-                                'num_oc'          => 'required',
+                                // 'num_oc'          => 'required',
                                 'fecha'           => 'required',
                                 'cod_sp'          => 'required',
                                 'cod_sp_sec'      => 'required',
@@ -250,7 +250,7 @@ class CpTransaccionesController extends ApiResponseController
                                 'tipo_doc'        => 'required',
                                 'cuenta_no'       => 'required',
                                 'porciento'       => 'required',
-                                'departamento'    => 'required',
+                                // 'departamento'    => 'required',
                                 'num_doc'         => 'required',
                                 'debito'          => 'required',
                                 'credito'         => 'required',
