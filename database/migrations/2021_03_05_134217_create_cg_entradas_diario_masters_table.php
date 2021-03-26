@@ -25,7 +25,7 @@ class CreateCgEntradasDiarioMastersTable extends Migration
             $table->integer('valor')->nullable();
             $table->integer('cod_sp')->nullable();
             $table->integer('cod_sp_sec')->nullable();
-            $table->string('nombre_sup',50);
+            $table->string('nombre_sup',50->nullable());
             $table->integer('tasa')->nullable(); 
             $table->string('cuenta_no',50)->nullable();
             $table->string('estado',20);

@@ -49,7 +49,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
      
         $maxid=0;
         $idsecuencia=0;
-        $maxid= cgEntradasDiarioMaster::get('secuencia_entrada')->max();
+        $maxid= cgEntradasDiarioMaster::get('documento')->max();
 
         if ($maxid==null){
             $idsecuencia=1;
@@ -61,14 +61,15 @@ class CgEntradasDiarioMasterController extends ApiResponseController
 
         $datosm =array(
             'fecha'             => $request->input('fecha'),
-            'secuencia_entrada' => $idsecuencia,
+            'documento'         => $idsecuencia,
             'ref'               => $request->input('ref'),
             'periodo'           => $request->input('periodo'),
             'mes'               => $request->input('mes'),
             'detalle'           => $request->input('detalle'),
             "estado"            => 'activo',
             'usuario_creador'   => $request->input('usuario_creador') ,
-            'cuentas'           => $request->input('cuentas')         
+            'cuentas'           => $request->input('cuentas'),
+            'tipo_doc'          =>'TR'         
         );
         
         $messages = [
@@ -80,8 +81,8 @@ class CgEntradasDiarioMasterController extends ApiResponseController
         
         $validator = validator($datosm, [
             'fecha'         => 'required',
-            'secuencia_entrada'         => 'required',
-            'estado'         => 'required',
+            'documento'     => 'required',
+            'estado'        => 'required',
         ],$messages);       
         
         if ($validator->fails()) {
@@ -275,13 +276,13 @@ class CgEntradasDiarioMasterController extends ApiResponseController
     public function secuencia(){
         $maxid=0;
         $idsecuencia=0;
-        $maxid= cgEntradasDiarioMaster::get('secuencia_entrada')->max();
+        $maxid= cgEntradasDiarioMaster::get('documento')->max();
        // return $this->successResponse($maxid);
         if ($maxid==null){
             $idsecuencia=1;
         }
         else{
-            $idsecuencia=$maxid->secuencia_entrada;
+            $idsecuencia=$maxid->documento;
             $idsecuencia=$idsecuencia+1;
             
         }
@@ -297,7 +298,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
 
         $entrada = cgTransaccionesContables::where([['cg_transacciones_contables.estado','=','ACTIVO']])-> 
                         join('cg_entradas_diario_masters','cg_entradas_diario_masters.ref','=','cg_transacciones_contables.ref')->
-                        where( [['cg_entradas_diario_masters.secuencia_entrada','=',$num_oc],
+                        where( [['cg_entradas_diario_masters.documento','=',$num_oc],
                         ['cg_entradas_diario_masters.periodo','=',$periodo]])->
                         select('cg_transacciones_contables.*')->                                
                                 get();

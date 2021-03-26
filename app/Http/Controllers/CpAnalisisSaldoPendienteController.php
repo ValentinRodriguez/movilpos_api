@@ -89,10 +89,36 @@ class CpAnalisisSaldoPendienteController extends ApiResponseController
         //
     }
 
-
     public function reporte(request $request){
         
-        $dia30=0;
+
+    
+     
+        $cxp = cpAnalisisSaldoPendiente::
+            select('cod_sp','cod_sp_sec','nom_sp','aplica_a','dias','pendiente')
+            ->get();
+
+         //   return response()->json($cxp);
+        $result = array();
+        foreach($cxp as $t) {
+            $repeat=false;
+            for($i=0;$i<count($result);$i++)
+            {
+                if($result[$i]['nom_sp']==$t['nom_sp'])
+                //    if ($result[$i]['aplica_a']==$t['aplica_a']) {                    
+                {
+                    $result[$i]['pendiente']+=$t['pendiente'];
+                    $repeat=true;
+                    break;
+                }
+                 //   }
+            }
+            if($repeat==false)
+                $result[] = array('nom_sp' => $t['nom_sp'], 'pendiente' => $t['pendiente']);
+        }
+
+        return response()->json($result);
+      /*  $dia30=0;
         $dia31a60=0;
         $dia61a90=0;
         $dia91a120=0;
@@ -153,8 +179,8 @@ class CpAnalisisSaldoPendienteController extends ApiResponseController
             $dia30=$data[$i]['valor'];
         }
         return response()->json($dia30);
-      
-        $pdf = PDF::loadView('saldo-pendiente', compact('cxp'));
+      */
+        $pdf = PDF::loadView('saldo-pendiente', compact('result'));
         return $pdf->stream('analisis-pendiente-pagoCxp.pdf');
     }
 }

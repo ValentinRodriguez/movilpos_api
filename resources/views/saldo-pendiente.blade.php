@@ -35,16 +35,28 @@
     </thead>          
     <tbody>
     
-     @foreach ($cxp as $data1) 
+     @foreach ($result as $data1) 
         <tr data-iterate="item">
           <td colspan="3"></td>
-          <td>{{$data1->nom_sp}}</td>
-        <!--   @if ($data1->fecha) < 30)
-          <td>{{$data1->valor}}</td>
+          <td>{{$data1[0][nom_sp]}}</td>
+         
+           @if ($data1->fecha) < 30)
+           <td>{{$data1->pendiente}}</td>
+          @else
+          <td>0</td>
           @endif
          
-         
-          <td>{{$data1->dia31a60}}</td>
+          @if ($data1->dias) > 30)
+          <td>{{$data1->pendiente}}</td>
+          @else
+          <td>0</td>
+          @endif
+          @if ($data1->dias) > 60)
+          <td>{{$data1->pendiente}}</td>
+          @else
+          <td>0</td>
+          @endif
+        <!--  <td>{{$data1->dia31a60}}</td>
           <td>{{$data1->dia61a90}}</td>
           <td>{{$data1->dia91a120}}</td>
           <td>{{$data1->mas120}}</td>-->
