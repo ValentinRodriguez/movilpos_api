@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCgEntradasDiarioMastersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('cg_entradas_diario_masters', function (Blueprint $table) {
@@ -25,7 +20,7 @@ class CreateCgEntradasDiarioMastersTable extends Migration
             $table->integer('valor')->nullable();
             $table->integer('cod_sp')->nullable();
             $table->integer('cod_sp_sec')->nullable();
-            $table->string('nombre_sup',50->nullable());
+            $table->string('nombre_sup',50)->nullable();
             $table->integer('tasa')->nullable(); 
             $table->string('cuenta_no',50)->nullable();
             $table->string('estado',20);
@@ -34,12 +29,7 @@ class CreateCgEntradasDiarioMastersTable extends Migration
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    
     public function down()
     {
         Schema::dropIfExists('cg_entradas_diario_masters');
