@@ -18,7 +18,6 @@
  
 @endsection
 
-
 @section('items')
   <table cellpadding="0" cellspacing="0">  
     <thead>
@@ -35,31 +34,17 @@
     </thead>          
     <tbody>
     
-     @foreach ($result as $data1) 
+      @foreach ($resultado as $proveedor) 
+
         <tr data-iterate="item">
           <td colspan="3"></td>
-          <td>{{$data1[0][nom_sp]}}</td>
-         
-           @if ($data1->fecha) < 30)
-           <td>{{$data1->pendiente}}</td>
-          @else
-          <td>0</td>
-          @endif
-         
-          @if ($data1->dias) > 30)
-          <td>{{$data1->pendiente}}</td>
-          @else
-          <td>0</td>
-          @endif
-          @if ($data1->dias) > 60)
-          <td>{{$data1->pendiente}}</td>
-          @else
-          <td>0</td>
-          @endif
-        <!--  <td>{{$data1->dia31a60}}</td>
-          <td>{{$data1->dia61a90}}</td>
-          <td>{{$data1->dia91a120}}</td>
-          <td>{{$data1->mas120}}</td>-->
+          <td>{{$proveedor['proveedor']}}</td>
+          <td>${{number_format($proveedor['de0a30'], 2, '.', ',')}}</td>
+          <td>${{number_format($proveedor['de31a60'], 2, '.', ',')}}</td>
+          <td>${{number_format($proveedor['de61a90'], 2, '.', ',')}}</td>
+          <td>${{number_format($proveedor['de91a120'], 2, '.', ',')}}</td>
+          <td>${{number_format($proveedor['mas120'], 2, '.', ',')}}</td>
+          <td>${{number_format($proveedor['pendiente'], 2, '.', ',')}}</td>
         </tr>
       @endforeach
     </tbody>    
