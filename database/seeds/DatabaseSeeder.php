@@ -9,9 +9,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(PaisesSeeder::class);
         $this->call(CiudadesSeeder::class);
-        $this->call(PuestosSeeder::class);
+        // $this->call(PuestosSeeder::class);
         $this->call(MonedasSeeder::class);
         $this->call(MedidasSeeder::class);
+        $this->call(puestoIniSeeder::class);
         $this->call(TipoProductosSeeder::class);
         $this->call(TipoDocumentosSeeder::class);
         $this->call(codigosISRSeeder::class);
