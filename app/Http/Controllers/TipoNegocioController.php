@@ -54,7 +54,7 @@ class TipoNegocioController extends ApiResponseController
                     tipoNegocio::create($datos);
                 }
             DB::commit();
-            return $this->successResponse(1);
+            return $this->successResponse($datos);
         }
         catch (\Exception $e ){
             return $this->errorResponse($e);
@@ -101,7 +101,7 @@ class TipoNegocioController extends ApiResponseController
                 DB::beginTransaction();  
                     $tipos->update($datos);                    
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);

@@ -11,9 +11,7 @@ class tipoClientesController extends ApiResponseController
 {
     public function index()
     {
-        $tipoCliente = tipoClientes::orderBy('tipo_cliente', 'asc')->
-                               where('estado','=','ACTIVO')->
-                               get();
+        $tipoCliente = tipoClientes::orderBy('tipo_cliente', 'asc')->where('estado','=','ACTIVO')->get();
         
         return $this->successResponse($tipoCliente);
     }
@@ -53,7 +51,7 @@ class tipoClientesController extends ApiResponseController
                     $datos = $datos + array('tipo_cliente' =>$idsecuencia);
                     tipoClientes::create($datos);
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);
@@ -98,7 +96,7 @@ class tipoClientesController extends ApiResponseController
                 DB::beginTransaction();  
                     $tipos->update($datos);
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);

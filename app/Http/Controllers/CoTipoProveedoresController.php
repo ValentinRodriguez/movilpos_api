@@ -12,10 +12,7 @@ class CoTipoProveedoresController extends ApiResponseController
 {
     public function index()
     {
-        $tipoProveedor = coTipoProveedores::orderBy('id', 'asc')->
-                                where('estado','=','ACTIVO')->
-                                get();
-        
+        $tipoProveedor = coTipoProveedores::orderBy('id', 'asc')->where('estado','=','ACTIVO')->get();        
         return $this->successResponse($tipoProveedor);
     }
 
@@ -61,7 +58,7 @@ class CoTipoProveedoresController extends ApiResponseController
                     $datos = $datos + array('tipo_proveedor' =>$idsecuencia);
                     coTipoProveedores::create($datos);
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);

@@ -26,7 +26,7 @@ class CgPeriodosFiscalesController extends ApiResponseController
             'estado'          =>$request->input('estado'),
             'meses'	          =>$request->input("meses"),
         );
-
+        
         $messages = [
              'required' => 'El campo :attribute es requerido.',
              'unique'   => 'El campo :attribute debe ser unico',
@@ -77,7 +77,7 @@ class CgPeriodosFiscalesController extends ApiResponseController
                             ];
                             
                             $validator = validator($datosd, [
-                                'num_oc'          => 'required',
+                                // 'num_oc'          => 'required',
                                 'anio'            => 'required',
                                 'mes'             => 'required',
                                 'fecha_inicio'    => 'required',

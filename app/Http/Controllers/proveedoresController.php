@@ -92,7 +92,6 @@ class proveedoresController extends ApiResponseController
             'dir_sp'              => 'required',
             'moneda'              => 'required',
             'tel_sp'              => 'required',
-            "fax_sp"              => 'required',
             "cont_sp"             => 'required',
             "documento"           => 'required',
             "cond_pago"           => 'required',
@@ -110,7 +109,6 @@ class proveedoresController extends ApiResponseController
         }else{  
             try {
                 DB::beginTransaction();
-                    // return response()->json($datos);
                     proveedores::create($datos);
                     if (count($datos['cuentas_no']) !== 0) {
                         $datosd = null;
@@ -147,7 +145,7 @@ class proveedoresController extends ApiResponseController
                         }                        
                     }
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);
@@ -282,7 +280,7 @@ class proveedoresController extends ApiResponseController
                         }                        
                     }
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);

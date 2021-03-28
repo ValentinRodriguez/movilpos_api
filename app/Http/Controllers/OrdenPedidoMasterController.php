@@ -190,7 +190,7 @@ class OrdenPedidoMasterController extends ApiResponseController
                         return $this->errorResponse('No hay productos agragados a la transacción');
                     }
                     DB::commit();
-                    return $this->successResponse(1);
+                    return $this->successResponse($datosd);
                 } 
                 catch (\Exception $e ){
                     return $this->errorResponse($e);
@@ -250,7 +250,7 @@ class OrdenPedidoMasterController extends ApiResponseController
                 ordenPedidoDetalle::where('num_oc','=',$ordenPedido->num_oc) ->update(['estado' => 'eliminado']);
 
             DB::commit();
-            return $this->successResponse(1);
+            return $this->successResponse($ordenPedido);
         } catch (\Exception $e ){
             return $this->errorResponse($e);
         }

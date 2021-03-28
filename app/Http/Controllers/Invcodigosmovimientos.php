@@ -134,7 +134,7 @@ class Invcodigosmovimientos extends ApiResponseController
                         Invcuentasmovimientos::create($cuentas);
                     }
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 DB::rollBack();
@@ -251,7 +251,7 @@ class Invcodigosmovimientos extends ApiResponseController
                     }
 
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             } catch (\Exception $e ){
                 DB::rollBack();
                 $datos =$e;

@@ -140,7 +140,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                     }             
                 DB::commit();
 
-                return $this->successResponse(1);
+                return $this->successResponse($datosd);
             }
                 catch (\Exception $e ){
                     return $this->errorResponse($e);
@@ -243,11 +243,8 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
                                 return $this->errorResponseParams($errors->all()); 
-                            }     
-                          //  return  response()->json($datosd);                
-                            cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$entrada['ref'])->
-                            update($datosd);  
-                                                                   
+                            }
+                            cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$entrada['ref'])->update($datosd);                                                                     
                         }                        
                     }else{
                         return $this->errorResponse('No hay cuentas agragadas a la transacción');
@@ -256,18 +253,12 @@ class CgEntradasDiarioMasterController extends ApiResponseController
 
                 return $this->successResponse(1);
             }
-                catch (\Exception $e ){
-                    return $this->errorResponse($e);
-                }
+            catch (\Exception $e ){
+                return $this->errorResponse($e);
+            }
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\cgEntradasDiarioMaster  $cgEntradasDiarioMaster
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(cgEntradasDiarioMaster $cgEntradasDiarioMaster)
     {
         //

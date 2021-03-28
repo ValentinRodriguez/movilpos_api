@@ -85,7 +85,7 @@ class EmpresaController extends ApiResponseController
                     $datos['cod_cia'] = $idsecuencia;
                     Empresa::create($datos);
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);

@@ -10,7 +10,7 @@ use App\Librerias\cg_codigosRetenciones;
 class cgcatalogocontroller extends ApiResponseController
 {
     public function index() {
-        $catalogo = cgcatalogo::orderBy('nivel','asc')->
+        $catalogo = cgcatalogo::orderBy('cuenta_no', 'asc')->
                                 where('estado','=','ACTIVO')->                                
                                 select('cgcatalogo.*',DB::raw("CONCAT(cgcatalogo.cuenta_no,'-',cgcatalogo.descripcion) AS descripcion_c"))->
                                 get();
@@ -23,8 +23,7 @@ class cgcatalogocontroller extends ApiResponseController
 
     public function cuentasAux()
     {
-        $tipoProveedor = cgcatalogo::orderBy('id', 'asc')->
-                                     where([['nivel','=',3],['estado','=','ACTIVO']])->
+        $tipoProveedor = cgcatalogo::orderBy('cuenta_no', 'asc')->where([['nivel','=',3],['estado','=','ACTIVO']])->
                                      select('cgcatalogo.*',DB::raw("CONCAT(cgcatalogo.cuenta_no,'-',cgcatalogo.descripcion) AS descripcion_c"))->
                                      get();
         
@@ -74,7 +73,7 @@ class cgcatalogocontroller extends ApiResponseController
                 DB::beginTransaction();                
                     cgcatalogo::create($datos);
                 DB::commit();
-                return $this->successResponse(1);                
+                return $this->successResponse($datos);                
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);
