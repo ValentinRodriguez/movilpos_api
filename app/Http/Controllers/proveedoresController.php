@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Librerias\proveedores;
-use Illuminate\Http\Request;
 use App\Http\Controllers\ApiResponseController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Librerias\proveedores;
 use App\Librerias\cgcatalogo;
 use App\Librerias\ve_CondicionesPago;
 use App\Librerias\tipoMonedas;
 use App\Librerias\tipo_documento;
 use App\Librerias\coTipoProveedores;
 use App\Librerias\coCuentasProveedor;
-use App\librerias\pais;
+use App\Librerias\pais;
 
 class proveedoresController extends ApiResponseController
 {
