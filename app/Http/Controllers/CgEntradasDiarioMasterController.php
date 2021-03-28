@@ -11,11 +11,6 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class CgEntradasDiarioMasterController extends ApiResponseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $catalogo = cgEntradasDiarioMaster::where('estado','=','activo')->
@@ -32,21 +27,9 @@ class CgEntradasDiarioMasterController extends ApiResponseController
         }
         return $this->successResponse($catalogo);
     }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-    
+        
     public function store(Request $request)
-    {
-     
+    {     
         $maxid=0;
         $idsecuencia=0;
         $maxid= cgEntradasDiarioMaster::get('documento')->max();
@@ -152,13 +135,8 @@ class CgEntradasDiarioMasterController extends ApiResponseController
     public function show($id)
     {
         $catalogo = cgEntradasDiarioMaster::find($id);
-
-       // return response()->json($catalogo->ref);
-
         
-           $detalle= cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$catalogo->ref)->
-            get();
-            
+        $detalle= cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$catalogo->ref)->get();            
         $catalogo->cuentas=$detalle;
 
         if ($catalogo == null){

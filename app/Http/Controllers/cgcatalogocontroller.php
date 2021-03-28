@@ -39,7 +39,7 @@ class cgcatalogocontroller extends ApiResponseController
             'unique'   => 'El campo :attribute debe ser unico',
             'numeric'  => 'El campo :attribute debe ser numerico',
         ];
-
+        
         $validator = validator($datos, [
             'cuenta_no'         => 'required',
             'descripcion'       => 'required',
@@ -55,14 +55,9 @@ class cgcatalogocontroller extends ApiResponseController
             'selectivo_consumo' => 'required',
             'retencion'         => 'required',
             'codigo_isr'        => 'required',
-            'cuenta_resultado'  => 'required',
-            // 'estado_resultado'  => 'required',
-            // 'estado_bg'         => 'required',
-            // 'estado_a'          => 'required',
-            // 'estado_m'          => 'required',
+            'cuenta_resultado'  => 'required',         
             'codigo_estado'     => 'required',
-            'usuario_creador'   => 'required'
-  
+            'usuario_creador'   => 'required'  
         ],$messages);  
         
         if ($validator->fails()) {
@@ -98,7 +93,7 @@ class cgcatalogocontroller extends ApiResponseController
                         "nivel"               =>$request->input('nivel'),
                         "referencia"          =>$request->input('referencia'),
                         "catalogo"            =>$request->input('catalogo'),
-                        "depto"               =>$request->input('departamento'),
+                        "depto"               =>$request->input('depto'),
                         "codigo_estado"       =>$request->input('codigo_estado'),
                         "aplica_a"            =>$request->input('aplica_a'),
                         "cuenta_resultado"    =>$request->input('cuenta_resultado'),
@@ -115,7 +110,7 @@ class cgcatalogocontroller extends ApiResponseController
                         "tipo_cuenta"         =>$request->input('tipo_cuenta'),
                         "usuario_modificador" =>$request->input("usuario_modificador")
         );
-
+        // return response()->json($datos);
         $messages = [
              'required' => 'El campo :attribute es requerido.',
              'unique'   => 'El campo :attribute debe ser unico',
@@ -123,24 +118,31 @@ class cgcatalogocontroller extends ApiResponseController
         ];
 
         $validator = validator($datos, [
-            'descripcion'         => 'required|string|min:10|max:100',
-            "origen"              => 'required|string',
-            "nivel"               => 'required|numeric',
-            "referencia"          => 'required|string',
-            "catalogo"            => 'required|string',
-            "depto"               => 'required|string',
-            "codigo_estado"       => 'required|string|min:3',
-            "aplica_a"            => 'required|string',
-            "cuenta_resultado"    => 'required|string',
-            'usuario_modificador' => 'required|string'
+            'descripcion'         => 'required',
+            "origen"              => 'required',
+            "nivel"               => 'required',
+            "referencia"          => 'required',
+            "catalogo"            => 'required',
+            "depto"               => 'required',
+            "codigo_estado"       => 'required',
+            "aplica_a"            => 'required',
+            "cuenta_resultado"    => 'required',
+            'usuario_modificador' => 'required'
         ],$messages);
         
         if ($validator->fails()) {
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all());
         }else{
-            $catalogo->update($request->all());
-            return $this->successResponse($catalogo);
+            try {                
+                DB::beginTransaction();                
+                    $catalogo->update($request->all());
+                DB::commit();
+                return $this->successResponse($datos);                
+            }
+            catch (\Exception $e ){
+                return $this->errorResponse($e);
+            }
         }
     }
     
