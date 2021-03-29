@@ -235,13 +235,12 @@ class proveedoresController extends ApiResponseController
             try {
                 DB::beginTransaction();
                     proveedores::where([['cod_sp','=',$cod], ['cod_sp_sec','=',$codsec]])->update($datos);
-                    // return response()->json();
 
                     if (count($request->input("cuentas_no")) !== 0) {
 
                         $datosd = null;
                         $cuentas = $request->input("cuentas_no");
-
+                       
                         for ($i=0; $i < count($cuentas); $i++) {
                             
                             $coCuentasProveedor = coCuentasProveedor::where([['cod_sp','=',$datos['cod_sp']],
@@ -249,9 +248,10 @@ class proveedoresController extends ApiResponseController
                                                                 ['cuenta_no','=',$cuentas[$i]['cuenta_no']],
                                                                 ['co_cuentas_proveedores.estado','=','activo']])->
                                                             first();
-                                                            
+                            
                             $datosd = array('descripcion'=> $cuentas[$i]['descripcion'],	
                                             'cod_sp'	 => $datos['cod_sp'],
+                                            'cod_sp_sec' => $datos['cod_sp_sec'],
                                             'cuenta_no'	 => $cuentas[$i]['cuenta_no'],
                                             'porciento'  => $cuentas[$i]['porciento'],
                                             "estado"     =>'activo',
@@ -274,16 +274,20 @@ class proveedoresController extends ApiResponseController
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
                                 return $this->errorResponseParams($errors->all());                             
-                            }              
-
-                            $coCuentasProveedor->update($datosd);                                                    
+                            }    
+                                     
+                            if (empty($coCuentasProveedor)) {
+                                coCuentasProveedor::create($datosd);
+                            }else {                                       
+                                $coCuentasProveedor->update($datosd);                                   
+                            }         
                         }                        
                     }
                 DB::commit();
                 return $this->successResponse($datos);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             } 
         }
     }
