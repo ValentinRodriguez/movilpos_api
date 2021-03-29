@@ -178,7 +178,7 @@ class Invcodigosmovimientos extends ApiResponseController
         } else {
 
         $datos = $request->all();
-
+        // return response()->json($datos);
         $usuarios = array("id_tipomov" => $request->input("id_tipomov"),
                           "email"      => $request->input("email"));
 
@@ -222,13 +222,14 @@ class Invcodigosmovimientos extends ApiResponseController
                     );
                     
                     $totalCuentas = count($datos['cuenta_no']);
-
+                    
                     for ($i=0; $i < $totalCuentas; $i++) {
-                        
                         $cuenta = array("id_tipomov" => $id,
-                                         "cuenta_no" => $cuentas[$i],
+                                         "cuenta_no" => $cuentas[$i]['cuenta_no'],
                                          "estado"    => 'activo',
-                        );                        
+                        ); 
+
+                        $Invcuentasmovimientos = Invcuentasmovimientos::where([['id_tipomov','=',$id],['cuenta_no','=',$cuenta['cuenta_no']]])->first();
                         
                         $messages = [
                             'required' => 'El campo :attribute es requerido.',
@@ -246,23 +247,25 @@ class Invcodigosmovimientos extends ApiResponseController
                             $errors = $validator->errors();
                             return $this->errorResponseParams($errors->all());
                         }
-                        Invcuentasmovimientos::where([ ['id_tipomov','=',$id], ['cuenta_no','=',$cuentas[$i]] ])->update($cuenta);
-                        // Invcuentasmovimientos::create($cuenta);
+                        
+                        if (empty($Invcuentasmovimientos)) {
+                            Invcuentasmovimientos::create($cuenta);
+                        }else {
+                            Invcuentasmovimientos::where([ ['id_tipomov','=',$id], ['cuenta_no','=',$cuenta['cuenta_no']] ])->update($cuenta);
+                        }
                     }
 
                 DB::commit();
                 return $this->successResponse($datos);
             } catch (\Exception $e ){
                 DB::rollBack();
-                $datos =$e;
-                return $this->errorResponse($datos);
+                return $this->errorResponse($e->getMessage());
             }            
         }
         }
     }
    
     public function destroy($id){
-
         $codmov = Invtiposmovimientos::find($id);
         $cuentas = Invcuentasmovimientos::where('id_tipomov', '=', "$codmov->id_tipomov");
         $usuarios = InvUsuarioMovimiento::where('id_tipomov', '=', "$codmov->id_tipomov");

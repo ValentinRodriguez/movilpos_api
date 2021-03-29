@@ -84,7 +84,9 @@ class proveedoresController extends ApiResponseController
         ];
         
         $datos['cod_sp_sec'] = $idsecuencia;
-        
+
+        // return response()->json($datos);
+
         $validator = validator($datos, [
             'cod_sp'              => 'required',
             'cod_sp_sec'          => 'required',

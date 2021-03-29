@@ -163,7 +163,7 @@ class CpTransaccionesController extends ApiResponseController
             'numeric'  => 'El campo :attribute debe ser numerico',
             'required_if' => 'El campo :attribute no puede estar en blanco'
         ];
-        
+        // return response()->json($datosm);
         $validator = validator($datosm, [
             'estado'        => 'required',
             'num_doc'       => 'required',
