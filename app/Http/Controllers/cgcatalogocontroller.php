@@ -55,8 +55,7 @@ class cgcatalogocontroller extends ApiResponseController
             'selectivo_consumo' => 'required',
             'retencion'         => 'required',
             'codigo_isr'        => 'required',
-            'cuenta_resultado'  => 'required',         
-            'codigo_estado'     => 'required',
+            'cuenta_resultado'  => 'required',   
             'usuario_creador'   => 'required'  
         ],$messages);  
         
@@ -124,7 +123,6 @@ class cgcatalogocontroller extends ApiResponseController
             "referencia"          => 'required',
             "catalogo"            => 'required',
             "depto"               => 'required',
-            "codigo_estado"       => 'required',
             "aplica_a"            => 'required',
             "cuenta_resultado"    => 'required',
             'usuario_modificador' => 'required'

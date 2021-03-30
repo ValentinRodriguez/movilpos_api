@@ -50,6 +50,7 @@ Route::group([
     // FACTURAS PROVEEDORES
     Route::get('/autollenado/transacciones-cxp', 'CpTransaccionesController@autollenado');
     Route::get('/busqueda/transacciones-cxp', 'CpTransaccionesController@busqueda');
+    Route::get('/transacciones-cxp/verificancf', 'CpTransaccionesController@verificaNCF');
     Route::get('/facturas-pendientes/transacciones-cxp', 'CpTransaccionesController@facturasPendientes');
     Route::apiresource('/transacciones-cxp', 'CpTransaccionesController');
     

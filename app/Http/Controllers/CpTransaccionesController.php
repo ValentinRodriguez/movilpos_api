@@ -153,6 +153,7 @@ class CpTransaccionesController extends ApiResponseController
                        'tipo_fact'       => $request->input('tipo_fact'),
                        'codigo_fiscal'   => $request->input('codigo_fiscal'),
                        'itbis'           => $request->input('itbis'),
+                       'cuenta_proveedor'=> $request->input('cuenta_proveedor'),
                        'estado'          => $request->input('estado'),
                        'usuario_creador' => $request->input('usuario_creador'),
         );
@@ -163,7 +164,7 @@ class CpTransaccionesController extends ApiResponseController
             'numeric'  => 'El campo :attribute debe ser numerico',
             'required_if' => 'El campo :attribute no puede estar en blanco'
         ];
-        // return response()->json($datosm);
+        // return response()->json($request->cuentas_no);
         $validator = validator($datosm, [
             'estado'        => 'required',
             'num_doc'       => 'required',
@@ -213,34 +214,34 @@ class CpTransaccionesController extends ApiResponseController
 
                     if ($request->cuentas_no !== 0) {
                         $datosd = null;
-                        
-                        for ($i=0; $i < count($cuentas_no); $i++) {
+
+                        foreach ($cuentas_no as $key => $value) {
                             $datosd = array('fecha'           => $request->input('fecha_orig'),
                                             'cod_sp'          => $request->input('cod_sp'),
                                             'cod_sp_sec'      => $request->input('cod_sp_sec'),
                                             'factura'         => $request->input('num_doc'),
                                             'tipo_doc'        => $request->input('tipo_doc'),
-                                            'cuenta_no'       => $cuentas_no[$i]['cuenta_no'],
-                                            'departamento'    => isset($cuentas_no[$i]['departamento']['id']) ? $cuentas_no[$i]['departamento']['id'] : NULL,
+                                            'cuenta_no'       => $value['cuenta_no'],
+                                            'departamento'    => isset($value['departamento']['id']) ? $value['departamento']['id'] : NULL,
                                             'num_doc'         => $request->input('num_doc'),
-                                            'porciento'       => $cuentas_no[$i]['porciento'],
+                                            'porciento'       => $value['porciento'],
                                             // 'cod_aux'         => $request->input('cod_aux'),
                                             // 'cod_sec'         => $request->input('cod_sec'),
                                             'detalles'        => $request->input('detalle'),
-                                            'debito'          => isset($cuentas_no[$i]['debito']) ? $cuentas_no[$i]['debito'] : 0,
-                                            'credito'         => $cuentas_no[$i]['credito'],
+                                            'debito'          => isset($value['debito']) ? $value['debito'] : 0,
+                                            'credito'         => isset($value['credito']) ? $value['credito'] : 0,
                                             //'tipo_fact'       => $request->input('tipo_fact'),
                                             'cod_cia'         => $request->input('cod_cia'),
                                             'usuario_creador' => $request->input('usuario_creador'),
-                                            'estado'          =>'activo',
+                                            'estado'          =>'activo'
                             );
-                            // return response()->json($datosd); 
+
                             $messages = [
                                 'required' => 'El campo :attribute es requerido.',
                                 'unique'   => 'El campo :attribute debe ser unico',
                                 'numeric'  => 'El campo :attribute debe ser numerico',
                             ];
-            
+
                             $validator = validator($datosd, [
                                 // 'num_oc'          => 'required',
                                 'fecha'           => 'required',
@@ -252,8 +253,8 @@ class CpTransaccionesController extends ApiResponseController
                                 'porciento'       => 'required',
                                 // 'departamento'    => 'required',
                                 'num_doc'         => 'required',
-                                'debito'          => 'required',
-                                'credito'         => 'required',
+                                // 'debito'          => 'required',
+                                // 'credito'         => 'required',
                                 'cod_cia'         => 'required',
                                 'estado'          => 'required',
                                 'usuario_creador' => 'required',
@@ -263,12 +264,39 @@ class CpTransaccionesController extends ApiResponseController
                                 $errors = $validator->errors();
                                 return $this->errorResponseParams($errors->all()); 
                             }                          
-                            //return response()->json($datosd);              
-                            cpTransaccionesDetalles::create($datosd);                                                   
-                        }                        
+                                    
+                            
+                            cpTransaccionesDetalles::create($datosd);
+                            
+
+                            if ($value['cuenta_no'] == end($cuentas_no)['cuenta_no']) {
+                                
+                                $datosf = array('fecha'           => $request->input('fecha_orig'),
+                                                'cod_sp'          => $request->input('cod_sp'),
+                                                'cod_sp_sec'      => $request->input('cod_sp_sec'),
+                                                'factura'         => $request->input('num_doc'),
+                                                'tipo_doc'        => $request->input('tipo_doc'),
+                                                'cuenta_no'       => $request->input('cuenta_proveedor'),
+                                                'departamento'    => isset($value['departamento']['id']) ? $value['departamento']['id'] : NULL,
+                                                'num_doc'         => $request->input('num_doc'),
+                                                'porciento'       => $value['porciento'],
+                                                // 'cod_aux'         => $request->input('cod_aux'),
+                                                // 'cod_sec'         => $request->input('cod_sec'),
+                                                'detalles'        => 'cuenta ghost',
+                                                'debito'          => 0,
+                                                'credito'         => intval($request->input('valor')) - intval($request->input('retencion')),
+                                                //'tipo_fact'       => $request->input('tipo_fact'),
+                                                'cod_cia'         => $request->input('cod_cia'),
+                                                'usuario_creador' => $request->input('usuario_creador'),
+                                                'estado'          =>'activo'
+                                );
+                                cpTransaccionesDetalles::create($datosf);
+                            }
+                        }                     
                     }else{
                         return $this->errorResponse(null,'No hay cuentas agragadas a la transacción');
-                    }               
+                    } 
+                    // return response()->json(1);     
                 DB::commit();
                 return $this->successResponse($datosm);
             } 
@@ -505,6 +533,23 @@ class CpTransaccionesController extends ApiResponseController
         if($datos == null){
             return $this->errorResponse('No existe transacciones con esta condicion');
         }
+        return $this->successResponse($datos);
+    }
+
+    public function verificaNCF(Request $request){
+        $ncf = $request->get('ncf');
+        $codspsec = $request->get('proveedor');
+        $myArray = explode('-',$codspsec);
+       
+        $cod = $myArray[0];
+        $codsec = $myArray[1];
+
+        $datos = cpTransacciones::where([['cp_transacciones.cod_sp','=',$cod],
+                                         ['cp_transacciones.cod_sp_sec',$codsec],
+                                         ['cp_transacciones.ncf',$ncf],
+                                         ['estado','=','ACTIVO']])->
+                                  first();      
+
         return $this->successResponse($datos);
     }
 }
