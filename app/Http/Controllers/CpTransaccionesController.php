@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Librerias\cpTransacciones;
 use App\Librerias\cpTransaccionesDetalles;
-use Illuminate\Http\Request;
 use App\Librerias\proveedores;
 use App\Librerias\coCuentasProveedor;
 use App\Librerias\ve_CondicionesPago;
@@ -12,8 +11,11 @@ use App\Librerias\tipoMonedas;
 use App\Librerias\cgTipoGastos;
 use App\Librerias\Departamento;
 use App\Librerias\Empresa;
+use App\Librerias\cgPeriodosFiscales;
+
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class CpTransaccionesController extends ApiResponseController
 {
@@ -263,11 +265,9 @@ class CpTransaccionesController extends ApiResponseController
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
                                 return $this->errorResponseParams($errors->all()); 
-                            }                          
-                                    
+                            }                                                              
                             
-                            cpTransaccionesDetalles::create($datosd);
-                            
+                            cpTransaccionesDetalles::create($datosd);                            
 
                             if ($value['cuenta_no'] == end($cuentas_no)['cuenta_no']) {
                                 
@@ -282,7 +282,7 @@ class CpTransaccionesController extends ApiResponseController
                                                 'porciento'       => $value['porciento'],
                                                 // 'cod_aux'         => $request->input('cod_aux'),
                                                 // 'cod_sec'         => $request->input('cod_sec'),
-                                                'detalles'        => 'cuenta ghost',
+                                                'detalles'        => $request->input('detalle'),
                                                 'debito'          => 0,
                                                 'credito'         => intval($request->input('valor')) - intval($request->input('retencion')),
                                                 //'tipo_fact'       => $request->input('tipo_fact'),
@@ -482,34 +482,34 @@ class CpTransaccionesController extends ApiResponseController
     {
         try{
             DB::beginTransaction(); 
-                $facturas = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
-                                                join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],
-                                                                    ['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
-                                                select('cp_transacciones.*',
-                                                    'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
-                                                    'proveedores.nom_sp as proveedor_nombre')->
-                                                orderBy('cp_transacciones.created_at', 'desc')->
-                                                where([['cp_transacciones. id','=',$id],['cp_transacciones.tipo_doc','!=','FT']])->
-                                                get();
-                if (count($facturas) != 0) {
-                    return $this->errorResponse(null, 'Esta transacción no puede ser eliminada porque ya tiene pagos realizados.');
-                }
 
                 $transaccionMaster = cpTransacciones::find($id);
+                $fechaComoEntero = strtotime($transaccionMaster->fecha_orig);
+                $anio = date("Y", $fechaComoEntero);
+                $mes = date("m", $fechaComoEntero);
+                // $dia = date("d", $fechaComoEntero);
 
-                if ($transaccionMaster == null){
-                    return $this->errorResponse(null,"Registro no Existe");
+                $periodo = cgPeriodosFiscales::where([['anio','=',$anio],['mes','=',$mes]])->first();
+
+                $fecha_inicio = strtotime($periodo->fecha_inicio);
+                $fecha_fin = strtotime($periodo->fecha_corte);
+                
+                if( !(($fechaComoEntero >= $fecha_inicio) && ($fechaComoEntero <= $fecha_fin)) ) {           
+                    return $this->errorResponse(null, 'Esta transacción esta fuera del periodo fiscal.');        
                 }
                 
-                $transaccionMaster->update(['estado' => 'eliminado']);
-
+                if (count($transaccionMaster) != 0) {
+                    return $this->errorResponse(null, 'Esta transacción no puede ser eliminada porque ya tiene pagos realizados.');
+                }
                 
                 $transaccionDetalle = cpTransaccionesDetalles::where([['cp_transacciones_detalles.num_doc','=',$transaccionMaster->num_doc],
                                                                         ['cp_transacciones_detalles.cod_sp','=',$transaccionMaster->cod_sp],
                                                                         ['cp_transacciones_detalles.cod_sp_sec','=',$transaccionMaster->cod_sp_sec],
                                                                         ['cp_transacciones_detalles.estado','=', 'activo']])->
                                                                 get();
-                
+
+                $transaccionMaster->update(['estado' => 'eliminado']);
+
                 for ($i=0; $i < count($transaccionDetalle); $i++) {                   
                     $transaccion = cpTransaccionesDetalles::find($transaccionDetalle[$i]['id']);
                     $transaccion->update(['estado' => 'eliminado']);
