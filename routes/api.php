@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Route;
 // RUTAS DEL LOGIN NUEVAMENTE
 Route::post('login', 'AuthController@login');
 Route::post('logout', 'AuthController@logout');
-Route::get('/busqueda/ordenescompras/{orden}', 'CoOrdenesMasterController@buscaOrdenCompra');
-Route::get('/reporte/analisis-cxp', 'CpAnalisisSaldoPendienteController@reporte');
 
 // Route::group([
 //     'middleware' => ['isLogged']
@@ -15,9 +13,9 @@ Route::get('/reporte/analisis-cxp', 'CpAnalisisSaldoPendienteController@reporte'
 //     Route::apiresource('/invproductos', 'InvProductosController');
 // });
 
-Route::group([
-    'middleware' => ['jwt.auth']
-], function ($router) {   
+// Route::group([
+//     'middleware' => ['jwt.auth']
+// ], function ($router) {   
     Route::post('usuario-logado', 'AuthController@getAuthUser');
     Route::post('desactivar', 'AuthController@unLockLogin');
     Route::post('signup', 'AuthController@signup');
@@ -52,6 +50,7 @@ Route::group([
     Route::get('/busqueda/transacciones-cxp', 'CpTransaccionesController@busqueda');
     Route::get('/transacciones-cxp/verificancf', 'CpTransaccionesController@verificaNCF');
     Route::get('/facturas-pendientes/transacciones-cxp', 'CpTransaccionesController@facturasPendientes');
+    Route::get('/reporte/analisis-cxp', 'CpAnalisisSaldoPendienteController@reporte');
     Route::apiresource('/transacciones-cxp', 'CpTransaccionesController');
     
     // HOME
@@ -239,6 +238,7 @@ Route::group([
     Route::post('/actualizarcompras/{id}', 'CoOrdenesMasterController@actualizar');
     Route::get('/reporte/orden-compras/{id}', 'CoOrdenesMasterController@verReporte')->name('verPDF');
     Route::get('/reporte/orden-comprash/{id}', 'CoOrdenesMasterController@verReporteH')->name('verPDFh');
+    Route::get('/busqueda/ordenescompras/{orden}', 'CoOrdenesMasterController@buscaOrdenCompra');
     Route::apiresource('/ordenescompras', 'CoOrdenesMasterController');
 
     //ORDENES DE PEDIDOS
@@ -291,4 +291,4 @@ Route::group([
     Route::get('busqueda/email','AuthController@busquedaEmail');
     Route::get('busqueda/numemp','AuthController@busquedaNumEmp');
     Route::apiresource('users','AuthController');
-});
+// });

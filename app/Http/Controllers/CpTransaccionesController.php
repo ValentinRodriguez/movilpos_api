@@ -10,6 +10,8 @@ use App\Librerias\ve_CondicionesPago;
 use App\Librerias\tipoMonedas;
 use App\Librerias\cgTipoGastos;
 use App\Librerias\Departamento;
+use App\Librerias\cpTransaccionesHistoriales;
+use App\Librerias\cpTransaccionesHistorialesDetalle;
 use App\Librerias\Empresa;
 use App\Librerias\cgPeriodosFiscales;
 
@@ -25,7 +27,7 @@ class CpTransaccionesController extends ApiResponseController
                                     join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
                                     select('cp_transacciones.*','tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa','proveedores.nom_sp as proveedor_nombre')->
                                     orderBy('cp_transacciones.created_at', 'desc')->
-                                    where('cp_transacciones.estado','=','ACTIVO')->
+                                    where([['cp_transacciones.estado','=','ACTIVO'],['cp_transacciones.tipo_doc','=','FT']])->
                                     get();
 
         foreach ($facturas as $key => $value) {
@@ -267,31 +269,7 @@ class CpTransaccionesController extends ApiResponseController
                                 return $this->errorResponseParams($errors->all()); 
                             }                                                              
                             
-                            cpTransaccionesDetalles::create($datosd);                            
-
-                            if ($value['cuenta_no'] == end($cuentas_no)['cuenta_no']) {
-                                
-                                $datosf = array('fecha'           => $request->input('fecha_orig'),
-                                                'cod_sp'          => $request->input('cod_sp'),
-                                                'cod_sp_sec'      => $request->input('cod_sp_sec'),
-                                                'factura'         => $request->input('num_doc'),
-                                                'tipo_doc'        => $request->input('tipo_doc'),
-                                                'cuenta_no'       => $request->input('cuenta_proveedor'),
-                                                'departamento'    => isset($value['departamento']['id']) ? $value['departamento']['id'] : NULL,
-                                                'num_doc'         => $request->input('num_doc'),
-                                                'porciento'       => $value['porciento'],
-                                                // 'cod_aux'         => $request->input('cod_aux'),
-                                                // 'cod_sec'         => $request->input('cod_sec'),
-                                                'detalles'        => $request->input('detalle'),
-                                                'debito'          => 0,
-                                                'credito'         => intval($request->input('valor')) - intval($request->input('retencion')),
-                                                //'tipo_fact'       => $request->input('tipo_fact'),
-                                                'cod_cia'         => $request->input('cod_cia'),
-                                                'usuario_creador' => $request->input('usuario_creador'),
-                                                'estado'          =>'activo'
-                                );
-                                cpTransaccionesDetalles::create($datosf);
-                            }
+                            cpTransaccionesDetalles::create($datosd);                           
                         }                     
                     }else{
                         return $this->errorResponse(null,'No hay cuentas agragadas a la transacción');
@@ -478,16 +456,18 @@ class CpTransaccionesController extends ApiResponseController
         }
     }
     
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try{
             DB::beginTransaction(); 
 
+                // VALIDACION DE PERIODO FISCAL //
                 $transaccionMaster = cpTransacciones::find($id);
+                $usuario = $request->get('usuario_creador');
+
                 $fechaComoEntero = strtotime($transaccionMaster->fecha_orig);
                 $anio = date("Y", $fechaComoEntero);
                 $mes = date("m", $fechaComoEntero);
-                // $dia = date("d", $fechaComoEntero);
 
                 $periodo = cgPeriodosFiscales::where([['anio','=',$anio],['mes','=',$mes]])->first();
 
@@ -497,23 +477,88 @@ class CpTransaccionesController extends ApiResponseController
                 if( !(($fechaComoEntero >= $fecha_inicio) && ($fechaComoEntero <= $fecha_fin)) ) {           
                     return $this->errorResponse(null, 'Esta transacción esta fuera del periodo fiscal.');        
                 }
-                
-                if (count($transaccionMaster) != 0) {
-                    return $this->errorResponse(null, 'Esta transacción no puede ser eliminada porque ya tiene pagos realizados.');
+                // ************************************************************************************* //
+
+
+                // VALIDACION DE PAGOS REALIZADOS //
+                $cpPagosHechos = cpTransacciones::where([['tipo_doc','!=','FT'],
+                                                         ['aplica_a','=',$transaccionMaster->num_doc],
+                                                         ['cod_sp','=',$transaccionMaster->cod_sp],
+                                                         ['cod_sp_sec','=',$transaccionMaster->cod_sp_sec],
+                                                         ['estado','=','activo']])->
+                                                   get();
+                if (count($cpPagosHechos)) {
+                    return $this->errorResponse(null, 'Esta transacción presenta pagos realizados.');
                 }
+                // ************************************************************************************* //
                 
-                $transaccionDetalle = cpTransaccionesDetalles::where([['cp_transacciones_detalles.num_doc','=',$transaccionMaster->num_doc],
-                                                                        ['cp_transacciones_detalles.cod_sp','=',$transaccionMaster->cod_sp],
-                                                                        ['cp_transacciones_detalles.cod_sp_sec','=',$transaccionMaster->cod_sp_sec],
-                                                                        ['cp_transacciones_detalles.estado','=', 'activo']])->
+                $transaccionMaster->delete(); // BORRAMOS LA FACTURA
+
+                // BUSCAMOS LOS DETALLES
+                $cpPagosHechosDetalles = cpTransaccionesDetalles::where([['tipo_doc','=','FT'],
+                                                                        ['factura','=',$transaccionMaster->num_doc],
+                                                                        ['cod_sp','=',$transaccionMaster->cod_sp],
+                                                                        ['cod_sp_sec','=',$transaccionMaster->cod_sp_sec],
+                                                                        ['estado','=','activo']])->
                                                                 get();
+                
+                $datosm =array('num_doc'         => $transaccionMaster->num_doc,
+                               'fecha_orig'      => $transaccionMaster->fecha_orig,
+                               'fecha_proc'      => $transaccionMaster->fecha_proc,
+                               'valor'           => $transaccionMaster->valor,
+                               'cond_pago'       => $transaccionMaster->cond_pago,
+                               'orden_no'        => $transaccionMaster->orden_no,
+                               'monto_itbi'      => $transaccionMaster->monto_itbi,
+                               'valor_orden'     => $transaccionMaster->valor_orden,
+                               'valor_recibido'  => $transaccionMaster->valor_recibido,
+                               'tipo_doc'        => $transaccionMaster->tipo_doc,
+                               'cuotas'          => $transaccionMaster->cuotas,
+                               'cod_sp'          => $transaccionMaster->cod_sp,
+                               'cod_sp_sec'      => $transaccionMaster->cod_sp_sec,
+                               'moneda'          => $transaccionMaster->moneda,
+                               'bienes'          => $transaccionMaster->bienes,
+                               'servicios'       => $transaccionMaster->servicios,
+                               'retencion'       => $transaccionMaster->retencion,
+                               'detalle'         => $transaccionMaster->detalle,
+                               'ncf'             => $transaccionMaster->ncf,
+                               'cod_cia'         => $transaccionMaster->cod_cia,
+                               'tipo_orden'      => $transaccionMaster->tipo_orden,
+                               'aplica_a'        => $transaccionMaster->num_doc,
+                               'cta_ctble'       => $transaccionMaster->cta_ctble,
+                               'tipo_fact'       => $transaccionMaster->tipo_fact,
+                               'codigo_fiscal'   => $transaccionMaster->codigo_fiscal,
+                               'itbis'           => $transaccionMaster->itbis,
+                               'cuenta_proveedor'=> $transaccionMaster->cuenta_proveedor,
+                               'estado'          => 'activo',
+                               'usuario_creador' => 'test'
+                );
 
-                $transaccionMaster->update(['estado' => 'eliminado']);
-
-                for ($i=0; $i < count($transaccionDetalle); $i++) {                   
-                    $transaccion = cpTransaccionesDetalles::find($transaccionDetalle[$i]['id']);
-                    $transaccion->update(['estado' => 'eliminado']);
+                // GUARDAMOS EN LA TABLA HISTORICA DE TRANSACCIONES DE PAGOS
+                cpTransaccionesHistoriales::create($datosm);                
+                
+                // GUARDAMOS EN LA TABLA HISTORICA DE TRANSACCIONES DE DETALLES DE PAGOS
+                foreach ($cpPagosHechosDetalles as $key => $value) {
+                    $datosd = array('fecha'           => $transaccionMaster->fecha_orig,
+                                    'cod_sp'          => $transaccionMaster->cod_sp,
+                                    'cod_sp_sec'      => $transaccionMaster->cod_sp_sec,
+                                    'factura'         => $transaccionMaster->num_doc,
+                                    'tipo_doc'        => $transaccionMaster->tipo_doc,
+                                    'cuenta_no'       => $value['cuenta_no'],
+                                    'departamento'    => isset($value['departamento']['id']) ? $value['departamento']['id'] : NULL,
+                                    'num_doc'         => $transaccionMaster->num_doc,
+                                    'porciento'       => $value['porciento'],
+                                    'detalles'        => $transaccionMaster->detalle,
+                                    'debito'          => isset($value['debito']) ? $value['debito'] : 0,
+                                    'credito'         => isset($value['credito']) ? $value['credito'] : 0,
+                                    'cod_cia'         => $transaccionMaster->cod_cia,
+                                    'usuario_creador' => $transaccionMaster->usuario_creador,
+                                    'estado'          =>'activo'
+                    );
+                    cpTransaccionesHistorialesDetalle::create($datosd);
                 }
+
+                // ELIMINAMOS LOS REGISTROS DE LA TABLA DETALLE DE TRANSACCIONES DE PAGOS
+                DB::table('cp_transacciones_detalles')->where('factura','=',$transaccionMaster->num_doc)->delete();
             DB::commit();
             return $this->successResponse(1);
         } catch (\Exception $e ){

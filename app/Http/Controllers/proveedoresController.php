@@ -120,10 +120,10 @@ class proveedoresController extends ApiResponseController
                                             'cod_sp'	 => $datos['cod_sp'],
                                             'cod_sp_sec' => $datos['cod_sp_sec'],
                                             'cuenta_no'	 => $datos['cuentas_no'][$i]['cuenta_no'],
-                                            'porciento'  => $datos['cuentas_no'][$i]['porciento'],
+                                            'porciento'  => isset($datos['cuentas_no'][$i]['porciento']) ? $datos['cuentas_no'][$i]['porciento'] : 0,
                                             "estado"     =>'activo',
                             );
-                                                        
+                            // return response()->json($datosd);
                             $messages = [
                                 'required' => 'El campo :attribute es requerido.',
                                 'unique'   => 'El campo :attribute debe ser unico',

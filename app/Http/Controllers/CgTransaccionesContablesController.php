@@ -83,13 +83,12 @@ class CgTransaccionesContablesController extends ApiResponseController
         
         $datosm['documento'] = $transaccion;        
         $datosm['ref'] = $datosm['tipo_doc'].'.'.str_pad($transaccion, 6, "0", STR_PAD_LEFT);
-
+        
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
             'numeric'  => 'El campo :attribute debe ser numerico',
-        ];
-        
+        ];        
 
         $validator = validator($datosm, [
             'tipo_doc'        => 'required',
@@ -149,11 +148,10 @@ class CgTransaccionesContablesController extends ApiResponseController
                             ];
 
                             $validator = validator($datosc, [
-                                'ref'             => 'required',
                                 'tipo_orden'      => 'required',
                                 'num_doc'         => 'required',
                                 'valor_pendiente' => 'required',
-                                'fecha'           => 'required',
+                                // 'fecha'           => 'required',
                                 'monto_itbi'      => 'required',
                                 'tipo_doc'        => 'required',
                                 'moneda'          => 'required',
@@ -165,6 +163,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                                 $errors = $validator->errors();
                                 return $this->errorResponseParams($errors->all()); 
                             }                          
+                            // return response()->json($datosc);
                             cpTransacciones::create($datosc);
                         }                        
                     }
