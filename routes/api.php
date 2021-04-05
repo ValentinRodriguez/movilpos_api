@@ -226,6 +226,7 @@ Route::post('logout', 'AuthController@logout');
     //PROVEEDORES
     Route::get('/busqueda/proveedores', 'proveedoresController@busquedaTitulo');
     Route::get('/autollenado/proveedores', 'proveedoresController@autollenado');
+    Route::post('/proveedores/catalogo', 'proveedoresController@catalogoProveedores');    
     Route::apiresource('/proveedores', 'proveedoresController');
 
     //TIPO PROVEEDORES

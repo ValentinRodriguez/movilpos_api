@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\ApiResponseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade as PDF;
+use App\Http\Controllers\ApiResponseController;
 use App\Librerias\proveedores;
 use App\Librerias\cgcatalogo;
 use App\Librerias\ve_CondicionesPago;
@@ -13,6 +14,7 @@ use App\Librerias\tipo_documento;
 use App\Librerias\coTipoProveedores;
 use App\Librerias\coCuentasProveedor;
 use App\Librerias\pais;
+use PhpParser\Node\Stmt\Foreach_;
 
 class proveedoresController extends ApiResponseController
 {
@@ -318,27 +320,12 @@ class proveedoresController extends ApiResponseController
         try {
             $respuesta = array();
             
-            $catalogo = cgcatalogo::orderBy('id', 'asc')->
-                                where([['nivel','=',3],['estado','=','ACTIVO']])->
-                                get();
-                                
-            $condiciones = ve_CondicionesPago::orderBy('id', 'asc')->
-                                where('estado','=','activo')->
-                                get();
-                                                               
-            $monedas = tipoMonedas::orderBy('created_at', 'desc')->
-                                where('estado','=','ACTIVO')->
-                                get();
-                                
-            $tipoProveedor = coTipoProveedores::orderBy('id', 'asc')->
-                                where('estado','=','ACTIVO')->
-                                get();
-            $tipoDocumento = tipo_documento::orderBy('tipo_documento', 'asc')->
-                                where('estado','=','ACTIVO')->
-                                get();
-
-            $paises = pais::orderBy('created_at', 'desc')->
-                                get();                  
+            $catalogo = cgcatalogo::orderBy('id', 'asc')->where([['nivel','=',3],['estado','=','ACTIVO']])->get();                                
+            $condiciones = ve_CondicionesPago::orderBy('id', 'asc')->where('estado','=','activo')->get();
+            $monedas = tipoMonedas::orderBy('created_at', 'desc')->where('estado','=','ACTIVO')->get();                                
+            $tipoProveedor = coTipoProveedores::orderBy('id', 'asc')->where('estado','=','ACTIVO')->get();
+            $tipoDocumento = tipo_documento::orderBy('tipo_documento', 'asc')->where('estado','=','ACTIVO')->get();
+            $paises = pais::orderBy('created_at', 'desc')->get();                  
 
             $_catalogo = array("label" => 'catalogo', "data" => $catalogo, "icono" => 'fas fa-dolly-flatbed');
             $_condiciones = array("label" => 'condiciones', "data" => $condiciones, "icono" => 'fas fa-dolly-flatbed');
@@ -357,6 +344,42 @@ class proveedoresController extends ApiResponseController
             return $this->successResponse($respuesta);      
         } catch (\Exception $e ){
             return $this->errorResponse($e);
+        }
+    }
+
+    public function catalogoProveedores(Request $request) {
+        $datos = $request->all();
+        $existeData = false;
+
+        foreach ($datos as $key => $value) {                       
+            if ($value != "" && $key != 'sessionId') {                
+                $existeData = true;
+                return response()->json($key.'-'.$value); 
+            }
+        }
+
+        if ($existeData == false) {
+            $proveedores = proveedores::join('ve_cond_pagos','ve_cond_pagos.cond_pago','=','proveedores.cond_pago')->
+                                        select('proveedores.nom_sp','proveedores.dir_sp','proveedores.tel_sp','proveedores.email','proveedores.cont_sp',
+                                        've_cond_pagos.descripcion as condicion_pago')->
+                                        get();
+                                        
+            return $this->successResponse($proveedores); 
+        }else{
+            $proveedores = proveedores::join('ve_cond_pagos','ve_cond_pagos.cond_pago','=','proveedores.cond_pago')->
+                                        where('nom_sp','=',$datos['nom_sp'])->
+                                        orWhere('documento','=',$datos['documento'])->
+                                        orWhere('email','=',$datos['email'])->
+                                        orWhere('tel_sp','=',$datos['tel_sp'])->
+                                        orWhere('tipo_doc','=',$datos['tipo_doc'])->
+                                        orWhere('moneda','=',$datos['id_moneda'])->
+                                        orWhere('cont_sp','=',$datos['cont_sp'])->
+                                        orWhere('id_pais','=',$datos['id_pais'])->
+                                        orWhere('id_ciudad','=',$datos['id_ciudad'])->
+                                        select('proveedores.nom_sp','proveedores.dir_sp','proveedores.tel_sp','proveedores.email','proveedores.cont_sp',
+                                               've_cond_pagos.descripcion as condicion_pago')->
+                                        get();
+        return $this->successResponse($proveedores); 
         }
     }
 
