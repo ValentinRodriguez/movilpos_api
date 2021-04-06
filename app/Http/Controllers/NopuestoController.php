@@ -34,7 +34,6 @@ class NopuestoController extends ApiResponseController
         $validator = validator($datos, ["descripcion"     => 'required',
                                        "titulo"          => 'required',
                                        "sueldo_inicial"  => 'required',
-                                       "sueldo_actual"   => 'required',
                                        "usuario_creador" => 'required',
                                        "estado"          => 'required'],
                                         $messages);

@@ -203,6 +203,7 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/busqueda/vendedores', 'noempleadosController@buscaVendedores');
     Route::get('/busqueda/supervisores/{id}', 'noempleadosController@buscaSupervisores');
     Route::get('/autollenado/empleados', 'noempleadosController@autollenado');
+    Route::get('/bancos', 'noempleadosController@bancos');
     Route::apiresource('/noempleados', 'noempleadosController');
 
     // Facturas

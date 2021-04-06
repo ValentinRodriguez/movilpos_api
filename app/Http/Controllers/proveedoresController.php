@@ -354,7 +354,6 @@ class proveedoresController extends ApiResponseController
         foreach ($datos as $key => $value) {                       
             if ($value != "" && $key != 'sessionId') {                
                 $existeData = true;
-                return response()->json($key.'-'.$value); 
             }
         }
 
@@ -368,14 +367,16 @@ class proveedoresController extends ApiResponseController
         }else{
             $proveedores = proveedores::join('ve_cond_pagos','ve_cond_pagos.cond_pago','=','proveedores.cond_pago')->
                                         where('nom_sp','=',$datos['nom_sp'])->
-                                        orWhere('documento','=',$datos['documento'])->
-                                        orWhere('email','=',$datos['email'])->
-                                        orWhere('tel_sp','=',$datos['tel_sp'])->
-                                        orWhere('tipo_doc','=',$datos['tipo_doc'])->
-                                        orWhere('moneda','=',$datos['id_moneda'])->
-                                        orWhere('cont_sp','=',$datos['cont_sp'])->
-                                        orWhere('id_pais','=',$datos['id_pais'])->
-                                        orWhere('id_ciudad','=',$datos['id_ciudad'])->
+                                        orWhere([
+                                            ['documento','=',$datos['documento']],
+                                            ['email','=',$datos['email']],
+                                            ['tel_sp','=',$datos['tel_sp']],
+                                            ['tipo_doc','=',$datos['tipo_doc']],
+                                            ['moneda','=',$datos['id_moneda']],
+                                            ['cont_sp','=',$datos['cont_sp']],
+                                            ['id_pais','=',$datos['id_pais']],
+                                            ['id_ciudad','=',$datos['id_ciudad']],
+                                        ])->
                                         select('proveedores.nom_sp','proveedores.dir_sp','proveedores.tel_sp','proveedores.email','proveedores.cont_sp',
                                                've_cond_pagos.descripcion as condicion_pago')->
                                         get();
