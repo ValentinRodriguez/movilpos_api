@@ -27,7 +27,49 @@ class proveedores extends Model
 
     public function ScopePais($query, $parametro) {                        
         if ($parametro) {
-            return $query->where('id_pais', 'LIKE', "%$parametro%");                
+            return $query->where('id_pais', '=', "$parametro");                
+        }
+    }
+
+    public function ScopeCiudad($query, $parametro) {                        
+        if ($parametro) {
+            return $query->where('id_ciudad', '=', "$parametro");                
+        }
+    }
+
+    public function ScopeDocumento($query, $parametro) {                        
+        if ($parametro) {
+            return $query->where('documento', '=', "$parametro");                
+        }
+    }
+
+    public function ScopeEmail($query, $parametro) {                        
+        if ($parametro) {
+            return $query->where('email', '=', "$parametro");                
+        }
+    }
+
+    public function ScopeTelefono($query, $parametro) {                        
+        if ($parametro) {
+            return $query->where('tel_sp', '=', "$parametro");                
+        }
+    }
+
+    public function ScopeTipoDoc($query, $parametro) {                        
+        if ($parametro) {
+            return $query->where('tipo_doc', '=', "$parametro");                
+        }
+    }
+
+    public function ScopeMoneda($query, $parametro) {                        
+        if ($parametro) {
+            return $query->where('moneda', '=', "$parametro");                
+        }
+    }
+
+    public function ScopeContacto($query, $parametro) {                        
+        if ($parametro) {
+            return $query->where('moneda', '=', "$parametro");                
         }
     }
 }

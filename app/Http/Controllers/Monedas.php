@@ -22,6 +22,7 @@ class Monedas extends ApiResponseController
         $datos = array(
             "divisa"              =>$request->input("divisa"),
             "simbolo"             =>$request->input("simbolo"),
+            "descripcion"         =>$request->input("descripcion"),
             "usuario_creador"     =>$request->input("usuario_creador"),
             "estado"              =>$request->input("estado")
         );
@@ -34,6 +35,7 @@ class Monedas extends ApiResponseController
 
         $validator = validator($datos, [
             'divisa'          => 'required|string',
+            'descripcion'  => 'required|string',
             'simbolo'         => 'required|string',
             'usuario_creador' => 'required|string',
             'estado'          => 'required|string'
@@ -69,10 +71,11 @@ class Monedas extends ApiResponseController
         $moneda = tipoMonedas::find($id);
 
         $datos = array(
-            "divisa"              =>$request->input("divisa"),
-            "simbolo"             =>$request->input("simbolo"),
-            "usuario_creador"     =>$request->input("usuario_creador"),
-            "estado"              =>$request->input("estado")
+            "divisa"          =>$request->input("divisa"),
+            "simbolo"         =>$request->input("simbolo"),
+            "descripcion"     =>$request->input("descripcion"),
+            "usuario_creador" =>$request->input("usuario_creador"),
+            "estado"          =>$request->input("estado")
         );
 
         $messages = [
@@ -84,6 +87,7 @@ class Monedas extends ApiResponseController
         $validator = validator($datos, [
             'divisa'          => 'required|string',
             'simbolo'         => 'required|string',
+            'descripcion'    => 'required|string',
             'usuario_creador' => 'required|string',
             'estado'          => 'required|string'
         ],$messages);

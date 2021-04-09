@@ -11,9 +11,10 @@ use App\Librerias\Departamento;
 use App\Librerias\cgEntradasDiarioMaster;
 use App\Librerias\cpTransacciones;
 use App\Librerias\secuencias;
-
+use App\Librerias\cpTransaccionesDetalles;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class CgTransaccionesContablesController extends ApiResponseController
 {    
@@ -386,5 +387,26 @@ class CgTransaccionesContablesController extends ApiResponseController
                                 first();
 
         return $this->successResponse($secuencia);
+    }
+
+    public function gastosPorDepartamentos(Request $request) {
+        $datos = $request->all();
+        $proveedores = cpTransaccionesDetalles::where([['proveedores.estado','=','activo'],
+                                                       ['nodepartamentos.estado','=','activo'],
+                                                       ['cp_transacciones_detalles.estado','=','activo']])->
+                                                cuenta($datos['cuenta_no'])->
+                                                fechaCreacion($datos['fecha_inicial'],$datos['fecha_final'])->
+                                                leftJoin('nodepartamentos','nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
+                                                join('proveedores',[['proveedores.cod_sp','=','cp_transacciones_detalles.cod_sp'],
+                                                                    ['proveedores.cod_sp_sec','=','cp_transacciones_detalles.cod_sp_sec']])->
+                                                select('cp_transacciones_detalles.departamento','nodepartamentos.descripcion','cp_transacciones_detalles.fecha',
+                                                       'cp_transacciones_detalles.factura','cp_transacciones_detalles.cod_sp',                                                      'cp_transacciones_detalles.cod_sp_sec','proveedores.nom_sp',
+                                                       DB::Raw('SUM(cp_transacciones_detalles.debito - cp_transacciones_detalles.credito) as gasto'))->
+                                                groupby('cp_transacciones_detalles.departamento','nodepartamentos.descripcion','cp_transacciones_detalles.fecha',
+                                                        'cp_transacciones_detalles.factura','cp_transacciones_detalles.factura','cp_transacciones_detalles.cod_sp',
+                                                        'cp_transacciones_detalles.cod_sp_sec','proveedores.nom_sp')->
+                                                get();
+
+        return $this->successResponse($proveedores); 
     }
 }

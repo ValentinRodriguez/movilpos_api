@@ -348,40 +348,34 @@ class proveedoresController extends ApiResponseController
     }
 
     public function catalogoProveedores(Request $request) {
-        $datos = $request->all();
-        $existeData = false;
 
-        foreach ($datos as $key => $value) {                       
-            if ($value != "" && $key != 'sessionId') {                
-                $existeData = true;
-            }
-        }
+        $proveedor = $request->get('nom_sp');
+        $pais = $request->get('id_pais');
+        $ciudad = $request->get('id_ciudad');
+        $documento = $request->get('documento');
+        $email = $request->get('email');
+        $telefono = $request->get('tel_sp');
+        $tipo_doc = $request->get('tipo_doc');
+        $moneda = $request->get('moneda');
+        $contacto = $request->get('cont_sp');
 
-        if ($existeData == false) {
-            $proveedores = proveedores::join('ve_cond_pagos','ve_cond_pagos.cond_pago','=','proveedores.cond_pago')->
-                                        select('proveedores.nom_sp','proveedores.dir_sp','proveedores.tel_sp','proveedores.email','proveedores.cont_sp',
-                                        've_cond_pagos.descripcion as condicion_pago')->
-                                        get();
-                                        
-            return $this->successResponse($proveedores); 
-        }else{
-            $proveedores = proveedores::join('ve_cond_pagos','ve_cond_pagos.cond_pago','=','proveedores.cond_pago')->
-                                        where('nom_sp','=',$datos['nom_sp'])->
-                                        orWhere([
-                                            ['documento','=',$datos['documento']],
-                                            ['email','=',$datos['email']],
-                                            ['tel_sp','=',$datos['tel_sp']],
-                                            ['tipo_doc','=',$datos['tipo_doc']],
-                                            ['moneda','=',$datos['id_moneda']],
-                                            ['cont_sp','=',$datos['cont_sp']],
-                                            ['id_pais','=',$datos['id_pais']],
-                                            ['id_ciudad','=',$datos['id_ciudad']],
-                                        ])->
-                                        select('proveedores.nom_sp','proveedores.dir_sp','proveedores.tel_sp','proveedores.email','proveedores.cont_sp',
-                                               've_cond_pagos.descripcion as condicion_pago')->
-                                        get();
+        $proveedores = proveedores::where([['ve_cond_pagos.estado','=','activo'],
+                                           ['proveedores.estado','=','activo']])->
+                                    join('ve_cond_pagos','ve_cond_pagos.cond_pago','=','proveedores.cond_pago')->          
+                                    parametro($proveedor)->     
+                                    pais($pais)->                    
+                                    ciudad($ciudad)->
+                                    documento($documento)->
+                                    email($email)->
+                                    telefono($telefono)->
+                                    tipoDoc($tipo_doc)->
+                                    moneda($moneda)->
+                                    contacto($contacto)->
+        select('proveedores.nom_sp','proveedores.dir_sp','proveedores.tel_sp','proveedores.email','proveedores.cont_sp',
+               've_cond_pagos.descripcion as condicion_pago')->
+        get();
+
         return $this->successResponse($proveedores); 
-        }
     }
 
 }

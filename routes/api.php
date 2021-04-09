@@ -89,9 +89,10 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/deudores/cctransacciones', 'CcTransaccionesController@avisoPagos');
     Route::apiresource('/cctransacciones', 'CcTransaccionesController');
 
-    // TRANSACCIONES CUENTAS POR PAGAR
+    // TRANSACCIONES CONTABILIDAD GENERAL
     Route::get('/autollenado/cgtransacciones', 'CgTransaccionesContablesController@autollenado');
     Route::get('/secuencias/cgtransacciones', 'CgTransaccionesContablesController@secuencias');
+    Route::post('/gastos-dep/cgtransacciones', 'CgTransaccionesContablesController@gastosPorDepartamentos');
     Route::apiresource('/cgtransacciones', 'CgTransaccionesContablesController');
 
     //MENSAJES SMS
