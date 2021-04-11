@@ -129,7 +129,6 @@ class InvProductosController extends ApiResponseController
             "tipo_producto"         => 'required|string',
             "codigo"                => 'required',
             "descuento"             => 'required',
-            "codigo_referencia"     => 'required_if:tipo_producto,1',
             "origen"                => 'required_if:tipo_producto,1',
             'existenciaMinima'      => 'required_if:tipo_producto,1',
             "controlDeExistencias"  => 'required_if:tipo_producto,1',

@@ -8,7 +8,7 @@ class PaisesSeeder extends Seeder
     public function run()
     {
         $paises = array(
-            'descripcion' => 'republica dominicana',
+            'descripcion' => 'Republica Dominicana',
             'gentilicio'  => 'dominicano/a',
             'latitud' => '18.40',
             'longitud' => '40.56',

@@ -1,7 +1,7 @@
-@extends('layouts.saldo-pendiente')
+@extends('layouts.reportes-internos')
 
 @section('titulo')
-  Orden de Compra
+  Catálogo de Proveedores
 @endsection
 
 @section('company-info')
@@ -34,19 +34,13 @@
     </thead>          
     <tbody>
     
-      @foreach ($resultado as $proveedor) 
+      
 
         <tr data-iterate="item">
           <td colspan="3"></td>
-          <td>{{$proveedor['proveedor']}}</td>
-          <td>${{number_format($proveedor['de0a30'], 2, '.', ',')}}</td>
-          <td>${{number_format($proveedor['de31a60'], 2, '.', ',')}}</td>
-          <td>${{number_format($proveedor['de61a90'], 2, '.', ',')}}</td>
-          <td>${{number_format($proveedor['de91a120'], 2, '.', ',')}}</td>
-          <td>${{number_format($proveedor['mas120'], 2, '.', ',')}}</td>
-          <td>${{number_format($proveedor['pendiente'], 2, '.', ',')}}</td>
+          <td>test</td>
         </tr>
-      @endforeach
+      
     </tbody>    
   </table>
 @endsection

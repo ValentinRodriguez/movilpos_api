@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateNopuestosTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('nopuestos', function (Blueprint $table) {
@@ -19,7 +14,7 @@ class CreateNopuestosTable extends Migration
             $table->string('titulo',100);
             $table->float('sueldo_inicial')->default('0');
             $table->float('sueldo_actual')->default('0');
-            $table->TEXT('descripcion')->nullable();
+            $table->text('descripcion')->nullable();
             $table->string('estado',100);
             $table->string('usuario_creador',100);
             $table->string('usuario_modificador',100)->nullable();

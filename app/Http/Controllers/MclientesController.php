@@ -101,7 +101,9 @@ class MclientesController extends ApiResponseController
             "usuario_modificador" =>$request->input("usuario_modificador"),
             "contacto"            =>$request->input("contacto"),
         );
-      
+
+        // return response()->json($datos);
+
         $messages = [
              'required' => 'El campo :attribute es requerido.',
              'unique'   => 'El campo :attribute debe ser unico',

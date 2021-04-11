@@ -110,7 +110,7 @@ class CategoriasController extends ApiResponseController
                 DB::beginTransaction(); 
                 $categoria->update($datos);                
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);

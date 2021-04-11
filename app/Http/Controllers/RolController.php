@@ -61,7 +61,7 @@ class RolController extends ApiResponseController
                         Rol::create($datos);
                     }
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);

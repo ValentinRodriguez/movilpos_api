@@ -11,11 +11,6 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class CgEntradasDiarioMasterController extends ApiResponseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $catalogo = cgEntradasDiarioMaster::where('estado','=','activo')->
@@ -32,21 +27,9 @@ class CgEntradasDiarioMasterController extends ApiResponseController
         }
         return $this->successResponse($catalogo);
     }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-    
+        
     public function store(Request $request)
-    {
-     
+    {     
         $maxid=0;
         $idsecuencia=0;
         $maxid= cgEntradasDiarioMaster::get('documento')->max();
@@ -140,7 +123,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                     }             
                 DB::commit();
 
-                return $this->successResponse(1);
+                return $this->successResponse($datosd);
             }
                 catch (\Exception $e ){
                     return $this->errorResponse($e);
@@ -152,13 +135,8 @@ class CgEntradasDiarioMasterController extends ApiResponseController
     public function show($id)
     {
         $catalogo = cgEntradasDiarioMaster::find($id);
-
-       // return response()->json($catalogo->ref);
-
         
-           $detalle= cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$catalogo->ref)->
-            get();
-            
+        $detalle= cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$catalogo->ref)->get();            
         $catalogo->cuentas=$detalle;
 
         if ($catalogo == null){
@@ -243,11 +221,8 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
                                 return $this->errorResponseParams($errors->all()); 
-                            }     
-                          //  return  response()->json($datosd);                
-                            cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$entrada['ref'])->
-                            update($datosd);  
-                                                                   
+                            }
+                            cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$entrada['ref'])->update($datosd);                                                                     
                         }                        
                     }else{
                         return $this->errorResponse('No hay cuentas agragadas a la transacción');
@@ -256,18 +231,12 @@ class CgEntradasDiarioMasterController extends ApiResponseController
 
                 return $this->successResponse(1);
             }
-                catch (\Exception $e ){
-                    return $this->errorResponse($e);
-                }
+            catch (\Exception $e ){
+                return $this->errorResponse($e);
+            }
         }
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\cgEntradasDiarioMaster  $cgEntradasDiarioMaster
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(cgEntradasDiarioMaster $cgEntradasDiarioMaster)
     {
         //

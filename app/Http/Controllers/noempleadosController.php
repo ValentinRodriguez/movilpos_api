@@ -11,6 +11,7 @@ use App\Librerias\Departamento;
 use App\Librerias\puertos;
 use App\Librerias\Empresa;
 use App\librerias\pais;
+use App\librerias\bancos;
 
 class noempleadosController extends ApiResponseController
 {
@@ -31,6 +32,11 @@ class noempleadosController extends ApiResponseController
                                 get();
 
         return $this->successResponse($noempleados);
+    }
+
+    public function bancos(){
+        $bancos = bancos::where('bancos.estado','=','ACTIVO')->get();
+        return $this->successResponse($bancos);
     }
 
     public function show($id){

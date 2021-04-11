@@ -5,114 +5,87 @@ namespace App\Http\Controllers;
 use App\Librerias\cpAnalisisSaldoPendiente;
 use App\Librerias\Empresa;
 use Illuminate\Http\Request;
-use PDF;
-use DateTime;
-use App\Http\Controllers\Date;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class CpAnalisisSaldoPendienteController extends ApiResponseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         //
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\cpAnalisisSaldoPendiente  $cpAnalisisSaldoPendiente
-     * @return \Illuminate\Http\Response
-     */
     public function show(Request $request)
     {
       
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\cpAnalisisSaldoPendiente  $cpAnalisisSaldoPendiente
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(cpAnalisisSaldoPendiente $cpAnalisisSaldoPendiente)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\cpAnalisisSaldoPendiente  $cpAnalisisSaldoPendiente
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, cpAnalisisSaldoPendiente $cpAnalisisSaldoPendiente)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\cpAnalisisSaldoPendiente  $cpAnalisisSaldoPendiente
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(cpAnalisisSaldoPendiente $cpAnalisisSaldoPendiente)
     {
         //
     }
 
     public function reporte(request $request){
-        
 
-    
-     
-        $cxp = cpAnalisisSaldoPendiente::
-            select('cod_sp','cod_sp_sec','nom_sp','aplica_a','dias','pendiente')
-            ->get();
+        $cxp = cpAnalisisSaldoPendiente::select('cod_sp','cod_sp_sec','nom_sp','aplica_a','dias','pendiente')->get();
+        $proveedores = cpAnalisisSaldoPendiente::select('cod_sp','cod_sp_sec','nom_sp')->groupby('cod_sp','cod_sp_sec','nom_sp')->get(); 
 
-         //   return response()->json($cxp);
-        $result = array();
-        foreach($cxp as $t) {
-            $repeat=false;
-            for($i=0;$i<count($result);$i++)
-            {
-                if($result[$i]['nom_sp']==$t['nom_sp'])
-                //    if ($result[$i]['aplica_a']==$t['aplica_a']) {                    
-                {
-                    $result[$i]['pendiente']+=$t['pendiente'];
-                    $repeat=true;
-                    break;
+        $resultado = array();
+
+        foreach ($proveedores as $key => $value) {
+
+            $pendiente = 0;
+            $dias = 0;
+            $de0a30 = 0;
+            $de31a60 = 0;
+            $de61a90 = 0;
+            $de91a120 = 0;
+            $mas120 = 0;
+            $deuda = array();
+
+            for($i=0; $i < count($cxp); $i++) {
+                if(($value->cod_sp.'-'.$value->cod_sp_sec) == ($cxp[$i]['cod_sp'].'-'.$cxp[$i]['cod_sp_sec'])) {
+                    $pendiente += $cxp[$i]['pendiente'];
+                    
+                    if ($cxp[$i]['dias'] <= 30) {
+                        $de0a30 += $cxp[$i]['pendiente'];
+                    }
+                    
+                    if ($cxp[$i]['dias'] >= 31 and $cxp[$i]['dias'] <= 60) {
+                        $de31a60 += $cxp[$i]['pendiente'];
+                    }
+
+                    if ($cxp[$i]['dias'] >= 61 and $cxp[$i]['dias'] <= 90) {
+                        $de61a90 += $cxp[$i]['pendiente'];
+                    }
+
+                    if ($cxp[$i]['dias'] >= 91 and $cxp[$i]['dias'] <= 120) {
+                        $de91a120 += $cxp[$i]['pendiente'];
+                    }
+
+                    if ($cxp[$i]['dias'] >= 121) {
+                        $mas120 += $cxp[$i]['pendiente'];
+                    }  
                 }
-                 //   }
+                $deuda = array(
+                    "proveedor" => '('.$value->cod_sp.'-'.$value->cod_sp_sec.')'.ucwords($value->nom_sp),
+                    "de0a30"=> $de0a30,
+                    "de31a60"=> $de31a60,
+                    "de61a90"=> $de61a90,
+                    "de91a120"=> $de91a120,
+                    "mas120"=> $mas120,
+                    "pendiente"=> $pendiente
+                );
             }
+<<<<<<< HEAD
             if($repeat==false)
                 $result[] = array('nom_sp' => $t['nom_sp'], 'pendiente' => $t['pendiente']);
         }
@@ -120,6 +93,12 @@ class CpAnalisisSaldoPendienteController extends ApiResponseController
         return response()->json($result);
      
         $pdf = PDF::loadView('saldo-pendiente', compact('result'));
+=======
+            array_push($resultado, $deuda);
+        }
+        // return response()->json($resultado);
+        $pdf = PDF::loadView('saldo-pendiente', compact('resultado'));
+>>>>>>> 3a31356af58db0eac2ec881c311840faf8ef83d6
         return $pdf->stream('analisis-pendiente-pagoCxp.pdf');
     }
 }

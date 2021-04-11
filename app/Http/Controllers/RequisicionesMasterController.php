@@ -164,7 +164,7 @@ class RequisicionesMasterController extends ApiResponseController
                         return $this->errorResponse('No hay productos agragados a la transacción');
                     }
                     DB::commit();
-                    return $this->successResponse(1);
+                    return $this->successResponse($datosd);
                 } 
                 catch (\Exception $e ){
                     return $this->errorResponse($e);

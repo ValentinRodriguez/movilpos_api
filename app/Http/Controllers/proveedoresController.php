@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Librerias\proveedores;
 use Illuminate\Http\Request;
-use App\Http\Controllers\ApiResponseController;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade as PDF;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\proveedores;
 use App\Librerias\cgcatalogo;
 use App\Librerias\ve_CondicionesPago;
 use App\Librerias\tipoMonedas;
@@ -13,6 +14,10 @@ use App\Librerias\tipo_documento;
 use App\Librerias\coTipoProveedores;
 use App\Librerias\coCuentasProveedor;
 use App\Librerias\pais;
+<<<<<<< HEAD
+=======
+use PhpParser\Node\Stmt\Foreach_;
+>>>>>>> 3a31356af58db0eac2ec881c311840faf8ef83d6
 
 class proveedoresController extends ApiResponseController
 {
@@ -84,7 +89,9 @@ class proveedoresController extends ApiResponseController
         ];
         
         $datos['cod_sp_sec'] = $idsecuencia;
-        
+
+        // return response()->json($datos);
+
         $validator = validator($datos, [
             'cod_sp'              => 'required',
             'cod_sp_sec'          => 'required',
@@ -92,7 +99,6 @@ class proveedoresController extends ApiResponseController
             'dir_sp'              => 'required',
             'moneda'              => 'required',
             'tel_sp'              => 'required',
-            "fax_sp"              => 'required',
             "cont_sp"             => 'required',
             "documento"           => 'required',
             "cond_pago"           => 'required',
@@ -110,7 +116,6 @@ class proveedoresController extends ApiResponseController
         }else{  
             try {
                 DB::beginTransaction();
-                    // return response()->json($datos);
                     proveedores::create($datos);
                     if (count($datos['cuentas_no']) !== 0) {
                         $datosd = null;
@@ -120,10 +125,10 @@ class proveedoresController extends ApiResponseController
                                             'cod_sp'	 => $datos['cod_sp'],
                                             'cod_sp_sec' => $datos['cod_sp_sec'],
                                             'cuenta_no'	 => $datos['cuentas_no'][$i]['cuenta_no'],
-                                            'porciento'  => $datos['cuentas_no'][$i]['porciento'],
+                                            'porciento'  => isset($datos['cuentas_no'][$i]['porciento']) ? $datos['cuentas_no'][$i]['porciento'] : 0,
                                             "estado"     =>'activo',
                             );
-                                                        
+                            // return response()->json($datosd);
                             $messages = [
                                 'required' => 'El campo :attribute es requerido.',
                                 'unique'   => 'El campo :attribute debe ser unico',
@@ -147,7 +152,7 @@ class proveedoresController extends ApiResponseController
                         }                        
                     }
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);
@@ -237,13 +242,12 @@ class proveedoresController extends ApiResponseController
             try {
                 DB::beginTransaction();
                     proveedores::where([['cod_sp','=',$cod], ['cod_sp_sec','=',$codsec]])->update($datos);
-                    // return response()->json();
 
                     if (count($request->input("cuentas_no")) !== 0) {
 
                         $datosd = null;
                         $cuentas = $request->input("cuentas_no");
-
+                       
                         for ($i=0; $i < count($cuentas); $i++) {
                             
                             $coCuentasProveedor = coCuentasProveedor::where([['cod_sp','=',$datos['cod_sp']],
@@ -251,9 +255,10 @@ class proveedoresController extends ApiResponseController
                                                                 ['cuenta_no','=',$cuentas[$i]['cuenta_no']],
                                                                 ['co_cuentas_proveedores.estado','=','activo']])->
                                                             first();
-                                                            
+                            
                             $datosd = array('descripcion'=> $cuentas[$i]['descripcion'],	
                                             'cod_sp'	 => $datos['cod_sp'],
+                                            'cod_sp_sec' => $datos['cod_sp_sec'],
                                             'cuenta_no'	 => $cuentas[$i]['cuenta_no'],
                                             'porciento'  => $cuentas[$i]['porciento'],
                                             "estado"     =>'activo',
@@ -276,16 +281,20 @@ class proveedoresController extends ApiResponseController
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
                                 return $this->errorResponseParams($errors->all());                             
-                            }              
-
-                            $coCuentasProveedor->update($datosd);                                                    
+                            }    
+                                     
+                            if (empty($coCuentasProveedor)) {
+                                coCuentasProveedor::create($datosd);
+                            }else {                                       
+                                $coCuentasProveedor->update($datosd);                                   
+                            }         
                         }                        
                     }
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             } 
         }
     }
@@ -314,27 +323,12 @@ class proveedoresController extends ApiResponseController
         try {
             $respuesta = array();
             
-            $catalogo = cgcatalogo::orderBy('id', 'asc')->
-                                where([['nivel','=',3],['estado','=','ACTIVO']])->
-                                get();
-                                
-            $condiciones = ve_CondicionesPago::orderBy('id', 'asc')->
-                                where('estado','=','activo')->
-                                get();
-                                                               
-            $monedas = tipoMonedas::orderBy('created_at', 'desc')->
-                                where('estado','=','ACTIVO')->
-                                get();
-                                
-            $tipoProveedor = coTipoProveedores::orderBy('id', 'asc')->
-                                where('estado','=','ACTIVO')->
-                                get();
-            $tipoDocumento = tipo_documento::orderBy('tipo_documento', 'asc')->
-                                where('estado','=','ACTIVO')->
-                                get();
-
-            $paises = pais::orderBy('created_at', 'desc')->
-                                get();                  
+            $catalogo = cgcatalogo::orderBy('id', 'asc')->where([['nivel','=',3],['estado','=','ACTIVO']])->get();                                
+            $condiciones = ve_CondicionesPago::orderBy('id', 'asc')->where('estado','=','activo')->get();
+            $monedas = tipoMonedas::orderBy('created_at', 'desc')->where('estado','=','ACTIVO')->get();                                
+            $tipoProveedor = coTipoProveedores::orderBy('id', 'asc')->where('estado','=','ACTIVO')->get();
+            $tipoDocumento = tipo_documento::orderBy('tipo_documento', 'asc')->where('estado','=','ACTIVO')->get();
+            $paises = pais::orderBy('created_at', 'desc')->get();                  
 
             $_catalogo = array("label" => 'catalogo', "data" => $catalogo, "icono" => 'fas fa-dolly-flatbed');
             $_condiciones = array("label" => 'condiciones', "data" => $condiciones, "icono" => 'fas fa-dolly-flatbed');
@@ -354,6 +348,37 @@ class proveedoresController extends ApiResponseController
         } catch (\Exception $e ){
             return $this->errorResponse($e);
         }
+    }
+
+    public function catalogoProveedores(Request $request) {
+
+        $proveedor = $request->get('nom_sp');
+        $pais = $request->get('id_pais');
+        $ciudad = $request->get('id_ciudad');
+        $documento = $request->get('documento');
+        $email = $request->get('email');
+        $telefono = $request->get('tel_sp');
+        $tipo_doc = $request->get('tipo_doc');
+        $moneda = $request->get('moneda');
+        $contacto = $request->get('cont_sp');
+
+        $proveedores = proveedores::where([['ve_cond_pagos.estado','=','activo'],
+                                           ['proveedores.estado','=','activo']])->
+                                    join('ve_cond_pagos','ve_cond_pagos.cond_pago','=','proveedores.cond_pago')->          
+                                    parametro($proveedor)->     
+                                    pais($pais)->                    
+                                    ciudad($ciudad)->
+                                    documento($documento)->
+                                    email($email)->
+                                    telefono($telefono)->
+                                    tipoDoc($tipo_doc)->
+                                    moneda($moneda)->
+                                    contacto($contacto)->
+        select('proveedores.nom_sp','proveedores.dir_sp','proveedores.tel_sp','proveedores.email','proveedores.cont_sp',
+               've_cond_pagos.descripcion as condicion_pago')->
+        get();
+
+        return $this->successResponse($proveedores); 
     }
 
 }

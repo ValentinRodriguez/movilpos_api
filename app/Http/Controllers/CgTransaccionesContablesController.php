@@ -11,9 +11,10 @@ use App\Librerias\Departamento;
 use App\Librerias\cgEntradasDiarioMaster;
 use App\Librerias\cpTransacciones;
 use App\Librerias\secuencias;
-
+use App\Librerias\cpTransaccionesDetalles;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class CgTransaccionesContablesController extends ApiResponseController
 {    
@@ -83,13 +84,12 @@ class CgTransaccionesContablesController extends ApiResponseController
         
         $datosm['documento'] = $transaccion;        
         $datosm['ref'] = $datosm['tipo_doc'].'.'.str_pad($transaccion, 6, "0", STR_PAD_LEFT);
-
+        
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
             'numeric'  => 'El campo :attribute debe ser numerico',
-        ];
-        
+        ];        
 
         $validator = validator($datosm, [
             'tipo_doc'        => 'required',
@@ -149,11 +149,10 @@ class CgTransaccionesContablesController extends ApiResponseController
                             ];
 
                             $validator = validator($datosc, [
-                                'ref'             => 'required',
                                 'tipo_orden'      => 'required',
                                 'num_doc'         => 'required',
                                 'valor_pendiente' => 'required',
-                                'fecha'           => 'required',
+                                // 'fecha'           => 'required',
                                 'monto_itbi'      => 'required',
                                 'tipo_doc'        => 'required',
                                 'moneda'          => 'required',
@@ -165,6 +164,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                                 $errors = $validator->errors();
                                 return $this->errorResponseParams($errors->all()); 
                             }                          
+                            // return response()->json($datosc);
                             cpTransacciones::create($datosc);
                         }                        
                     }
@@ -387,5 +387,26 @@ class CgTransaccionesContablesController extends ApiResponseController
                                 first();
 
         return $this->successResponse($secuencia);
+    }
+
+    public function gastosPorDepartamentos(Request $request) {
+        $datos = $request->all();
+        $proveedores = cpTransaccionesDetalles::where([['proveedores.estado','=','activo'],
+                                                       ['nodepartamentos.estado','=','activo'],
+                                                       ['cp_transacciones_detalles.estado','=','activo']])->
+                                                cuenta($datos['cuenta_no'])->
+                                                fechaCreacion($datos['fecha_inicial'],$datos['fecha_final'])->
+                                                leftJoin('nodepartamentos','nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
+                                                join('proveedores',[['proveedores.cod_sp','=','cp_transacciones_detalles.cod_sp'],
+                                                                    ['proveedores.cod_sp_sec','=','cp_transacciones_detalles.cod_sp_sec']])->
+                                                select('cp_transacciones_detalles.departamento','nodepartamentos.descripcion','cp_transacciones_detalles.fecha',
+                                                       'cp_transacciones_detalles.factura','cp_transacciones_detalles.cod_sp',                                                      'cp_transacciones_detalles.cod_sp_sec','proveedores.nom_sp',
+                                                       DB::Raw('SUM(cp_transacciones_detalles.debito - cp_transacciones_detalles.credito) as gasto'))->
+                                                groupby('cp_transacciones_detalles.departamento','nodepartamentos.descripcion','cp_transacciones_detalles.fecha',
+                                                        'cp_transacciones_detalles.factura','cp_transacciones_detalles.factura','cp_transacciones_detalles.cod_sp',
+                                                        'cp_transacciones_detalles.cod_sp_sec','proveedores.nom_sp')->
+                                                get();
+
+        return $this->successResponse($proveedores); 
     }
 }

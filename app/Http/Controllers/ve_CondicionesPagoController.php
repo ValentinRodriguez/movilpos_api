@@ -60,7 +60,7 @@ class ve_CondicionesPagoController extends ApiResponseController
                     $datos = $datos + array('cond_pago' =>$idsecuencia);
                     ve_CondicionesPago::create($datos);
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);
@@ -112,7 +112,7 @@ class ve_CondicionesPagoController extends ApiResponseController
                 DB::beginTransaction(); 
                     $condicion->update($datos);
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse($datos);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e);

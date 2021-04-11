@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCgEntradasDiarioMastersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('cg_entradas_diario_masters', function (Blueprint $table) {
@@ -34,12 +29,7 @@ class CreateCgEntradasDiarioMastersTable extends Migration
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    
     public function down()
     {
         Schema::dropIfExists('cg_entradas_diario_masters');

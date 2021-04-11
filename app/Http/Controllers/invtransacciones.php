@@ -43,7 +43,7 @@ class invtransacciones extends ApiResponseController
                                                 join('bodegas','invtransaccionesmaster.id_bodega','=','bodegas.id_bodega')->
                                                 select('invtransaccionesmaster.*',
                                                        'invtiposmovimientos.titulo as titulo_mov',
-                                                       'veclientes.nombre as veclientes_nombre','veclientes.num_rnc as veclientes_num_rnc',
+                                                       'veclientes.nombre as veclientes_nombre','veclientes.documento as veclientes_documento',
                                                        'veclientes.direccion as veclientes_direccion','veclientes.email as veclientes_email',
                                                        'veclientes.telefono_oficina as veclientes_telefono_oficina','veclientes.telefono_oficina as veclientes_telefono_oficina',
                                                        'veclientes.telefono_casa as veclientes_telefono_casa',
@@ -634,7 +634,7 @@ class invtransacciones extends ApiResponseController
                                                 join('bodegas','invtransaccionesmaster.id_bodega','=','bodegas.id_bodega')->
                                                 select('invtransaccionesmaster.*',
                                                        'invtiposmovimientos.titulo as titulo_mov',
-                                                       'veclientes.nombre as veclientes_nombre','veclientes.num_rnc as veclientes_num_rnc',
+                                                       'veclientes.nombre as veclientes_nombre','veclientes.documento as veclientes_documento',
                                                        'veclientes.direccion as veclientes_direccion','veclientes.email as veclientes_email',
                                                        'veclientes.telefono_oficina as veclientes_telefono_oficina','veclientes.telefono_oficina as veclientes_telefono_oficina',
                                                        'veclientes.telefono_casa as veclientes_telefono_casa','veclientes.celular as veclientes_celular',
