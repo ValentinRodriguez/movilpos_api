@@ -32,6 +32,7 @@ class CreateEmpresasTable extends Migration
             $table->integer('id_ciudad');
             // $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
             $table->string('rnc',30);
+            $table->integer('limite_usuarios');
             $table->string('estado',30);
             $table->char('empresa_verde',2);
             $table->timestamps();

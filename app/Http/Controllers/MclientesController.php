@@ -172,38 +172,58 @@ class MclientesController extends ApiResponseController
 
     public function update(Request $request, $id)
     {
+      //  return response()->json($id);
         $cliente = Mclientes::find($id);
+     
+        $datos = array(
+           // "tipo_cliente"        =>$request->input("tipo_cliente"),
+            "nombre"              =>$request->input("nombre"),
+            "tipo_documento"      =>$request->input("tipo_documento"),
+            "vendedor"            =>$request->input("vendedor"),
+            "limite_credito"      =>$request->input("limite_credito"),
+            "cond_pago"           =>$request->input("cond_pago"),
+            "tipo_negocio"        =>$request->input("tipo_negocio"),
+            "ncf"                 =>$request->input("ncf"),
+            "documento"           =>$request->input("documento"),
+            "generico"            =>$request->input("generico"),
+            "direccion"           =>$request->input("direccion"),
+            "urbanizacion"        =>$request->input("urbanizacion"),
+            "id_pais"             =>$request->input("id_pais"),
+            "id_zonalocal"        =>$request->input("id_zonalocal"),
+            "id_ciudad"           =>$request->input("id_ciudad"),
+            "telefono_oficina"    =>$request->input("telefono_oficina"),
+            "celular"             =>$request->input("celular"),
+            "telefono_casa"       =>$request->input("telefono_casa"),
+            "email"               =>$request->input("email"),
+            "url"                 =>$request->input("url"),
+            "estado"              =>$request->input("estado"),
+            "usuario_modificador" =>$request->input("usuario_modificador"),
+            "contacto"            =>$request->input("contacto"),
+        );
 
-        $datos = $request->all(); 
-    
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
             'numeric'  => 'El campo :attribute debe ser numerico'
         ];
 
-        $validator = validator($datos, [
-            'tipo_cliente'        => 'required|numeric',
-            //'sec_cliente'         => 'required|numeric',
-            'nombre'              => 'required|string',
-            'tipo_documento'      => 'required|numeric',
-            'num_rnc'             => 'required|string',
-            "vendedor"            => 'required|numeric',
-            "limite_credito"      => 'required|numeric',
-            "tipo_negocio"        => 'numeric',
-            "ncf"                 => 'string',
-            "generico"            => 'string',
-            "direccion"           => 'string',
-            "urbanizacion"        => 'string',
-            "id_pais"             => 'required',
-            "id_zonalocal"        => 'required',
-            "id_ciudad"           => 'required',
-            "celular"             => 'required',
-            'telefono_casa'       => 'required',
-            'email'               => 'required',
-            'tipo_cliente'        => 'required',
-            'cond_pago'           => 'required',
-            'usuario_modificador' => 'required',
+            $validator = validator($datos, [
+               // 'tipo_cliente'        => 'required',
+                'nombre'              => 'required|string|max:500',
+                'tipo_documento'      => 'required',
+                'documento'           => 'required|string',
+                "cond_pago"           => 'required',
+                "ncf"                 => 'string',
+                "generico"            => 'string',
+                "direccion"           => 'string|max:500',
+                "urbanizacion"        => 'string|max:500',
+                "id_pais"             => 'required',
+                "id_ciudad"           => 'required',
+                "estado"              => 'required',
+                "celular"             => 'string',
+                'email'               => 'string|max:500',
+                "url"                 => 'string|max:500',
+                'usuario_modificador'     => 'required|string'
         ],$messages);
 
         if ($validator->fails()) {

@@ -12,7 +12,7 @@ use App\Librerias\tipoMonedas;
 use App\Librerias\tipo_documento;
 use App\Librerias\coTipoProveedores;
 use App\Librerias\coCuentasProveedor;
-use App\librerias\pais;
+use App\Librerias\pais;
 
 class proveedoresController extends ApiResponseController
 {
