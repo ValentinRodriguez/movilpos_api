@@ -79,6 +79,10 @@ class AuthController extends Controller
 
     public function signup(SignUpRequest $request)
     {
+        $empresa=noempleados::where('estado','=','activo')
+       ->get() ;
+      // ->COUNT();
+      //  return response()->json("aqui");
         $datos = array(
             'username'              =>$request->input('username') ,
             'name'                  =>$request->input('name'),

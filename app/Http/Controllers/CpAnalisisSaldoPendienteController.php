@@ -85,10 +85,20 @@ class CpAnalisisSaldoPendienteController extends ApiResponseController
                     "pendiente"=> $pendiente
                 );
             }
+<<<<<<< HEAD
+            if($repeat==false)
+                $result[] = array('nom_sp' => $t['nom_sp'], 'pendiente' => $t['pendiente']);
+        }
+
+        return response()->json($result);
+     
+        $pdf = PDF::loadView('saldo-pendiente', compact('result'));
+=======
             array_push($resultado, $deuda);
         }
         // return response()->json($resultado);
         $pdf = PDF::loadView('saldo-pendiente', compact('resultado'));
+>>>>>>> 3a31356af58db0eac2ec881c311840faf8ef83d6
         return $pdf->stream('analisis-pendiente-pagoCxp.pdf');
     }
 }
