@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Librerias\dgii;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
 
 class DgiiController extends ApiResponseController
 {
@@ -28,6 +30,11 @@ class DgiiController extends ApiResponseController
         $parametro = $request->get('rnc');
         $busqueda = dgii::where('rnc','=',$parametro)->get();                              
         return $this->successResponse($busqueda);
+    }
+
+    public function formulario606()
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 
 }

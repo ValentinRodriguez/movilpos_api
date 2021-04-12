@@ -87,8 +87,6 @@ class proveedoresController extends ApiResponseController
         
         $datos['cod_sp_sec'] = $idsecuencia;
 
-        // return response()->json($datos);
-
         $validator = validator($datos, [
             'cod_sp'              => 'required',
             'cod_sp_sec'          => 'required',
@@ -114,6 +112,7 @@ class proveedoresController extends ApiResponseController
             try {
                 DB::beginTransaction();
                     proveedores::create($datos);
+                    
                     if (count($datos['cuentas_no']) !== 0) {
                         $datosd = null;
                         
@@ -125,7 +124,7 @@ class proveedoresController extends ApiResponseController
                                             'porciento'  => isset($datos['cuentas_no'][$i]['porciento']) ? $datos['cuentas_no'][$i]['porciento'] : 0,
                                             "estado"     =>'activo',
                             );
-                            // return response()->json($datosd);
+                            
                             $messages = [
                                 'required' => 'El campo :attribute es requerido.',
                                 'unique'   => 'El campo :attribute debe ser unico',
@@ -145,7 +144,8 @@ class proveedoresController extends ApiResponseController
                                 $errors = $validator->errors();
                                 return $this->errorResponseParams($errors->all());                        
                             }                                                               
-                            coCuentasProveedor::create($datosd);                                                   
+                            coCuentasProveedor::create($datosd);    
+                            // return response()->json($datosd);                                               
                         }                        
                     }
                 DB::commit();

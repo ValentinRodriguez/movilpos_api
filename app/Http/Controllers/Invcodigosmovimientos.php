@@ -70,7 +70,7 @@ class Invcodigosmovimientos extends ApiResponseController
         if ($datos['control_orden_compra'] == null) {
             $datos['control_orden_compra'] = 'no';
         }
-        // return response()->json($datos);
+        
         $messages = [
              'required' => 'El campo :attribute es requerido.',
              'unique'   => 'El campo :attribute debe ser unico',
@@ -110,7 +110,7 @@ class Invcodigosmovimientos extends ApiResponseController
                     $totalCuentas = count($datos['cuenta_no']);
                     for ($i=0; $i < $totalCuentas; $i++) {                        
                         $cuentas = array("id_tipomov" => $idsecuencia,
-                                         "cuenta_no"  => $datos['cuenta_no'][$i],
+                                         "cuenta_no"  => $datos['cuenta_no'][$i]['cuenta_no'],
                                          "estado"     => 'activo'
                         );
 
@@ -130,8 +130,9 @@ class Invcodigosmovimientos extends ApiResponseController
                             $errors = $validator->errors();   
                             return $this->errorResponseParams($errors->all());                            
                         }
-                        
+                        // return response()->json($cuentas);
                         Invcuentasmovimientos::create($cuentas);
+                        
                     }
                 DB::commit();
                 return $this->successResponse($datos);

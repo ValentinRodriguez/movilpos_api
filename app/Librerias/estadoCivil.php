@@ -4,7 +4,7 @@ namespace App\Librerias;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ccEstado_cuenta extends Model
+class estadoCivil extends Model
 {
-    //
+    protected $table = 'estado_civil';
 }

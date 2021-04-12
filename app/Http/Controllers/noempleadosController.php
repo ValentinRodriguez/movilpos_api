@@ -8,10 +8,13 @@ use App\Librerias\noempleados;
 use App\Librerias\tipoMonedas;
 use App\Librerias\Nopuesto;
 use App\Librerias\Departamento;
-use App\Librerias\puertos;
 use App\Librerias\Empresa;
 use App\librerias\pais;
 use App\librerias\bancos;
+use App\librerias\educacion;
+use App\librerias\estadoCivil;
+use App\librerias\tipoEmpleado;
+use App\librerias\tipoSangre;
 
 class noempleadosController extends ApiResponseController
 {
@@ -47,6 +50,40 @@ class noempleadosController extends ApiResponseController
         return $this->successResponse($empleado);
     }
 
+    public function store(Request $request)
+    {
+        $datos = $request->all();
+
+        return response()->json($datos);
+
+        $messages = ['required' => 'El campo :attribute es requerido.',
+                     'unique'   => 'El campo :attribute debe ser unico',
+                     'numeric'  => 'El campo :attribute debe ser numerico'];
+
+        $validator = validator($datos, ["descripcion"     => 'required',
+                                       "titulo"          => 'required',
+                                       "sueldo_inicial"  => 'required',
+                                       "usuario_creador" => 'required',
+                                       "estado"          => 'required'],
+                                        $messages);
+        // return response()->json($datos);
+        if ($validator->fails()) {
+           $errors =  $validator->errors();
+           return $this->errorResponse($errors);
+        }
+        else {
+            try {                
+                DB::beginTransaction();              
+                    
+                DB::commit();
+                return $this->successResponse($datos);
+            }
+            catch (\Exception $e ){
+                return $this->errorResponse($e);
+            }
+        }
+
+    }
 
     public function buscaVendedores(){
         $empleado = noempleados::where('noempleados.is_vend','=','si')->
@@ -72,27 +109,38 @@ class noempleadosController extends ApiResponseController
         try {
             $respuesta = array();
 
-            $nopuestos = Nopuesto::orderBy('id', 'asc')->where('estado','=','activo')->get();
-                                
-            $departamento = Departamento::orderBy('id', 'asc')->get();
-
-            $monedas = tipoMonedas::orderBy('created_at', 'desc')->get();
-
-            $empresa = Empresa::orderBy('created_at', 'desc')->get();
-            
+            $nopuestos = Nopuesto::orderBy('id', 'asc')->where('estado','=','activo')->get();                                
+            $departamento = Departamento::where('estado','=','activo')->get();
+            $monedas = tipoMonedas::where('estado','=','activo')->get();
+            $empresa = Empresa::where('estado','=','activo')->get();            
             $paises = pais::orderBy('created_at', 'desc')->get();
+            $bancos = bancos::where('estado','=','activo')->get();
+            $educacion = educacion::all();
+            $estadoCivil = estadoCivil::all();
+            $tipoEmpleado = tipoEmpleado::all();
+            $tipoSangre = tipoSangre::all();
 
             $_nopuestos = array("label" => 'puestos', "data" => $nopuestos, "icono" => 'fas fa-dolly-flatbed');
             $_departamento = array("label" => 'departamento', "data" => $departamento, "icono" => 'fas fa-dolly-flatbed');
             $_empresa = array("label" => 'empresa', "data" => $empresa, "icono" => 'fas fa-dolly-flatbed');
             $_monedas = array("label" => 'monedas', "data" => $monedas, "icono" => 'fas fa-dolly-flatbed');
             $_paises = array("label" => 'paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
+            $_bancos= array("label" => 'bancos', "data" => $bancos, "icono" => 'fas fa-dolly-flatbed');
+            $_educacion= array("label" => 'educacion', "data" => $educacion, "icono" => 'fas fa-dolly-flatbed');
+            $_estadoCivil= array("label" => 'estadoCivil', "data" => $estadoCivil, "icono" => 'fas fa-dolly-flatbed');
+            $_tipoEmpleado= array("label" => 'tipoEmpleado', "data" => $tipoEmpleado, "icono" => 'fas fa-dolly-flatbed');
+            $_tipoSangre= array("label" => 'tipoSangre', "data" => $tipoSangre, "icono" => 'fas fa-dolly-flatbed');
 
             array_push($respuesta,$_paises);
             array_push($respuesta,$_nopuestos);
             array_push($respuesta,$_departamento);
             array_push($respuesta,$_empresa);
             array_push($respuesta,$_monedas);
+            array_push($respuesta,$_bancos);
+            array_push($respuesta,$_educacion);
+            array_push($respuesta,$_estadoCivil);
+            array_push($respuesta,$_tipoEmpleado);
+            array_push($respuesta,$_tipoSangre);
 
             return $this->successResponse($respuesta); 
 

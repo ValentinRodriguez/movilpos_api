@@ -60,6 +60,7 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp4','nombre' => 'Entradas de diario','descripcion' => 'menu de contabilidad general','url' => 'gestion-entradas-diario','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp5','nombre' => 'Transacciones de pago','descripcion' => 'menu de contabilidad general','url' => 'gestion-transacciones-pago','estado' => 'ACTIVO'],
             ['id_menu' => 2,'modulo' => 7,'status' => 1,'codigo' => 'cgr2','nombre' => 'Gastos por departamento','descripcion' => 'menu de contabilidad general','url' => 'gastos-departamento','estado' => 'ACTIVO'],
+            ['id_menu' => 2,'modulo' => 7,'status' => 1,'codigo' => 'cgr3','nombre' => 'reporte mayor general','descripcion' => 'menu de contabilidad general','url' => 'reporte-mayor-general','estado' => 'ACTIVO'],
             
             //MODULO DE ENTRADAS AUTOMATICAS       
             ['id_menu' => 1,'modulo' => 8,'status' => 1,'codigo' => 'entp1','nombre' => 'Cobros','descripcion' => 'menu de entradas automaticas','url' => 'cobros','estado' => 'ACTIVO'],

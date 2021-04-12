@@ -31,6 +31,10 @@ class DatabaseSeeder extends Seeder
         $this->call(tipoordenseeders::class);    
         $this->call(cgTipoDocumentos::class); 
         $this->call(veCondPagosSeeder::class);
-        $this->call(bancosSeeder::class);        
+        $this->call(bancosSeeder::class);   
+        $this->call(educacionSeeder::class);  
+        $this->call(estadoCivilSeeder::class);
+        $this->call(tipoEmpleadoSeeder::class);
+        $this->call(tipoSangreSeeder::class);
     }
 }
