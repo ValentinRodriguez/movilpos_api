@@ -14,10 +14,6 @@ use App\Librerias\tipo_documento;
 use App\Librerias\coTipoProveedores;
 use App\Librerias\coCuentasProveedor;
 use App\Librerias\pais;
-<<<<<<< HEAD
-=======
-use PhpParser\Node\Stmt\Foreach_;
->>>>>>> 3a31356af58db0eac2ec881c311840faf8ef83d6
 
 class proveedoresController extends ApiResponseController
 {
@@ -380,5 +376,4 @@ class proveedoresController extends ApiResponseController
 
         return $this->successResponse($proveedores); 
     }
-
 }

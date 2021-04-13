@@ -14,7 +14,6 @@ use App\Librerias\secuencias;
 use App\Librerias\cpTransaccionesDetalles;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 class CgTransaccionesContablesController extends ApiResponseController
 {    
@@ -421,8 +420,9 @@ class CgTransaccionesContablesController extends ApiResponseController
                                                   'cgcatalogo.descripcion','cg_transacciones_contables.departamento','cg_transacciones_contables.detalle_1',
                                                   'cg_transacciones_contables.detalle_2','cg_transacciones_contables.debito','cg_transacciones_contables.credito',
                                                   'cg_transacciones_contables.cod_aux','cg_transacciones_contables.cod_sec','cg_transacciones_contables.num_doc',
-                                                  'cgcatalogo.analitico','cgcatalogo.catalogo','cgcatalogo.depto')->
+                                                  'cgcatalogo.analitico','cgcatalogo.catalogo','cgcatalogo.depto','cg_entradas_diario_masters.detalle')->
                                            join('cgcatalogo','cgcatalogo.cuenta_no','=','cg_transacciones_contables.cuenta_no')->
+                                           join('cg_entradas_diario_masters','cg_entradas_diario_masters.ref','=','cg_transacciones_contables.ref')->
                                            get();
         return $this->successResponse($mayor); 
     }
