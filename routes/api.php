@@ -26,6 +26,7 @@ Route::post('logout', 'AuthController@logout');
 
     // DGII
     Route::get('/busqueda/dgii-rnc', 'DgiiController@busqueda');
+    Route::get('/formulario606/dgii-rnc', 'DgiiController@formulario606');
     Route::apiResource('/dgii-rnc', 'DgiiController');
 
     // PRODUCTOS EN EL INVENTARIO
@@ -63,7 +64,7 @@ Route::post('logout', 'AuthController@logout');
     // API DE MENUES
     Route::apiresource('/menu', 'MenuController');
 
-    // INVENTARIOS
+    // TIPO DE INVENTARIO
     Route::get('/busqueda/invtipos', 'InvTiposController@busqueda');
     Route::apiresource('/invtipos', 'InvTiposController');
     
@@ -93,6 +94,7 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/autollenado/cgtransacciones', 'CgTransaccionesContablesController@autollenado');
     Route::get('/secuencias/cgtransacciones', 'CgTransaccionesContablesController@secuencias');
     Route::post('/gastos-dep/cgtransacciones', 'CgTransaccionesContablesController@gastosPorDepartamentos');
+    Route::post('/mayor-general/cgtransacciones', 'CgTransaccionesContablesController@mayorGeneral');
     Route::apiresource('/cgtransacciones', 'CgTransaccionesContablesController');
 
     //MENSAJES SMS
@@ -105,7 +107,7 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/departamentos', 'DepartamentoController');
     Route::get('/busqueda/departamentos', 'DepartamentoController@busqueda');
 
-    // DEPARTAMENTOS
+    // MONEDAS
     Route::get('/busqueda/monedas', 'Monedas@busqueda');
     Route::apiresource('/monedas', 'Monedas');
 

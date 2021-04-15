@@ -348,10 +348,10 @@ class InvProductosController extends ApiResponseController
             array_push($respuesta,$_tipos);
             array_push($respuesta,$_brand);
             array_push($respuesta,$_categoria);
+            array_push($respuesta,$_propiedades);
             array_push($respuesta,$_bodegas);
             array_push($respuesta,$_medidas);
             array_push($respuesta,$_tipoProducto);
-            array_push($respuesta,$_propiedades);
 
             return $this->successResponse($respuesta);
         } catch (\Exception $e ){
