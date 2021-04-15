@@ -134,6 +134,7 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/cgentradasdiarios', 'CgEntradasDiarioMasterController');
     Route::get('/ed/secuencia', 'CgEntradasDiarioMasterController@secuencia');
     Route::post('/act/entradas-diario/{id}/{sec}', 'InvProductosController@update');
+    Route::get('/transacciones-cg/verificaentrada', 'CgEntradasDiarioMasterController@verificaEntrada');
 
     // MODULOS DEL SISTEMA
     Route::apiresource('/modulos', 'ModulosController');
