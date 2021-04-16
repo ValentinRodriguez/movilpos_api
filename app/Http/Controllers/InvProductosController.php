@@ -118,8 +118,6 @@ class InvProductosController extends ApiResponseController
         $validator = validator($datos, [
             "titulo"                => 'required|string',
             "chasis"                => 'required_if:tipo_producto,1',
-            "motor"                 => 'required_if:tipo_producto,1',
-            "fabricacion"           => 'required_if:tipo_producto,1',
             "asientos"              => 'required_if:tipo_producto,1',
             "id_propiedad"          => 'required_if:tipo_producto,1',
             "id_tipoinventario"     => 'required_if:tipo_producto,1',
@@ -210,7 +208,7 @@ class InvProductosController extends ApiResponseController
     public function updateProducts(Request $request, $id)
     {
         $producto = InvProductos::find($id);
-
+        
         $datos = $request->all();
 
         $messages = [
@@ -220,10 +218,10 @@ class InvProductosController extends ApiResponseController
         ];
 
         $validator = validator($datos, [            
-            'id_categoria'        => 'required|numeric',
-            'id_tipoinventario'   => 'required|numeric',
-            'id_brand'            => 'required|numeric',
-            'usuario_modificador' => 'required|string'
+            'id_categoria'        => 'required',
+            'id_tipoinventario'   => 'required',
+            'id_brand'            => 'required',
+            'usuario_modificador' => 'required'
         ],$messages);        
 
         if ($validator->fails()) {
@@ -253,7 +251,6 @@ class InvProductosController extends ApiResponseController
                 $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
                 $datos['galeriaImagenes'] = $request->file('galeriaImagenes')->storeAs('uploads', 'productos/'.$nombreImagen, 'public');
             }
-            // return response()->json($datos);
             $producto->update($datos);
             return $this->successResponse($datos);
         }

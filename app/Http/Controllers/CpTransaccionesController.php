@@ -72,7 +72,8 @@ class CpTransaccionesController extends ApiResponseController
                                        groupby('cp_transacciones.num_doc',
                                               'tipo_monedas.descripcion','tipo_monedas.simbolo','tipo_monedas.divisa',
                                               'proveedores.nom_sp')->
-                                       where([['cp_transacciones.estado','=','ACTIVO'],['cp_transacciones.tipo_doc','!=','FT'],['cp_transacciones.num_doc','=',$value->num_doc]])->
+                                       where([['cp_transacciones.estado','=','ACTIVO'],['cp_transacciones.tipo_doc','!=','FT'],
+                                              ['cp_transacciones.num_doc','=',$value->num_doc]])->
                                        // having('pagado', '>', 0)->
                                        first();     
 

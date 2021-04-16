@@ -16,7 +16,7 @@ class CambiarPropiedadesToCpTransaccionesDetallesTable extends Migration
     public function down()
     {
         Schema::table('cp_transacciones_detalles', function (Blueprint $table) {
-            $table->text('detalles')->nullable()->change();
+            $table->text('detalles')->change();
         });
     }
 }

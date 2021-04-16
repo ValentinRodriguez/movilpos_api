@@ -46,7 +46,7 @@ class proveedoresController extends ApiResponseController
     {
         $maxid=0;
         $idsecuencia=0;
-     
+        
         $maxid= proveedores::get('cod_sp_sec')->max();
 
         if ($maxid==null){
@@ -77,7 +77,7 @@ class proveedoresController extends ApiResponseController
             "estado"           => $request->input("estado"),
             "usuario_creador"  => $request->input("usuario_creador")          
         );
-        
+        return request()-json($datos);
         $message=[
             'required' => 'El campo: attribute es requerido',
             'unique'   => 'El campo: attribute debe ser unico',

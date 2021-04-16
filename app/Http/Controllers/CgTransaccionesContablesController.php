@@ -59,7 +59,7 @@ class CgTransaccionesContablesController extends ApiResponseController
     public function store(Request $request)
     {
         $datosm = $request->all();
-
+        
         DB::beginTransaction(); 
             $transaccion = secuencias::where( [ ['cuenta_no','=',$datosm['cuenta_no']],['tipo_doc','=',$datosm['tipo_doc']] ])->get();
             
@@ -135,7 +135,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                                             'cod_cia'         => $detalle_cxp[$i]['cod_cia'],
                                             'aplica_a'        => $detalle_cxp[$i]['aplica_a'],
                                             'valor'           => $detalle_cxp[$i]['valor'],
-                                            'detalle'         => $detalle_cxp[$i]['detalle'],
+                                            'detalle'         => $datosm['detalle'],
                                             'ncf'             => $detalle_cxp[$i]['ncf'],
                                             'usuario_creador' => $detalle_cxp[$i]['usuario_creador'],
                                             'estado'          => $detalle_cxp[$i]['estado'],
@@ -172,22 +172,21 @@ class CgTransaccionesContablesController extends ApiResponseController
                         $datosd = null;
                         
                         for ($i=0; $i < count($detalle_cuentas); $i++) {                                                             
-                            // return response()->json($datosm);
+                            // return response()->json($detalle_cuentas);
                             $datosd = array('cuenta_no'       => $detalle_cuentas[$i]['cuenta_no'],
                                             'departamento'    => isset($detalle_cuentas[$i]['departamento']['id']) ? 
                                                                     $detalle_cuentas[$i]['departamento']['id'] : 
                                                                     $detalle_cuentas[$i]['departamento'],
                                             'ref'             => $datosm['ref'],
                                             'cuenta_banco'    => $datosm['cuenta_no'],
-                                            'debito'          => $detalle_cuentas[$i]['debito'],
-                                            'credito'         => $detalle_cuentas[$i]['credito'],
+                                            'debito'          => $detalle_cuentas[$i]['debito'] || 0,
+                                            'credito'         => $detalle_cuentas[$i]['credito']|| 0,
                                             'fecha'           => $detalle_cuentas[$i]['fecha'],
                                             'tipo_doc'        => $detalle_cuentas[$i]['tipo_doc'],
                                             'num_doc'         => $detalle_cuentas[$i]['num_doc'],
                                             'cod_aux'         => $detalle_cuentas[$i]['cod_aux'],
                                             'cod_sec'         => $detalle_cuentas[$i]['cod_sec'],
-                                            'detalle_1'       => $detalle_cuentas[$i]['detalle_1'],
-                                            'detalle_2'       => $detalle_cuentas[$i]['detalle_2'],
+                                            'detalle'         => $datosm['detalle'],
                                             'usuario_creador' => $detalle_cuentas[$i]['usuario_creador'],
                                             'estado'          => $detalle_cuentas[$i]['estado'],
                             );
@@ -335,8 +334,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                                             'num_doc'         => $detalle_cuentas[$i]['num_doc'],
                                             'cod_aux'         => $detalle_cuentas[$i]['cod_aux'],
                                             'cod_sec'         => $detalle_cuentas[$i]['cod_sec'],
-                                            'detalle_1'       => $detalle_cuentas[$i]['detalle_1'],
-                                            'detalle_2'       => $detalle_cuentas[$i]['detalle_2'],
+                                            'detalle'       => $detalle_cuentas[$i]['detalle'],
                                             'usuario_creador' => $detalle_cuentas[$i]['usuario_creador'],
                                             'estado'          => $detalle_cuentas[$i]['estado'],
                             );
@@ -380,7 +378,7 @@ class CgTransaccionesContablesController extends ApiResponseController
     {
         $tipo = $request->get('tipo');
         $cuenta_no = $request->get('cuenta_no');
-        // return response()->json($tipo, $cuenta_no);
+        
         $secuencia = secuencias::orderBy('created_at', 'desc')->
                                 where([['tipo_doc','=',$tipo],['cuenta_no','=',$cuenta_no],['estado','=','activo']])->
                                 first();
@@ -411,18 +409,18 @@ class CgTransaccionesContablesController extends ApiResponseController
 
     public function mayorGeneral(Request $request) {
         $datos = $request->all();
-        // return response()->json($datos);
         $mayor = cgTransaccionesContables::where([['cgcatalogo.estado','=','activo'],
                                                   ['cg_transacciones_contables.estado','=','activo']])->
                                            cuenta($datos['cuenta_no'])->
                                            fechaCreacion($datos['fecha_inicial'],$datos['fecha_final'])->
-                                           select('cg_transacciones_contables.fecha','cg_transacciones_contables.cuenta_no','cg_transacciones_contables.fecha',
-                                                  'cgcatalogo.descripcion','cg_transacciones_contables.departamento','cg_transacciones_contables.detalle_1',
-                                                  'cg_transacciones_contables.detalle_2','cg_transacciones_contables.debito','cg_transacciones_contables.credito',
-                                                  'cg_transacciones_contables.cod_aux','cg_transacciones_contables.cod_sec','cg_transacciones_contables.num_doc',
-                                                  'cgcatalogo.analitico','cgcatalogo.catalogo','cgcatalogo.depto','cg_entradas_diario_masters.detalle')->
+                                           select('cg_transacciones_contables.fecha','cg_transacciones_contables.ref as documento',
+                                                  'cg_transacciones_contables.debito','cg_transacciones_contables.credito','cg_transacciones_contables.detalle',
+                                                  'cgcatalogo.analitico','cgcatalogo.catalogo','cgcatalogo.depto','cgcatalogo.descripcion as desc_catalogo','cgcatalogo.cuenta_no',
+                                                  DB::Raw('SUM(cg_transacciones_contables.debito - cg_transacciones_contables.credito) as balance'))->
                                            join('cgcatalogo','cgcatalogo.cuenta_no','=','cg_transacciones_contables.cuenta_no')->
-                                           join('cg_entradas_diario_masters','cg_entradas_diario_masters.ref','=','cg_transacciones_contables.ref')->
+                                           groupby('cg_transacciones_contables.fecha','cg_transacciones_contables.ref',
+                                                   'cg_transacciones_contables.debito','cg_transacciones_contables.credito','cg_transacciones_contables.detalle',
+                                                   'cgcatalogo.analitico','cgcatalogo.catalogo','cgcatalogo.depto','cgcatalogo.descripcion','cgcatalogo.cuenta_no')->
                                            get();
         return $this->successResponse($mayor); 
     }
