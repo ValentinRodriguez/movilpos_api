@@ -23,10 +23,18 @@ class cgcatalogocontroller extends ApiResponseController
 
     public function cuentasAux()
     {
-        $tipoProveedor = cgcatalogo::orderBy('cuenta_no', 'asc')->where([['nivel','=',3],['estado','=','ACTIVO']])->
+        $tipoProveedor = cgcatalogo::orderBy('cuenta_no', 'asc')->
+                                     where([['nivel','=',3],['estado','=','ACTIVO']])->
                                      select('cgcatalogo.*',DB::raw("CONCAT(cgcatalogo.cuenta_no,'-',cgcatalogo.descripcion) AS descripcion_c"))->
                                      get();
-        
+
+        foreach ($tipoProveedor as $key => $value) {
+            $nivel2 = cgcatalogo::where('cuenta_no','=',$value['aplica_a'])->first();
+            $nivel1 = cgcatalogo::where('cuenta_no','=',$nivel2['aplica_a'])->first();
+
+            $value->cuenta_nivel1 = $nivel1;
+            $value->cuenta_nivel2 = $nivel2;
+        }
         return $this->successResponse($tipoProveedor);
     }
 
@@ -155,7 +163,7 @@ class cgcatalogocontroller extends ApiResponseController
 
     public function busquedaCatalogo(Request $request)
     {
-        $cuenta_no    = $request->get('cuenta_no');
+        $cuenta_no = $request->get('cuenta_no');
 
         $busqueda = cgcatalogo::orderBy('cuenta_no','asc')->     
                                 where([['cgcatalogo.cuenta_no','=',$cuenta_no],['estado','=','ACTIVO']])->

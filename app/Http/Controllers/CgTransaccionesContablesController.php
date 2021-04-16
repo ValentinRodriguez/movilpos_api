@@ -12,6 +12,7 @@ use App\Librerias\cgEntradasDiarioMaster;
 use App\Librerias\cpTransacciones;
 use App\Librerias\secuencias;
 use App\Librerias\cpTransaccionesDetalles;
+use App\Librerias\cgcatalogo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -103,7 +104,7 @@ class CgTransaccionesContablesController extends ApiResponseController
             'usuario_creador' => 'required',
             'estado'          => 'required',
         ],$messages);       
-
+        
         if ($validator->fails()) {
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all());
@@ -134,13 +135,13 @@ class CgTransaccionesContablesController extends ApiResponseController
                                             'moneda'          => $detalle_cxp[$i]['moneda'],
                                             'cod_cia'         => $detalle_cxp[$i]['cod_cia'],
                                             'aplica_a'        => $detalle_cxp[$i]['aplica_a'],
-                                            'valor'           => $detalle_cxp[$i]['valor'],
+                                            'valor'           => strval($detalle_cxp[$i]['valor']) * -1,
                                             'detalle'         => $datosm['detalle'],
                                             'ncf'             => $detalle_cxp[$i]['ncf'],
                                             'usuario_creador' => $detalle_cxp[$i]['usuario_creador'],
                                             'estado'          => $detalle_cxp[$i]['estado'],
                             );
-
+                            
                             $messages = [
                                 'required' => 'El campo :attribute es requerido.',
                                 'unique'   => 'El campo :attribute debe ser unico',
@@ -162,23 +163,23 @@ class CgTransaccionesContablesController extends ApiResponseController
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
                                 return $this->errorResponseParams($errors->all()); 
-                            }                          
-                            // return response()->json($datosc);
+                            }
                             cpTransacciones::create($datosc);
                         }                        
                     }
                     
                     if (count($detalle_cuentas) !== 0) {
-                        $datosd = null;
-                        
-                        for ($i=0; $i < count($detalle_cuentas); $i++) {                                                             
-                            // return response()->json($detalle_cuentas);
+                        $datosd = null;                        
+                        for ($i=0; $i < count($detalle_cuentas); $i++) {                                                                             
+                            
                             $datosd = array('cuenta_no'       => $detalle_cuentas[$i]['cuenta_no'],
                                             'departamento'    => isset($detalle_cuentas[$i]['departamento']['id']) ? 
                                                                     $detalle_cuentas[$i]['departamento']['id'] : 
                                                                     $detalle_cuentas[$i]['departamento'],
                                             'ref'             => $datosm['ref'],
                                             'cuenta_banco'    => $datosm['cuenta_no'],
+                                            'cuenta_nivel2'   => $detalle_cuentas[$i]['cuenta_nivel2']['cuenta_no'],
+                                            'cuenta_nivel1'   => $detalle_cuentas[$i]['cuenta_nivel1']['cuenta_no'],
                                             'debito'          => $detalle_cuentas[$i]['debito'] || 0,
                                             'credito'         => $detalle_cuentas[$i]['credito']|| 0,
                                             'fecha'           => $detalle_cuentas[$i]['fecha'],
@@ -190,7 +191,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                                             'usuario_creador' => $detalle_cuentas[$i]['usuario_creador'],
                                             'estado'          => $detalle_cuentas[$i]['estado'],
                             );
-                            
+                            // return response()->json($datosd);
                             $messages = [
                                 'required' => 'El campo :attribute es requerido.',
                                 'unique'   => 'El campo :attribute debe ser unico',
@@ -201,6 +202,8 @@ class CgTransaccionesContablesController extends ApiResponseController
                                 'ref'             => 'required',
                                 'estado'          => 'required',
                                 'usuario_creador' => 'required',
+                                'cuenta_nivel2'   => 'required',
+                                'cuenta_nivel1'   => 'required',
                             ],$messages);
                         
                             if ($validator->fails()) {
@@ -230,7 +233,6 @@ class CgTransaccionesContablesController extends ApiResponseController
     public function update(Request $request, $id)
     {
         $datosm = cgEntradasDiarioMaster::find($id);
-        return response()->json($id);
 
         $messages = [
             'required' => 'El campo :attribute es requerido.',
