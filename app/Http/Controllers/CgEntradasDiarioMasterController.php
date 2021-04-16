@@ -300,4 +300,14 @@ class CgEntradasDiarioMasterController extends ApiResponseController
         }                       
     }
 
+    public function verificaEntrada(Request $request){
+        $ref = $request->get('ref');
+       
+
+        $datos = cgTransaccionesContables::where([['cg_transacciones_contables.ref','=',$ref],
+                                         ['estado','=','ACTIVO']])->
+                                  first();      
+
+        return $this->successResponse($datos);
+    }
 }
