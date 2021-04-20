@@ -77,7 +77,7 @@ class proveedoresController extends ApiResponseController
             "estado"           => $request->input("estado"),
             "usuario_creador"  => $request->input("usuario_creador")          
         );
-        return request()-json($datos);
+        
         $message=[
             'required' => 'El campo: attribute es requerido',
             'unique'   => 'El campo: attribute debe ser unico',
@@ -85,7 +85,7 @@ class proveedoresController extends ApiResponseController
         ];
         
         $datos['cod_sp_sec'] = $idsecuencia;
-
+        // return request()->json($datos);
         $validator = validator($datos, [
             'cod_sp'              => 'required',
             'cod_sp_sec'          => 'required',

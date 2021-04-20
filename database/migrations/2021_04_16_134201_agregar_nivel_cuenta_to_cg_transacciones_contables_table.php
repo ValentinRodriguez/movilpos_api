@@ -17,8 +17,8 @@ class AgregarNivelCuentaToCgTransaccionesContablesTable extends Migration
     public function down()
     {
         Schema::table('cg_transacciones_contables', function (Blueprint $table) {
-            $table->dropColumn('cuenta_nivel1',20);
-            $table->dropColumn('cuenta_nivel2',20);
+            $table->dropColumn('cuenta_nivel1');
+            $table->dropColumn('cuenta_nivel2');
         });
     }
 }

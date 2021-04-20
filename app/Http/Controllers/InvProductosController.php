@@ -139,12 +139,11 @@ class InvProductosController extends ApiResponseController
             "estado"                => 'required|string',
             "usuario_creador"       => 'required|string'
         ],$messages);
-
+        
         if ($validator->fails()) {
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all());
-        }else {    
-            
+        }else {                
             if ($datos['tipo_producto'] != 1) {
                 $datos['chasis'] = 'no requerido';
                 $datos['motor'] = 'no requerido';

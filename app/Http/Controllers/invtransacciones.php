@@ -167,7 +167,8 @@ class invtransacciones extends ApiResponseController
                     'required' => 'El campo :attribute es requerido.',
                     'unique'   => 'El campo :attribute debe ser unico',
                     'numeric'  => 'El campo :attribute debe ser numerico',
-                    'required_if' => 'El campo :attribute no puede estar en blanco'
+                    'required_if' => 'El campo :attribute no puede estar en blanco',
+                    'min' => 'El campo :attribute de ser de al menos 10 caracteres',
                 ];
                 
                 $validator = validator($datosm, [
@@ -544,6 +545,7 @@ class invtransacciones extends ApiResponseController
             return $this->successResponse($productos); 
         }               
     }
+
 
     public function autollenado(){ 
         try {

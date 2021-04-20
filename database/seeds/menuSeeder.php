@@ -32,9 +32,10 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp6','nombre' => 'Gestion de tipos de movimientos','descripcion' => 'menu de inventario','url' => 'gestion-tipos-movimientos','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp7','nombre' => 'Transacciones de inventario','descripcion' => 'menu de inventario','url' => 'gestion-transacciones-inventario','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp8','nombre' => 'Conteo de productos','descripcion' => 'menu de inventario','url' => 'conteo-productos','estado' => 'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'comp2','nombre' => 'Gestion de transportistas','descripcion' => 'menu de inventario','url' => 'gestion-de-transportistas','estado' => 'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp9','nombre' => 'gestion de propiedades','descripcion' => 'menu de gestion de propiedades','url' => 'gestion-de-propiedades','estado' => 'ACTIVO'],
-    
+            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp9','nombre' => 'Gestion de transportistas','descripcion' => 'menu de inventario','url' => 'gestion-de-transportistas','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp10','nombre' => 'gestion de propiedades','descripcion' => 'menu de gestion de inventario','url' => 'gestion-de-propiedades','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp11','nombre' => 'Consulta existencias por almacenes','descripcion' => 'menu de gestion de inventario','url' => 'existencias-almacenes','estado' => 'ACTIVO'],            
+            
             // MODULO DE VEWNTAS
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep1','nombre' => 'Interfaz de ventas','descripcion' => 'modulo de ventas','url' => 'interfaz-ventas','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep2','nombre' => 'Generacion formulario 607','descripcion' => 'Modulo ventas','url' => 'generacion_formulario_607','estado' => 'ACTIVO'],

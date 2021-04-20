@@ -108,7 +108,7 @@ class BodegasController extends ApiResponseController
     
     public function destroy($bodegas){
         $bodega = Bodegas::where('id_bodega','=',$bodegas)->first();
-        $usuario_permisos = bodegasUsuarios::where('id_bodega','=',$bodegas)->get();
+        // $usuario_permisos = bodegasUsuarios::where('id_bodega','=',$bodegas)->get();
         
         if ($bodega == null){
             return $this->errorResponse(null, "Esta bodega no existe");
@@ -205,7 +205,9 @@ class BodegasController extends ApiResponseController
     public function usuariosPermisosBodegas($id_bodega)
     {
         $datos = BodegasUsuarios::join('users','users.email','=','bodegas_usuarios.email')->
-                                  select('users.*','bodegas_usuarios.id_bodega')->        
+                                  leftjoin('noempleados','noempleados.email','=','users.email')->
+                                  leftjoin('nopuestos','nopuestos.id_puesto','=','noempleados.id_puesto')->
+                                  select('users.*','bodegas_usuarios.id_bodega','nopuestos.titulo as puesto')->        
                                   where('id_bodega','=',$id_bodega)->
                                   get();
         if($datos == null){
@@ -228,7 +230,7 @@ class BodegasController extends ApiResponseController
     }
 
     
-    public function autoLlenado($email)
+    public function autoLlenado()
     {        
         $paises = pais::orderBy('created_at', 'desc')->get();
 

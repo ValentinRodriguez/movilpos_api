@@ -213,6 +213,10 @@ Route::post('logout', 'AuthController@logout');
     // Facturas
     Route::get('/busqueda/factura/{factura}', 'VefacturasController@buscaFactura');
     Route::apiresource('/vefacturas', 'vefacturasController');
+    
+    // EXISTENCIAS POR ALMACEN
+    Route::post('/existencias-almacen', 'ExistenciasAlmacenController@existenciasAlmacen');
+    Route::get('/existencias-almacen', 'ExistenciasAlmacenController@autoLlenado');
 
     //TRANSACCIONES INVENTARIOS
     Route::post('/recibir/invtransaccion/{id}', 'invtransacciones@recibirTransaccion');
