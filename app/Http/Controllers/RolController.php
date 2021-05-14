@@ -53,10 +53,11 @@ class RolController extends ApiResponseController
                 DB::beginTransaction();  
                     $rol = Rol::where([['usuario','=',$datos['usuario']],
                                        ['email','=',$datos['email']],
-                                       ['estado','=','activo']])->get();
+                                       ['estado','=','activo']])->first();
                                 
-                    if (count($rol) != 0) {
-                        return $this->errorResponse('Usuario ya tiene permisos creados');
+                    if ($rol != null) {
+                        $rol->update($datos);
+                        // return $this->successResponse($datos);
                     }else{
                         Rol::create($datos);
                     }
@@ -64,18 +65,20 @@ class RolController extends ApiResponseController
                 return $this->successResponse($datos);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             } 
         }
     }
     
     public function show($email)
     {
-        $rol = Rol::where('email','=',$email)->get();
-        if ($rol == null){
-            return $this->errorResponse($rol);
+        try {
+            $rol = Rol::where('email','=',$email)->first();
+            return $this->successResponse($rol);
         }
-        return $this->successResponse($rol);
+        catch (\Exception $e ){
+            return $this->errorResponse($e->getMessage());
+        } 
     }
     
     public function update(Request $request, Rol $rol)

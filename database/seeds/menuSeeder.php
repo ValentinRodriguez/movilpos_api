@@ -34,9 +34,10 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp8','nombre' => 'Conteo de productos','descripcion' => 'menu de inventario','url' => 'conteo-productos','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp9','nombre' => 'Gestion de transportistas','descripcion' => 'menu de inventario','url' => 'gestion-de-transportistas','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp10','nombre' => 'gestion de propiedades','descripcion' => 'menu de gestion de inventario','url' => 'gestion-de-propiedades','estado' => 'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp11','nombre' => 'Consulta existencias por almacenes','descripcion' => 'menu de gestion de inventario','url' => 'existencias-almacenes','estado' => 'ACTIVO'],            
+            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp11','nombre' => 'Consulta existencias por almacenes','descripcion' => 'menu de gestion de inventario','url' => 'gestion-existencias-almacenes','estado' => 'ACTIVO'],            
+            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp12','nombre' => 'Gestion de liquidacion de mercancias','descripcion' => 'menu de gestion de inventario','url' => 'gestion-liquidacion-mercancias','estado' => 'ACTIVO'],            
             
-            // MODULO DE VEWNTAS
+            // MODULO DE VENTAS
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep1','nombre' => 'Interfaz de ventas','descripcion' => 'modulo de ventas','url' => 'interfaz-ventas','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep2','nombre' => 'Generacion formulario 607','descripcion' => 'Modulo ventas','url' => 'generacion_formulario_607','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep3','nombre' => 'Ofertas y Promociones','descripcion' => 'Modulo ventas','url' => 'ofertas-promociones','estado' => 'ACTIVO'],
@@ -44,7 +45,8 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep5','nombre' => 'gestion ordenes de pedidos','descripcion' => 'Modulo ventas','url' => 'gestion-de-ordenes-de-pedidos','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep6','nombre' => 'gestion de cotizaciones','descripcion' => 'Modulo ventas','url' => 'gestion-de-cotizaciones','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep7','nombre' => 'Condiciones de pago','descripcion' => 'modulo de ventas','url' => 'condiciones-de-pago','estado' => 'ACTIVO'],
-    
+            ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep8','nombre' => 'Gestion de Recepcion de Vehiculos','descripcion' => 'modulo de ventas','url' => 'gestion-recepcion-vehiculos','estado' => 'ACTIVO'],
+
             // MODULO DE COMPRAS      
             ['id_menu' => 1,'modulo' => 6,'status' => 1,'codigo' => 'comp1','nombre' => 'Gestion de ordenes de compras','descripcion' => 'menu de compras','url' => 'gestion-de-ordenes-compras','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 6,'status' => 1,'codigo' => 'comp2','nombre' => 'Gestion de proveedores','descripcion' => 'menu de compras','url' => 'gestion-de-proveedores','estado' => 'ACTIVO'],
@@ -52,8 +54,7 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 6,'status' => 1,'codigo' => 'comp4','nombre' => 'Gestion de puertos','descripcion' => 'menu de compras','url' => 'gestion-de-puertos','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 6,'status' => 1,'codigo' => 'comp5','nombre' => 'Gestion de direcciones de envio','descripcion' => 'menu de compras','url' => 'gestion-direcciones-envio','estado' => 'ACTIVO'],
             ['id_menu' => 2,'modulo' => 6,'status' => 1,'codigo' => 'comr1','nombre' => 'Catalogo de proveedores','descripcion' => 'menu de compras','url' => 'catalogo-de-proveedores','estado' => 'ACTIVO'],
-            
-    
+         
             //MODULO DE CONTABILIDAD GENERAL      
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp1','nombre' => 'gestion del catalogo cuentas','descripcion' => 'menu de contabilidad general','url' => 'gestion-catalogo-cuentas','estado' => 'ACTIVO'],
             ['id_menu' => 2,'modulo' => 7,'status' => 1,'codigo' => 'cgr1','nombre' => 'Diario General','descripcion' => 'menu de contabilidad general','url' => 'diario_general','estado' => 'ACTIVO'],

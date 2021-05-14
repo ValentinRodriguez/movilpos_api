@@ -61,6 +61,15 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/vencimiento/actividades','ActividadesController@ActividadesVencidas');
     Route::apiresource('/actividades','ActividadesController');
 
+    // LIQUIDACION MERCANCIAS
+    Route::get('/liquidaciones/pendientes','InvLiquidacionMercanciaController@pendientes');
+    Route::apiresource('/liquidaciones','InvLiquidacionMercanciaController');
+
+    // RECEPCION DE VEHICULOS
+    Route::post('/recepcion-vehiculos/{id}','RecepcionVehiculosController@updateRecepcion');
+    Route::get('/autollenado/recepcion-vehiculos','RecepcionVehiculosController@autoLlenado');
+    Route::apiresource('/recepcion-vehiculos','RecepcionVehiculosController');
+
     // API DE MENUES
     Route::apiresource('/menu', 'MenuController');
 
@@ -138,7 +147,8 @@ Route::post('logout', 'AuthController@logout');
     Route::post('/act/entradas-diario/{id}/{sec}', 'InvProductosController@update');
     Route::get('/transacciones-cg/verificaentrada', 'CgEntradasDiarioMasterController@verificaEntrada');
 
-    // MODULOS DEL SISTEMA
+    // MODULOS DEL SISTEMA    
+    Route::get('/autollenado/permisos', 'ModulosController@autoLlenado');
     Route::apiresource('/modulos', 'ModulosController');
 
     // MANTENIMINETO DE CLIENTES

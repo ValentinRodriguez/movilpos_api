@@ -183,7 +183,7 @@ class InvProductosController extends ApiResponseController
                 return $this->successResponse($datos);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             } 
         }
     }
@@ -244,12 +244,21 @@ class InvProductosController extends ApiResponseController
             //     $datos['galeriaImagenes'] = json_encode($galeriaImagenes);
             // }
             
+            
             if ($request->hasFile('galeriaImagenes')) {
+                // return response()->json(1);
                 // Storage::delete('public/'.$producto->imagen);
                 $imagen = $request->file('galeriaImagenes');
                 $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
                 $datos['galeriaImagenes'] = $request->file('galeriaImagenes')->storeAs('uploads', 'productos/'.$nombreImagen, 'public');
             }
+
+            foreach ($datos as $key => $value) {
+                if ($value == "null") {
+                    $datos[$key] = null;
+                }
+            }           
+            // return response()->json($datos);
             $producto->update($datos);
             return $this->successResponse($datos);
         }
@@ -351,7 +360,7 @@ class InvProductosController extends ApiResponseController
 
             return $this->successResponse($respuesta);
         } catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
     }
 

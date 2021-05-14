@@ -64,7 +64,7 @@ class InvTiposController extends ApiResponseController
                 DB::commit();
                 return $this->successResponse($datos, 'Tipo de inventario guardado');                
             } catch (\Exception $e) {
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
         }
     }

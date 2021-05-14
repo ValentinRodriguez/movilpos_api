@@ -56,7 +56,7 @@ class ActividadesController extends ApiResponseController
                 return $this->successResponse($datos);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
         }
     }
@@ -110,7 +110,7 @@ class ActividadesController extends ApiResponseController
                 return $this->successResponse($datos);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
         }
     }

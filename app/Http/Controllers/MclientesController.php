@@ -42,8 +42,8 @@ class MclientesController extends ApiResponseController
 
             $_vendedor = array("label" => 'vendedor', "data" => $vendedor, "icono" => 'fas fa-dolly-flatbed');
             $_tipo_documento = array("label" => 'tipo documento', "data" => $tipo_documento, "icono" => 'fas fa-dolly-flatbed');
-            $_tipoNegocio = array("label" => 'tipo negocio', "data" => $tipoNegocio, "icono" => 'fas fa-dolly-flatbed');
-            $_tipoCliente = array("label" => 'tipo cliente', "data" => $tipoCliente, "icono" => 'fas fa-dolly-flatbed');
+            $_tipoNegocio = array("label" => 'tipo-negocio', "data" => $tipoNegocio, "icono" => 'fas fa-dolly-flatbed');
+            $_tipoCliente = array("label" => 'tipo-cliente', "data" => $tipoCliente, "icono" => 'fas fa-dolly-flatbed');
             $_condiciones = array("label" => 'condiciones', "data" => $condiciones, "icono" => 'fas fa-dolly-flatbed');
 
             array_push($respuesta,$_vendedor);
@@ -54,7 +54,7 @@ class MclientesController extends ApiResponseController
 
             return $this->successResponse($respuesta);      
         } catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
     }
 
@@ -157,7 +157,7 @@ class MclientesController extends ApiResponseController
                 return $this->successResponse($datos, "Cliente creado correctamente");
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }            
             return $this->successResponse($datos);
         }
@@ -249,7 +249,7 @@ class MclientesController extends ApiResponseController
             DB::commit();
             return $this->successResponse(1);
         } catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
 
     }

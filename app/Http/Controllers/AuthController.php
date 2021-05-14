@@ -11,6 +11,7 @@ use App\Librerias\User;
 use App\Librerias\bodegasUsuarios;
 use App\Librerias\noempleados;
 use App\Librerias\Empresa;
+use App\Librerias\Rol;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests\RegisterAuthRequest;
@@ -56,13 +57,15 @@ class AuthController extends Controller
 
     public function logout()
     {
-        $token = JWTAuth::getToken();
-        try { 
-            $token = JWTAuth::invalidate($token);
-            return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Delogueado"), 200);
-        } catch (JWTException $e ){
-            return response()->json(array("data" => false, "code" => 422, "msj" => $e->getMessage()), 501);
-        } 
+        return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
+
+        // $token = JWTAuth::getToken();
+        // try { 
+        //     $token = JWTAuth::invalidate($token);
+        //     return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
+        // } catch (JWTException $e ){
+        //     return response()->json(array("data" => false, "code" => 422, "msj" => $e->getMessage()), 501);
+        // } 
     }
 
     public function desactivar() {
@@ -156,7 +159,7 @@ class AuthController extends Controller
                                       get();
 
             $empleados = noempleados::where('noempleados.email','=',$email)->first();
-
+            $permisos = Rol::where('rols.email','=',$email)->first();
             $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->first();
         }
 
@@ -169,6 +172,7 @@ class AuthController extends Controller
             'bodegas_permisos' => $bodegas_permiso,
             'empleado' => $empleados,
             'empresa' => $empresa,
+            'permisos' => $permisos,
             'user' => auth()->user()
         ]);
     }

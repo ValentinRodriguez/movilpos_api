@@ -36,5 +36,7 @@ class DatabaseSeeder extends Seeder
         $this->call(estadoCivilSeeder::class);
         $this->call(tipoEmpleadoSeeder::class);
         $this->call(tipoSangreSeeder::class);
+        $this->call(inspeccionesSeeder::class);        
+        $this->call(rolSeeder::class);  
     }
 }

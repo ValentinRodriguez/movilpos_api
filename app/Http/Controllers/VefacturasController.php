@@ -120,7 +120,7 @@ class VefacturasController extends ApiResponseController
             return $this->successResponse($datosm);
         }
         catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
     }
 

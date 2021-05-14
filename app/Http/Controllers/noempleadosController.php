@@ -79,7 +79,7 @@ class noempleadosController extends ApiResponseController
                 return $this->successResponse($datos);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
         }
 
@@ -145,7 +145,7 @@ class noempleadosController extends ApiResponseController
             return $this->successResponse($respuesta); 
 
         } catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
     } 
 }

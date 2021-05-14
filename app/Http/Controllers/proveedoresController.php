@@ -143,15 +143,14 @@ class proveedoresController extends ApiResponseController
                                 $errors = $validator->errors();
                                 return $this->errorResponseParams($errors->all());                        
                             }                                                               
-                            coCuentasProveedor::create($datosd);    
-                            // return response()->json($datosd);                                               
+                            coCuentasProveedor::create($datosd);
                         }                        
                     }
                 DB::commit();
                 return $this->successResponse($datos);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }  
         }
     }
@@ -342,7 +341,7 @@ class proveedoresController extends ApiResponseController
 
             return $this->successResponse($respuesta);      
         } catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
     }
 

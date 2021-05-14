@@ -33,7 +33,7 @@ class CoOrdenesMasterController extends ApiResponseController
                                 
         foreach ($compra as $key => $value) { 
             $compraDetalle = coOrdenesDetalle::where([['co_ordenes_detalles.estado','=','activo'], 
-                                                        ['co_ordenes_detalles.num_oc','=', $value->num_oc]])-> 
+                                                     ['co_ordenes_detalles.num_oc','=', $value->num_oc]])-> 
                                                 join('inv_productos','co_ordenes_detalles.codigo','=','inv_productos.codigo')->
                                                 join('categorias','categorias.id_categoria','=','inv_productos.id_categoria')->
                                                 join('brands','brands.id_brand','=','inv_productos.id_brand')->
@@ -41,11 +41,8 @@ class CoOrdenesMasterController extends ApiResponseController
                                                 join('bodegas','bodegas.id_bodega','=','inv_productos.id_bodega')->
                                                 select('co_ordenes_detalles.*',
                                                     
-                                                        'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.codigo_referencia',
-                                                        'inv_productos.origen','inv_productos.existenciaMinima','inv_productos.existenciaMaxima','inv_productos.ultimaFechaCompra',
-                                                        'inv_productos.precio_compra','inv_productos.precio_venta','inv_productos.costo','inv_productos.fechaInicioDescuento',
-                                                        'inv_productos.fechaFinDescuento','inv_productos.porcientodescuento','inv_productos.ventas','inv_productos.devoluciones',
-                                                        'inv_productos.galeriaImagenes',
+                                                        'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.origen',
+                                                        'inv_productos.porcientodescuento','inv_productos.galeriaImagenes',
 
                                                         'categorias.descripcion as categoria',
                                                         'brands.descripcion as marca',
@@ -100,7 +97,7 @@ class CoOrdenesMasterController extends ApiResponseController
 
             return $this->successResponse($respuesta);      
         } catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
     }
     
@@ -243,7 +240,7 @@ class CoOrdenesMasterController extends ApiResponseController
                     return $this->successResponse($datosd);
                 } 
                 catch (\Exception $e ){
-                    return $this->errorResponse($e);
+                    return $this->errorResponse($e->getMessage());
                 }
             }
     }
@@ -263,8 +260,7 @@ class CoOrdenesMasterController extends ApiResponseController
                                 select('co_ordenes_masters.*',
 
                                     'co_ordenes_detalles.cantidad','co_ordenes_detalles.precio as precio_venta','co_ordenes_detalles.porc_desc',
-                                    'co_ordenes_detalles.total_desc','co_ordenes_detalles.valor_bruto','co_ordenes_detalles.valor_neto',
-                                    'co_ordenes_detalles.valor_neto',
+                                    'co_ordenes_detalles.valor_bruto','co_ordenes_detalles.valor_neto','co_ordenes_detalles.valor_neto',
 
                                     'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.imagenPrincipal',
                                     'inv_productos.galeriaImagenes','categorias.descripcion as c','brands.descripcion as marca',
@@ -298,7 +294,7 @@ class CoOrdenesMasterController extends ApiResponseController
             DB::commit();
             return $this->successResponse(1);
         } catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
     }
 
@@ -359,16 +355,13 @@ class CoOrdenesMasterController extends ApiResponseController
                                            join('bodegas','bodegas.id_bodega','=','inv_productos.id_bodega')->
                                            select('co_ordenes_detalles.*',
                                                 
-                                                  'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.codigo_referencia',
-                                                  'inv_productos.origen','inv_productos.existenciaMinima','inv_productos.existenciaMaxima','inv_productos.ultimaFechaCompra',
-                                                  'inv_productos.precio_compra','inv_productos.precio_venta','inv_productos.costo','inv_productos.fechaInicioDescuento',
-                                                  'inv_productos.fechaFinDescuento','inv_productos.porcientodescuento','inv_productos.ventas','inv_productos.devoluciones',
-                                                  'inv_productos.galeriaImagenes',
+                                                'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.origen',
+                                                'inv_productos.porcientodescuento','inv_productos.galeriaImagenes','inv_productos.costo',
 
-                                                  'categorias.descripcion as categoria',
-                                                  'brands.descripcion as marca',
-                                                  'invtipos_inventarios.descripcion as tipoinventario',
-                                                  'bodegas.descripcion as almacen')->
+                                                'categorias.descripcion as categoria',
+                                                'brands.descripcion as marca',
+                                                'invtipos_inventarios.descripcion as tipoinventario',
+                                                'bodegas.descripcion as almacen')->
                                            get();       
        
         if ($compra == null){
@@ -541,7 +534,7 @@ class CoOrdenesMasterController extends ApiResponseController
                 return $this->successResponse('1');
                 } 
                 catch (\Exception $e ){
-                    return $this->errorResponse($e);
+                    return $this->errorResponse($e->getMessage());
                 }
         }
     }

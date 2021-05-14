@@ -61,7 +61,7 @@ class inv_PropiedadesController extends ApiResponseController
                 return $this->successResponse($datos);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
         }
 
@@ -112,7 +112,7 @@ class inv_PropiedadesController extends ApiResponseController
                 return $this->successResponse(1);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
             return $this->successResponse($propiedades, 'Categoría actualizada');
         }

@@ -40,7 +40,7 @@ class invtransacciones extends ApiResponseController
                                                 leftjoin('noempleados','invtransaccionesmaster.id_numemp','=','noempleados.id_numemp')->
                                                 leftjoin('transportistas','invtransaccionesmaster.cod_transportista','=','transportistas.cod_transportista')->
                                                 //leftjoin('bodegas_usuarios','bodegas.id_bodega','=','bodegas_usuarios.id_bodega')->
-                                                join('bodegas','invtransaccionesmaster.id_bodega','=','bodegas.id_bodega')->
+                                                leftjoin('bodegas','invtransaccionesmaster.id_bodega','=','bodegas.id_bodega')->
                                                 select('invtransaccionesmaster.*',
                                                        'invtiposmovimientos.titulo as titulo_mov',
                                                        'veclientes.nombre as veclientes_nombre','veclientes.documento as veclientes_documento',
@@ -67,16 +67,16 @@ class invtransacciones extends ApiResponseController
                                                              join('brands','brands.id_brand','=','inv_productos.id_brand')->
                                                              join('invtipos_inventarios','invtipos_inventarios.id_tipoinventario','=','inv_productos.id_tipoinventario')->
                                             
-                                                             select('inv_productos.*',                        
+                                                             select(
+                                                                'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.origen',
+                                                                'inv_productos.porcientodescuento','inv_productos.galeriaImagenes',                        
     
-                                                             'invtransaccionesdetalle.cantidad1 as cantidad1',
-                                                             'invtransaccionesdetalle.cantidad as cantidad',
-                                                             
-                                                             'categorias.descripcion as categoria',
-                                                             'brands.descripcion as marca',
-                                                             'invtipos_inventarios.descripcion as tipoinventario',
-                                                             'bodegas.descripcion as almacen')-> 
+                                                                'invtransaccionesdetalle.*',
                                                                 
+                                                                'categorias.descripcion as categoria',
+                                                                'brands.descripcion as marca',
+                                                                'invtipos_inventarios.descripcion as tipoinventario',
+                                                                'bodegas.descripcion as almacen')->                                                                 
                                                              orderBy('created_at', 'desc')->  
                                                              get();
             
@@ -162,7 +162,7 @@ class invtransacciones extends ApiResponseController
                 $nombre_departamento = Departamento::where('id','=',$datosm['departamento'])->first();
 
                 $datosm['nombre_departamento'] = $nombre_departamento->descripcion;
-                // return response()->json($datosm);
+                
                 $messages = [
                     'required' => 'El campo :attribute es requerido.',
                     'unique'   => 'El campo :attribute debe ser unico',
@@ -193,8 +193,7 @@ class invtransacciones extends ApiResponseController
                     return $this->errorResponseParams($errors->all());
                 }else{
                     invtransaccionesmodel::create($datosm);
-                    // return response()->json($datosm);
-                    
+                                        
                     if (count($productos) !== 0) {
                         $datosd = null;
                         for ($i=0; $i < count($productos); $i++) {
@@ -224,9 +223,9 @@ class invtransacciones extends ApiResponseController
                                             'area'             => 0,
                                             'codigo'           => $productos[$i]['codigo'],
                                             'cantidad1'        => $cantidadtrx,
-                                            'cantidad'         => $cantidadtrx,
+                                            'cantidad'         => 0,
                                             'margen'           => 0,  
-                                            'precio_venta'     => $productos[$i]['precio_venta'],
+                                            'precio'           => $productos[$i]['precio'],
                                             'costo'            => $productos[$i]['costo'],
                                             'estado'           => 'activo'
                                             // 'imagenPrincipal'  => $request->input('imagenPrincipal'.$i),
@@ -234,7 +233,7 @@ class invtransacciones extends ApiResponseController
                                             // 'unidadMed'        => $request->input('unidadMed'.$i),
                                             // 'titulo_producto'  => $request->input('titulo'.$i)
                             );
-                            
+                            // return response()->json($datosd);
                             $messages = [
                                 'required' => 'El campo :attribute es requerido.',
                                 'unique'   => 'El campo :attribute debe ser unico',
@@ -243,7 +242,7 @@ class invtransacciones extends ApiResponseController
             
                             $validator = validator($datosd, [
                                 'num_doc'          => 'required',
-                                'precio_venta'     => 'required',
+                                'precio'           => 'required',
                                 'numerosecuencia'  => 'required',
                                 'codigo'           => 'required',
                                 'cantidad1'        => 'required',
@@ -268,7 +267,7 @@ class invtransacciones extends ApiResponseController
             return $this->successResponse($datosm);
         }
         catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
     }
 
@@ -494,10 +493,10 @@ class invtransacciones extends ApiResponseController
                                     'cantidad1'        => $productos[$i]->cantidad1,
                                     'cantidad'         => $cantidadtrx,
                                     'margen'           => 0,  
-                                    'precio_venta'     => $productos[$i]->precio_venta,
+                                    'precio'           => $productos[$i]->precio,
                                     'costo'            => $productos[$i]->costo
                     );
-                    // return response()->json($datosd);             
+                                 
                     $messages = [
                         'required' => 'El campo :attribute es requerido.',
                         'unique'   => 'El campo :attribute debe ser unico',
@@ -514,7 +513,7 @@ class invtransacciones extends ApiResponseController
                         'cantidad1'        => 'required',
                         'cantidad'         => 'required',
                         'margen'           => 'required', 
-                        'precio_venta'     => 'required',
+                        'precio'           => 'required',
                         'costo'            => 'required'            
                     ],$messages);
                      
@@ -530,7 +529,7 @@ class invtransacciones extends ApiResponseController
                                  update(['num_doc' =>$documentomov, 'secuencia'=>$numerosecuencia]);
             DB::commit();
         }catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
         return $this->successResponse($transaccion);
     }
@@ -616,7 +615,7 @@ class invtransacciones extends ApiResponseController
 
             return $this->successResponse($respuesta);      
         } catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
     }
     
@@ -718,3 +717,4 @@ class invtransacciones extends ApiResponseController
         return Excel::download(new ProductosExport, 'users.xlsx');
     }
 }
+

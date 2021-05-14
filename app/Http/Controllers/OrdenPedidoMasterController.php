@@ -193,7 +193,7 @@ class OrdenPedidoMasterController extends ApiResponseController
                     return $this->successResponse($datosd);
                 } 
                 catch (\Exception $e ){
-                    return $this->errorResponse($e);
+                    return $this->errorResponse($e->getMessage());
                 }
             }
     }
@@ -252,7 +252,7 @@ class OrdenPedidoMasterController extends ApiResponseController
             DB::commit();
             return $this->successResponse($ordenPedido);
         } catch (\Exception $e ){
-            return $this->errorResponse($e);
+            return $this->errorResponse($e->getMessage());
         }
     }
 

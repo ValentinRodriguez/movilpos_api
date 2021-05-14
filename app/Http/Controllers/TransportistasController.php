@@ -70,7 +70,7 @@ class TransportistasController extends ApiResponseController
                 DB::commit();                    
                 return $this->successResponse($datos);
             } catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
         }
     }
@@ -129,7 +129,7 @@ class TransportistasController extends ApiResponseController
                 return $this->successResponse($datos);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
         }
     }

@@ -63,7 +63,7 @@ class BodegasController extends ApiResponseController
                 return $this->successResponse($datos, "Bodega guardada");
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
         }
     }

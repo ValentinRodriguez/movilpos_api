@@ -61,7 +61,7 @@ class BrandsController extends ApiResponseController
             return $this->successResponse($datos, 'Marca Creada satisfactoriamente');
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
         }
     }

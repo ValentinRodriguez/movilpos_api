@@ -78,7 +78,7 @@ class cgcatalogocontroller extends ApiResponseController
                 return $this->successResponse($datos);                
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }            
         }
     }
@@ -94,30 +94,6 @@ class cgcatalogocontroller extends ApiResponseController
     public function update(Request $request, $id) {
         $catalogo = cgcatalogo::find($id);
 
-        $datos = array("cuenta_no"            =>$request->input('cuenta_no'),
-                        "descripcion"         =>$request->input('descripcion'),
-                        "origen"              =>$request->input('origen'),
-                        "nivel"               =>$request->input('nivel'),
-                        "referencia"          =>$request->input('referencia'),
-                        "catalogo"            =>$request->input('catalogo'),
-                        "depto"               =>$request->input('depto'),
-                        "codigo_estado"       =>$request->input('codigo_estado'),
-                        "aplica_a"            =>$request->input('aplica_a'),
-                        "cuenta_resultado"    =>$request->input('cuenta_resultado'),
-                        "tipo_cuenta"         =>$request->input('tipo_cluente'),
-                        "selectivo_consumo"   =>$request->input('selectivo_consumo'),
-                        "retencion"           =>$request->input('retencion'),
-                        "usuario_creador"     =>$request->input('usuario_creador'),
-                        "usuario_modificador" =>$request->input('usuario_modificador'),
-                        "codigo_isr"          =>$request->input('codigo_isr'),
-                        "estado"              =>$request->input('estado'),
-                        "estado_a"            =>$request->input('estado_a'),
-                        "estado_m"            =>$request->input('estado_m'),
-                        "grupo"               =>$request->input('grupo'),
-                        "tipo_cuenta"         =>$request->input('tipo_cuenta'),
-                        "usuario_modificador" =>$request->input("usuario_modificador")
-        );
-        // return response()->json($datos);
         $messages = [
              'required' => 'El campo :attribute es requerido.',
              'unique'   => 'El campo :attribute debe ser unico',
@@ -144,10 +120,10 @@ class cgcatalogocontroller extends ApiResponseController
                 DB::beginTransaction();                
                     $catalogo->update($request->all());
                 DB::commit();
-                return $this->successResponse($datos);                
+                return $this->successResponse($catalogo);                
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
         }
     }

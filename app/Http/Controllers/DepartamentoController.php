@@ -50,7 +50,7 @@ class DepartamentoController extends ApiResponseController
                 return $this->successResponse(1);                
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
         }
     }
@@ -103,7 +103,7 @@ class DepartamentoController extends ApiResponseController
                 return $this->successResponse(1);                
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e);
+                return $this->errorResponse($e->getMessage());
             }
         }
     }
