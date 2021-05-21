@@ -38,5 +38,8 @@ class DatabaseSeeder extends Seeder
         $this->call(tipoSangreSeeder::class);
         $this->call(inspeccionesSeeder::class);        
         $this->call(rolSeeder::class);  
+        $this->call(municipiosSeeder::class);  
+        $this->call(regionSeeder::class);
+        $this->call(provinciasSeeder::class);        
     }
 }
