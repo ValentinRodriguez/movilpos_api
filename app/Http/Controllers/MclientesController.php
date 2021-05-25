@@ -91,6 +91,9 @@ class MclientesController extends ApiResponseController
             "id_pais"             =>$request->input("id_pais"),
             "id_zonalocal"        =>$request->input("id_zonalocal"),
             "id_ciudad"           =>$request->input("id_ciudad"),
+            "id_region"           =>$request->input("id_region"),
+            "id_municipio"        =>$request->input("id_municipio"),
+            "id_sector"           =>$request->input("id_sector"),
             "telefono_oficina"    =>$request->input("telefono_oficina"),
             "celular"             =>$request->input("celular"),
             "telefono_casa"       =>$request->input("telefono_casa"),
@@ -123,7 +126,7 @@ class MclientesController extends ApiResponseController
         }
         
         $datos = $datos + array('sec_cliente' =>$idsecuencia);
-
+        // return response()->json($datos);
         $validator = validator($datos, [
             'tipo_cliente'        => 'required|numeric',
             'sec_cliente'         => 'required|numeric',
@@ -139,13 +142,16 @@ class MclientesController extends ApiResponseController
             "urbanizacion"        => 'string|max:500',
             "id_pais"             => 'required',
             "id_ciudad"           => 'required',
+            "id_region"           => 'required',
+            "id_municipio"        => 'required',
+            "id_sector"           => 'required',
             "estado"              => 'required',
             "celular"             => 'string',
             'email'               => 'string|max:500',
             "url"                 => 'string|max:500',
             'usuario_creador'     => 'required|string'
         ],$messages);
-        // return $this->successResponse($datos);
+        
         if ($validator->fails()) {
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all());

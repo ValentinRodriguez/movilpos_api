@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Librerias\sectores;
 
-class sectoresController extends Controller
+class sectoresController extends ApiResponseController
 {
     public function index()
     {
@@ -34,10 +34,9 @@ class sectoresController extends Controller
 
     public function buscaSectores($id)
     {
-        $ciudad = sectores::join('ciudades','ciudades.id_ciudad','=','sectores.id_ciudad')->
-                            select('sectores.*')->  
-                            orderBy('created_at', 'desc')->
-                            where('regiones.id_pais','=',$id)->
+        $ciudad = sectores::select('sectores.*')->  
+                            orderBy('sectores.descripcion')->
+                            where('sectores.id_ciudad','=',$id)->
                             get();
                             if ($ciudad == null){
                                 return $this->errorResponse($ciudad);

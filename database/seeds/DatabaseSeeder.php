@@ -41,5 +41,7 @@ class DatabaseSeeder extends Seeder
         $this->call(municipiosSeeder::class);  
         $this->call(regionSeeder::class);
         $this->call(provinciasSeeder::class);        
+        $this->call(sectoresSeeder::class);  
+        $this->call(clienteSeeder::class);          
     }
 }
