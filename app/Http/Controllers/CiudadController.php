@@ -23,10 +23,10 @@ class CiudadController extends ApiResponseController
 
     public function ciudadesPorPais($id)
     {        
-        $ciudad = ciudad::join('paises','paises.id_pais','=','ciudades.id_pais')->
-                          select('ciudades.*','paises.descripcion as pais')->  
+        $ciudad = ciudad::join('municipios','municipios.id_municipio','=','ciudades.id_municipio')->
+                          select('ciudades.*')->  
                           orderBy('created_at', 'desc')->
-                          where('ciudades.id_pais','=',$id)->
+                          where('ciudades.id_ciudad','=',$id)->
                           get();
                           if ($ciudad == null){
                               return $this->errorResponse($ciudad);

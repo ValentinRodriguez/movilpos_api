@@ -180,8 +180,20 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/propiedades', 'inv_PropiedadesController');
 
     //MANTENIMIENTO CIUDAD
-    Route::get('/ciudad/pais/{id}','CiudadController@ciudadesPorPais');
+    Route::get('/ciudad/municipio/{id}','CiudadController@ciudadesPorPais');
     Route::apiresource('/ciudad', 'CiudadController');
+
+    //MANTENIMIENTO REGIONES
+    Route::get('/region/pais/{id}','RegionesController@buscaRegion');
+    Route::apiresource('/regiones', 'RegionesController');
+
+    //MANTENIMIENTO MUNICIPIOS
+    Route::get('/municipios/region/{id}','MunicipiosController@buscaMunicipios');
+    Route::apiresource('/municipios', 'MunicipiosController');
+    
+    //MANTENIMIENTO SECTORES
+    Route::get('/sectores/ciudad/{id}','sectoresController@buscaSectores');
+    Route::apiresource('/ciudad', 'sectoresController');
 
     //MANTENIMIENTO DE LOS DATOS DE LA EMPRESA
     Route::post('/act/empresa/{id}', 'EmpresaController@actualizar');
