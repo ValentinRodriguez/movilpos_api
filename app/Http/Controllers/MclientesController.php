@@ -62,7 +62,16 @@ class MclientesController extends ApiResponseController
     {
         $clientes = Mclientes::join('paises','paises.id_pais','=','veclientes.id_pais')->
                                join('ciudades','ciudades.id_ciudad','=','veclientes.id_ciudad')->
-                               select('veclientes.*','paises.descripcion as pais','ciudades.descripcion as ciudad')->
+                               join('municipios','municipios.id_municipio','=','veclientes.id_municipio')->
+                               join('provincias','provincias.id_provincia','=','veclientes.id_provincia')->
+                               join('sectores','sectores.id_sector','=','veclientes.id_sector')->
+                               select('veclientes.*',
+                                      'paises.descripcion as pais',
+                                      'ciudades.descripcion as ciudad',
+                                      'municipios.descripcion as municipio',
+                                      'sectores.descripcion as sector',
+                                      'provincias.descripcion as provincia'
+                                      )->
                                orderBy('created_at', 'desc')->
                                where('veclientes.estado','=','ACTIVO')->
                                get();
@@ -89,6 +98,7 @@ class MclientesController extends ApiResponseController
             "direccion"           =>$request->input("direccion"),
             "urbanizacion"        =>$request->input("urbanizacion"),
             "id_pais"             =>$request->input("id_pais"),
+            "id_provincia"        =>$request->input("id_provincia"),
             "id_zonalocal"        =>$request->input("id_zonalocal"),
             "id_ciudad"           =>$request->input("id_ciudad"),
             "id_region"           =>$request->input("id_region"),
@@ -141,9 +151,10 @@ class MclientesController extends ApiResponseController
             "direccion"           => 'string|max:500',
             "urbanizacion"        => 'string|max:500',
             "id_pais"             => 'required',
-            "id_ciudad"           => 'required',
-            "id_region"           => 'required',
+            // "id_ciudad"           => 'required',
+            // "id_region"           => 'required',
             "id_municipio"        => 'required',
+            "id_provincia"        => 'required',
             "id_sector"           => 'required',
             "estado"              => 'required',
             "celular"             => 'string',

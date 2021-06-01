@@ -37,6 +37,7 @@ class clienteSeeder extends Seeder
             'id_municipio' => 137,
             'id_region' => 8,
             'id_ciudad' => 1,
+            'id_provincia' => 1,
             'celular' => '(XXX)-XXX-XXXX',
             'telefono_casa' => '(XXX)-XXX-XXXX',
             'email' => 'xxxxxxxxxxxxxxxxxxx',
