@@ -16,7 +16,7 @@ class CreateMunicipiosTable extends Migration
         Schema::create('municipios', function (Blueprint $table) {
             $table->id();
             $table->integer('id_municipio');
-            $table->integer('id_region');
+            $table->integer('id_provincia');
             $table->string('descripcion',100);            
             $table->string('estado',15);
             $table->timestamps();

@@ -19,4 +19,7 @@ use Illuminate\Support\Facades\Mail;
     return view('welcome');
 });
 
+
+Route::resource('mail','officeMailController');
+
 Route::get('/reporte/invtransacciones-visualizar', 'invtransacciones@verReporte')->name('transaccion');
