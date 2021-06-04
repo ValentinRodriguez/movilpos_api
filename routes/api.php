@@ -167,7 +167,12 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/zonahoraria', 'ZonahorariaController');
 
     //MANTENIMIENTO ZONAS LOCALES
+    Route::get('/busqueda/zonas', 'ZonasController@busqueda');
     Route::apiresource('/zonas', 'ZonasController');
+
+    //MANTENIMIENTO PROVINCIAS
+    Route::get('/busqueda/provincias', 'ProvinciasController@busqueda');
+    Route::apiresource('/provincias', 'ProvinciasController');
 
     //tipo negocio
     Route::apiresource('/negocio', 'TipoNegocioController');

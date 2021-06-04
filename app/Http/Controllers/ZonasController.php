@@ -25,18 +25,29 @@ class ZonasController extends ApiResponseController
 
     public function store(Request $request)
     {
-        $datos = array("id_zonalocal" => $request->input("id_zonalocal"),
-                       "descripcion"  => $request->input("descripcion")        
-        );
+        $numerosecuencia = zonas::get('id_zonalocal')->max();
 
+        if( $numerosecuencia == null){
+            $numerosecuencia = 1;
+        }
+        else{
+            $numerosecuencia =$numerosecuencia->id_zonalocal + 1;
+        }
+        
+        $datos = array("id_zonalocal" => $numerosecuencia,
+                       "descripcion"  => $request->input("descripcion"),       
+                       "estado"       => $request->input("estado")
+        );
+        // return response()->json($datos);
         $messages = ['required' => 'El campo :attribute es requerido.',
                      'unique'   => 'El campo :attribute debe ser unico',
                      'numeric'  => 'El campo :attribute debe ser numerico'
         ];
 
         $validator = validator($datos, [
-                'id_zonalocal'  => 'required|String',
-                'descripcion'   => 'required|string|min:1|max:500' 
+                'id_zonalocal' => 'required',
+                'estado'       => 'required',
+                'descripcion'  => 'required|string|min:1|max:500' 
         ], $messages);
 
         if ($validator->fails()) {
@@ -88,8 +99,16 @@ class ZonasController extends ApiResponseController
         }
 
         $zona->update(['estado' => 'ELIMINADO']);
-            return response()->json(array("msj:" => "Registro Eliminado"));
-        }
+        return response()->json(array("msj:" => "Registro Eliminado"));
     }
+
+    public function busqueda(Request $request)
+    {
+        $parametro = $request->get('zona');
+        $zona = zonas::orderBy('created_at', 'desc')->where([['estado','=','activo'],['descripcion','=',$parametro]])->get();
+        return $this->successResponse($zona);
+    }
+}
+    
     
 
