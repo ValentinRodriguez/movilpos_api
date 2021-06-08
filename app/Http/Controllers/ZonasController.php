@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Librerias\zonas;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Librerias\zonas;
+use App\Librerias\zonas_provincias;
 use App\Http\Controllers\ApiResponseController;
 
 class ZonasController extends ApiResponseController
@@ -11,9 +13,13 @@ class ZonasController extends ApiResponseController
     public function index()
     {
         $zona = Zonas::orderBy('created_at', 'desc')->get();
+        foreach ($zona as $key => $value) {
+            $zonaProvincia = zonas_provincias::join('provincias','provincias.id_provincia','=','zonas_provincias.id_provincia')->
+                                               select('zonas_provincias.id_provincia','provincias.descripcion')->
+                                               where('id_zona','=',$value->id_zonalocal)->
+                                               get();
 
-        if ($zona == null){
-            return $this->errorResponse($zona);
+            $value->zona_provincia = $zonaProvincia;
         }
         return $this->successResponse($zona);
     }
@@ -36,6 +42,7 @@ class ZonasController extends ApiResponseController
         
         $datos = array("id_zonalocal" => $numerosecuencia,
                        "descripcion"  => $request->input("descripcion"),       
+                       "provincias"   => $request->input("provincias"),  
                        "estado"       => $request->input("estado")
         );
         // return response()->json($datos);
@@ -54,7 +61,43 @@ class ZonasController extends ApiResponseController
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all());
         } else {
-            zonas::create($datos);
+            DB::beginTransaction();
+                zonas::create($datos);
+                    
+                if (count($datos['provincias']) !== 0) {
+                    $datosd = null;
+
+                    $id_zona = zonas_provincias::get('id_zona')->max();
+
+                    if( $id_zona == null){
+                        $id_zona = 1;
+                    }
+                    else{
+                        $id_zona = $id_zona->id_zona + 1;
+                    }
+                    // return response()->json($datos['provincias']);
+                    for ($i=0; $i < count($datos['provincias']); $i++) {
+                        $datosd = array('id_provincia' => $datos['provincias'][$i]['id_provincia'],
+                                        'id_zona' => $id_zona);
+                        
+                        $messages = [
+                            'required' => 'El campo :attribute es requerido.'
+                        ];
+        
+                        $validator = validator($datosd, [
+                            'id_provincia' => 'required'
+                        ],$messages);
+                        
+                        if ($validator->fails()) {
+                            $errors = $validator->errors();
+                            return $this->errorResponseParams($errors->all());                        
+                        }                                                               
+                        zonas_provincias::create($datosd);
+                    }                        
+                }else{
+                    return $this->errorResponse(null, "No hay provincias vinculadas a la zona.");
+                }
+            DB::commit();
             return $this->successResponse($datos);
         }
     }
@@ -64,6 +107,16 @@ class ZonasController extends ApiResponseController
         //
     }
     
+    public function buscarZonaProvincia($id)
+    {
+        $zonaProv = zonas_provincias::join('zonas_local','zonas_local.id_zonalocal','=','zonas_provincias.id_zona')->
+                                      select('zonas_provincias.*','zonas_local.descripcion as desc_zona')->
+                                      where('id_provincia','=',$id)->
+                                      get();
+
+        return $this->successResponse($zonaProv);
+    }
+
     public function update(Request $request, $id)
     {
         $zona = zonas::find($id);

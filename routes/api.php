@@ -168,6 +168,7 @@ Route::post('logout', 'AuthController@logout');
 
     //MANTENIMIENTO ZONAS LOCALES
     Route::get('/busqueda/zonas', 'ZonasController@busqueda');
+    Route::get('/busqueda/zonas-provincias/{id}', 'ZonasController@buscarZonaProvincia');
     Route::apiresource('/zonas', 'ZonasController');
 
     //MANTENIMIENTO PROVINCIAS

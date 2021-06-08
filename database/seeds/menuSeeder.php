@@ -48,6 +48,7 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep7','nombre' => 'Condiciones de pago','descripcion' => 'modulo de ventas','url' => 'condiciones-de-pago','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep8','nombre' => 'Gestion de Recepcion de Vehiculos','descripcion' => 'modulo de ventas','url' => 'gestion-recepcion-vehiculos','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep9','nombre' => 'Acto de descargo','descripcion' => 'modulo de ventas','url' => 'acto-descargo','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep10','nombre' => 'Tabla de amortizaciones','descripcion' => 'modulo de ventas','url' => 'tabla-amortizaciones','estado' => 'ACTIVO'],
 
             // MODULO DE COMPRAS      
             ['id_menu' => 1,'modulo' => 6,'status' => 1,'codigo' => 'comp1','nombre' => 'Gestion de ordenes de compras','descripcion' => 'menu de compras','url' => 'gestion-de-ordenes-compras','estado' => 'ACTIVO'],
