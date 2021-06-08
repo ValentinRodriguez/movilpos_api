@@ -64,7 +64,7 @@ class MclientesController extends ApiResponseController
                                join('ciudades','ciudades.id_ciudad','=','veclientes.id_ciudad')->
                                join('municipios','municipios.id_municipio','=','veclientes.id_municipio')->
                                join('provincias','provincias.id_provincia','=','veclientes.id_provincia')->
-                               join('sectores','sectores.id_sector','=','veclientes.id_sector')->
+                               leftjoin('sectores','sectores.id_sector','=','veclientes.id_sector')->
                                select('veclientes.*',
                                       'paises.descripcion as pais',
                                       'ciudades.descripcion as ciudad',
@@ -151,11 +151,11 @@ class MclientesController extends ApiResponseController
             "direccion"           => 'string|max:500',
             "urbanizacion"        => 'string|max:500',
             "id_pais"             => 'required',
-            // "id_ciudad"           => 'required',
-            // "id_region"           => 'required',
+            "id_ciudad"           => 'required',
+            "id_region"           => 'required',
             "id_municipio"        => 'required',
             "id_provincia"        => 'required',
-            "id_sector"           => 'required',
+            // "id_sector"           => 'required',
             "estado"              => 'required',
             "celular"             => 'string',
             'email'               => 'string|max:500',

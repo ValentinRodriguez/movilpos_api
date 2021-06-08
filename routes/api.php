@@ -172,7 +172,7 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/zonas', 'ZonasController');
 
     //MANTENIMIENTO PROVINCIAS
-    Route::get('/busqueda/provincias', 'ProvinciasController@busqueda');
+    Route::get('/provincias/region/{id}', 'ProvinciasController@buscaProvincia');
     Route::apiresource('/provincias', 'ProvinciasController');
 
     //tipo negocio

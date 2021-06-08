@@ -34,10 +34,10 @@ class MunicipiosController extends ApiResponseController
 
     public function buscaMunicipios($id)
     {
-        $ciudad = municipios::join('regiones','municipios.id_region','=','regiones.id_region')->
+        $ciudad = municipios::join('provincias','municipios.id_provincia','=','provincias.id_provincia')->
                             select('municipios.*')->  
                             orderBy('created_at', 'desc')->
-                            where('regiones.id_region','=',$id)->
+                            where('provincias.id_provincia','=',$id)->
                             get();
                             if ($ciudad == null){
                                 return $this->errorResponse($ciudad);
