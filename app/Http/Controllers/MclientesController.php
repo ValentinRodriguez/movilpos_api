@@ -13,6 +13,8 @@ use App\Librerias\tipo_documento;
 use App\Librerias\noempleados;
 use App\Librerias\tipoNegocio;
 use App\Librerias\tipoClientes;
+use App\Librerias\Nacionalidades;
+use App\Librerias\pais;
 
 class MclientesController extends ApiResponseController
 {
@@ -39,18 +41,26 @@ class MclientesController extends ApiResponseController
             $condiciones = ve_CondicionesPago::orderBy('id', 'desc')->
                                     where('estado','=','ACTIVO')->
                                     get();
+                                    
+            $nacionalidades = Nacionalidades::get();
+
+            $paises = pais::get();
 
             $_vendedor = array("label" => 'vendedor', "data" => $vendedor, "icono" => 'fas fa-dolly-flatbed');
             $_tipo_documento = array("label" => 'tipo documento', "data" => $tipo_documento, "icono" => 'fas fa-dolly-flatbed');
             $_tipoNegocio = array("label" => 'tipo-negocio', "data" => $tipoNegocio, "icono" => 'fas fa-dolly-flatbed');
             $_tipoCliente = array("label" => 'tipo-cliente', "data" => $tipoCliente, "icono" => 'fas fa-dolly-flatbed');
             $_condiciones = array("label" => 'condiciones', "data" => $condiciones, "icono" => 'fas fa-dolly-flatbed');
+            $_nacionalidades = array("label" => 'nacionalidades', "data" => $nacionalidades, "icono" => 'fas fa-dolly-flatbed');
+            $_paises = array("label" => 'paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
 
             array_push($respuesta,$_vendedor);
             array_push($respuesta,$_tipo_documento);
             array_push($respuesta,$_tipoNegocio);
             array_push($respuesta,$_tipoCliente);
             array_push($respuesta,$_condiciones);
+            array_push($respuesta,$_nacionalidades);
+            array_push($respuesta,$_paises);
 
             return $this->successResponse($respuesta);      
         } catch (\Exception $e ){
@@ -64,12 +74,14 @@ class MclientesController extends ApiResponseController
                                join('ciudades','ciudades.id_ciudad','=','veclientes.id_ciudad')->
                                join('municipios','municipios.id_municipio','=','veclientes.id_municipio')->
                                join('provincias','provincias.id_provincia','=','veclientes.id_provincia')->
+                               join('nacionalidades','nacionalidades.id','=','veclientes.nacionalidad')->
                                leftjoin('sectores','sectores.id_sector','=','veclientes.id_sector')->
                                select('veclientes.*',
                                       'paises.descripcion as pais',
                                       'ciudades.descripcion as ciudad',
                                       'municipios.descripcion as municipio',
                                       'sectores.descripcion as sector',
+                                      'nacionalidades.nacionalidad as nacionalidad_cliente',
                                       'provincias.descripcion as provincia'
                                       )->
                                orderBy('created_at', 'desc')->
@@ -94,6 +106,7 @@ class MclientesController extends ApiResponseController
             "tipo_negocio"        =>$request->input("tipo_negocio"),
             "ncf"                 =>$request->input("ncf"),
             "documento"           =>$request->input("documento"),
+            "nacionalidad"        =>$request->input("nacionalidad"),
             "generico"            =>$request->input("generico"),
             "direccion"           =>$request->input("direccion"),
             "urbanizacion"        =>$request->input("urbanizacion"),
@@ -144,23 +157,24 @@ class MclientesController extends ApiResponseController
             'tipo_documento'      => 'required|numeric',
             'documento'           => 'required|string',
             "vendedor"            => 'required|numeric',
-            "cond_pago"           => 'numeric',
-            "tipo_negocio"        => 'numeric',
-            "ncf"                 => 'string',
-            "generico"            => 'string',
+            "cond_pago"           => 'required',
+            "tipo_negocio"        => 'required',
+            "ncf"                 => 'required',
+            "generico"            => 'required',
             "direccion"           => 'string|max:500',
             "urbanizacion"        => 'string|max:500',
             "id_pais"             => 'required',
+            "nacionalidad"        => 'required',
             "id_ciudad"           => 'required',
             "id_region"           => 'required',
             "id_municipio"        => 'required',
             "id_provincia"        => 'required',
             // "id_sector"           => 'required',
             "estado"              => 'required',
-            "celular"             => 'string',
-            'email'               => 'string|max:500',
-            "url"                 => 'string|max:500',
-            'usuario_creador'     => 'required|string'
+            "celular"             => 'required',
+            'email'               => 'required',
+            "url"                 => 'required',
+            'usuario_creador'     => 'required'
         ],$messages);
         
         if ($validator->fails()) {

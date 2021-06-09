@@ -7,8 +7,7 @@ class municipiosSeeder extends Seeder
 {
     public function run()
     {
-        $municipios = array(
-            
+        $municipios = array(            
             ['id_municipio' =>87	 ,'id_provincia' => 27	,'descripcion' => 'FANTINO', 'estado' => 'activo'],
             ['id_municipio' =>115	 ,'id_provincia' => 6	,'descripcion' => 'PARTIDO', 'estado' => 'activo'],
             ['id_municipio' =>137	 ,'id_provincia' => 5	,'descripcion' => 'LAS SALINAS', 'estado' => 'activo'],

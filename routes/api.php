@@ -160,6 +160,9 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/pais', 'PaisController');
 
     //MANTENIMIENTO PAISES
+    Route::apiresource('/nacionalidades', 'NacionalidadesController');
+
+    //MANTENIMIENTO PAISES
     Route::get('/busqueda/condiciones-pago', 've_CondicionesPagoController@condPagos');
     Route::apiresource('/condiciones-pago', 've_CondicionesPagoController');
 
