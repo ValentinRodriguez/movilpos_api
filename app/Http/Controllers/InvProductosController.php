@@ -342,12 +342,12 @@ class InvProductosController extends ApiResponseController
                                         where('propiedades.estado','=','ACTIVO')->
                                         get();
                                         
-            $_tipos = array("label" => 'tipo inventario', "data" => $tipos, "icono" => 'fas fa-dolly-flatbed');
+            $_tipos = array("label" => 'tipo-inventario', "data" => $tipos, "icono" => 'fas fa-dolly-flatbed');
             $_categoria = array("label" =>'modelos', "data" => $categoria, "icono" => 'fas fa-sitemap');
             $_brand = array("label" =>'marcas', "data" => $brand, "icono" => 'far fa-copyright');
             $_bodegas = array("label" =>'bodegas', "data" => $bodegas, "icono" => 'fas fa-warehouse');
             $_medidas = array("label" =>'medidas', "data" => $medidas, "icono" => 'pi pi-calendar');
-            $_tipoProducto = array("label" =>'tipo producto', "data" => $tipoProducto, "icono" => 'fas fa-box');
+            $_tipoProducto = array("label" =>'tipo-producto', "data" => $tipoProducto, "icono" => 'fas fa-box');
             $_propiedades = array("label" =>'color', "data" => $propiedades, "icono" => 'fas fa-box');
 
             array_push($respuesta,$_tipos);

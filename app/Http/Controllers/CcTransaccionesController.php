@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-// setlocale(LC_MONETARY,"en_US");
 
 class CcTransaccionesController extends ApiResponseController
 {
@@ -21,7 +20,42 @@ class CcTransaccionesController extends ApiResponseController
     
     public function store(Request $request)
     {
-        //
+        $datos = $request->all();
+        $datos = array (
+            "cuenta_no"	=> "",
+            "cod_cia"	=> "",
+            "tipo_doc"	=> "",
+            "num_doc" => "",
+            "tipo_cliente" => "",
+            "sec_cliente" => "",
+            "cod_emp" => "",
+            "cod_emp_sec" => "",
+            "fecha_orig" => "",
+            "fecha_ven"	=> "",
+            "aplica_a" => "",
+            "banco"	=> "",
+            "num_cheque" => "",
+            "valor"	=> "",
+            "valor_efectivo" => "",
+            "valor_cheque" => "",
+            "costo"	 => "",
+            "monto_desc"	 => "",
+            "bodega"	 => "",
+            "factura_ext"	 => "",
+            "tipo_doc_aplica"	 => "",
+            "documento_ref"	 => "",
+            "valor_tarjeta"	 => "",
+            "efectivo"	 => "",
+            "ck_tr_dp"	 => "",
+            "tar_cr_db"	 => "",
+            "num_oc"	 => "",
+            "num_req"	 => "",
+            "enviado" => "",
+            "estado"	 => "",
+            "usuario_creador" => ""
+        )
+        
+        return response()->json($datos);
     }
     
     public function show(cc_transacciones $cc_transacciones)
