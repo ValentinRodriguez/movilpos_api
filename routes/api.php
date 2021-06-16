@@ -63,6 +63,7 @@ Route::post('logout', 'AuthController@logout');
 
     // LIQUIDACION MERCANCIAS
     Route::get('/liquidaciones/pendientes','InvLiquidacionMercanciaController@pendientes');
+    Route::get('/liquidaciones/autollenado','InvLiquidacionMercanciaController@autoLLenado');
     Route::apiresource('/liquidaciones','InvLiquidacionMercanciaController');
 
     // RECEPCION DE VEHICULOS

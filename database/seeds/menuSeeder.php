@@ -18,6 +18,7 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp4','nombre' => 'gestion de tipo de negocios','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-de-tipo-negocios','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp5','nombre' => 'gestion de tipo de clientes','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-de-tipo-clientes','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp6','nombre' => 'gestion de zonas','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-de-zonas','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp7','nombre' => 'gestion de tipo de proveedores','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-tipo-proveedores','estado' => 'ACTIVO'],
 
             // MISCELANEOS
             ['id_menu' => 1,'modulo' => 3,'status' => 1,'codigo' => 'misc1','nombre' => 'gestion de actividades','descripcion' => 'menu de gestion de actividades','url' => 'gestion-de-actividades','estado' => 'ACTIVO'],
@@ -40,6 +41,7 @@ class menuSeeder extends Seeder
             
             // MODULO DE VENTAS
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep1','nombre' => 'Interfaz de ventas','descripcion' => 'modulo de ventas','url' => 'interfaz-ventas','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep1b','nombre' => 'Interfaz de ventas 2','descripcion' => 'modulo de ventas','url' => 'interfaz-ventas2','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep2','nombre' => 'Generacion formulario 607','descripcion' => 'Modulo ventas','url' => 'generacion_formulario_607','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep3','nombre' => 'Ofertas y Promociones','descripcion' => 'Modulo ventas','url' => 'ofertas-promociones','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep4','nombre' => 'Gestion de clientes','descripcion' => 'Modulo ventas','url' => 'gestion-de-clientes','estado' => 'ACTIVO'],
