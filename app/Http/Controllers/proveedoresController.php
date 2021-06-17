@@ -328,7 +328,7 @@ class proveedoresController extends ApiResponseController
             $_catalogo = array("label" => 'catalogo', "data" => $catalogo, "icono" => 'fas fa-dolly-flatbed');
             $_condiciones = array("label" => 'condiciones', "data" => $condiciones, "icono" => 'fas fa-dolly-flatbed');
             $_monedas = array("label" => 'monedas', "data" => $monedas, "icono" => 'fas fa-dolly-flatbed');
-            $_tipoProveedor = array("label" => 'tipo proveedor', "data" => $tipoProveedor, "icono" => 'fas fa-dolly-flatbed');
+            $_tipoProveedor = array("label" => 'tipo-proveedor', "data" => $tipoProveedor, "icono" => 'fas fa-dolly-flatbed');
             $_tipoDocumento = array("label" => 'tipo documento', "data" => $tipoDocumento, "icono" => 'fas fa-dolly-flatbed');
             $_paises = array("label" => 'paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
 

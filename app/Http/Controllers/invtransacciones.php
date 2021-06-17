@@ -596,7 +596,7 @@ class invtransacciones extends ApiResponseController
 
 
             $_clientes = array("label" => 'clientes', "data" => $clientes, "icono" => 'fas fa-dolly-flatbed');
-            $_transportistas = array("label" => 'transportistas', "data" => $transportistas, "icono" => 'fas fa-dolly-flatbed');
+            $_transportistas = array("label" => 'transportista', "data" => $transportistas, "icono" => 'fas fa-dolly-flatbed');
             $_departamentos = array("label" => 'departamentos', "data" => $departamentos, "icono" => 'fas fa-dolly-flatbed');
             $_proveedores = array("label" => 'proveedores', "data" => $proveedores, "icono" => 'fas fa-dolly-flatbed');
             $_vendedor = array("label" => 'vendedor', "data" => $vendedor, "icono" => 'fas fa-dolly-flatbed');

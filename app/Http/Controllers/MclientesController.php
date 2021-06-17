@@ -121,13 +121,14 @@ class MclientesController extends ApiResponseController
             "celular"             =>$request->input("celular"),
             "telefono_casa"       =>$request->input("telefono_casa"),
             "email"               =>$request->input("email"),
+            "casa_num"            =>$request->input("casa_num"),
+            "calle"               =>$request->input("calle"),
             "url"                 =>$request->input("url"),
             "estado"              =>$request->input("estado"),
             "usuario_creador"     =>$request->input("usuario_creador"),
             "usuario_modificador" =>$request->input("usuario_modificador"),
             "contacto"            =>$request->input("contacto"),
         );
-
         // return response()->json($datos);
 
         $messages = [
@@ -149,7 +150,7 @@ class MclientesController extends ApiResponseController
         }
         
         $datos = $datos + array('sec_cliente' =>$idsecuencia);
-        // return response()->json($datos);
+        
         $validator = validator($datos, [
             'tipo_cliente'        => 'required|numeric',
             'sec_cliente'         => 'required|numeric',
@@ -169,7 +170,8 @@ class MclientesController extends ApiResponseController
             "id_region"           => 'required',
             "id_municipio"        => 'required',
             "id_provincia"        => 'required',
-            // "id_sector"           => 'required',
+            "casa_num"            => 'required',
+            "calle"               => 'required',
             "estado"              => 'required',
             "celular"             => 'required',
             'email'               => 'required',

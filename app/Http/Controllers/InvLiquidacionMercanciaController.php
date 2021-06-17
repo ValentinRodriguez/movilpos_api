@@ -6,7 +6,8 @@ use App\Librerias\inv_liquidacionMercancia;
 use App\Librerias\invtransaccionesmodel;
 use App\Librerias\Invtransaccdetallemodel;
 use App\Librerias\coOrdenesMaster;
-
+use App\Librerias\proveedores;
+use App\Librerias\coCuentasProveedor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +19,50 @@ class InvLiquidacionMercanciaController extends ApiResponseController
         return $this->successResponse($liquidacion);
     }
 
+    public function autoLLenado()
+    {
+        $respuesta = array();
+
+        try {
+    
+            $proveedores = proveedores::join('ciudades', 'ciudades.id_ciudad','=','proveedores.id_ciudad')->
+                                        join('paises', 'paises.id_pais','=','proveedores.id_pais')->
+                                        select('proveedores.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
+                                        where('proveedores.estado','=','activo')->
+                                        get();
+    
+            foreach ($proveedores as $key => $value) {
+                $coCuentasProveedor = coCuentasProveedor::where([['co_cuentas_proveedores.cod_sp','=',$value->cod_sp],
+                                                        ['co_cuentas_proveedores.cod_sp_sec','=',$value->cod_sp_sec],
+                                                        ['co_cuentas_proveedores.estado','=','activo']])->get();
+    
+                $value->cuentas_proveedor = $coCuentasProveedor; 
+            }
+    
+            $pendientes = $this->buscaPendientes();
+        
+            $_pendientes = array("label" => 'pendientes', "data" => $pendientes, "icono" => 'fas fa-dolly-flatbed');
+            $_proveedores = array("label" => 'proveedores', "data" => $proveedores, "icono" => 'fas fa-dolly-flatbed');
+    
+            array_push($respuesta,$_pendientes);
+            array_push($respuesta,$_proveedores);
+    
+            return $this->successResponse($respuesta);
+            
+        } catch (\Exception $e ){
+                  return $this->errorResponse($e->getMessage());
+        }
+
+    }
+
     public function pendientes()
+    {
+        $pendientes = $this->buscaPendientes();
+        
+        return $this->successResponse($pendientes);
+    }
+
+    public function buscaPendientes()
     {
         $transacciones = invtransaccionesmodel::where([['invtransaccionesmaster.estado','=','ACTIVO'],['id_num_oc','!=',NULL]])-> 
                                                 whereNotIn('invtransaccionesmaster.num_doc', DB::table('inv_liquidacion_mercancias')->
@@ -100,7 +144,7 @@ class InvLiquidacionMercanciaController extends ApiResponseController
             $value->orden = $datos;
         } 
         
-        return $this->successResponse($transacciones);
+        return $transacciones;
     }
 
     public function store(Request $request)

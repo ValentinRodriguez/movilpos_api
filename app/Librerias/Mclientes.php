@@ -11,7 +11,7 @@ class Mclientes extends Model
     protected $fillable = ["tipo_cliente","sec_cliente","nombre","tipo_documento","vendedor","limite_credito","cond_pago",
                            "tipo_negocio","ncf","generico","direccion","urbanizacion","id_pais","id_zonalocal","id_ciudad","telefono_oficina",
                            "celular","telefono_casa","email","id_region","id_provincia","id_municipio","id_sector","url","usuario_creador","documento",
-                           "usuario_modificador","nacionalidad","estado"];
+                           "usuario_modificador","nacionalidad","casa_num","calle","estado"];
 
     public function ScopeParametro($query, $parametro) { 
         if ($parametro) {
