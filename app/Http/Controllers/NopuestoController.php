@@ -10,9 +10,7 @@ class NopuestoController extends ApiResponseController
 {
     public function index()
     {
-        $nopuestos = Nopuesto::orderBy('id', 'asc')->
-                               where('estado','=','activo')->
-                               get();
+        $nopuestos = Nopuesto::orderBy('id', 'asc')->where('estado','=','activo')->get();
         return $this->successResponse($nopuestos);
     }
 
@@ -79,7 +77,6 @@ class NopuestoController extends ApiResponseController
          else{
               return $this->successResponse($nopuesto);
           }
-
     }
 
     public function update(Request $request,  $nopuesto)

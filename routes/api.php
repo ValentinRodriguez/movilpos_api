@@ -215,7 +215,7 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/busqueda/puerto', 'CoPuertoController@busqueda');
     Route::apiresource('/puertos', 'CoPuertoController');
 
-    // Puestos
+    // Puestos    
     Route::get('/busqueda/nopuestos', 'NopuestoController@busqueda');
     Route::apiresource('/nopuestos', 'NopuestoController');
 
@@ -236,6 +236,7 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/direccion-envio', 'CoDireccionesEnvioController');
 
     // EMPLEADOS
+    Route::get('/busqueda/cajeros', 'noempleadosController@cajeros');
     Route::get('/busqueda/vendedores', 'noempleadosController@buscaVendedores');
     Route::get('/busqueda/supervisores/{id}', 'noempleadosController@buscaSupervisores');
     Route::get('/autollenado/empleados', 'noempleadosController@autollenado');

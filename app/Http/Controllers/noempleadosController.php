@@ -37,6 +37,14 @@ class noempleadosController extends ApiResponseController
         return $this->successResponse($noempleados);
     }
 
+    
+
+    public function cajeros()
+    {
+        $cajero = noempleados::where(['id_puesto','=', 2],['estado','=','ACTIVO'])->get();
+        return $this->successResponse($cajero);
+    }
+
     public function bancos(){
         $bancos = bancos::where('bancos.estado','=','ACTIVO')->get();
         return $this->successResponse($bancos);
