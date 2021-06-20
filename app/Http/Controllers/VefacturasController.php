@@ -34,7 +34,7 @@ class VefacturasController extends ApiResponseController
                 $datosm    = $request->all();            
                 
                 $factura = secuenciaCobros::where('documento','=','FC')->get();
-                return response()->json($productos);
+                // return response()->json($productos);
                 if(count($factura) == 0){                                      
                     $data = ['documento' => 'FC',
                              'secuencia' => 1,

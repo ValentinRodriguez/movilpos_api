@@ -53,9 +53,7 @@ class CcTransaccionesController extends ApiResponseController
             "enviado" => "",
             "estado"	 => "",
             "usuario_creador" => ""
-        )
-        
-        return response()->json($datos);
+        );
     }
     
     public function show(cc_transacciones $cc_transacciones)
