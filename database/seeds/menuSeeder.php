@@ -13,6 +13,7 @@ class menuSeeder extends Seeder
 
             // PANEL DE CONTROL 1
             ['id_menu' => 1,'modulo' => 1,'status' => 1,'codigo' => 'pc1','nombre' => 'gestion de usuarios','descripcion' => 'menu de gestion de usuarios','url' => 'gestion-de-usuarios','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 1,'status' => 1,'codigo' => 'pc2','nombre' => 'gestion de procedimientos','descripcion' => 'menu de gestion de usuarios','url' => 'gestion-de-procesos','estado' => 'ACTIVO'],
     
             // MI EMPRESA 2
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp2','nombre' => 'gestion de monedas','descripcion' => 'menu de gestion de monedas','url' => 'gestion-de-monedas','estado' => 'ACTIVO'],
