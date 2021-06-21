@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateEmpresasTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('empresas', function (Blueprint $table) {
@@ -28,9 +23,11 @@ class CreateEmpresasTable extends Migration
             $table->string('valuacion_inv',10);
             $table->char('tipo_cuadre',2);
             $table->integer('id_pais');
-            // $table->foreign('id_pais')->references('id_pais')->on('paises');
-            $table->integer('id_ciudad');
-            // $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
+            $table->integer('id_ciudad')->nullable();
+            $table->smallInteger('id_region');
+            $table->smallInteger('id_municipio');
+            $table->smallInteger('id_provincia');
+            $table->smallInteger('id_sector')->nullable();
             $table->string('rnc',30);
             $table->integer('limite_usuarios');
             $table->string('estado',30);
@@ -38,12 +35,7 @@ class CreateEmpresasTable extends Migration
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    
     public function down()
     {
         Schema::dropIfExists('empresas');
