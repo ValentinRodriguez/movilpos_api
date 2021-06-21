@@ -78,6 +78,10 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/busqueda/invtipos', 'InvTiposController@busqueda');
     Route::apiresource('/invtipos', 'InvTiposController');
     
+    // TURNOS
+    Route::get('/busqueda/turnos', 'TurnosController@busqueda');
+    Route::apiresource('/turnos', 'TurnosController');
+
     // TIPO DE MARCAS
     Route::get('/busqueda/marca', 'BrandsController@busqueda');
     Route::apiresource('/marca', 'BrandsController');

@@ -2,84 +2,111 @@
 
 namespace App\Http\Controllers;
 
-use App\turnos;
+use App\Librerias\turnos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class TurnosController extends Controller
+class TurnosController extends ApiResponseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $turnos = turnos::orderBy('created_at', 'desc')->where('estado','=','ACTIVO')->get();
+        return $this->successResponse($turnos);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $datos = array(
+            "descripcion"         =>$request->input("descripcion"),
+            "usuario_creador"     =>$request->input("usuario_creador"),
+            "estado"              =>$request->input("estado")
+        );
+
+        $messages = [
+             'required' => 'El campo :attribute es requerido.',
+             'unique'   => 'El campo :attribute debe ser unico',
+             'numeric'  => 'El campo :attribute debe ser numerico',
+        ];
+
+        $validator = validator($datos, [
+            'usuario_creador' => 'required|string',
+            'estado'          => 'required|string'
+        ],$messages);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return $this->errorResponseParams($errors->all());
+        }else{            
+            try {                
+                DB::beginTransaction();  
+                    turnos::create($datos);
+                DB::commit();
+                return $this->successResponse(1);
+            }
+            catch (\Exception $e ){
+                return $this->errorResponse($e->getMessage());
+            }
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\turnos  $turnos
-     * @return \Illuminate\Http\Response
-     */
-    public function show(turnos $turnos)
+    public function show($id)
     {
-        //
+        $turno = turnos::find($id);
+        if ($turno == null){
+            return $this->errorResponse($turno);
+        }
+        return $this->successResponse($turno);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\turnos  $turnos
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(turnos $turnos)
+    public function update(Request $request,  $id)
     {
-        //
+        $turno = turnos::find($id);
+
+        $datos = array(
+            "descripcion"     =>$request->input("descripcion"),
+            "usuario_creador" =>$request->input("usuario_creador"),
+            "estado"          =>$request->input("estado")
+        );
+
+        $messages = [
+             'required' => 'El campo :attribute es requerido.',
+             'unique'   => 'El campo :attribute debe ser unico',
+             'numeric'  => 'El campo :attribute debe ser numerico',
+        ];
+
+        $validator = validator($datos, [
+            'descripcion'    => 'required|string',
+            'usuario_creador' => 'required|string',
+            'estado'          => 'required|string'
+        ],$messages);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return $this->errorResponseParams($errors->all());
+        }else{            
+            try {                
+                DB::beginTransaction();  
+                    $turno->update($datos);  
+                DB::commit();
+                return $this->successResponse(1);
+            }
+            catch (\Exception $e ){
+                return $this->errorResponse($e->getMessage());
+            }
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\turnos  $turnos
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, turnos $turnos)
+    public function destroy($id)
     {
-        //
+        $turno = turnos::where('id','=',$id);     
+        $turno->update(['estado' => 'eliminado']);
+        return $this->successResponse(null,"Registro Eliminado");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\turnos  $turnos
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(turnos $turnos)
+    public function busqueda(Request $request)
     {
-        //
+        $parametro = $request->get('turnos');
+        $turnos = turnos::orderBy('created_at', 'desc')->where([['estado','=','activo'],['descripcion','=',$parametro]])->get();
+        return $this->successResponse($turnos);
     }
 }
