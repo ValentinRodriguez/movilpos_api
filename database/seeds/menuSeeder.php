@@ -22,13 +22,12 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp5','nombre' => 'gestion de tipo de clientes','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-de-tipo-clientes','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp6','nombre' => 'gestion de zonas','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-de-zonas','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp7','nombre' => 'gestion de tipo de proveedores','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-tipo-proveedores','estado' => 'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp8','nombre' => 'gestion de turnos','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-tipo-turnos','estado' => 'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp9','nombre' => 'gestion de de localidades','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-tipo-localidades','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp8','nombre' => 'gestion de de localidades','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-tipo-localidades','estado' => 'ACTIVO'],
 
             // MISCELANEOS
             ['id_menu' => 1,'modulo' => 3,'status' => 1,'codigo' => 'misc1','nombre' => 'gestion de actividades','descripcion' => 'menu de gestion de actividades','url' => 'gestion-de-actividades','estado' => 'ACTIVO'],
     
-            // INVENTARIO 3
+            // INVENTARIO
             ['id_menu' => 2,'modulo' => 4,'status' => 1,'codigo' => 'invr1','nombre' => 'Reporte de catalogo de productos','descripcion' => 'menu de inventario','url' => 'reporte-catalogo-productos','estado' => 'ACTIVO'],
             ['id_menu' => 2,'modulo' => 4,'status' => 1,'codigo' => 'invr2','nombre' => 'Reporte de operaciones por movimientos','descripcion' => 'menu de inventario','url' => 'reporte-operaciones-por-movimientos','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp1','nombre' => 'Maestra de productos','descripcion' => 'menu de inventario','url' => 'gestion-de-productos','estado' => 'ACTIVO'],
@@ -82,6 +81,7 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 9,'status' => 1,'codigo' => 'hrp1','nombre' => 'Gestion de empleados','descripcion' => 'Modulo RR.HH','url' => 'gestion-de-empleados','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 9,'status' => 1,'codigo' => 'hrp2','nombre' => 'Gestion de puestos','descripcion' => 'Modulo RR.HH','url' => 'gestion-de-puestos','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 9,'status' => 1,'codigo' => 'hrp3','nombre' => 'Gestion de departamentos','descripcion' => 'Modulo RR.HH','url' => 'gestion-de-departamentos','estado' =>'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 9,'status' => 1,'codigo' => 'hrp4','nombre' => 'gestion de turnos','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-tipo-turnos','estado' => 'ACTIVO'],
 
             //MODULO CUENTAS POR PAGAR
             ['id_menu' => 2,'modulo' => 10,'status' => 1,'codigo' => 'cpp1','nombre' => 'Analisis de Saldo','descripcion' => 'Modulo Cuentas por pagar','url' => 'reporte-analisis-saldo','estado' =>'ACTIVO'],

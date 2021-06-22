@@ -14,7 +14,7 @@ class CreateLocalidadesTable extends Migration
             $table->string('descripcion',100);
             $table->string('direccion',200)->nullable();
             $table->integer('id_pais');
-            $table->integer('id_zonalocal');
+            $table->integer('id_zonalocal')->nullable();
             $table->integer('id_ciudad')->nullable();
             $table->smallInteger('id_region');
             $table->smallInteger('id_municipio');

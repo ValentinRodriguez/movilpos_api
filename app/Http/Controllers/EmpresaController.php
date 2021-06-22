@@ -26,7 +26,7 @@ class EmpresaController extends ApiResponseController
             "web"                 =>$request->input("web"),
             "contacto"            =>$request->input("contacto"),
             "telefono_contacto"   =>$request->input("telefono_contacto"),
-            // "moneda"              =>$request->input("moneda"),
+            "moneda"              =>$request->input("moneda"),
             "logo"                =>$request->input("logo"),
             "id_pais"             =>$request->input("id_pais"),
             "id_ciudad"           =>$request->input("id_ciudad"),
@@ -40,7 +40,7 @@ class EmpresaController extends ApiResponseController
             "usuario_creador"     =>$request->input("usuario_creador"),
             "estado"              =>$request->input("estado")
        );
-       return response()->json($datos);
+    //    return response()->json($datos);
        $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
@@ -77,6 +77,7 @@ class EmpresaController extends ApiResponseController
                 $datos['logo'] = $request->file('logo')->storeAs('uploads', 'empresa/'.$nombreImagen, 'public');
             }
             try {                
+                $datos['logo'] = '';
                 DB::beginTransaction();
                     $maxid=0;
                     $idsecuencia=0;

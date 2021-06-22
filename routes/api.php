@@ -180,7 +180,7 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/zonas', 'ZonasController');
 
     // LOCALIDADES
-    Route::get('/busqueda/localidades', 'LocalidadesController@buscarZonaProvincia');
+    Route::get('/busqueda/localidades', 'LocalidadesController@busqueda');
     Route::apiresource('/localidades', 'LocalidadesController');
 
     //MANTENIMIENTO PROVINCIAS

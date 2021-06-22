@@ -74,12 +74,14 @@ class MclientesController extends ApiResponseController
                                join('ciudades','ciudades.id_ciudad','=','veclientes.id_ciudad')->
                                join('municipios','municipios.id_municipio','=','veclientes.id_municipio')->
                                join('provincias','provincias.id_provincia','=','veclientes.id_provincia')->
+                               join('regiones','regiones.id_region','=','veclientes.id_region')->
                                join('nacionalidades','nacionalidades.id','=','veclientes.nacionalidad')->
                                leftjoin('sectores','sectores.id_sector','=','veclientes.id_sector')->
                                select('veclientes.*',
                                       'paises.descripcion as pais',
                                       'ciudades.descripcion as ciudad',
                                       'municipios.descripcion as municipio',
+                                      'regiones.descripcion as region',
                                       'sectores.descripcion as sector',
                                       'nacionalidades.nacionalidad as nacionalidad_cliente',
                                       'provincias.descripcion as provincia'
