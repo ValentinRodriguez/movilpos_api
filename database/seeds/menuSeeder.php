@@ -82,6 +82,7 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 9,'status' => 1,'codigo' => 'hrp2','nombre' => 'Gestion de puestos','descripcion' => 'Modulo RR.HH','url' => 'gestion-de-puestos','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 9,'status' => 1,'codigo' => 'hrp3','nombre' => 'Gestion de departamentos','descripcion' => 'Modulo RR.HH','url' => 'gestion-de-departamentos','estado' =>'ACTIVO'],
             ['id_menu' => 1,'modulo' => 9,'status' => 1,'codigo' => 'hrp4','nombre' => 'gestion de turnos','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-tipo-turnos','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 9,'status' => 1,'codigo' => 'hrp5','nombre' => 'gestion de areas empresa','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-de-areas','estado' => 'ACTIVO'],
 
             //MODULO CUENTAS POR PAGAR
             ['id_menu' => 2,'modulo' => 10,'status' => 1,'codigo' => 'cpp1','nombre' => 'Analisis de Saldo','descripcion' => 'Modulo Cuentas por pagar','url' => 'reporte-analisis-saldo','estado' =>'ACTIVO'],
