@@ -171,6 +171,15 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/busqueda/condiciones-pago', 've_CondicionesPagoController@condPagos');
     Route::apiresource('/condiciones-pago', 've_CondicionesPagoController');
 
+
+    //AREAS EMPRESA
+    Route::apiresource('/areas', 'AreasEmpresaController');
+
+    //CUADRE CAJA
+    Route::get('/autollenado/cuadre-caja', 'CuadreCajaController@autollenado');
+    Route::get('/busqueda/cuadre-caja', 'CuadreCajaController@busqueda');
+    Route::apiresource('/cuadre-caja', 'CuadreCajaController');
+
     //MANTENIMIENTO ZONAHORARIA
     Route::apiresource('/zonahoraria', 'ZonahorariaController');
 
@@ -179,9 +188,9 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/busqueda/zonas-provincias/{id}', 'ZonasController@buscarZonaProvincia');
     Route::apiresource('/zonas', 'ZonasController');
 
-    // LOCALIDADES
-    Route::get('/busqueda/localidades', 'LocalidadesController@busqueda');
-    Route::apiresource('/localidades', 'LocalidadesController');
+    // sucursales
+    Route::get('/busqueda/sucursales', 'sucursalesController@busqueda');
+    Route::apiresource('/sucursales', 'sucursalesController');
 
     //MANTENIMIENTO PROVINCIAS
     Route::get('/provincias/region/{id}', 'ProvinciasController@buscaProvincia');

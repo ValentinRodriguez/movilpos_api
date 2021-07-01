@@ -25,7 +25,8 @@ class noempleadosController extends ApiResponseController
                                 join('ciudades','noempleados.id_ciudad','=','ciudades.id_ciudad')->
                                 join('paises','noempleados.id_pais','=','paises.id_pais')->
                                 leftjoin('tipo_monedas','noempleados.id_moneda','=','tipo_monedas.id')->
-                                select('noempleados.*','nodepartamentos.titulo as depto',
+                                select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"),
+                                        'nodepartamentos.titulo as depto',
                                        'nopuestos.descripcion as puesto',
                                        'ciudades.descripcion as ciudad',
                                        'paises.descripcion as pais',
@@ -40,8 +41,22 @@ class noempleadosController extends ApiResponseController
     
 
     public function cajeros()
-    {
-        $cajero = noempleados::where([['id_puesto','=', 2],['estado','=','ACTIVO']])->get();
+{
+        $cajero = noempleados::orderBy('id_numemp', 'asc')->
+                                join('nodepartamentos','noempleados.departamento','=','nodepartamentos.id')->
+                                join('nopuestos','noempleados.id_puesto','=','nopuestos.id_puesto')->
+                                join('ciudades','noempleados.id_ciudad','=','ciudades.id_ciudad')->
+                                join('paises','noempleados.id_pais','=','paises.id_pais')->
+                                leftjoin('tipo_monedas','noempleados.id_moneda','=','tipo_monedas.id')->
+                                select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"),
+                                       'nodepartamentos.titulo as depto',
+                                       'nopuestos.descripcion as puesto',
+                                       'ciudades.descripcion as ciudad',
+                                       'paises.descripcion as pais',
+                                       'tipo_monedas.divisa as divisa','tipo_monedas.simbolo as simbolo_moneda'
+                                )->
+                                where([['.noempleados.id_puesto','=', 2],['noempleados.estado','=','ACTIVO']])->
+                                get();
         return $this->successResponse($cajero);
     }
 

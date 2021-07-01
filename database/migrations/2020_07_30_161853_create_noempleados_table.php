@@ -15,6 +15,9 @@ class CreateNoempleadosTable extends Migration
     {
         Schema::create('noempleados', function (Blueprint $table) {
             $table->id('id_numemp');
+            $table->integer('cod_cia')->foreign()->references('cod_cia')->on('empresas');
+            $table->integer('suc_id')->foreign()->references('id')->on('sucursales');
+            $table->integer('turno')->foreign()->references('id')->on('turnos');
             $table->integer('departamento')->foreign()->references('departamento')->on('nodepartamentos');
             $table->integer('id_puesto')->foreign()->references('id_puesto')->on('nopuestos');
             $table->integer('id_nivel');

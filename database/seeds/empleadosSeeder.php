@@ -13,6 +13,7 @@ class empleadosSeeder extends Seeder
 
         $empleado = array(
             ['departamento'	        => 1,'id_puesto'=> 1,
+            'cod_cia'=> 1,         'suc_id'=> 1, 'turno' => 1, 
             'id_nivel'	            => 1,'primernombre'=> 'provisional', 
             'segundonombre'	        => 'provisional','primerapellido'=> 'provisional',
             'segundoapellido'       => 'provisional','fecha_entrada'=> '2020-10-27',
@@ -33,6 +34,7 @@ class empleadosSeeder extends Seeder
             'estado'                => 'inactivo','usuario_creador'=> 'movilsoluciones'],
 
             ['departamento'	        => 1,'id_puesto'=> 2,
+            'cod_cia'=> 1,         'suc_id'=> 1, 'turno' => 1,
             'id_nivel'	            => 1,'primernombre'=> 'cajero', 
             'segundonombre'	        => 'cajero','primerapellido'=> 'provisional',
             'segundoapellido'       => 'cajero','fecha_entrada'=> '2020-10-27',

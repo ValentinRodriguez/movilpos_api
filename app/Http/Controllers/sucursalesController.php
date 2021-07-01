@@ -2,49 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Librerias\localidades;
+use App\Librerias\sucursales;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class LocalidadesController extends ApiResponseController
+class sucursalesController extends ApiResponseController
 {
     public function index()
     {        
         $temp1 = array();
-        $localidades = localidades::join('paises','paises.id_pais','=','localidades.id_pais')->
-                                    join('ciudades','ciudades.id_ciudad','=','localidades.id_ciudad')->
-                                    join('regiones','regiones.id_region','=','localidades.id_region')->
-                                    join('municipios','municipios.id_municipio','=','localidades.id_municipio')->
-                                    join('provincias','provincias.id_provincia','=','localidades.id_provincia')->
-                                    leftjoin('sectores','sectores.id_sector','=','localidades.id_sector')->
-                                    select('localidades.*',
-                                           'paises.descripcion as pais',
-                                           'ciudades.descripcion as ciudad',
-                                           'municipios.descripcion as municipio',
-                                           'regiones.descripcion as region',
-                                           'sectores.descripcion as sector',
-                                           'provincias.descripcion as provincia')->        
-                                    orderBy('created_at', 'desc')->
-                                    where('localidades.estado','=','ACTIVO')->get();
+        $sucursales = sucursales::join('paises','paises.id_pais','=','sucursales.id_pais')->
+                                join('ciudades','ciudades.id_ciudad','=','sucursales.id_ciudad')->
+                                join('regiones','regiones.id_region','=','sucursales.id_region')->
+                                join('municipios','municipios.id_municipio','=','sucursales.id_municipio')->
+                                join('provincias','provincias.id_provincia','=','sucursales.id_provincia')->
+                                leftjoin('sectores','sectores.id_sector','=','sucursales.id_sector')->
+                                select('sucursales.*',
+                                        'paises.descripcion as pais',
+                                        'ciudades.descripcion as ciudad',
+                                        'municipios.descripcion as municipio',
+                                        'regiones.descripcion as region',
+                                        'sectores.descripcion as sector',
+                                        'provincias.descripcion as provincia')->        
+                                orderBy('created_at', 'desc')->
+                                where('sucursales.estado','=','ACTIVO')->get();
 
         $i=0;
 
-        foreach ($localidades as $key => $value) {
+        foreach ($sucursales as $key => $value) {
             $temp2 = array(
-                "pais" => $localidades[$i]['pais'],
-                "ciudad" => $localidades[$i]['ciudad'],
-                "municipio" => $localidades[$i]['municipio'],
-                "region" => $localidades[$i]['region'],
-                "sector" => $localidades[$i]['sector'],
-                "provincia" => $localidades[$i]['provincia'],
-                "calle" => $localidades[$i]['calle'],
+                "pais" => $sucursales[$i]['pais'],
+                "ciudad" => $sucursales[$i]['ciudad'],
+                "municipio" => $sucursales[$i]['municipio'],
+                "region" => $sucursales[$i]['region'],
+                "sector" => $sucursales[$i]['sector'],
+                "provincia" => $sucursales[$i]['provincia'],
+                "calle" => $sucursales[$i]['calle'],
             );
             array_push($temp1,$temp2);
             $value->detalle = $temp1;
             $i++;
         }
 
-        return $this->successResponse($localidades);
+        return $this->successResponse($sucursales);
     }
 
     public function store(Request $request)
@@ -92,7 +92,7 @@ class LocalidadesController extends ApiResponseController
             try {                
                 DB::beginTransaction();  
                 // return response()->json($datos);
-                    localidades::create($datos);                
+                    sucursales::create($datos);                
                 DB::commit();                
                 return $this->successResponse(1);
             }
@@ -104,16 +104,16 @@ class LocalidadesController extends ApiResponseController
 
     public function show($id)
     {
-        $localidades = localidades::find($id);        
-        if ($localidades == null){            
-            return $this->errorResponse($localidades);
+        $sucursales = sucursales::find($id);        
+        if ($sucursales == null){            
+            return $this->errorResponse($sucursales);
         }
-        return $this->successResponse($localidades);
+        return $this->successResponse($sucursales);
     }
 
     public function update(Request $request,  $id)
     {
-        $localidades = localidades::find($id);        
+        $sucursales = sucursales::find($id);        
         
         $datos = array(
             "cod_cia"         =>$request->input("cod_cia"),
@@ -159,7 +159,7 @@ class LocalidadesController extends ApiResponseController
         }else{            
             try {                
                 DB::beginTransaction();  
-                    $localidades->update($datos);  
+                    $sucursales->update($datos);  
                 DB::commit();
                 return $this->successResponse(1);
             }
@@ -171,16 +171,16 @@ class LocalidadesController extends ApiResponseController
 
     public function destroy($id)
     {
-        $localidades = localidades::where('id','=',$id);             
-        $localidades->update(['estado' => 'eliminado']);        
+        $sucursales = sucursales::where('id','=',$id);             
+        $sucursales->update(['estado' => 'eliminado']);        
         return $this->successResponse(null,"Registro Eliminado");
     }
 
     public function busqueda(Request $request)
     {
-        $parametro = $request->get('localidades');
-        $localidades = localidades::orderBy('created_at', 'desc')->where([['estado','=','activo'],['descripcion','=',$parametro]])->get();
-        return $this->successResponse($localidades);
+        $parametro = $request->get('sucursales');
+        $sucursales = sucursales::orderBy('created_at', 'desc')->where([['estado','=','activo'],['descripcion','=',$parametro]])->get();
+        return $this->successResponse($sucursales);
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Librerias\Empresa;
+use App\Librerias\sucursales;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,6 +13,28 @@ class EmpresaController extends ApiResponseController
     public function index()
     {
         $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->get();
+
+
+        foreach ($empresa as $key => $value) {
+            $sucursales = sucursales::join('paises','paises.id_pais','=','sucursales.id_pais')->
+            join('ciudades','ciudades.id_ciudad','=','sucursales.id_ciudad')->
+            join('regiones','regiones.id_region','=','sucursales.id_region')->
+            join('municipios','municipios.id_municipio','=','sucursales.id_municipio')->
+            join('provincias','provincias.id_provincia','=','sucursales.id_provincia')->
+            leftjoin('sectores','sectores.id_sector','=','sucursales.id_sector')->
+            select('sucursales.*',
+                   'paises.descripcion as pais',
+                   'ciudades.descripcion as ciudad',
+                   'municipios.descripcion as municipio',
+                   'regiones.descripcion as region',
+                   'sectores.descripcion as sector',
+                   'provincias.descripcion as provincia')->        
+            orderBy('created_at', 'desc')->
+            where([['sucursales.estado','=','ACTIVO'],['sucursales.cod_cia','=',$value->cod_cia]])->
+            get();
+            
+            $value->sucursales = $sucursales;
+        }
         return $this->successResponse($empresa);
     }
     

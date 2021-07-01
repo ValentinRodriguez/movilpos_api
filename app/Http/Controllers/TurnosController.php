@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Librerias\turnos;
+use App\Librerias\sucursales;
+use App\Librerias\Nopuesto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -13,6 +15,8 @@ class TurnosController extends ApiResponseController
         $turnos = turnos::orderBy('created_at', 'desc')->where('estado','=','ACTIVO')->get();
         return $this->successResponse($turnos);
     }
+
+   
 
     public function store(Request $request)
     {
