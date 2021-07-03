@@ -22,7 +22,7 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp5','nombre' => 'gestion de tipo de clientes','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-de-tipo-clientes','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp6','nombre' => 'gestion de zonas','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-de-zonas','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp7','nombre' => 'gestion de tipo de proveedores','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-tipo-proveedores','estado' => 'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp8','nombre' => 'gestion de sucursales','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-tipo-sucursales','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 2,'status' => 1,'codigo' => 'emp8','nombre' => 'gestion de sucursales','descripcion' => 'menu de gestion de la empresa','url' => 'gestion-de-sucursales','estado' => 'ACTIVO'],
 
             // MISCELANEOS
             ['id_menu' => 1,'modulo' => 3,'status' => 1,'codigo' => 'misc1','nombre' => 'gestion de actividades','descripcion' => 'menu de gestion de actividades','url' => 'gestion-de-actividades','estado' => 'ACTIVO'],

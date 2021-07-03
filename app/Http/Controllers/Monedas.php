@@ -74,7 +74,7 @@ class Monedas extends ApiResponseController
             "divisa"          =>$request->input("divisa"),
             "simbolo"         =>$request->input("simbolo"),
             "descripcion"     =>$request->input("descripcion"),
-            "usuario_creador" =>$request->input("usuario_creador"),
+            "usuario_modificador" =>$request->input("usuario_modificador"),
             "estado"          =>$request->input("estado")
         );
 
@@ -88,7 +88,7 @@ class Monedas extends ApiResponseController
             'divisa'          => 'required|string',
             'simbolo'         => 'required|string',
             'descripcion'    => 'required|string',
-            'usuario_creador' => 'required|string',
+            'usuario_modificador' => 'required|string',
             'estado'          => 'required|string'
         ],$messages);
 

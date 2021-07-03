@@ -11,7 +11,7 @@ class DgiiController extends ApiResponseController
 {
     public function index()
     {
-        $rnc = dgii::paginate(15);
+        $rnc = dgii::get();
         return $this->successResponse($rnc);
     }
 
