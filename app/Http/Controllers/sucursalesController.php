@@ -105,9 +105,6 @@ class sucursalesController extends ApiResponseController
     public function show($id)
     {
         $sucursales = sucursales::find($id);        
-        if ($sucursales == null){            
-            return $this->errorResponse($sucursales);
-        }
         return $this->successResponse($sucursales);
     }
 

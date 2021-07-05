@@ -136,8 +136,8 @@ class AreasEmpresaController extends ApiResponseController
 
     public function busqueda(Request $request)
     {
-        $parametro = $request->get('monedas');
-        $monedas = areasEmpresa::orderBy('created_at', 'desc')->where([['estado','=','activo'],['divisa','=',$parametro]])->get();
+        $parametro = $request->get('areas');
+        $monedas = areasEmpresa::orderBy('created_at', 'desc')->where([['estado','=','activo'],['descripcion','=',$parametro]])->get();
         return $this->successResponse($monedas);
     }
 
