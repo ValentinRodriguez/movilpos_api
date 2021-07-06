@@ -8,11 +8,11 @@ class areasSeeder extends Seeder
     public function run()
     {
         $areas = array(
-            ['descripcion' => 'caja principal',
+            ['descripcion' => 'area provisional',
             'cod_cia' => 1,
             'suc_id' => 1,
             'depto' => 1,
-            'estado' => 'activo',
+            'estado' => 'inactivo',
             'usuario_creador' => 'movilsoluciones'
             ]
         );

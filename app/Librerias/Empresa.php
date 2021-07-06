@@ -10,5 +10,5 @@ class Empresa extends Model
     protected $fillable = ['nombre', 'telefono_empresa', 'email_empresa', 'rnc','direccion','web',
                            'empresa_verde','contacto','telefono_contacto','logo','moneda','estado','id_region',
                            'id_municipio','id_provincia','tipo_cuadre','valuacion_inv','cod_cia','id_ciudad',
-                           'usuario_creador','id_pais'];
+                           'usuario_creador','id_pais','id_sector'];
 }

@@ -45,5 +45,7 @@ class DatabaseSeeder extends Seeder
         $this->call(clienteSeeder::class);   
         $this->call(nacionalidadesSeeder::class);
         $this->call(areasSeeder::class);        
+        $this->call(empresaSeeder::class);    
+        $this->call(sucursalesSeeder::class);   
     }
 }
