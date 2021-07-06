@@ -13,7 +13,16 @@ class AreasEmpresaController extends ApiResponseController
 {
     public function index()
     {
-        $areas = areasEmpresa::orderBy('created_at', 'desc')->where('estado','=','ACTIVO')->get();
+        $areas = areasEmpresa::join('empresas','areas_empresas.cod_cia','=','empresas.cod_cia')->
+                                join('sucursales','sucursales.id','=','areas_empresas.id')->
+                                join('nodepartamentos','nodepartamentos.id','=','areas_empresas.depto')->
+                                select('areas_empresas.*',
+                                       'empresas.nombre as empresa',
+                                       'sucursales.descripcion as sucursal',
+                                       'nodepartamentos.descripcion as departamento')->                                
+                                where('areas_empresas.estado','=','ACTIVO')->
+                                get();
+
         return $this->successResponse($areas);
     }
 
@@ -39,12 +48,12 @@ class AreasEmpresaController extends ApiResponseController
     public function store(Request $request)
     {
         $datos = array(
-            "departamento"        =>$request->input("departamento"),
-            "cod_cia"             =>$request->input("cod_cia"),
-            "suc_id"              =>$request->input("suc_id"),
-            "descripcion"         =>$request->input("descripcion"),
-            "estado"              =>$request->input("estado"),
-            "usuario_creador"     =>$request->input("usuario_creador")
+            "depto"           =>$request->input("departamento"),
+            "cod_cia"         =>$request->input("cod_cia"),
+            "suc_id"          =>$request->input("suc_id"),
+            "descripcion"     =>$request->input("descripcion"),
+            "estado"          =>$request->input("estado"),
+            "usuario_creador" =>$request->input("usuario_creador")
         );
 
         $messages = [
@@ -52,14 +61,14 @@ class AreasEmpresaController extends ApiResponseController
              'unique'   => 'El campo :attribute debe ser unico',
              'numeric'  => 'El campo :attribute debe ser numerico',
         ];
-
+        
         $validator = validator($datos, [
-            "departamento"=> 'required',
-            "cod_cia"=> 'required',
-            "suc_id"=> 'required',
-            "descripcion"=> 'required',
-            "estado"=> 'required',
-            "usuario_creador"=> 'required'
+            "depto"           => 'required',
+            "cod_cia"         => 'required',
+            "suc_id"          => 'required',
+            "descripcion"     => 'required',
+            "estado"          => 'required',
+            "usuario_creador" => 'required'
         ],$messages);
 
         if ($validator->fails()) {
@@ -86,15 +95,15 @@ class AreasEmpresaController extends ApiResponseController
 
     public function update(Request $request,  $id)
     {
-        $moneda = areasEmpresa::find($id);
+        $area = areasEmpresa::find($id);
 
         $datos = array(
-            "departamento"        =>$request->input("departamento"),
-            "cod_cia"             =>$request->input("cod_cia"),
-            "suc_id"              =>$request->input("suc_id"),
-            "descripcion"         =>$request->input("descripcion"),
-            "estado"              =>$request->input("estado"),
-            "usuario_modificador" =>$request->input("usuario_modificador")
+            "depto"           =>$request->input("departamento"),
+            "cod_cia"         =>$request->input("cod_cia"),
+            "suc_id"          =>$request->input("suc_id"),
+            "descripcion"     =>$request->input("descripcion"),
+            "estado"          =>$request->input("estado"),
+            "usuario_creador" =>$request->input("usuario_creador")
         );
 
         $messages = [
@@ -102,22 +111,22 @@ class AreasEmpresaController extends ApiResponseController
              'unique'   => 'El campo :attribute debe ser unico',
              'numeric'  => 'El campo :attribute debe ser numerico',
         ];
-
+        
         $validator = validator($datos, [
-            'divisa'              => 'required|string',
-            'simbolo'             => 'required|string',
-            'descripcion'         => 'required|string',
-            'usuario_modificador' => 'required|string',
-            'estado'              => 'required|string'
+            "depto"           => 'required',
+            "cod_cia"         => 'required',
+            "suc_id"          => 'required',
+            "descripcion"     => 'required',
+            "estado"          => 'required',
+            "usuario_creador" => 'required'
         ],$messages);
-
         if ($validator->fails()) {
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all());
         }else{            
             try {                
                 DB::beginTransaction();  
-                    $moneda->update($datos);  
+                    $area->update($datos);  
                 DB::commit();
                 return $this->successResponse(1);
             }
@@ -129,16 +138,23 @@ class AreasEmpresaController extends ApiResponseController
 
     public function destroy($id)
     {
-        $moneda = areasEmpresa::where('id','=',$id);     
-        $moneda->update(['estado' => 'eliminado']);
-        return $this->successResponse(null,"Registro Eliminado");
+        $area = areasEmpresa::where('id','=',$id);     
+
+        $empleado = noempleados::where('area','=',$id)->get();
+
+        if (count($empleado) !== 0) {
+            return $this->errorResponse(null, 'Esta area tiene empleados vinculados');
+        }else{
+            $area->update(['estado' => 'eliminado']);
+            return $this->successResponse(null,"Registro Eliminado");
+        }
     }
 
     public function busqueda(Request $request)
     {
         $parametro = $request->get('areas');
-        $monedas = areasEmpresa::orderBy('created_at', 'desc')->where([['estado','=','activo'],['descripcion','=',$parametro]])->get();
-        return $this->successResponse($monedas);
+        $areas = areasEmpresa::orderBy('created_at', 'desc')->where([['estado','=','activo'],['descripcion','=',$parametro]])->get();
+        return $this->successResponse($areas);
     }
 
 }

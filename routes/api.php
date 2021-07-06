@@ -194,6 +194,7 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/zonas', 'ZonasController');
 
     // sucursales
+    Route::get('/busqueda/sucursales/{id}', 'sucursalesController@sucursalXempresa');
     Route::get('/busqueda/sucursales', 'sucursalesController@busqueda');
     Route::apiresource('/sucursales', 'sucursalesController');
 

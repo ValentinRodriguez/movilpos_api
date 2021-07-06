@@ -73,14 +73,11 @@ class sucursalesController extends ApiResponseController
         $validator = validator($datos, [
             "cod_cia"         => 'required',  
             "descripcion"     => 'required',  
-            // "direccion"    => 'required', 
             "id_pais"         => 'required',
-            // "id_zonalocal"    => 'required',
             "id_ciudad"       => 'required', 
             "id_region"       => 'required',
             "id_municipio"    => 'required',
             "id_provincia"    => 'required',
-            // "id_sector"       => 'required',
             "estado"          => 'required',  
             "usuario_creador" => 'required'
         ],$messages);
@@ -105,6 +102,12 @@ class sucursalesController extends ApiResponseController
     public function show($id)
     {
         $sucursales = sucursales::find($id);        
+        return $this->successResponse($sucursales);
+    }
+
+    public function sucursalXempresa($codcia)
+    {
+        $sucursales = sucursales::where('cod_cia','=',$codcia)->get();        
         return $this->successResponse($sucursales);
     }
 
