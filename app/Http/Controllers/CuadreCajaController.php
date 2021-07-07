@@ -78,8 +78,8 @@ class CuadreCajaController extends ApiResponseController
 
             $_turnos = array("label" => 'turnos', "data" => $turnos, "icono" => 'fas fa-dolly-flatbed');
             $_sucursales = array("label" => 'sucursales', "data" => $sucursales, "icono" => 'fas fa-dolly-flatbed');
-            $_noempleados = array("label" => 'cajeros', "data" => $noempleados, "icono" => 'fas fa-dolly-flatbed');
-            $_caja = array("label" => 'caja', "data" => $caja, "icono" => 'fas fa-dolly-flatbed');
+            $_noempleados = array("label" => 'empleado-caja', "data" => $noempleados, "icono" => 'fas fa-dolly-flatbed');
+            $_caja = array("label" => 'area-caja', "data" => $caja, "icono" => 'fas fa-dolly-flatbed');
 
             array_push($respuesta,$_turnos);
             array_push($respuesta,$_noempleados);

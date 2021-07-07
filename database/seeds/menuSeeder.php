@@ -86,7 +86,10 @@ class menuSeeder extends Seeder
 
             //MODULO CUENTAS POR PAGAR
             ['id_menu' => 2,'modulo' => 10,'status' => 1,'codigo' => 'cpp1','nombre' => 'Analisis de Saldo','descripcion' => 'Modulo Cuentas por pagar','url' => 'reporte-analisis-saldo','estado' =>'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 10,'status' => 1,'codigo' => 'cpp2','nombre' => 'Facturas de proveedores','descripcion' => 'Modulo Compras','url' => 'gestion-factura-proveedores','estado' => 'ACTIVO']
+            ['id_menu' => 1,'modulo' => 10,'status' => 1,'codigo' => 'cpp2','nombre' => 'Facturas de proveedores','descripcion' => 'Modulo Compras','url' => 'gestion-factura-proveedores','estado' => 'ACTIVO'],
+
+            //MODULO PLAZA ONLINE
+            ['id_menu' => 1,'modulo' => 11,'status' => 1,'codigo' => 'tpo1','nombre' => 'Creación de productos','descripcion' => 'Modulo creación de productos','url' => 'creacion-productos-plaza','estado' =>'ACTIVO']            
         );
 
         foreach ($menues as $key => $value) {

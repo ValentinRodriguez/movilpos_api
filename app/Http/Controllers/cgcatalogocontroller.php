@@ -92,6 +92,8 @@ class cgcatalogocontroller extends ApiResponseController
     }
     
     public function update(Request $request, $id) {
+        $datos = $request->all();
+        
         $catalogo = cgcatalogo::find($id);
 
         $messages = [

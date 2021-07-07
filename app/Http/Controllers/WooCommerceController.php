@@ -158,7 +158,6 @@ class WooCommerceController extends ApiResponseController
         return false;
     }
 
-
     public function index()
     {  
         $productos = $this->woocommerce()->get('products');
