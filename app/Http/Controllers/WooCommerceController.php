@@ -10,9 +10,9 @@ class WooCommerceController extends ApiResponseController
 {    
     public function woocommerce() {
         $woocommerce = new Client(
-            'http://movilsoluciones/', 
-            'ck_d266411c817088d297698cf2e865811c1f5b7317', 
-            'cs_a1b69c5ef32399677d04df55d09aba2568f79f90',
+            'https://movilsoluciones.com.do/', 
+            'ck_7d42ac092e0ffbaced010040e169c138d68875e7', 
+            'cs_dcac29acaf50bb120397eeeaa367729241f1815a',
             [
                 'wp_api' => true,
                 'version' => 'wc/v3',
@@ -20,6 +20,60 @@ class WooCommerceController extends ApiResponseController
         );
 
         return $woocommerce;
+    }
+
+    public function index()
+    {  
+        $productos = $this->woocommerce()->get('products');
+        $data = [];
+
+        foreach ($productos as $producto) {
+           array_push($data, $producto);
+        }    
+        return $this->successResponse($productos);
+    }
+
+    public function store(Request $request)
+    {
+        $datos = $request->all();
+        // return response()->json(strval($datos['precio_venta']));
+        $data = [
+            'name' => $datos['titulo'],
+            'type' => 'simple',
+            'regular_price' => strval($datos['precio_venta']),
+            'description' => $datos['descripcion'],
+            'short_description' => $datos['descripcion'],
+            'categories' => [
+                [
+                    'id' => 9
+                ],
+                [
+                    'id' => 14
+                ]
+            ],
+            'images' => [
+                [
+                    'src' => 'http://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2013/06/T_2_back.jpg'
+                ]
+            ]
+        ];
+        $this->woocommerce()->post('products', $data);
+        return response()->json(1); 
+    }
+
+    public function show($id)
+    {
+        //
+    }
+
+    public function update(Request $request, $id)
+    {
+
+    }
+
+    public function destroy($id)
+    {
+        //
     }
 
     public function countProducts($page)
@@ -156,61 +210,5 @@ class WooCommerceController extends ApiResponseController
             }
         }
         return false;
-    }
-
-    public function index()
-    {  
-        $productos = $this->woocommerce()->get('products');
-        $data = [];
-
-        foreach ($productos as $producto) {
-           array_push($data, $producto);
-        }    
-        return response()->json($productos); 
-    }
-
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        // $data = [
-        //     'update' => [
-        //                     [
-        //                         'id' => 4163,
-        //                         'price' => '1000'
-        //                     ],
-        //                     [
-        //                         'id' => 296,
-        //                         'price' => '1000'
-        //                     ]
-        //                 ]
-        //     ];
-        // $data = [
-        //     'regular_price' => '1000'
-        // ];
-        // return response()->json($this->woocommerce()->post('products/4163', $data));
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-    public function update(Request $request, $id)
-    {
-
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 }

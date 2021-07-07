@@ -16,25 +16,28 @@ class TurnosController extends ApiResponseController
         return $this->successResponse($turnos);
     }
 
-   
-
     public function store(Request $request)
     {
         $datos = array(
-            "descripcion"         =>$request->input("descripcion"),
-            "usuario_creador"     =>$request->input("usuario_creador"),
-            "estado"              =>$request->input("estado")
+            "descripcion"     =>$request->input("descripcion"),
+            "horario_inicial" =>$request->input("horario_inicial"),
+            "horario_final"   =>$request->input("horario_final"),
+            "usuario_creador" =>$request->input("usuario_creador"),
+            "estado"          =>$request->input("estado")
         );
 
         $messages = [
-             'required' => 'El campo :attribute es requerido.',
-             'unique'   => 'El campo :attribute debe ser unico',
-             'numeric'  => 'El campo :attribute debe ser numerico',
+            'required' => 'El campo :attribute es requerido.',
+            'unique'   => 'El campo :attribute debe ser unico',
+            'numeric'  => 'El campo :attribute debe ser numerico',
         ];
-
+        // return response()->json($datos);
         $validator = validator($datos, [
-            'usuario_creador' => 'required|string',
-            'estado'          => 'required|string'
+            'descripcion'     => 'required',
+            'horario_inicial' => 'required',
+            'horario_final'   => 'required',
+            'usuario_creador' => 'required',
+            'estado'          => 'required'
         ],$messages);
 
         if ($validator->fails()) {

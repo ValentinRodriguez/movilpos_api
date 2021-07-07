@@ -15,6 +15,8 @@ use App\librerias\educacion;
 use App\librerias\estadoCivil;
 use App\librerias\tipoEmpleado;
 use App\librerias\tipoSangre;
+use App\librerias\turnos;
+use App\librerias\sucursales;
 
 class noempleadosController extends ApiResponseController
 {
@@ -132,6 +134,7 @@ class noempleadosController extends ApiResponseController
         try {
             $respuesta = array();
 
+            $horario = turnos::where('estado','=','activo')->get();
             $nopuestos = Nopuesto::orderBy('id', 'asc')->where('estado','=','activo')->get();                                
             $departamento = Departamento::where('estado','=','activo')->get();
             $monedas = tipoMonedas::where('estado','=','activo')->get();
@@ -142,10 +145,13 @@ class noempleadosController extends ApiResponseController
             $estadoCivil = estadoCivil::all();
             $tipoEmpleado = tipoEmpleado::all();
             $tipoSangre = tipoSangre::all();
+            $sucursales = sucursales::where('estado','=','activo')->get();
 
+            $_horario = array("label" => 'horarios', "data" => $horario, "icono" => 'fas fa-dolly-flatbed');
             $_nopuestos = array("label" => 'puestos', "data" => $nopuestos, "icono" => 'fas fa-dolly-flatbed');
             $_departamento = array("label" => 'departamento', "data" => $departamento, "icono" => 'fas fa-dolly-flatbed');
-            $_empresa = array("label" => 'empresa', "data" => $empresa, "icono" => 'fas fa-dolly-flatbed');
+            $_empresa = array("label" => 'empresas', "data" => $empresa, "icono" => 'fas fa-dolly-flatbed');
+            $_sucursales = array("label" => 'sucursal', "data" => $sucursales, "icono" => 'fas fa-dolly-flatbed');
             $_monedas = array("label" => 'monedas', "data" => $monedas, "icono" => 'fas fa-dolly-flatbed');
             $_paises = array("label" => 'paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
             $_bancos= array("label" => 'bancos', "data" => $bancos, "icono" => 'fas fa-dolly-flatbed');
@@ -154,9 +160,11 @@ class noempleadosController extends ApiResponseController
             $_tipoEmpleado= array("label" => 'tipoEmpleado', "data" => $tipoEmpleado, "icono" => 'fas fa-dolly-flatbed');
             $_tipoSangre= array("label" => 'tipoSangre', "data" => $tipoSangre, "icono" => 'fas fa-dolly-flatbed');
 
+            array_push($respuesta,$_horario);
             array_push($respuesta,$_paises);
             array_push($respuesta,$_nopuestos);
             array_push($respuesta,$_departamento);
+            array_push($respuesta,$_sucursales);
             array_push($respuesta,$_empresa);
             array_push($respuesta,$_monedas);
             array_push($respuesta,$_bancos);
