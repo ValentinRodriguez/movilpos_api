@@ -17,6 +17,8 @@ use App\librerias\tipoEmpleado;
 use App\librerias\tipoSangre;
 use App\librerias\turnos;
 use App\librerias\sucursales;
+use App\librerias\cgcatalogo;
+use App\librerias\areasEmpresa;
 
 class noempleadosController extends ApiResponseController
 {
@@ -79,18 +81,50 @@ class noempleadosController extends ApiResponseController
     {
         $datos = $request->all();
 
-        return response()->json($datos);
+        // return response()->json($datos);
 
         $messages = ['required' => 'El campo :attribute es requerido.',
                      'unique'   => 'El campo :attribute debe ser unico',
                      'numeric'  => 'El campo :attribute debe ser numerico'];
 
-        $validator = validator($datos, ["descripcion"     => 'required',
-                                       "titulo"          => 'required',
-                                       "sueldo_inicial"  => 'required',
-                                       "usuario_creador" => 'required',
-                                       "estado"          => 'required'],
-                                        $messages);
+        $validator = validator($datos, [
+            'calle'            => 'required',
+            'cedula'           => 'required',
+            'cod_cia'          => 'required', 
+            'departamento'     => 'required',
+            'email'            => 'required',
+            'fecha_entrada'    => 'required',
+            'fecha_inicio_c'   => 'required',
+            'fecha_nacimiento' => 'required',
+            'area'             => 'required',
+            'id_puesto'        => 'required',
+            'id_pais'          => 'required',
+            'id_region'        => 'required',
+            'id_provincia'     => 'required',
+            'id_municipio'     => 'required',
+            'id_ciudad'        => 'required',
+            'suc_id'           => 'required',
+            'licencia'         => 'required',
+            'paga_seg'         => 'required',
+            'poncha'           => 'required',
+            'primernombre'     => 'required', 
+            'segundonombre'    => 'required',
+            'primerapellido'   => 'required',
+            'is_sup'           => 'required',
+            'segundoapellido'  => 'required',
+            'sexo'             => 'required',
+            'cod_tss'          => 'required',
+            'sueldo'           => 'required',
+            'telefono'         => 'required',
+            'cuenta_no'        => 'required',
+            'tipo_empleado'    => 'required',
+            'turno'            => 'required', 
+            'nomina'           => 'required',
+            'no_cuenta_banco'  => 'required',
+            'id_moneda'        => 'required',
+            'estado'           => 'required',
+            'usuario_creador'  => 'required'
+        ],$messages);
                                         
         if ($validator->fails()) {
            $errors =  $validator->errors();
@@ -135,6 +169,7 @@ class noempleadosController extends ApiResponseController
             $respuesta = array();
 
             $horario = turnos::where('estado','=','activo')->get();
+            $areas = areasEmpresa::where('estado','=','activo')->get();
             $nopuestos = Nopuesto::orderBy('id', 'asc')->where('estado','=','activo')->get();                                
             $departamento = Departamento::where('estado','=','activo')->get();
             $monedas = tipoMonedas::where('estado','=','activo')->get();
@@ -146,8 +181,10 @@ class noempleadosController extends ApiResponseController
             $tipoEmpleado = tipoEmpleado::all();
             $tipoSangre = tipoSangre::all();
             $sucursales = sucursales::where('estado','=','activo')->get();
+            $cuentas = cgcatalogo::where([['estado','=','activo'],['nivel','=',3]])->get();
 
             $_horario = array("label" => 'horarios', "data" => $horario, "icono" => 'fas fa-dolly-flatbed');
+            $_areas = array("label" => 'areas', "data" => $areas, "icono" => 'fas fa-dolly-flatbed');
             $_nopuestos = array("label" => 'puestos', "data" => $nopuestos, "icono" => 'fas fa-dolly-flatbed');
             $_departamento = array("label" => 'departamento', "data" => $departamento, "icono" => 'fas fa-dolly-flatbed');
             $_empresa = array("label" => 'empresas', "data" => $empresa, "icono" => 'fas fa-dolly-flatbed');
@@ -159,6 +196,7 @@ class noempleadosController extends ApiResponseController
             $_estadoCivil= array("label" => 'estadoCivil', "data" => $estadoCivil, "icono" => 'fas fa-dolly-flatbed');
             $_tipoEmpleado= array("label" => 'tipoEmpleado', "data" => $tipoEmpleado, "icono" => 'fas fa-dolly-flatbed');
             $_tipoSangre= array("label" => 'tipoSangre', "data" => $tipoSangre, "icono" => 'fas fa-dolly-flatbed');
+            $_cuentas= array("label" => 'cuentas', "data" => $cuentas, "icono" => 'fas fa-dolly-flatbed');
 
             array_push($respuesta,$_horario);
             array_push($respuesta,$_paises);
@@ -172,6 +210,8 @@ class noempleadosController extends ApiResponseController
             array_push($respuesta,$_estadoCivil);
             array_push($respuesta,$_tipoEmpleado);
             array_push($respuesta,$_tipoSangre);
+            array_push($respuesta,$_cuentas);
+            array_push($respuesta,$_areas);
 
             return $this->successResponse($respuesta); 
 

@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class noempleados extends Model
 {
     protected $fillable =[
-        "apell1_emp","apell2_emp","calle","cedula","cod_cia","cod_tss","codigo_es","codigo_retiro_bco","credito","cuenta_fi","cuenta_no","digiverbancodestino",
-        "email","estado","estado_legal","fech_efec","fech_nac","fecha_inicio_c","fecha_suspencion","fecha_suspension","fecha_termino_c","fecha_ultimo_aumento","foto_empleado",
-        "horario","horario_final","horario_inicial","id_pais","is_sup","licencia","nom1_emp","nom2_emp","nomina","observacion","paga_seg","poncha","sessionId","sexo","sueldo_ac",
-        "tasa","telefono","tipo_sueldo","tipocuenta","usuario_creador"
-    ];
-}
+        'primernombre','segundonombre','primerapellido','segundoapellido','cod_cia','cod_tss','codigo_es','codigo_retiro_bco','credito','educacion',
+        'departamento','fecha_inicio_c','fecha_suspencion','fecha_ultimo_aumento','suc_id','id_puesto','id_pais','id_municipio','id_provincia',
+        'id_region','id_ciudad','id_sector','calle','cedula','codbancodestino','cod_nac','email','digiverbancodestino','cuenta_no','estado_civil',
+        'fecha_nacimiento','fecha_entrada','fecha_termino_contrato','foto_empleado','licencia','is_sup','no_cuenta_banco','monto_adicional','nomina',
+        'sueldo','telefono','observacion','paga_seg','poncha','sexo','tasa','tipocuenta','estadolegal','tipo_sangre','area','turno','id_nivel',
+        'id_moneda','tipo_empleado','is_vend','codigobancodestino','cuentabancaria','codigoretirocomercial','estado','usuario_creador',
+        'usuario_modificador'];
+    }
+

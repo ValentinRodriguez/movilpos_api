@@ -10,29 +10,46 @@ class empleadosSeeder extends Seeder
     {
 
         DB::table('noempleados')->truncate();
-
+        
         $empleado = array(
-            ['departamento'	        => 1,'id_puesto'=> 1,
-            'cod_cia'=> 1,         'suc_id'=> 1, 'turno' => 1, 
-            'area'=> 1,
-            'id_nivel'	            => 1,'primernombre'=> 'provisional', 
-            'segundonombre'	        => 'provisional','primerapellido'=> 'provisional',
-            'segundoapellido'       => 'provisional','fecha_entrada'=> '2020-10-27',
-            'fecha_salida'	        => '2020-10-27','fecha_termino_contrato'=> '2020-10-27',
-            'fecha_nacimiento'	    => '2020-10-27','estado_civil'=> 'soltero',
-            'tipo_sangre'	        => 'O+','cedula'=> '22500192319',
-            'licencia'	            => '654654','sueldo'=> 0,
-            'id_moneda'             => 1,'id_pais'=> 1,
-            'tipo_empleado'         => 1,'tipo_cuenta'=> 1,
-            'cuenta_no'             => 111,'monto_adicional'=> 0,
-            'foto_empleado'	        => '','is_vend'=> 'si',
-            'is_sup'                => 'si','calle'=> 'XXXXXXXXXXXX',
-            'sector'                => 'XXXXXXXXXXXX','localidad_no'=> 'XXXXXXXXXXXX',
-            'id_ciudad'	            => 1,'email'=> 'valentinrodriguez1427@gmail.com',
-            'codigobancodestino'    => 'XXXXX','digiverbancodestino'   => 'X',
-            'cuentabancaria'        => 'XXXXX','tipo_sueldo'=> 'XXXXX',
-            'codigoretirocomercial' => 'XXXXX','estadolegal'=> 'XXXXX',
-            'estado'                => 'inactivo','usuario_creador'=> 'movilsoluciones']
+            [
+                'calle'                 => 'XXXXXXXXXXXX',
+                'cedula'                => '22500192319',
+                'cod_cia'               => 1,         
+                'departamento'          => 1,
+                'email'                 => 'valentinrodriguez1427@gmail.com',
+                'fecha_entrada'         => '2020-10-27',
+                'fecha_inicio_c'        => '2020-10-27',
+                'fecha_nacimiento'      => '2020-10-27',
+                'area'                  => 1,
+                'id_puesto'             => 1,
+                'id_pais'               => 1,
+                'id_region'             => 7,
+                'id_provincia'          => 19,
+                'id_municipio'          => 69,
+                'id_ciudad'             => 69,
+                'suc_id'                => 1, 
+                'licencia'              => '654654',
+                'paga_seg'              => 'si',
+                'poncha'                => 'si',
+                'primernombre'          => 'provisional', 
+                'segundonombre'         => 'provisional',
+                'primerapellido'        => 'provisional',
+                'is_sup'                => 'si',
+                'segundoapellido'       => 'provisional',
+                'sexo'                  => "M",
+                'cod_tss'               => "12586523981",
+                'sueldo'                => 1000000,
+                'telefono'              => "(666)-666-6666",
+                'cuenta_no'             => '0',
+                'tipo_empleado'         => 1,
+                'turno'                 => 1, 
+                'nomina'                => 1,
+                'no_cuenta_banco'       => '1254523695214526',
+                'id_moneda'             => 1,
+                'estado'                => 'inactivo',
+                'usuario_creador'       => 'movilsoluciones'
+            ]
         );
 
         foreach ($empleado as $key => $value) {
