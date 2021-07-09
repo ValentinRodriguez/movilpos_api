@@ -91,7 +91,7 @@ class noempleadosController extends ApiResponseController
                                        "usuario_creador" => 'required',
                                        "estado"          => 'required'],
                                         $messages);
-        // return response()->json($datos);
+                                        
         if ($validator->fails()) {
            $errors =  $validator->errors();
            return $this->errorResponse($errors);
@@ -99,7 +99,7 @@ class noempleadosController extends ApiResponseController
         else {
             try {                
                 DB::beginTransaction();              
-                    
+                    noempleados::create($datos);
                 DB::commit();
                 return $this->successResponse($datos);
             }

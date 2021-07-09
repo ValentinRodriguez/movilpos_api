@@ -29,13 +29,14 @@ class NopuestoController extends ApiResponseController
                      'unique'   => 'El campo :attribute debe ser unico',
                      'numeric'  => 'El campo :attribute debe ser numerico'];
 
-        $validator = validator($datos, ["descripcion"     => 'required',
-                                       "titulo"          => 'required',
-                                       "sueldo_inicial"  => 'required',
-                                       "usuario_creador" => 'required',
-                                       "estado"          => 'required'],
-                                        $messages);
-        // return response()->json($datos);
+        $validator = validator($datos,
+               ["descripcion"     => 'required',
+                "titulo"          => 'required',
+                "sueldo_inicial"  => 'required',
+                "usuario_creador" => 'required',
+                "estado"          => 'required'],
+        $messages);
+        
         if ($validator->fails()) {
            $errors =  $validator->errors();
            return $this->errorResponse($errors);
