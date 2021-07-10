@@ -11,7 +11,7 @@ class departamentoSeeder extends Seeder
             'descripcion'	   => 'provisional',
             'tipodepartamento' => 'provisional',
             'usuario_creador'  => 'movilsoluciones',
-            'estado'	       => 'activo',
+            'estado'	       => 'inactivo',
         );
         Departamento::create($departamento);
     }

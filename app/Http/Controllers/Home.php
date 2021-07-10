@@ -13,16 +13,9 @@ class Home extends ApiResponseController
         try {
             $respuesta = array();
 
-            $catalogo = cgcatalogo::orderBy('nivel','asc')->
-                                    where('estado','=','ACTIVO')->
-                                    get();
-                                       
-            $empresa = Empresa::orderBy('created_at', 'desc')->
-                                    get();
-
-            $condiciones = ve_CondicionesPago::orderBy('id', 'asc')->
-                                where('estado','=','activo')->
-                                get();
+            $catalogo = cgcatalogo::orderBy('nivel','asc')->where('estado','=','ACTIVO')->get();                                       
+            $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','ACTIVO')->get();
+            $condiciones = ve_CondicionesPago::orderBy('id', 'asc')->where('estado','=','activo')->get();
 
             $_empresa = array("label" => 'empresa', "data" => $empresa, "icono" => 'fas fa-dolly-flatbed');
             $_catalogo = array("label" => 'catalogo', "data" => $catalogo, "icono" => 'fas fa-dolly-flatbed');
