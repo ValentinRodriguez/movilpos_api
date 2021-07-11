@@ -28,7 +28,7 @@ class DgiiController extends ApiResponseController
     public function busqueda(Request $request)
     {
         $parametro = $request->get('rnc');
-        $busqueda = dgii::where('rnc','=',$parametro)->get();                              
+        $busqueda = dgii::where('rnc','LIKE',"%$parametro%")->get();                              
         return $this->successResponse($busqueda);
     }
 

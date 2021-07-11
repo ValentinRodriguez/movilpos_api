@@ -14,7 +14,7 @@ class CreateEmpresasTable extends Migration
             $table->text('nombre');
             $table->text('telefono_empresa');
             $table->text('email_empresa');
-            $table->text('direccion');
+            $table->text('calle');
             $table->text('web')->nullable();;
             $table->text('contacto');
             $table->text('telefono_contacto');

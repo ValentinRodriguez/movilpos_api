@@ -29,6 +29,8 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/formulario606/dgii-rnc', 'DgiiController@formulario606');
     Route::apiResource('/dgii-rnc', 'DgiiController');
 
+
+    
     // PRODUCTOS EN EL INVENTARIO
     Route::post('/act/productos/{id}', 'InvProductosController@updateProducts');
     Route::get('/noexistencia/invproductos', 'InvProductosController@indexSinExistencia');
@@ -232,6 +234,9 @@ Route::post('logout', 'AuthController@logout');
     Route::post('/act/empresa/{id}', 'EmpresaController@actualizar');
     Route::get('/recibimientos/empresa', 'EmpresaController@recibimientos');
     Route::get('/busqueda/empresa', 'EmpresaController@busqueda');
+    Route::get('/permisos-empresa', 'EmpresaController@permisosEmpresaValor');
+    Route::get('/autollenado/permisos-empresa', 'EmpresaController@AutoLlenadoPermisosEmpresa');
+    Route::post('/permisos-empresa', 'EmpresaController@guardarPermisosEmpresa');
     Route::apiresource('/empresa', 'EmpresaController');
 
     //PUERTOS

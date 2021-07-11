@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Librerias\Empresa;
 use App\Librerias\sucursales;
+use App\Librerias\permisosEmpresa;
+use App\Librerias\permisosEmpresaValor;
+use App\Librerias\Modulos;
+use App\Librerias\Menu;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -45,7 +50,7 @@ class EmpresaController extends ApiResponseController
             "telefono_empresa"    =>$request->input("telefono_empresa"),
             "email_empresa"       =>$request->input("email_empresa"),
             "rnc"                 =>$request->input("rnc"),
-            "direccion"           =>$request->input("direccion"),
+            "calle"               =>$request->input("calle"),
             "web"                 =>$request->input("web"),
             "contacto"            =>$request->input("contacto"),
             "telefono_contacto"   =>$request->input("telefono_contacto"),
@@ -75,13 +80,13 @@ class EmpresaController extends ApiResponseController
            "telefono_empresa"   => 'required|string',
            "email_empresa"      => 'required|string',
            "rnc"                => 'required|string',
-           "direccion"          => 'required|string',  
+           "calle"              => 'required|string',  
            "contacto"           => 'required|string',   
            "telefono_contacto"  => 'required|string',
            "id_pais"            => 'required',
-           "id_region"           => 'required',
-           "id_municipio"        => 'required',
-           "id_provincia"        => 'required',
+           "id_region"          => 'required',
+           "id_municipio"       => 'required',
+           "id_provincia"       => 'required',
            "empresa_verde"      => 'required',
            "tipo_cuadre"        => 'required',
            "valuacion_inv"      => 'required',
@@ -148,7 +153,7 @@ class EmpresaController extends ApiResponseController
             "telefono_empresa"    =>$request->input("telefono_empresa"),
             "email_empresa"       =>$request->input("email_empresa"),
             "rnc"                 =>$request->input("rnc"),
-            "direccion"           =>$request->input("direccion"),
+            "calle"               =>$request->input("calle"),
             "web"                 =>$request->input("web"),
             "id_pais"             =>$request->input("id_pais"),
             "id_ciudad"           =>$request->input("id_ciudad"),
@@ -179,7 +184,7 @@ class EmpresaController extends ApiResponseController
            "telefono_empresa"    => 'required|string',
            "email_empresa"       => 'required|string',
            "rnc"                 => 'required|string',
-           "direccion"           => 'required|string',  
+           "calle"               => 'required|string',  
            "contacto"            => 'required|string',   
            "telefono_contacto"   => 'required|string',
            "id_region"           => 'required',
@@ -232,5 +237,39 @@ class EmpresaController extends ApiResponseController
                                                         
         return $this->successResponse($busqueda);
     }
+
+    public function permisosEmpresaValor()
+    {
+        $empresa = permisosEmpresaValor::get();
+        return $this->successResponse($empresa);
+    }
     
+    public function AutoLlenadoPermisosEmpresa() {        
+        $respuesta = array();
+            
+        $modulos = Modulos::orderBy('orden', 'asc')->get();
+    
+        $generales = permisosEmpresa::orderBy('created_at', 'desc')->get();
+    
+        $menu = Menu::join('modulos','modulos.id','=','menus.modulo')->
+                        select('menus.*','modulos.icon','modulos.modulo as nombre_modulo')->
+                        get();
+    
+    
+        $_modulos = array("label" => 'modulos', "data" => $modulos, "icono" => 'fas fa-dolly-flatbed');
+        $_generales = array("label" => 'generales', "data" => $generales, "icono" => 'fas fa-dolly-flatbed');
+        $_menu = array("label" => 'menu', "data" => $menu, "icono" => 'fas fa-dolly-flatbed');
+    
+        array_push($respuesta,$_modulos);
+        array_push($respuesta,$_generales);
+        array_push($respuesta,$_menu);
+    
+        return $this->successResponse($respuesta);
+
+    }
+
+    public function guardarPermisosEmpresa(Request $request) {
+        $datos = $request->all();
+        return response()->json($datos);
+    }
 }

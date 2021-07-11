@@ -12,7 +12,7 @@ class empresaSeeder extends Seeder
             'telefono_empresa' => '(XXX)-XXX-XXXX',
             'email_empresa' => 'XXXX@XXX.XXX',
             'rnc' => 'XXXXXXXXXXX',
-            'direccion' =>'XXXXXXXXXXX',
+            'calle' =>'XXXXXXXXXXX',
             'web' =>'XXXXXXXXXXX',
             'empresa_verde' => 'no',
             'contacto' => 'XXXXXXXXXXX',
