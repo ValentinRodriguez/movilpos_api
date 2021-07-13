@@ -30,7 +30,6 @@ class clienteSeeder extends Seeder
             'ncf' => 00000000000,
             'generico' => 'SI',
             'calle' => 'XXXXXXXXXXXXX',
-            'casa_num' => 'XXX',
             'telefono_oficina' => '(XXX)-XXX-XXXX',
             'id_pais' => 1,
             'id_sector' => 173,

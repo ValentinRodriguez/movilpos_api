@@ -21,7 +21,6 @@ class CreateVeclientesTable extends Migration
             $table->string('nombre',100);
             $table->integer('tipo_documento');
             $table->foreign('tipo_documento')->references('tipo_documento')->on('tipo_documento');
-            $table->char('casa_num',5)->nullable();
             $table->string('calle',100)->nullable();
             $table->string('documento',25);
             $table->integer('vendedor');

@@ -290,6 +290,7 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/reporte/invtransacciones-visualizar-h', 'invtransacciones@verReporteH')->name('verPDFh');
     Route::get('/reporte/invtransacciones-xls', 'invtransacciones@ProductosXLS')->name('xls');
     Route::get('/detalle/transaccion/{id}', 'invtransacciones@detalleTransaccion');
+    Route::get('/consulta-balances/transaccion', 'invtransacciones@consultaBalances');
     Route::get('/autollenado/invtransacciones', 'invtransacciones@autollenado');
     Route::apiresource('/invtransacciones', 'invtransacciones');
 

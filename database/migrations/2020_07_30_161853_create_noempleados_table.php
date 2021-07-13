@@ -64,7 +64,6 @@ class CreateNoempleadosTable extends Migration
             // $table->integer('id_nivel');
             $table->string('id_moneda')->foreign()->references('id_moneda')->on('monedas');
             $table->string('tipo_empleado',50);  //Si el empleado es quincenal semanal
-            // $table->char('is_vend', 2);
             // $table->string('codigobancodestino',8);
             // $table->string('cuentabancaria',50);
             // $table->string('codigoretirocomercial',50);

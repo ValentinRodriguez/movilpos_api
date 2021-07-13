@@ -12,7 +12,7 @@ class UsuarioSeeder extends Seeder
             'name'      => 'usuario',
             'surname'   => 'prueba',
             'surname'   => 'prueba',
-            'id' => 1,
+            'id_numemp' => 1,
             'email'     => 'valentinrodriguez1427@gmail.com',
             'password'  => '123',            
             'foto'      => '',

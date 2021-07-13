@@ -138,7 +138,7 @@ class noempleadosController extends ApiResponseController
                         $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
                         $datos['foto_empleado'] = $request->file('foto_empleado')->storeAs('uploads', 'empleados/'.$nombreImagen, 'public');
                     }          
-                    return response()->json($datos['foto_empleado']);
+                    // return response()->json($datos['foto_empleado']);
                     noempleados::create($datos);
                 DB::commit();
                 return $this->successResponse($datos);
@@ -224,7 +224,7 @@ class noempleadosController extends ApiResponseController
     }
 
     public function buscaVendedores(){
-        $empleado = noempleados::where('noempleados.is_vend','=','si')->
+        $empleado = noempleados::where('noempleados.id_puesto','=',3)->
                                  select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
                                  get();
         if ($empleado == null){

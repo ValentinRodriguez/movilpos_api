@@ -283,6 +283,33 @@ class invtransacciones extends ApiResponseController
             return $this->successResponse($transacciones);
         }                 
     }
+    
+    public function consultaBalances()
+    {
+
+        // "SELECT '('+cast(c.cod_mov as char(2))+')'+RTRIM(c.descrip_mov), a.num_doc,a.num_oc,a.orden_compra,a.fecha,",
+        // "SUM(a.cantidad_2),'0','0','('+cast(b.cod_bodega as char(1))+')'+RTRIM(b.descripcion) FROM iptb00006 a,intb00009 b,iptb00005 c ", 
+        // "WHERE a.cod_n = ? and a.cod_grupo=? and ",
+        // "      a.cod_tipo =? and a.cod_sec=? and ", 
+        // "      a.status_t is null and a.fecha between ? and  ? and ",
+        // "      a.cod_mov = c.cod_mov and ",
+        // "      a.bodega = b.cod_bodega and ",criterio CLIPPED,
+        // " GROUP BY a.num_doc,a.fecha,a.orden_compra,a.num_oc,c.cod_mov,c.descrip_mov,b.cod_bodega,b.descripcion ",
+        // "      ORDER BY a.fecha,a.num_doc "
+
+        // 'invtransaccionesmaster.orden_compra',
+
+        $productos = invtransaccionesmodel::join('invtransaccionesdetalle','invtransaccionesdetalle.num_doc','=','invtransaccionesmaster.num_doc')-> 
+                                            join('bodegas','bodegas.id_bodega','=','invtransaccionesdetalle.id_bodega')-> 
+                                            join('invtiposmovimientos','invtiposmovimientos.id_tipomov','=','invtransaccionesdetalle.id_tipomov')-> 
+                                            select('invtransaccionesmaster.num_doc','invtransaccionesmaster.id_num_oc',
+                                                   'invtransaccionesmaster.fecha','invtransaccionesdetalle.cantidad1 as cantidad',
+                                                   'bodegas.id_bodega','bodegas.descripcion',
+                                                   'invtiposmovimientos.id_tipomov','invtiposmovimientos.descripcion')->
+                                            get();
+       
+        return $this->successResponse($productos);
+    }
 
     public function update($validacion)
     {
@@ -569,7 +596,7 @@ class invtransacciones extends ApiResponseController
                                 where('proveedores.estado','=','activo')->
                                 get();
 
-            $vendedor = noempleados::where('noempleados.is_vend','=','si')->
+            $vendedor = noempleados::where('noempleados.id_puesto','=',3)->
                                 select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
                                 get();
             

@@ -22,7 +22,7 @@ class MclientesController extends ApiResponseController
         try {
             $respuesta = array();
 
-            $vendedor = noempleados::where('noempleados.is_vend','=','si')->
+            $vendedor = noempleados::where('noempleados.id_puesto','=','3')->
                                     select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
                                     get();
 
@@ -123,7 +123,6 @@ class MclientesController extends ApiResponseController
             "celular"             =>$request->input("celular"),
             "telefono_casa"       =>$request->input("telefono_casa"),
             "email"               =>$request->input("email"),
-            "casa_num"            =>$request->input("casa_num"),
             "calle"               =>$request->input("calle"),
             "url"                 =>$request->input("url"),
             "estado"              =>$request->input("estado"),
@@ -172,7 +171,6 @@ class MclientesController extends ApiResponseController
             "id_region"           => 'required',
             "id_municipio"        => 'required',
             "id_provincia"        => 'required',
-            "casa_num"            => 'required',
             "calle"               => 'required',
             "estado"              => 'required',
             "celular"             => 'required',
