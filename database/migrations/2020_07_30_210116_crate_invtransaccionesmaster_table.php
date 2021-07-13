@@ -42,7 +42,7 @@ class CrateInvtransaccionesmasterTable extends Migration
             $table->integer('cod_tarifa')->nullable();
             $table->TEXT('comentario')->nullable();
             $table->integer('departamento')->foreign()->references('departamento')->on('nodepartamento')->nullable();
-            $table->integer('id_numemp')->foreign()->references('id_numemp')->on('noempleados')->nullable();
+            $table->integer('id')->foreign()->references('id')->on('noempleados')->nullable();
             $table->string('nombre_departamento',100)->nullable();
             $table->string('cuenta_no',25)->foreign()->references('cuenta_no')->on('cgcatalogo')->nullable();
             $table->string('descripcion_cuenta',100)->nullable();

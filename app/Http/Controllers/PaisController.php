@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Librerias\pais;
+use App\Librerias\regiones;
+use App\Librerias\municipios;
+use App\Librerias\provincias;
+use App\Librerias\sectores;
 use App\Librerias\ciudad;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiResponseController;
@@ -34,6 +38,32 @@ class PaisController extends ApiResponseController
                           }
                           return $this->successResponse($ciudad);
     }
+
+    public function localidad()
+    {     
+        $respuesta = array();
+        
+        $pais = pais::where('estado','=','ACTIVO')->get();
+        $regiones = regiones::where('estado','=','ACTIVO')->get();
+        $municipios = municipios::where('estado','=','ACTIVO')->get();
+        $sectores = sectores::where('estado','=','ACTIVO')->get();
+        $provincias = provincias::where('estado','=','ACTIVO')->get();
+
+        $_pais = array("label" => 'pais', "data" => $pais, "icono" => 'fas fa-dolly-flatbed');
+        $_regiones = array("label" => 'regiones', "data" => $regiones, "icono" => 'fas fa-dolly-flatbed');
+        $_municipios = array("label" => 'municipios', "data" => $municipios, "icono" => 'fas fa-dolly-flatbed');
+        $_sectores = array("label" => 'sectores', "data" => $sectores, "icono" => 'fas fa-dolly-flatbed');
+        $_provincias = array("label" => 'provincias', "data" => $provincias, "icono" => 'fas fa-dolly-flatbed');
+
+        array_push($respuesta,$_pais);  
+        array_push($respuesta,$_regiones);
+        array_push($respuesta,$_municipios);
+        array_push($respuesta,$_sectores);
+        array_push($respuesta,$_provincias);
+
+        return $this->successResponse($respuesta);
+    }
+
     public function create()
     {
         //

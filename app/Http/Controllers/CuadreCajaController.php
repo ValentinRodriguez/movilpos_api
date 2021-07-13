@@ -56,7 +56,7 @@ class CuadreCajaController extends ApiResponseController
             }
 
 
-            $noempleados = noempleados::orderBy('id_numemp', 'asc')->
+            $noempleados = noempleados::orderBy('id', 'asc')->
                                 join('nodepartamentos','noempleados.departamento','=','nodepartamentos.id')->
                                 join('nopuestos','noempleados.id_puesto','=','nopuestos.id_puesto')->
                                 join('ciudades','noempleados.id_ciudad','=','ciudades.id_ciudad')->

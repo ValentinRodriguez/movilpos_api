@@ -14,7 +14,7 @@ class RequisicionesMasterController extends ApiResponseController
     {
         $requisicion = requisicionesMaster::orderBy('num_req', 'asc')->
                                     join('nodepartamentos','nodepartamentos.departamento','=','requisiciones_masters.departamento')->
-                                    join('noempleados','noempleados.id_numemp','=','requisiciones_masters.cod_emp_sec')->
+                                    join('noempleados','noempleados.id','=','requisiciones_masters.cod_emp_sec')->
                                     join('veclientes',[['veclientes.tipo_cliente','=','requisiciones_masters.tipo_cliente'],
                                                        ['veclientes.sec_cliente','=','requisiciones_masters.sec_cliente']])->
                                     select('requisiciones_masters.*','nodepartamentos.titulo as depto','veclientes.nombre as nombre_cliente',

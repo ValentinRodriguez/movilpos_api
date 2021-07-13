@@ -22,8 +22,8 @@ use App\librerias\areasEmpresa;
 
 class noempleadosController extends ApiResponseController
 {
-    public function index(){
-        $noempleados = noempleados::orderBy('id_numemp', 'asc')->
+    public function index() {
+        $noempleados = noempleados::orderBy('id', 'asc')->
                                 join('nodepartamentos','noempleados.departamento','=','nodepartamentos.id')->
                                 join('nopuestos','noempleados.id_puesto','=','nopuestos.id_puesto')->
                                 join('ciudades','noempleados.id_ciudad','=','ciudades.id_ciudad')->
@@ -40,13 +40,10 @@ class noempleadosController extends ApiResponseController
                                 get();
 
         return $this->successResponse($noempleados);
-    }
+    }    
 
-    
-
-    public function cajeros()
-{
-        $cajero = noempleados::orderBy('id_numemp', 'asc')->
+    public function cajeros() {
+        $cajero = noempleados::orderBy('id', 'asc')->
                                 join('nodepartamentos','noempleados.departamento','=','nodepartamentos.id')->
                                 join('nopuestos','noempleados.id_puesto','=','nopuestos.id_puesto')->
                                 join('ciudades','noempleados.id_ciudad','=','ciudades.id_ciudad')->
@@ -70,10 +67,11 @@ class noempleadosController extends ApiResponseController
     }
 
     public function show($id){
-        $empleado = noempleados::find($id);
-        if ($empleado == null){
-            return $this->errorResponse($empleado);
-        }
+        // return response()->json($id);
+        $empleado = noempleados::where('noempleados.id','=',$id)->
+                                 join('turnos','turnos.id','=','noempleados.turno')->
+                                 select('noempleados.*','turnos.horario_inicial','turnos.horario_final')
+                                 ->first();
         return $this->successResponse($empleado);
     }
 
@@ -94,6 +92,7 @@ class noempleadosController extends ApiResponseController
             'departamento'     => 'required',
             'email'            => 'required',
             'fecha_entrada'    => 'required',
+            'tipo_sueldo'      => 'required',
             'fecha_inicio_c'   => 'required',
             'fecha_nacimiento' => 'required',
             'area'             => 'required',
@@ -132,7 +131,14 @@ class noempleadosController extends ApiResponseController
         }
         else {
             try {                
-                DB::beginTransaction();              
+                DB::beginTransaction();    
+                    if ($request->hasFile('foto_empleado')) {
+                        // Storage::delete('public/'.$producto->imagen);
+                        $imagen = $request->file('foto_empleado');
+                        $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
+                        $datos['foto_empleado'] = $request->file('foto_empleado')->storeAs('uploads', 'empleados/'.$nombreImagen, 'public');
+                    }          
+                    // return response()->json($datos['foto_empleado']);
                     noempleados::create($datos);
                 DB::commit();
                 return $this->successResponse($datos);
@@ -141,7 +147,80 @@ class noempleadosController extends ApiResponseController
                 return $this->errorResponse($e->getMessage());
             }
         }
+    }
 
+    public function update(Request $request,  $id) {
+        $noempleados = noempleados::find($id);
+        
+        $datos = $request->all();
+        // return response()->json($datos);
+        
+        $messages = ['required' => 'El campo :attribute es requerido.',
+                     'unique'   => 'El campo :attribute debe ser unico',
+                     'numeric'  => 'El campo :attribute debe ser numerico'];
+
+        $validator = validator($datos, [
+            'calle'            => 'required',
+            'cedula'           => 'required',
+            'cod_cia'          => 'required', 
+            'departamento'     => 'required',
+            'email'            => 'required',
+            'fecha_entrada'    => 'required',
+            'tipo_sueldo'      => 'required',
+            'fecha_inicio_c'   => 'required',
+            'fecha_nacimiento' => 'required',
+            'area'             => 'required',
+            'id_puesto'        => 'required',
+            'id_pais'          => 'required',
+            'id_region'        => 'required',
+            'id_provincia'     => 'required',
+            'id_municipio'     => 'required',
+            'id_ciudad'        => 'required',
+            'suc_id'           => 'required',
+            'licencia'         => 'required',
+            'paga_seg'         => 'required',
+            'poncha'           => 'required',
+            'primernombre'     => 'required', 
+            'segundonombre'    => 'required',
+            'primerapellido'   => 'required',
+            'is_sup'           => 'required',
+            'segundoapellido'  => 'required',
+            'sexo'             => 'required',
+            'cod_tss'          => 'required',
+            'sueldo'           => 'required',
+            'telefono'         => 'required',
+            'cuenta_no'        => 'required',
+            'tipo_empleado'    => 'required',
+            'turno'            => 'required', 
+            'nomina'           => 'required',
+            'no_cuenta_banco'  => 'required',
+            'id_moneda'        => 'required',
+            'estado'           => 'required',
+            'usuario_creador'  => 'required'
+        ],$messages);
+                                        
+        if ($validator->fails()) {
+           $errors =  $validator->errors();
+           return $this->errorResponse($errors);
+        }
+        else {
+            try {                
+                DB::beginTransaction();    
+                    if ($request->hasFile('foto_empleado')) {
+                        // Storage::delete('public/'.$producto->imagen);
+                        $imagen = $request->file('foto_empleado');
+                        $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
+                        $datos['foto_empleado'] = $request->file('foto_empleado')->storeAs('uploads', 'empleados/'.$nombreImagen, 'public');
+                    }          
+                    // return response()->json($datos['foto_empleado']);
+                    $noempleados->update($datos);
+                DB::commit();
+                return $this->successResponse($datos);
+            }
+            catch (\Exception $e ){
+                return $this->errorResponse($e->getMessage());
+            }
+        }
     }
 
     public function buscaVendedores(){
@@ -164,6 +243,12 @@ class noempleadosController extends ApiResponseController
         return $this->successResponse($supervisor);
     }
        
+    public function buscaCedula(Request $request){
+        $cedula = $request->get('cedula');        
+        $empleado = noempleados::where('noempleados.cedula','=',$cedula)->get();
+        return $this->successResponse($empleado);
+    }
+
     public function autollenado(){ 
         try {
             $respuesta = array();

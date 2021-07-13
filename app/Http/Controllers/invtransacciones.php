@@ -37,7 +37,7 @@ class invtransacciones extends ApiResponseController
                                                 leftjoin('proveedores',[['invtransaccionesmaster.cod_sp','=','proveedores.cod_sp'],
                                                                         ['invtransaccionesmaster.cod_sp_sec','=','proveedores.cod_sp_sec']])->
                                                 leftjoin('nodepartamentos','invtransaccionesmaster.departamento','=','nodepartamentos.id')->
-                                                leftjoin('noempleados','invtransaccionesmaster.id_numemp','=','noempleados.id_numemp')->
+                                                leftjoin('noempleados','invtransaccionesmaster.id','=','noempleados.id')->
                                                 leftjoin('transportistas','invtransaccionesmaster.cod_transportista','=','transportistas.cod_transportista')->
                                                 //leftjoin('bodegas_usuarios','bodegas.id_bodega','=','bodegas_usuarios.id_bodega')->
                                                 leftjoin('bodegas','invtransaccionesmaster.id_bodega','=','bodegas.id_bodega')->
@@ -630,7 +630,7 @@ class invtransacciones extends ApiResponseController
                                                 leftjoin('proveedores',[['invtransaccionesmaster.cod_sp','=','proveedores.cod_sp'],
                                                                         ['invtransaccionesmaster.cod_sp_sec','=','proveedores.cod_sp_sec']])->
                                                 leftjoin('nodepartamentos','invtransaccionesmaster.departamento','=','nodepartamentos.id')->
-                                                leftjoin('noempleados','invtransaccionesmaster.id_numemp','=','noempleados.id_numemp')->
+                                                leftjoin('noempleados','invtransaccionesmaster.id','=','noempleados.id')->
                                                 leftjoin('transportistas','invtransaccionesmaster.cod_transportista','=','transportistas.cod_transportista')->
                                                 join('bodegas','invtransaccionesmaster.id_bodega','=','bodegas.id_bodega')->
                                                 select('invtransaccionesmaster.*',

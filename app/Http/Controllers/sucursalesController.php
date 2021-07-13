@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Librerias\sucursales;
+use App\Librerias\Empresa;
+use App\Librerias\pais;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -45,6 +48,22 @@ class sucursalesController extends ApiResponseController
         }
 
         return $this->successResponse($sucursales);
+    }
+
+    public function autollenado()
+    {     
+        $respuesta = array();
+
+        $empresa = Empresa::where('estado','=','ACTIVO')->get();
+        $paises = pais::where('estado','=','ACTIVO')->get();
+
+        $_empresa = array("label" => 'empresas', "data" => $empresa, "icono" => 'fas fa-dolly-flatbed');
+        $_paises = array("label" => 'paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
+        
+        array_push($respuesta,$_empresa);  
+        array_push($respuesta,$_paises);
+
+        return $this->successResponse($respuesta);
     }
 
     public function store(Request $request)

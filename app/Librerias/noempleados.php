@@ -13,6 +13,6 @@ class noempleados extends Model
         'fecha_nacimiento','fecha_entrada','fecha_termino_contrato','foto_empleado','licencia','is_sup','no_cuenta_banco','monto_adicional','nomina',
         'sueldo','telefono','observacion','paga_seg','poncha','sexo','tasa','tipocuenta','estadolegal','tipo_sangre','area','turno','id_nivel',
         'id_moneda','tipo_empleado','is_vend','codigobancodestino','cuentabancaria','codigoretirocomercial','estado','usuario_creador',
-        'usuario_modificador'];
+        'usuario_modificador','tipo_sueldo'];
     }
 

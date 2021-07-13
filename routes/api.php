@@ -125,8 +125,8 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/ws/deudores-cctransacciones', 'MensajeriaWScontroller@send');
 
     // DEPARTAMENTOS
-    Route::apiresource('/departamentos', 'DepartamentoController');
     Route::get('/busqueda/departamentos', 'DepartamentoController@busqueda');
+    Route::apiresource('/departamentos', 'DepartamentoController');
 
     // MONEDAS
     Route::get('/busqueda/monedas', 'Monedas@busqueda');
@@ -169,6 +169,7 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/mclientes', 'MclientesController');
 
     //MANTENIMIENTO PAISES
+    Route::get('/autollenado/localidades', 'PaisController@localidad');
     Route::apiresource('/pais', 'PaisController');
 
     //MANTENIMIENTO PAISES
@@ -179,7 +180,7 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/condiciones-pago', 've_CondicionesPagoController');
 
 
-    //AREAS EMPRESA
+    //AREAS EMPRESA    
     Route::apiresource('/areas', 'AreasEmpresaController');
 
     //CUADRE CAJA
@@ -198,6 +199,7 @@ Route::post('logout', 'AuthController@logout');
     // sucursales
     Route::get('/busqueda/sucursales/{id}', 'sucursalesController@sucursalXempresa');
     Route::get('/busqueda/sucursales', 'sucursalesController@busqueda');
+    Route::get('/autollenado-empresa', 'sucursalesController@autollenado');
     Route::apiresource('/sucursales', 'sucursalesController');
 
     //MANTENIMIENTO PROVINCIAS
@@ -235,7 +237,7 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/recibimientos/empresa', 'EmpresaController@recibimientos');
     Route::get('/busqueda/empresa', 'EmpresaController@busqueda');
     Route::get('/permisos-empresa', 'EmpresaController@permisosEmpresaValor');
-    Route::get('/autollenado/permisos-empresa', 'EmpresaController@AutoLlenadoPermisosEmpresa');
+    Route::get('/autollenado/permisos-empresa', 'EmpresaController@AutoLlenadoPermisosEmpresa');    
     Route::post('/permisos-empresa', 'EmpresaController@guardarPermisosEmpresa');
     Route::apiresource('/empresa', 'EmpresaController');
 
@@ -264,6 +266,7 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/direccion-envio', 'CoDireccionesEnvioController');
 
     // EMPLEADOS
+    Route::get('/busqueda/cedula', 'noempleadosController@buscaCedula');
     Route::get('/busqueda/cajeros', 'noempleadosController@cajeros');
     Route::get('/busqueda/vendedores', 'noempleadosController@buscaVendedores');
     Route::get('/busqueda/supervisores/{id}', 'noempleadosController@buscaSupervisores');

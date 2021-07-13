@@ -13,7 +13,7 @@ class OrdenPedidoMasterController extends ApiResponseController
     public function index()
     {
         $pedido = ordenPedidoMaster::orderBy('num_oc', 'asc')->
-                                    join('noempleados','noempleados.id_numemp','=','orden_pedido_masters.sec_vend')->
+                                    join('noempleados','noempleados.id','=','orden_pedido_masters.sec_vend')->
                                     join('veclientes',[['veclientes.tipo_cliente','=','orden_pedido_masters.tipo_cliente'],['veclientes.sec_cliente','=','orden_pedido_masters.sec_cliente']])->
                                     join('ciudades','ciudades.id_ciudad','=','orden_pedido_masters.id_ciudad')->
                                     join('paises','paises.id_pais','=','orden_pedido_masters.id_pais')->
@@ -201,7 +201,7 @@ class OrdenPedidoMasterController extends ApiResponseController
     public function show($id)
     {
         $pedido = ordenPedidoMaster::orderBy('num_oc', 'asc')->
-                            join('noempleados','noempleados.id_numemp','=','orden_pedido_masters.sec_vend')->
+                            join('noempleados','noempleados.id','=','orden_pedido_masters.sec_vend')->
                             join('veclientes',[['veclientes.tipo_cliente','=','orden_pedido_masters.tipo_cliente'],['veclientes.sec_cliente','=','orden_pedido_masters.sec_cliente']])->
                             join('ciudades','ciudades.id_ciudad','=','orden_pedido_masters.id_ciudad')->
                             join('paises','paises.id_pais','=','orden_pedido_masters.id_pais')->

@@ -91,7 +91,7 @@ class AuthController extends Controller
             'name'                  =>$request->input('name'),
             'surname'               =>$request->input('surname'),
             'email'                 =>$request->input('email'),
-            'id_numemp'             =>$request->input('id_numemp'),
+            'id'             =>$request->input('id'),
             'password'              =>$request->input('password'),
             'password_confirmation' =>$request->input('password_confirmation'),
             'foto'                  =>$request->input('foto'),
@@ -109,7 +109,7 @@ class AuthController extends Controller
             "username"  => 'required|string',
             "name"      => 'required|string',
             "surname"   => 'required|string',
-            "id_numemp" => 'required|string',
+            "id" => 'required|string',
             "password"  => 'required|string',
             "email"     => 'required|string',
             "estado"    => 'required|string',
@@ -211,7 +211,7 @@ class AuthController extends Controller
             "surname"               =>$request->input("surname"),
             "email"                 =>$request->input("email"),
             "estado"                =>$request->input("estado"),
-            'id_numemp'             =>$request->input('id_numemp'),
+            'id'             =>$request->input('id'),
             "foto"                  =>$request->input("foto"),
             'impresora'             =>$request->input('impresora')
        );
@@ -226,7 +226,7 @@ class AuthController extends Controller
            "username"              => 'required|string',
             "name"                 => 'required|string',
             "surname"              => 'required|string',
-            "id_numemp"            => 'required|string',
+            "id"            => 'required|string',
             "email"                => 'required|string',
             "estado"               => 'required|string',
        ],$messages);
@@ -287,7 +287,7 @@ class AuthController extends Controller
     {
         $numemp = $request->get('empleado');
         $user  = User::orderBy('id', 'asc')->
-                       where([['estado','=','activo'],['id_numemp','=',$numemp]])->
+                       where([['estado','=','activo'],['id','=',$numemp]])->
                        get();
         return response()->json(array("data" => $user, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
     }

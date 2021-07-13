@@ -9,7 +9,7 @@ class CreateNoempleadosTable extends Migration
     public function up()
     {
         Schema::create('noempleados', function (Blueprint $table) {
-            $table->id('id_numemp');
+            $table->id();
             $table->string('primernombre',100);
             $table->string('segundonombre',100)->nullable();
             $table->string('primerapellido',100)->nullable();
@@ -33,7 +33,7 @@ class CreateNoempleadosTable extends Migration
             $table->string('id_ciudad')->foreign()->references('id_ciudad')->on('ciudades');
             $table->string('id_sector')->nullable();
             $table->string('calle',100);
-            $table->string('cedula',11)->unique();
+            $table->string('cedula',20)->unique();
             $table->string('codbancodestino',20)->nullable();
             $table->smallInteger('cod_nac')->nullable();
             $table->string('email',50)->foreign()->references('id_pais')->on('paises');
