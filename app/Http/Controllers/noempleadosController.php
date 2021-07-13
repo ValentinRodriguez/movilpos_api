@@ -138,7 +138,7 @@ class noempleadosController extends ApiResponseController
                         $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
                         $datos['foto_empleado'] = $request->file('foto_empleado')->storeAs('uploads', 'empleados/'.$nombreImagen, 'public');
                     }          
-                    // return response()->json($datos['foto_empleado']);
+                    return response()->json($datos['foto_empleado']);
                     noempleados::create($datos);
                 DB::commit();
                 return $this->successResponse($datos);
