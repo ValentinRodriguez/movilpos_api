@@ -8,8 +8,9 @@ use Illuminate\Http\Request;
 class MenuController extends ApiResponseController
 {
 
-    public function index()
+    public function index(Request $request)
     {
+        
         $menu = Menu::join('modulos','modulos.id','=','menus.modulo')->
                       select('menus.*','modulos.icon','modulos.modulo as nombre_modulo')->
                       get();
@@ -24,16 +25,14 @@ class MenuController extends ApiResponseController
         //
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
+        return response()->json($request);
         $menu = Menu::where('modulo','=',$id)->
                       orderBy('codigo')->
                       get();
                       
-        if ($menu == null){
-            return $this->successResponse($menu);
-        }
-        return $this->successResponse($menu);
+        return $this->successResponse($menu, $request);
     }
 
     public function update(Request $request, Menu $menu)
