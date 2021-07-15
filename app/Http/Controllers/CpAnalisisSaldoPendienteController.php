@@ -9,7 +9,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class CpAnalisisSaldoPendienteController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         //
     }

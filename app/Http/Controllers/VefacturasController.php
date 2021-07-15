@@ -10,7 +10,7 @@ use App\Librerias\secuenciaCobros;
 
 class VefacturasController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $facturas = vefacturasmaster::join('veclientes',function($join){
                                         $join->on('vefacturasmaster.tipo_cliente','=','veclientes.tipo_cliente')->
@@ -18,12 +18,8 @@ class VefacturasController extends ApiResponseController
                                     })->select('vefacturasmaster.*','veclientes.nombre')
                                       ->where('vefacturasmaster.estado','=','ACTIVO')
                                       ->get();
-        if ($facturas == null){
-            return $this->errorResponse('NO EXISTEN FACTURAS');
-        }
-        else{
-            return $this->successResponse($facturas);
-        }
+                                      return $this->successResponse($facturas, $request->urlRequest);
+         
     }
 
     public function store(Request $request)
@@ -67,7 +63,7 @@ class VefacturasController extends ApiResponseController
                 
                 if ($validator->fails()) {            
                     $errors = $validator->errors();
-                    return $this->errorResponseParams($errors->all());
+                    return $this->errorResponseParams($errors->all(), $request->urlRequest);
                 }else{
                     $transaccion_guardada = vefacturasmaster::create($datosm);
                                         
@@ -106,7 +102,7 @@ class VefacturasController extends ApiResponseController
             
                             if ($validator->fails()) {                                
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all());
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest);
                             }                            
                             vefacturadetalle::create($datosd);                            
                         }      
@@ -117,20 +113,20 @@ class VefacturasController extends ApiResponseController
                 }
             
             DB::commit();
-            return $this->successResponse($datosm);
+            return $this->successResponse($datosm, $request->urlRequest);
         }
         catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $factura = vefacturasmaster::find($id);
         if ($factura == null){
             return $this->errorResponse($factura);
         }
-        return $this->successResponse($factura);
+        return $this->successResponse($factura, $request->urlRequest);
     }
 
     public function destroy($vefacturas)
@@ -138,7 +134,7 @@ class VefacturasController extends ApiResponseController
         //
     }
 
-    public function buscaFactura($vefactura)
+    public function buscaFactura(Request $request, $vefactura)
     {
         $data = array();
         $facturas = vefacturasmaster::where([['vefacturasmaster.factura','=',$vefactura],['vefacturasmaster.estado','=','activo']])->
@@ -165,7 +161,6 @@ class VefacturasController extends ApiResponseController
                                                     'bodegas.descripcion as almacen')->
                                              get();
 
-
         if ($facturas == null){
             return $this->errorResponse('Esta factura no existe');
         }
@@ -174,7 +169,7 @@ class VefacturasController extends ApiResponseController
                 $value->productos = $facturasDetalle;
                 array_push($data, $value);
             }
-            return $this->successResponse($data[0]);
+            return $this->successResponse($data[0], $request->urlRequest);
         }
     }
 }

@@ -12,7 +12,7 @@ class CpnotasDebitoCreditoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
     }
@@ -74,7 +74,7 @@ class CpnotasDebitoCreditoController extends Controller
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }
     }
 

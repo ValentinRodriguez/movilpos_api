@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class OrdenPedidoMasterController extends ApiResponseController
 {
     
-    public function index()
+    public function index(Request $request)
     {
         $pedido = ordenPedidoMaster::orderBy('num_oc', 'asc')->
                                     join('noempleados','noempleados.id','=','orden_pedido_masters.sec_vend')->
@@ -42,7 +42,7 @@ class OrdenPedidoMasterController extends ApiResponseController
                                                 get(); 
             $value->productos = $pedidoDetalle;
         } 
-        return $this->successResponse($pedido);
+        return $this->successResponse($pedido, $request->urlRequest);
     }
     
     public function store(Request $request)
@@ -114,7 +114,7 @@ class OrdenPedidoMasterController extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             
             try{
@@ -181,7 +181,7 @@ class OrdenPedidoMasterController extends ApiResponseController
                                                      
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all());                               
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest);                               
                             }
                             ordenPedidoDetalle::create($datosd);                                                   
                             //return response()->json($datosd);
@@ -190,15 +190,15 @@ class OrdenPedidoMasterController extends ApiResponseController
                         return $this->errorResponse('No hay productos agragados a la transacción');
                     }
                     DB::commit();
-                    return $this->successResponse($datosd);
+                    return $this->successResponse($datosm, $request->urlRequest);
                 } 
                 catch (\Exception $e ){
-                    return $this->errorResponse($e->getMessage());
+                    return $this->errorResponse($e->getMessage(), $request->urlRequest);
                 }
             }
     }
     
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $pedido = ordenPedidoMaster::orderBy('num_oc', 'asc')->
                             join('noempleados','noempleados.id','=','orden_pedido_masters.sec_vend')->
@@ -230,7 +230,7 @@ class OrdenPedidoMasterController extends ApiResponseController
                                 get(); 
             $value->productos = $pedidoDetalle;
         } 
-        return $this->successResponse($pedido);
+        return $this->successResponse($pedido, $request->urlRequest);
     }
     
     public function update(Request $request, ordenPedidoMaster $ordenPedidoMaster)
@@ -238,7 +238,7 @@ class OrdenPedidoMasterController extends ApiResponseController
         //
     }
     
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {   
         try{
             DB::beginTransaction(); 
@@ -250,13 +250,13 @@ class OrdenPedidoMasterController extends ApiResponseController
                 ordenPedidoDetalle::where('num_oc','=',$ordenPedido->num_oc) ->update(['estado' => 'eliminado']);
 
             DB::commit();
-            return $this->successResponse($ordenPedido);
+            return $this->successResponse($ordenPedido, $request->urlRequest);
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     }
 
-    public function buscaOrden($orden)
+    public function buscaOrden(Request $request,$orden)
     {
         $data = array();  
         
@@ -293,7 +293,7 @@ class OrdenPedidoMasterController extends ApiResponseController
                 array_push($data, $value);
             }
             // return response()->json($data);
-            return $this->successResponse($data);
+            return $this->successResponse($data, $request->urlRequest);
         }
     }
 }

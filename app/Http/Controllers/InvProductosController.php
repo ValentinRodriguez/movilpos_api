@@ -36,13 +36,13 @@ class InvProductosController extends ApiResponseController
                                 select('iptb00002.*','iptb00020.producto as condicion','iptb00024.descripcion as modelo',
                                        'iptb00029.descripcion as marca','iptb00030.descripcion as color')->
                                 get();
-        return $this->successResponse($productos);
+        return $this->successResponse($productos, $request->urlRequest);
     }
 
     public function indexSinExistencia(Request $request)
     {
         $productos = InvProductos::ConDetallesExiste();
-        return $this->successResponse($productos);
+        return $this->successResponse($productos, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -142,7 +142,7 @@ class InvProductosController extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else {                
             if ($datos['tipo_producto'] != 1) {
                 $datos['chasis'] = 'no requerido';
@@ -180,10 +180,10 @@ class InvProductosController extends ApiResponseController
             
             try {   
                 InvProductos::create($datos);              
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             } 
         }
     }
@@ -195,13 +195,13 @@ class InvProductosController extends ApiResponseController
     //     });
     // }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $producto = InvProductos::find($id);
         if ($producto == null){
             return $this->errorResponse($producto);
         }
-        return $this->successResponse($producto);
+        return $this->successResponse($producto, $request->urlRequest);
     }
 
     public function updateProducts(Request $request, $id)
@@ -225,7 +225,7 @@ class InvProductosController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();            
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{      
 
             // if (intval($request->imagesSec) !== 0) {
@@ -260,11 +260,11 @@ class InvProductosController extends ApiResponseController
             }           
             // return response()->json($datos);
             $producto->update($datos);
-            return $this->successResponse($datos);
+            return $this->successResponse($datos, $request->urlRequest);
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $producto = InvProductos::where('id','=',$id)->first();
         
@@ -291,7 +291,7 @@ class InvProductosController extends ApiResponseController
             }
             
             $producto->update(['estado' => 'ELIMINADO']);
-            return $this->successResponse(null,"Registro Eliminado");
+            return $this->successResponse(null, $request->urlRequest,"Registro Eliminado");
         }
     }
 
@@ -303,7 +303,7 @@ class InvProductosController extends ApiResponseController
                                    titulo($parametro)->        
                                    get();
 
-        return $this->successResponse($productos);
+        return $this->successResponse($productos, $request->urlRequest);
     }
 
     public function autoLlenado(Request $request)
@@ -358,9 +358,9 @@ class InvProductosController extends ApiResponseController
             array_push($respuesta,$_medidas);
             array_push($respuesta,$_tipoProducto);
 
-            return $this->successResponse($respuesta);
+            return $this->successResponse($respuesta, $request->urlRequest);
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     }
 
@@ -370,7 +370,7 @@ class InvProductosController extends ApiResponseController
                                where('estado','=','ACTIVO')->
                                get();
 
-        return $this->successResponse($tipos);
+        return $this->successResponse($tipos, $request->urlRequest);
     }
 
     public function medidasProductos(Request $request)
@@ -379,7 +379,7 @@ class InvProductosController extends ApiResponseController
                           where('estado','=','ACTIVO')->
                           get();
 
-        return $this->successResponse($tipos);
+        return $this->successResponse($tipos, $request->urlRequest);
     }
 
     public function propiedadesProductos(Request $request)

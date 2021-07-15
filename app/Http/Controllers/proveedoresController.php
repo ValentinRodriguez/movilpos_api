@@ -17,7 +17,7 @@ use App\Librerias\pais;
 
 class proveedoresController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $proveedores = proveedores::join('ciudades', 'ciudades.id_ciudad','=','proveedores.id_ciudad')->
                              join('paises', 'paises.id_pais','=','proveedores.id_pais')->
@@ -38,7 +38,7 @@ class proveedoresController extends ApiResponseController
             return $this->errorResponse('No existen proveedores');
         }
         else{
-            return $this->successResponse($proveedores);
+            return $this->successResponse($proveedores, $request->urlRequest);
         }
     }
 
@@ -106,7 +106,7 @@ class proveedoresController extends ApiResponseController
 
         if ($validator->fails()) {
            $errors = $validator->errors();
-           return $this->errorResponseParams($errors->all());
+           return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{  
             try {
                 DB::beginTransaction();
@@ -141,21 +141,21 @@ class proveedoresController extends ApiResponseController
                          
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all());                        
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest);                        
                             }                                                               
                             coCuentasProveedor::create($datosd);
                         }                        
                     }
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }  
         }
     }
 
-    public function show($codspsec)
+    public function show(Request $request,$codspsec)
     {
         $myArray = explode('-',$codspsec);
        
@@ -177,7 +177,7 @@ class proveedoresController extends ApiResponseController
             return $this->errorResponse('No existen datos');
         }
         else {
-            return $this->successResponse($proveedor);
+            return $this->successResponse($proveedor, $request->urlRequest);
         }
     }
     
@@ -232,7 +232,7 @@ class proveedoresController extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try {
                 DB::beginTransaction();
@@ -275,7 +275,7 @@ class proveedoresController extends ApiResponseController
                          
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all());                             
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest);                             
                             }    
                                      
                             if (empty($coCuentasProveedor)) {
@@ -286,15 +286,15 @@ class proveedoresController extends ApiResponseController
                         }                        
                     }
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             } 
         }
     }
     
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $proveedor = proveedores::find($id);
         if ($proveedor == null){
@@ -311,10 +311,10 @@ class proveedoresController extends ApiResponseController
                                    titulo($parametro)->        
                                    get();
 
-        return $this->successResponse($productos);
+        return $this->successResponse($productos, $request->urlRequest);
     }
 
-    public function autollenado(){ 
+    public function autollenado(Request $request){ 
         try {
             $respuesta = array();
             
@@ -339,9 +339,9 @@ class proveedoresController extends ApiResponseController
             array_push($respuesta,$_tipoDocumento);
             array_push($respuesta,$_paises);
 
-            return $this->successResponse($respuesta);      
+            return $this->successResponse($respuesta, $request->urlRequest);      
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     }
 
@@ -373,6 +373,6 @@ class proveedoresController extends ApiResponseController
                've_cond_pagos.descripcion as condicion_pago')->
         get();
 
-        return $this->successResponse($proveedores); 
+        return $this->successResponse($proveedores, $request->urlRequest); 
     }
 }

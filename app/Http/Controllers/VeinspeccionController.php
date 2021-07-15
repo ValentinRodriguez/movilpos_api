@@ -12,16 +12,16 @@ class VeinspeccionController extends ApiResponseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $inspec = veinspeccion::orderBy('created_at', 'desc')->
         get();
 
-if ($inspec == null){
+        if ($inspec == null){
 
-return $this->errorResponse($inspec);
-}
-return $this->successResponse($inspec);
+        return $this->errorResponse($inspec);
+        }
+        return $this->successResponse($inspec, $request->urlRequest);
     }
 
     /**

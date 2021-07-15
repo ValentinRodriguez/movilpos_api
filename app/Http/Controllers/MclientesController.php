@@ -18,7 +18,7 @@ use App\Librerias\pais;
 
 class MclientesController extends ApiResponseController
 {
-    public function autollenado(){ 
+    public function autollenado(Request $request){ 
         try {
             $respuesta = array();
 
@@ -62,13 +62,13 @@ class MclientesController extends ApiResponseController
             array_push($respuesta,$_nacionalidades);
             array_push($respuesta,$_paises);
 
-            return $this->successResponse($respuesta);      
+            return $this->successResponse($respuesta, $request->urlRequest);      
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $clientes = Mclientes::join('paises','paises.id_pais','=','veclientes.id_pais')->
                                join('ciudades','ciudades.id_ciudad','=','veclientes.id_ciudad')->
@@ -90,10 +90,7 @@ class MclientesController extends ApiResponseController
                                where('veclientes.estado','=','ACTIVO')->
                                get();
                                
-        if ($clientes == null){
-            return $this->errorResponse($clientes);
-        }
-        return $this->successResponse($clientes);
+        return $this->successResponse($clientes, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -181,7 +178,7 @@ class MclientesController extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{   
             try {                
                 DB::beginTransaction();
@@ -190,19 +187,16 @@ class MclientesController extends ApiResponseController
                 return $this->successResponse($datos, "Cliente creado correctamente");
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }            
-            return $this->successResponse($datos);
+            return $this->successResponse($datos, $request->urlRequest);
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $cliente = Mclientes::find($id);
-        if ($cliente == null){
-            return $this->errorResponse($cliente);
-        }
-        return $this->successResponse($cliente);
+        return $this->successResponse($cliente, $request->urlRequest);
     }
 
     public function update(Request $request, $id)
@@ -263,14 +257,14 @@ class MclientesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             $cliente->update($request->all());
-            return $this->successResponse($cliente);
+            return $this->successResponse($cliente, $request->urlRequest);
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {       
         try{
             DB::beginTransaction(); 
@@ -280,9 +274,9 @@ class MclientesController extends ApiResponseController
                 }
                 $cliente->update(['estado' => 'eliminado']);                
             DB::commit();
-            return $this->successResponse(1);
+            return $this->successResponse(1, $request->urlRequest);
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
 
     }
@@ -304,6 +298,6 @@ class MclientesController extends ApiResponseController
                                where('estado','=','ACTIVO')->
                                get();
                         
-        return $this->successResponse($busqueda);
+        return $this->successResponse($busqueda, $request->urlRequest);
     }
 }

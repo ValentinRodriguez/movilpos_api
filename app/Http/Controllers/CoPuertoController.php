@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 
 class CoPuertoController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $puerto = co_puerto::orderBy('created_at', 'desc')->
                                       where('estado','=','ACTIVO')->
                                       get();
 
-        return $this->successResponse($puerto);
+        return $this->successResponse($puerto, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -42,27 +42,27 @@ class CoPuertoController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();              
                     co_puerto::create($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $puerto = co_puerto::find($id);
         if ($puerto == null){
             return $this->errorResponse($puerto);
         }
-        return $this->successResponse($puerto);
+        return $this->successResponse($puerto, $request->urlRequest);
     }
 
     public function update(Request $request,  $id)
@@ -92,26 +92,26 @@ class CoPuertoController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();              
                     $puerto->update($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $puerto = co_puerto::find($id);
      
         $puerto->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null,"Puerto Eliminado");
+        return $this->successResponse(null, $request->urlRequest);
     }
 
     public function busqueda(Request $request)
@@ -121,6 +121,6 @@ class CoPuertoController extends ApiResponseController
                             where([['descripcion','=',$parametro],['estado','=','activo']])->
                             get();
 
-        return $this->successResponse($puerto);
+        return $this->successResponse($puerto, $request->urlRequest);
     }
 }

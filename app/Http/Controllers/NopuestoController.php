@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class NopuestoController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $nopuestos = Nopuesto::orderBy('id', 'asc')->where('estado','=','activo')->get();
-        return $this->successResponse($nopuestos);
+        return $this->successResponse($nopuestos, $request->urlRequest);
     }
 
 
@@ -60,23 +60,23 @@ class NopuestoController extends ApiResponseController
                 DB::beginTransaction();              
                     Nopuesto::create($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
 
     }
 
-    public function show(Nopuesto $nopuesto)
+    public function show(Request $request,Nopuesto $nopuesto)
     {
         $puesto = Nopuesto::find($nopuesto);
         if ($puesto == null){
             return $this->errorResponse('No Existe Puesto');
             }
          else{
-              return $this->successResponse($nopuesto);
+              return $this->successResponse($nopuesto, $request->urlRequest);
           }
     }
 
@@ -112,12 +112,12 @@ class NopuestoController extends ApiResponseController
             }else{
              //nopuestos::where('id_puesto','=',$nopuesto)->update([$puesto]);
              $puesto->update($request->all());
-             return $this->successResponse($puesto);
+             return $this->successResponse($puesto, $request->urlRequest);
             }
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $puesto = Nopuesto::find($id);
         if ($puesto == null){
@@ -125,7 +125,7 @@ class NopuestoController extends ApiResponseController
             return $this->errorResponse("Registro no Existe");
         }
          $puesto->update(['estado' => 'ELIMINADO']);
-         return $this->successResponse( "Registro Eliminado");
+         return $this->successResponse(null, $request->urlRequest);
     }
 
     
@@ -136,6 +136,6 @@ class NopuestoController extends ApiResponseController
                                where([['titulo','=',$parametro],['estado','=','activo']])->
                                get();
 
-        return $this->successResponse($puesto);
+        return $this->successResponse($puesto, $request->urlRequest);
     }
 }

@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\DB;
 class RolController extends ApiResponseController
 {
     
-    public function index()
+    public function index(Request $request)
     {
         $rols = Rol::orderBy('id', 'asc')->get();
-        return $this->successResponse($rols);
+        return $this->successResponse($rols, $request->urlRequest);
     }
         
     public function store(Request $request)
@@ -46,7 +46,7 @@ class RolController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
 
             try {
@@ -57,27 +57,27 @@ class RolController extends ApiResponseController
                                 
                     if ($rol != null) {
                         $rol->update($datos);
-                        // return $this->successResponse($datos);
+                        // return $this->successResponse($datos, $request->urlRequest);
                     }else{
                         Rol::create($datos);
                     }
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             } 
         }
     }
     
-    public function show($email)
+    public function show(Request $request,$email)
     {
         try {
             $rol = Rol::where('email','=',$email)->first();
-            return $this->successResponse($rol);
+            return $this->successResponse($rol, $request->urlRequest);
         }
         catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         } 
     }
     
@@ -86,17 +86,17 @@ class RolController extends ApiResponseController
         //
     }
     
-    public function destroy($email)
+    public function destroy(Request $request,$email)
     {
         $rol = Rol::where('email','=',$email);
         $rol->update(['estado' => 'eliminado']);
-        return $this->successResponse($rol);
+        return $this->successResponse($rol, $request->urlRequest);
     }
 
-    public function rolUsuario($usuario, $email)
+    public function rolUsuario(Request $request,$usuario, $email)
     {
         $rol = Rol::where([['usuario','=',$usuario],['email','=',$email],['estado','=','activo']])->get();
-        return $this->successResponse($rol);
+        return $this->successResponse($rol, $request->urlRequest);
     }
 
     

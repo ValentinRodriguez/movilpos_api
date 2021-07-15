@@ -22,7 +22,7 @@ use App\librerias\areasEmpresa;
 
 class noempleadosController extends ApiResponseController
 {
-    public function index() {
+    public function index(Request $request) {
         $noempleados = noempleados::orderBy('id', 'asc')->
                                 join('nodepartamentos','noempleados.departamento','=','nodepartamentos.id')->
                                 join('nopuestos','noempleados.id_puesto','=','nopuestos.id_puesto')->
@@ -39,10 +39,10 @@ class noempleadosController extends ApiResponseController
                                 where('noempleados.estado','=','ACTIVO')->
                                 get();
 
-        return $this->successResponse($noempleados);
+        return $this->successResponse($noempleados, $request->urlRequest);
     }    
 
-    public function cajeros() {
+    public function cajeros(Request $request) {
         $cajero = noempleados::orderBy('id', 'asc')->
                                 join('nodepartamentos','noempleados.departamento','=','nodepartamentos.id')->
                                 join('nopuestos','noempleados.id_puesto','=','nopuestos.id_puesto')->
@@ -58,21 +58,21 @@ class noempleadosController extends ApiResponseController
                                 )->
                                 where([['.noempleados.id_puesto','=', 2],['noempleados.estado','=','ACTIVO']])->
                                 get();
-        return $this->successResponse($cajero);
+        return $this->successResponse($cajero, $request->urlRequest);
     }
 
-    public function bancos(){
+    public function bancos(Request $request){
         $bancos = bancos::where('bancos.estado','=','ACTIVO')->get();
-        return $this->successResponse($bancos);
+        return $this->successResponse($bancos, $request->urlRequest);
     }
 
-    public function show($id){
+    public function show(Request $request,$id){
         // return response()->json($id);
         $empleado = noempleados::where('noempleados.id','=',$id)->
                                  join('turnos','turnos.id','=','noempleados.turno')->
                                  select('noempleados.*','turnos.horario_inicial','turnos.horario_final')
                                  ->first();
-        return $this->successResponse($empleado);
+        return $this->successResponse($empleado, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -141,10 +141,10 @@ class noempleadosController extends ApiResponseController
                     // return response()->json($datos['foto_empleado']);
                     noempleados::create($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
@@ -215,41 +215,36 @@ class noempleadosController extends ApiResponseController
                     // return response()->json($datos['foto_empleado']);
                     $noempleados->update($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function buscaVendedores(){
+    public function buscaVendedores(Request $request){
         $empleado = noempleados::where('noempleados.id_puesto','=',3)->
                                  select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
                                  get();
-        if ($empleado == null){
-            return $this->errorResponse($empleado);
-        }
-        return $this->successResponse($empleado);
+        return $this->successResponse($empleado, $request->urlRequest);
     }
 
-    public function buscaSupervisores($id){
+    public function buscaSupervisores(Request $request,$id){
         $supervisor = noempleados::where([['departamento','=',$id],['noempleados.is_sup','=','si']])->
                                  select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
                                  get();
-        if ($supervisor == null){
-            return $this->errorResponse($supervisor);
-        }
-        return $this->successResponse($supervisor);
+                                 
+        return $this->successResponse($supervisor, $request->urlRequest);
     }
        
     public function buscaCedula(Request $request){
         $cedula = $request->get('cedula');        
         $empleado = noempleados::where('noempleados.cedula','=',$cedula)->get();
-        return $this->successResponse($empleado);
+        return $this->successResponse($empleado, $request->urlRequest);
     }
 
-    public function autollenado(){ 
+    public function autollenado(Request $request){ 
         try {
             $respuesta = array();
 
@@ -298,10 +293,10 @@ class noempleadosController extends ApiResponseController
             array_push($respuesta,$_cuentas);
             array_push($respuesta,$_areas);
 
-            return $this->successResponse($respuesta); 
+            return $this->successResponse($respuesta, $request->urlRequest); 
 
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     } 
 }

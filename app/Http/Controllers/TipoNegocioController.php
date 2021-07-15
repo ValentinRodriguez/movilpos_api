@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class TipoNegocioController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $tipoNegocio = tipoNegocio::orderBy('tipo_negocio', 'asc')->
                                where('estado','=','ACTIVO')->
                                get();
         
-        return $this->successResponse($tipoNegocio);
+        return $this->successResponse($tipoNegocio, $request->urlRequest);
     }
     
     public function store(Request $request){
@@ -54,21 +54,18 @@ class TipoNegocioController extends ApiResponseController
                     tipoNegocio::create($datos);
                 }
             DB::commit();
-            return $this->successResponse($datos);
+            return $this->successResponse($datos, $request->urlRequest);
         }
         catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         } 
       
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $tipo = tipoNegocio::find($id);
-        if ($tipo == null){
-            return $this->errorResponse($tipo);
-        }
-        return $this->successResponse($tipo);
+        return $this->successResponse($tipo, $request->urlRequest);
     }
     
     public function update(Request $request, $id)
@@ -95,21 +92,21 @@ class TipoNegocioController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try {
                 DB::beginTransaction();  
                     $tipos->update($datos);                    
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }             
         }
     }
     
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $tipoNegocio = tipoNegocio::where('tipo_negocio','=',$id)->first();
         
@@ -123,7 +120,7 @@ class TipoNegocioController extends ApiResponseController
         }
 
         $tipoNegocio->update(['estado' => 'eliminado']);
-        return $this->successResponse(null,"Tipo de negocio eliminado");
+        return $this->successResponse(null, $request->urlRequest,"Tipo de negocio eliminado");
     }
 
     public function busquedaTipo(Request $request)
@@ -133,6 +130,6 @@ class TipoNegocioController extends ApiResponseController
         $tipo  = tipoNegocio::orderBy('id', 'asc')->
                                descripcion($descripcion)->
                                get();
-        return $this->successResponse($tipo);
+        return $this->successResponse($tipo, $request->urlRequest);
     }
 }

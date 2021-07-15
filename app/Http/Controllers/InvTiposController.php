@@ -10,13 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class InvTiposController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $tipos = invTipos::orderBy('created_at', 'desc')->
                            where('estado','=','ACTIVO')->
                            get();
        
-        return $this->successResponse($tipos);
+        return $this->successResponse($tipos, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -64,19 +64,19 @@ class InvTiposController extends ApiResponseController
                 DB::commit();
                 return $this->successResponse($datos, 'Tipo de inventario guardado');                
             } catch (\Exception $e) {
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $tipo = invTipos::find($id);
 
         if ($tipo == null){
             return $this->errorResponse($tipo);
         }
-        return $this->successResponse($tipo);
+        return $this->successResponse($tipo, $request->urlRequest);
     }
 
     public function update(Request $request, $id)
@@ -104,14 +104,14 @@ class InvTiposController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         } else {
             $tipo->update($datos);
             return $this->successResponse($tipo, 'Tipo de inventario actualizado');
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $tipo = invTipos::find($id);
 
@@ -122,7 +122,7 @@ class InvTiposController extends ApiResponseController
         }
 
         $tipo->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null,"Tipo de inventario Eliminado");
+        return $this->successResponse(null, $request->urlRequest,"Tipo de inventario Eliminado");
     }
 
     public function busqueda(Request $request)
@@ -133,6 +133,6 @@ class InvTiposController extends ApiResponseController
                              where('estado','=','activo')->
                              get();
 
-        return $this->successResponse($invTipo);
+        return $this->successResponse($invTipo, $request->urlRequest);
     }
 }

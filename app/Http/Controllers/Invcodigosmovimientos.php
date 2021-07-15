@@ -10,7 +10,7 @@ use App\Librerias\InvUsuarioMovimiento;
 
 class Invcodigosmovimientos extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $codigomov = Invtiposmovimientos::orderby('id_tipomov','ASC')->
                                           where('estado','=','ACTIVO')->get();
@@ -30,7 +30,7 @@ class Invcodigosmovimientos extends ApiResponseController
                                           get();
 
         $respuesta = array('codigosmov' => $codigomov, 'cuentas' => $cuentas,'usuarios' => $usuarios);
-        return $this->successResponse($respuesta);
+        return $this->successResponse($respuesta, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -87,7 +87,7 @@ class Invcodigosmovimientos extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             
             try {
@@ -128,14 +128,14 @@ class Invcodigosmovimientos extends ApiResponseController
 
                         if ($validator->fails()) {
                             $errors = $validator->errors();   
-                            return $this->errorResponseParams($errors->all());                            
+                            return $this->errorResponseParams($errors->all(), $request->urlRequest);                            
                         }
                         // return response()->json($cuentas);
                         Invcuentasmovimientos::create($cuentas);
                         
                     }
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
                 DB::rollBack();
@@ -146,7 +146,7 @@ class Invcodigosmovimientos extends ApiResponseController
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $codigomov = Invtiposmovimientos::orderby('id_tipomov','ASC')->
                                           where([['id_tipomov','=', $id],['estado','=','ACTIVO']])->
@@ -166,7 +166,7 @@ class Invcodigosmovimientos extends ApiResponseController
                                         get();
 
         $respuesta = array('codigosmov' => $codigomov, 'cuentas' => $cuentas,'usuarios' => $usuarios);
-        return $this->successResponse($respuesta);
+        return $this->successResponse($respuesta, $request->urlRequest);
     }
 
     public function update(Request $request, $id)
@@ -200,7 +200,7 @@ class Invcodigosmovimientos extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }
         else{                        
             try {
@@ -246,7 +246,7 @@ class Invcodigosmovimientos extends ApiResponseController
         
                         if ($validator->fails()) {                                
                             $errors = $validator->errors();
-                            return $this->errorResponseParams($errors->all());
+                            return $this->errorResponseParams($errors->all(), $request->urlRequest);
                         }
                         
                         if (empty($Invcuentasmovimientos)) {
@@ -257,16 +257,16 @@ class Invcodigosmovimientos extends ApiResponseController
                     }
 
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             } catch (\Exception $e ){
                 DB::rollBack();
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }            
         }
         }
     }
    
-    public function destroy($id){
+    public function destroy(Request $request, $id){
         $codmov = Invtiposmovimientos::find($id);
         $cuentas = Invcuentasmovimientos::where('id_tipomov', '=', "$codmov->id_tipomov");
         $usuarios = InvUsuarioMovimiento::where('id_tipomov', '=', "$codmov->id_tipomov");
@@ -277,7 +277,7 @@ class Invcodigosmovimientos extends ApiResponseController
         $codmov->update(['estado' => 'ELIMINADO']);
         $cuentas->update(['estado' => 'ELIMINADO']);
         $usuarios->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null, "Registro Eliminado");
+        return $this->successResponse(null, $request->urlRequest);
     }
 
     public function busquedaTipo(Request $request) {
@@ -286,7 +286,7 @@ class Invcodigosmovimientos extends ApiResponseController
         $tipo  = Invtiposmovimientos::orderBy('id', 'asc')->
                                titulo($titulo)->
                                get();
-        return $this->successResponse($tipo);
+        return $this->successResponse($tipo, $request->urlRequest);
     }
 
     public function concederPermisosMovimiento(Request $request){
@@ -346,7 +346,7 @@ class Invcodigosmovimientos extends ApiResponseController
                                                ['invusuariosmovimientos.id_tipomov','=',$id],
                                                ['users.estado','=','activo']])->
                                         get();
-        return $this->successResponse($usuarios);
+        return $this->successResponse($usuarios, $request->urlRequest);
     }
     
 }

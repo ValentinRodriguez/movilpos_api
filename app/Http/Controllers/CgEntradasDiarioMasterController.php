@@ -11,7 +11,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 class CgEntradasDiarioMasterController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $catalogo = cgEntradasDiarioMaster::where('estado','=','activo')->
         get();
@@ -25,7 +25,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
         if ($catalogo == null){
             return $this->errorResponse($catalogo);
         }
-        return $this->successResponse($catalogo);
+        return $this->successResponse($catalogo, $request->urlRequest);
     }
         
     public function store(Request $request)
@@ -70,7 +70,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             
             try{
@@ -113,7 +113,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all());                                
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest);                                
                             }     
                            // return response()->json($datosd);                                   
                             cgTransaccionesContables::create($datosd);                                                   
@@ -123,16 +123,16 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                     }             
                 DB::commit();
 
-                return $this->successResponse($datosd);
+                return $this->successResponse($datosm, $request->urlRequest);
             }
                 catch (\Exception $e ){
-                    return $this->errorResponse($e->getMessage());
+                    return $this->errorResponse($e->getMessage(), $request->urlRequest);
                 }
         }
     }
 
   
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $catalogo = cgEntradasDiarioMaster::find($id);
         
@@ -142,7 +142,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
         if ($catalogo == null){
             return $this->errorResponse($catalogo);
         }
-        return $this->successResponse($catalogo);
+        return $this->successResponse($catalogo, $request->urlRequest);
     }
 
 
@@ -179,7 +179,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
       
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             
             try{
@@ -220,7 +220,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all()); 
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest); 
                             }
                             cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$entrada['ref'])->update($datosd);                                                                     
                         }                        
@@ -229,10 +229,10 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                     }             
                 DB::commit();
 
-                return $this->successResponse(1);
+                return $this->successResponse(1, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
@@ -242,11 +242,11 @@ class CgEntradasDiarioMasterController extends ApiResponseController
         //
     }
 
-    public function secuencia(){
+    public function secuencia(Request $request){
         $maxid=0;
         $idsecuencia=0;
         $maxid= cgEntradasDiarioMaster::get('documento')->max();
-       // return $this->successResponse($maxid);
+       // return $this->successResponse($maxid, $request->urlRequest);
         if ($maxid==null){
             $idsecuencia=1;
         }
@@ -255,7 +255,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
             $idsecuencia=$idsecuencia+1;
             
         }
-        return $this->successResponse($idsecuencia);
+        return $this->successResponse($idsecuencia, $request->urlRequest);
     
 
     }
@@ -271,7 +271,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                         ['cg_entradas_diario_masters.periodo','=',$periodo]])->
                         select('cg_transacciones_contables.*')->                                
                                 get();
-                             //   return $this->successResponse($entrada);
+                             //   return $this->successResponse($entrada, $request->urlRequest);
         if ($entrada == null){
             return $this->errorResponse('No existen datos');
         }
@@ -308,6 +308,6 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                                          ['estado','=','ACTIVO']])->
                                   first();      
 
-        return $this->successResponse($datos);
+        return $this->successResponse($datos, $request->urlRequest);
     }
 }

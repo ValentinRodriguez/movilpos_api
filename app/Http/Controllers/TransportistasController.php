@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class TransportistasController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $datos= transportistas::orderBy('id', 'asc')->
                                 where('estado','=','activo')->                             
@@ -18,7 +18,7 @@ class TransportistasController extends ApiResponseController
             return $this->errorResponse('No existen datos');
         }
         else{
-            return $this->successResponse($datos);
+            return $this->successResponse($datos, $request->urlRequest);
         }
     }
 
@@ -49,7 +49,7 @@ class TransportistasController extends ApiResponseController
        
         if ($validator->fails()) {
             $errors =  $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         } else {
             
             $maxid=0;
@@ -67,23 +67,20 @@ class TransportistasController extends ApiResponseController
                     $datos = $datos + array('sec_transp' =>$idsecuencia);
                     transportistas::create($datos);
                 DB::commit();                    
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             } catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
     
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $zona = Zonas::orderBy('created_at', 'desc')->get();
 
         $transportista = transportistas::find($id);
         $transportista->zona = $zona;
-        if ($transportista == null){
-            return $this->errorResponse($transportista);
-        }
-        return $this->successResponse($transportista);
+        return $this->successResponse($transportista, $request->urlRequest);
     }
     
     public function update(Request $request, $id)
@@ -118,21 +115,21 @@ class TransportistasController extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try {
                 DB::beginTransaction();  
                     $transportista->update($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
     
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $transportista = transportistas::find($id);
         
@@ -141,6 +138,6 @@ class TransportistasController extends ApiResponseController
         }
 
         $transportista->update(['estado' => 'eliminado']);
-        return $this->successResponse(null,"transportista Eliminado");
+        return $this->successResponse(null, $request->urlRequest,"transportista Eliminado");
     }
 }

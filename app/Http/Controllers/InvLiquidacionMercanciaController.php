@@ -13,13 +13,13 @@ use Illuminate\Support\Facades\DB;
 
 class InvLiquidacionMercanciaController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $liquidacion = inv_liquidacionMercancia::orderBy('created_at', 'desc')->where('estado','=','ACTIVO')->get();
         return $this->successResponse($liquidacion);
     }
 
-    public function autoLLenado()
+    public function autoLlenado(Request $request)
     {
         $respuesta = array();
 
@@ -47,19 +47,19 @@ class InvLiquidacionMercanciaController extends ApiResponseController
             array_push($respuesta,$_pendientes);
             array_push($respuesta,$_proveedores);
     
-            return $this->successResponse($respuesta);
+            return $this->successResponse($respuesta, $request->urlRequest);
             
         } catch (\Exception $e ){
-                  return $this->errorResponse($e->getMessage());
+                  return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
 
     }
 
-    public function pendientes()
+    public function pendientes(Request $request)
     {
         $pendientes = $this->buscaPendientes();
         
-        return $this->successResponse($pendientes);
+        return $this->successResponse($pendientes, $request->urlRequest);
     }
 
     public function buscaPendientes()

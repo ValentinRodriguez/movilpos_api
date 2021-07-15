@@ -14,7 +14,7 @@ use App\Http\Controllers\ApiResponseController;
 class PaisController extends ApiResponseController
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $paises = pais::orderBy('created_at', 'desc')->
                            get();
@@ -23,10 +23,10 @@ class PaisController extends ApiResponseController
 
             return $this->errorResponse($paises);
         }
-        return $this->successResponse($paises);
+        return $this->successResponse($paises, $request->urlRequest);
     }
 
-    public function ciudadesPorPais($id)
+    public function ciudadesPorPais(Request $request,$id)
     {
         $ciudad = ciudad::join('paises','paises.id_pais','=','ciudades.id_pais')->
                           select('ciudades.*','paises.descripcion as pais')->
@@ -36,10 +36,10 @@ class PaisController extends ApiResponseController
                           if ($ciudad == null){
                               return $this->errorResponse($ciudad);
                           }
-                          return $this->successResponse($ciudad);
+                          return $this->successResponse($ciudad, $request->urlRequest);
     }
 
-    public function localidad()
+    public function localidad(Request $request)
     {     
         $respuesta = array();
         
@@ -61,7 +61,7 @@ class PaisController extends ApiResponseController
         array_push($respuesta,$_sectores);
         array_push($respuesta,$_provincias);
 
-        return $this->successResponse($respuesta);
+        return $this->successResponse($respuesta, $request->urlRequest);
     }
 
     public function create()
@@ -92,10 +92,10 @@ class PaisController extends ApiResponseController
 
             if ($validator->fails()) {
                 $errors = $validator->errors();
-                return $this->errorResponseParams($errors->all());
+                return $this->errorResponseParams($errors->all(), $request->urlRequest);
             } else {
                 pais::create($datos);
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
     }
 
@@ -130,14 +130,14 @@ class PaisController extends ApiResponseController
 
             if ($validator->fails()) {
                 $errors = $validator->errors();
-                return $this->errorResponseParams($errors->all());
+                return $this->errorResponseParams($errors->all(), $request->urlRequest);
             } else {
                 $paises->update($request->all());
-                return $this->successResponse($paises);
+                return $this->successResponse($paises, $request->urlRequest);
             }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $paises = pais::find($id);
 

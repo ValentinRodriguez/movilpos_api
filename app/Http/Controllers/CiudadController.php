@@ -9,7 +9,7 @@ use App\Http\Controllers\ApiResponseController;
 class CiudadController extends ApiResponseController
 {
     
-    public function index()
+    public function index(Request $request)
     {
         $ciudad = ciudad::join('paises','paises.id_pais','=','ciudades.id_pais')->
                           select('ciudades.*','paises.descripcion as pais')->  
@@ -18,10 +18,10 @@ class CiudadController extends ApiResponseController
                           if ($ciudad == null){
                               return $this->errorResponse($ciudad);
                           }
-                          return $this->successResponse($ciudad);
+                          return $this->successResponse($ciudad, $request->urlRequest);
     }
 
-    public function ciudadesPorPais($id)
+    public function ciudadesPorPais(Request $request,$id)
     {        
         $ciudad = ciudad::join('municipios','municipios.id_municipio','=','ciudades.id_municipio')->
                           select('ciudades.*')->  
@@ -31,7 +31,7 @@ class CiudadController extends ApiResponseController
                           if ($ciudad == null){
                               return $this->errorResponse($ciudad);
                           }
-                          return $this->successResponse($ciudad);
+                          return $this->successResponse($ciudad, $request->urlRequest);
     }
 
     public function create()
@@ -60,10 +60,10 @@ class CiudadController extends ApiResponseController
         ], $message);
         if ($validator->fails()){
             $errors=$validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         } else{
             ciudad::create($datos);
-            return $this->successResponse($datos);
+            return $this->successResponse($datos, $request->urlRequest);
         }
     }
 

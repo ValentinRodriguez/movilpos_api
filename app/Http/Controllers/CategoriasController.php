@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class CategoriasController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $categoria = CategoriasModel::orderBy('created_at', 'desc')->
                                       where('estado','=','ACTIVO')->
                                       get();
 
-        return $this->successResponse($categoria);
+        return $this->successResponse($categoria, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -52,28 +52,28 @@ class CategoriasController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();              
                     CategoriasModel::create($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
 
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $categoria = CategoriasModel::find($id);
         if ($categoria == null){
             return $this->errorResponse($categoria);
         }
-        return $this->successResponse($categoria);
+        return $this->successResponse($categoria, $request->urlRequest);
     }
 
     public function update(Request $request,  $id)
@@ -104,22 +104,22 @@ class CategoriasController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try {
                 DB::beginTransaction(); 
                 $categoria->update($datos);                
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
-            return $this->successResponse($categoria, 'Categoría actualizada');
+            return $this->successResponse($categoria, $request->urlRequest);
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $categoria = CategoriasModel::where('id_categoria','=',$id);
         $invproductos = InvProductos::where('id_categoria','=',$id)->first();
@@ -129,7 +129,7 @@ class CategoriasController extends ApiResponseController
         }
      
         $categoria->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null,"Categoria Eliminada");
+        return $this->successResponse(null, $request->urlRequest);
     }
 
     public function busqueda(Request $request)
@@ -140,6 +140,6 @@ class CategoriasController extends ApiResponseController
                                       where('estado','=','activo')->
                                       get();
 
-        return $this->successResponse($categoria);
+        return $this->successResponse($categoria, $request->urlRequest);
     }
 }

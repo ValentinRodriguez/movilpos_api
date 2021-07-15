@@ -7,15 +7,12 @@ use Illuminate\Http\Request;
 
 class PerfilesController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $perfiles = Perfiles::orderBy('created_at', 'desc')->
         get();
 
-        if ($perfiles == null){
-            return $this->errorResponse($paises);
-        }
-        return $this->successResponse($perfiles);
+        return $this->successResponse($perfiles, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -23,17 +20,17 @@ class PerfilesController extends ApiResponseController
         //
     }
 
-    public function show(cr $cr)
+    public function show($id)
     {
         //
     }
 
-    public function update(Request $request, cr $cr)
+    public function update(Request $request, $id)
     {
         //
     }
 
-    public function destroy(cr $cr)
+    public function destroy($id)
     {
         //
     }

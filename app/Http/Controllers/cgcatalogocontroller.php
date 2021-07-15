@@ -9,7 +9,7 @@ use App\Librerias\cg_codigosRetenciones;
 
 class cgcatalogocontroller extends ApiResponseController
 {
-    public function index() {
+    public function index(Request $request) {
         $catalogo = cgcatalogo::orderBy('cuenta_no', 'asc')->
                                 where('estado','=','ACTIVO')->                                
                                 select('cgcatalogo.*',DB::raw("CONCAT(cgcatalogo.cuenta_no,'-',cgcatalogo.descripcion) AS descripcion_c"))->
@@ -18,7 +18,7 @@ class cgcatalogocontroller extends ApiResponseController
         if ($catalogo == null){
              return $this->errorResponse($catalogo);
         }
-        return $this->successResponse($catalogo);
+        return $this->successResponse($catalogo, $request->urlRequest);
     }
 
     public function cuentasAux()
@@ -35,7 +35,7 @@ class cgcatalogocontroller extends ApiResponseController
             $value->cuenta_nivel1 = $nivel1;
             $value->cuenta_nivel2 = $nivel2;
         }
-        return $this->successResponse($tipoProveedor);
+        return $this->successResponse($tipoProveedor, $request->urlRequest);
     }
 
     public function store(Request $request) {
@@ -69,26 +69,26 @@ class cgcatalogocontroller extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try {                
                 DB::beginTransaction();                
                     cgcatalogo::create($datos);
                 DB::commit();
-                return $this->successResponse($datos);                
+                return $this->successResponse($datos, $request->urlRequest);                
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }            
         }
     }
     
-    public function show($id) {
+    public function show(Request $request,$id) {
         $catalogo = cgcatalogo::find($id);
         if ($catalogo == null){
             return $this->errorResponse($catalogo);
         }
-        return $this->successResponse($catalogo);
+        return $this->successResponse($catalogo, $request->urlRequest);
     }
     
     public function update(Request $request, $id) {
@@ -116,27 +116,27 @@ class cgcatalogocontroller extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try {                
                 DB::beginTransaction();                
                     $catalogo->update($request->all());
                 DB::commit();
-                return $this->successResponse($catalogo);                
+                return $this->successResponse($catalogo, $request->urlRequest);                
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
     
-    public function destroy($id) {
+    public function destroy(Request $request, $id) {
         $catalogo = cgcatalogo::find($id);
         if ($catalogo == null){
             return $this->response()->json(array("msj:" => "Registro no Existe"));
         }
         $catalogo->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null,"Catálogo Eliminada");
+        return $this->successResponse(null, $request->urlRequest);
     }
 
     public function busquedaCatalogo(Request $request)
@@ -147,7 +147,7 @@ class cgcatalogocontroller extends ApiResponseController
                                 where([['cgcatalogo.cuenta_no','=',$cuenta_no],['estado','=','ACTIVO']])->
                                 get();
                                                         
-        return $this->successResponse($busqueda);
+        return $this->successResponse($busqueda, $request->urlRequest);
     }
 
     
@@ -160,7 +160,7 @@ class cgcatalogocontroller extends ApiResponseController
                                        ['estado','=','ACTIVO']])->
                                 get();
                                             
-        return $this->successResponse($busqueda);
+        return $this->successResponse($busqueda, $request->urlRequest);
     }
 
     public function codigosRetencion() {
@@ -169,6 +169,6 @@ class cgcatalogocontroller extends ApiResponseController
         if ($catalogo == null){
              return $this->errorResponse($catalogo);
         }
-        return $this->successResponse($catalogo);
+        return $this->successResponse($catalogo, $request->urlRequest);
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class VentasController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $ventas = VentasModel::orderBy('created_at', 'desc')->
                            get();
@@ -16,7 +16,7 @@ class VentasController extends ApiResponseController
 
             return $this->errorResponse($ventas);
         }
-        return $this->successResponse($ventas);
+        return $this->successResponse($ventas, $request->urlRequest);
     }
 
     public function create()

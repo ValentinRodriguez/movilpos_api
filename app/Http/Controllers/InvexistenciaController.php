@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class InvexistenciaController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $producto = invexistencia::
         leftjoin('invtransaccionesdetalle as b','a.codigo','=','b.codigo')->
@@ -49,8 +49,8 @@ class InvexistenciaController extends ApiResponseController
             return $this->errorResponse($prouducto);
         }
         return $this->successResponse($prouducto); */
-        $pdf = PDF::loadView('producto', compact('producto1'));
-    	return $pdf->download('productos.pdf');
+        // $pdf = PDF::loadView('producto', compact('producto1'));
+    	// return $pdf->download('productos.pdf');
     }
 
 
@@ -111,10 +111,10 @@ class InvexistenciaController extends ApiResponseController
         descripcion($descripcion)->
         get();                       
    
-        $pdf = PDF::loadView('producto', compact('producto'));
-        return $pdf->stream('existencia.pdf');
+        // $pdf = PDF::loadView('producto', compact('producto'));
+        // return $pdf->stream('existencia.pdf');
         
-       // return $this->successResponse($producto);
+       // return $this->successResponse($producto, $request->urlRequest);
 
     }
     

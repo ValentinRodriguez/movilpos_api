@@ -12,7 +12,7 @@ class VerecepcionMasterController extends ApiResponseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
        $recepcion=verecepcion_master::join('verecepcion_detalles','verecepcion_detalles.num_oc','=','verecepcion_master.num_oc')
                                         ->join('veclientes',function($join){
@@ -96,7 +96,7 @@ class VerecepcionMasterController extends ApiResponseController
                          
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all());                           
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest);                           
                             }            
                            verecepcion_detalle::create($datosd);                       
                         } 
@@ -105,10 +105,10 @@ class VerecepcionMasterController extends ApiResponseController
                     }
                
                     DB::commit();
-                    return $this->successResponse('1');
+                    return $this->successResponse('1', $request->urlRequest);
                 } 
                 catch (\Exception $e ){
-                    return $this->errorResponse($e->getMessage());
+                    return $this->errorResponse($e->getMessage(), $request->urlRequest);
                 }
             }
     }

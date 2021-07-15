@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class BrandsController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $brand = BrandsModel::orderBy('id_brand', 'asc')->
                               where('estado','=','ACTIVO')->
                               get();
                               
-        return $this->successResponse($brand);
+        return $this->successResponse($brand, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -52,27 +52,27 @@ class BrandsController extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try {                
             DB::beginTransaction();                  
                 BrandsModel::create($datos);
             DB::commit();
-            return $this->successResponse($datos, 'Marca Creada satisfactoriamente');
+            return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $brand = BrandsModel::find($id);
         if ($brand == null){
             return $this->errorResponse($brand);
         }
-        return $this->successResponse($brand);
+        return $this->successResponse($brand, $request->urlRequest);
     }
 
     public function update(Request $request, $id)
@@ -97,14 +97,14 @@ class BrandsController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             $brand->update($request->all());
-            return $this->successResponse($brand, "Marca actualizada");
+            return $this->successResponse($brand, $request->urlRequest);
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $brand = BrandsModel::find($id);
 
@@ -115,7 +115,7 @@ class BrandsController extends ApiResponseController
         }
 
         $brand->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null, "Marca eliminada");
+        return $this->successResponse(null, $request->urlRequest);
     }
 
     public function busqueda(Request $request)
@@ -125,6 +125,6 @@ class BrandsController extends ApiResponseController
                               parametro($parametro)->
                               where('estado','=','ACTIVO')->
                               get();                              
-        return $this->successResponse($busqueda);
+        return $this->successResponse($busqueda, $request->urlRequest);
     }
 }

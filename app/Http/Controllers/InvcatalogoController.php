@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class InvcatalogoController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {        
         $prouducto = DB::table('invtransaccionesdetalle as b')->
         join('inv_productos as a','b.codigo','=','a.codigo')->
@@ -24,7 +24,7 @@ class InvcatalogoController extends ApiResponseController
         if ($prouducto == null){
             return $this->errorResponse($prouducto);
         }
-        return $this->successResponse($prouducto);                      
+        return $this->successResponse($prouducto, $request->urlRequest);                      
     }
                         
     public function create()
@@ -92,7 +92,7 @@ class InvcatalogoController extends ApiResponseController
         descripcion($descripcion)->
         get();
    
-        return $this->successResponse($producto);
+        return $this->successResponse($producto, $request->urlRequest);
     }
 
 }

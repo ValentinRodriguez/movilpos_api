@@ -7,7 +7,7 @@ use Mail;
 
 class officeMailController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
         // $data = array('name'=>"Hola Mundo");
         $template_path = 'email_template';
 

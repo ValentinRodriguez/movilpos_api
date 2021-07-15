@@ -28,7 +28,7 @@ use DateTime;
 
 class invtransacciones extends ApiResponseController
 {    
-    public function index()
+    public function index(Request $request)
     {
         $transacciones = invtransaccionesmodel::where('invtransaccionesmaster.estado','=','ACTIVO')-> 
                                                 join('invtiposmovimientos','invtransaccionesmaster.id_tipomov','=','invtiposmovimientos.id_tipomov')->
@@ -83,7 +83,7 @@ class invtransacciones extends ApiResponseController
             $value->productos = $transaccionesDetalle;
         } 
         
-        return $this->successResponse($transacciones);
+        return $this->successResponse($transacciones, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -190,7 +190,7 @@ class invtransacciones extends ApiResponseController
                 
                 if ($validator->fails()) {            
                     $errors = $validator->errors();
-                    return $this->errorResponseParams($errors->all());
+                    return $this->errorResponseParams($errors->all(), $request->urlRequest);
                 }else{
                     invtransaccionesmodel::create($datosm);
                                         
@@ -251,7 +251,7 @@ class invtransacciones extends ApiResponseController
             
                             if ($validator->fails()) {                                
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all());
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest);
                             }
                             
                             Invtransaccdetallemodel::create($datosd);                           
@@ -264,27 +264,23 @@ class invtransacciones extends ApiResponseController
                                             'secuencia'=>$numerosecuencia]);
                 }            
             DB::commit();
-            return $this->successResponse($datosm);
+            return $this->successResponse($datosm, $request->urlRequest);
         }
         catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $transacciones = invtransaccionesmodel::where([['invtransaccionesmaster.estado','=','ACTIVO'],
                                                        ['invtransaccionesmaster.id','=',$id]])-> 
                                                 SinDetalles();
 
-        if($transacciones == null){
-            return $this->errorResponse('NO EXISTEN DOCUMENTOS');
-        } else {
-            return $this->successResponse($transacciones);
-        }                 
+                                                return $this->successResponse($transacciones, $request->urlRequest);
     }
     
-    public function consultaBalances()
+    public function consultaBalances(Request $request)
     {
 
         // "SELECT '('+cast(c.cod_mov as char(2))+')'+RTRIM(c.descrip_mov), a.num_doc,a.num_oc,a.orden_compra,a.fecha,",
@@ -308,7 +304,7 @@ class invtransacciones extends ApiResponseController
                                                    'invtiposmovimientos.id_tipomov','invtiposmovimientos.descripcion')->
                                             get();
        
-        return $this->successResponse($productos);
+        return $this->successResponse($productos, $request->urlRequest);
     }
 
     public function update($validacion)
@@ -316,7 +312,7 @@ class invtransacciones extends ApiResponseController
 
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $transaccion = invtransaccionesmodel::find($id);
 
@@ -327,7 +323,7 @@ class invtransacciones extends ApiResponseController
         if($transaccion == null){
             return $this->errorResponse('NO EXISTE TRANSACCION');
         } else {
-            return $this->successResponse(null,"Registro Eliminado");
+            return $this->successResponse(null, $request->urlRequest,"Registro Eliminado");
         }   
     }
     
@@ -369,23 +365,23 @@ class invtransacciones extends ApiResponseController
                                     ->groupby('invtransaccionesmaster.codigo','invtransaccionesmaster.descripcion','d.id_tipomov','d.descripcion','e.descripcion',
                                               'f.descripcion','h.cuenta_no','h.descripcion','invtransaccionesmaster.costo')
                                     ->get();
-       return $this->successResponse($operaciones);
+       return $this->successResponse($operaciones, $request->urlRequest);
 
     }
 
-    public function diasInventario(Request $parametro){
+    public function diasInventario(Request $request){
 
-        $meses = $parametro->get('meses');
+        $meses = $request->get('meses');
         if($meses == null){
             return $this->errorResponse('Parametro meses esta en blanco');
         }
 
-        $fechaInicial = $parametro->get('fecha_inicial');
+        $fechaInicial = $request->get('fecha_inicial');
         if($fechaInicial == null){
             $fechaInicial = 'FECHA INICIAL NO TIENE DATOS o el request debe venir <fecha_inicial> sin <>';
             return $this->errorResponse($fechaInicial);
         }
-        $fechaFinal   = $parametro->get('fecha_final');
+        $fechaFinal   = $request->get('fecha_final');
         if($fechaFinal == null){
             $fechaFinal = 'FECHA FINAL NO TIENE DATOS o el request debe venir <fecha_final> sin <>';
             return $this->errorResponse($fechaFinal);
@@ -411,11 +407,11 @@ class invtransacciones extends ApiResponseController
                                 ->join('brands as d','d.id_brand','=','invtransaccionesmaster.id_brand')
                                 ->toSQl();
 
-                            return $this->successResponse($datos);
+                            return $this->successResponse($datos, $request->urlRequest);
 
     }
 
-    public function pendientesAlmacen($email)
+    public function pendientesAlmacen(Request $request,$email)
     {   
         $data = array();       
 
@@ -447,7 +443,7 @@ class invtransacciones extends ApiResponseController
             }
         }
         
-        return $this->successResponse($data);
+        return $this->successResponse($data, $request->urlRequest);
     }
 
     public function recibirTransaccion(Request $request, $id)
@@ -546,7 +542,7 @@ class invtransacciones extends ApiResponseController
                      
                     if ($validator->fails()) {
                         $errors = $validator->errors();
-                        return $this->errorResponseParams($errors->all());
+                        return $this->errorResponseParams($errors->all(), $request->urlRequest);
                     }
                     
                     Invtransaccdetallemodel::create($datosd);
@@ -556,24 +552,24 @@ class invtransacciones extends ApiResponseController
                                  update(['num_doc' =>$documentomov, 'secuencia'=>$numerosecuencia]);
             DB::commit();
         }catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
-        return $this->successResponse($transaccion);
+        return $this->successResponse($transaccion, $request->urlRequest);
     }
 
-    public function detalleTransaccion($id){
+    public function detalleTransaccion(Request $request,$id){
         $productos = invtransaccionesmodel::where([['invtransaccionesmaster.estado','=','ACTIVO'],
                                                     ['invtransaccionesmaster.id','=',$id]])->
                                             ConDetalles();                                             
         if($productos === null){
             return $this->errorResponse('NO EXISTEN DOCUMENTOS');
         } else {
-            return $this->successResponse($productos); 
+            return $this->successResponse($productos, $request->urlRequest); 
         }               
     }
 
 
-    public function autollenado(){ 
+    public function autollenado(Request $request){ 
         try {
             $respuesta = array();
 
@@ -640,9 +636,9 @@ class invtransacciones extends ApiResponseController
             array_push($respuesta,$_movimientos);
             array_push($respuesta,$_productos);
 
-            return $this->successResponse($respuesta);      
+            return $this->successResponse($respuesta, $request->urlRequest);      
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     }
     

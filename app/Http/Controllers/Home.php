@@ -9,7 +9,7 @@ use App\Librerias\ve_CondicionesPago;
 
 class Home extends ApiResponseController
 {
-    public function autollenado(){ 
+    public function autollenado(Request $request){ 
         try {
             $respuesta = array();
 
@@ -25,9 +25,9 @@ class Home extends ApiResponseController
             array_push($respuesta,$_catalogo);
             array_push($respuesta,$_condiciones);
 
-            return $this->successResponse($respuesta);      
+            return $this->successResponse($respuesta, $request->urlRequest);      
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class EntradasSalidasController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         //
     }
@@ -109,7 +109,7 @@ class EntradasSalidasController extends ApiResponseController
                                            'a.imagenPrincipal','a.costo')->
                                 //    toSql();
                                   get();
-                                   return $this->successResponse($salida);
+                                   return $this->successResponse($salida, $request->urlRequest);
     }
 
     /**

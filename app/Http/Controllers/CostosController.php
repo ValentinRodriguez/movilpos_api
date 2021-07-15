@@ -13,7 +13,7 @@ class CostosController extends ApiResponseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $costos = costos::join('inv_productos as b','b.codigo','=','costos.codigo')->
         select('costos.*','b.descripcion')->  
@@ -22,7 +22,7 @@ class CostosController extends ApiResponseController
         if ($costos == null){
             return $this->errorResponse($costos);
         }
-        return $this->successResponse($costos);
+        return $this->successResponse($costos, $request->urlRequest);
     }
 
     /**
@@ -73,11 +73,11 @@ $validator = validator($datos, [
 
 if ($validator->fails()) {
 $errors = $validator->errors();
-return $this->errorResponseParams($errors->all());
+return $this->errorResponseParams($errors->all(), $request->urlRequest);
 } else {
 
     costos::create($datos);
-return $this->successResponse($datos, 'Costo guardado');
+return $this->successResponse($datos, $request->urlRequest);
 }
     }
 

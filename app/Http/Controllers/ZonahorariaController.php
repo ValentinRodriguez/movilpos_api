@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\zonahoraria;
+use App\Librerias\zonahoraria;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiResponseController;
 
@@ -13,7 +13,7 @@ class ZonahorariaController extends ApiResponseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $zona = zonahoraria::orderBy('created_at', 'desc')->
         get();
@@ -22,7 +22,7 @@ if ($zona == null){
 
 return $this->errorResponse($zona);
 }
-return $this->successResponse($zona);
+return $this->successResponse($zona, $request->urlRequest);
     }
 
     /**
@@ -63,10 +63,10 @@ return $this->successResponse($zona);
 
             if ($validator->fails()) {
                 $errors = $validator->errors();
-                return $this->errorResponseParams($errors->all());
+                return $this->errorResponseParams($errors->all(), $request->urlRequest);
             } else {
                 zonahoraria::create($datos);
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
     }
 
@@ -99,7 +99,7 @@ return $this->successResponse($zona);
      * @param  \App\zonahoraria  $zonahoraria
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, zonahoraria $zonahoraria)
+    public function update(Request $request, $id)
     {
         $zona = zonahoraria::find($id);
 
@@ -122,10 +122,10 @@ return $this->successResponse($zona);
 
             if ($validator->fails()) {
                 $errors = $validator->errors();
-                return $this->errorResponseParams($errors->all());
+                return $this->errorResponseParams($errors->all(), $request->urlRequest);
             } else {
                 $zona->update($request->all());
-                return $this->successResponse($zona);
+                return $this->successResponse($zona, $request->urlRequest);
             }
     }
 
@@ -135,7 +135,7 @@ return $this->successResponse($zona);
      * @param  \App\zonahoraria  $zonahoraria
      * @return \Illuminate\Http\Response
      */
-    public function destroy(zonahoraria $zonahoraria)
+    public function destroy(Request $request, $id)
     {
         $zonas = zonahoraria::find($id);
 

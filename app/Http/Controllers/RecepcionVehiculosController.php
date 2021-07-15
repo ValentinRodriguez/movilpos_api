@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class RecepcionVehiculosController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $recepcion = recepcionVehiculos::join('categorias','categorias.id_categoria','=','recepcion_vehiculos.id_categoria')->
                                         join('brands','brands.id_brand','=','recepcion_vehiculos.id_brand')->
@@ -23,13 +23,13 @@ class RecepcionVehiculosController extends ApiResponseController
                                         select('recepcion_vehiculos.*','brands.descripcion as marca','propiedades.descripcion as color','categorias.descripcion as categoria',
                                                'veclientes.nombre as nombre_cliente')->
                                         get();
-        return $this->successResponse($recepcion);
+        return $this->successResponse($recepcion, $request->urlRequest);
     }
 
-    public function inspeccionesVehiculos()
+    public function inspeccionesVehiculos(Request $request)
     {
         $inspecciones = inspeccionesVehiculos::all();
-        return $this->successResponse($inspecciones);
+        return $this->successResponse($inspecciones, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -65,7 +65,7 @@ class RecepcionVehiculosController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try{
                 DB::beginTransaction();
@@ -92,22 +92,19 @@ class RecepcionVehiculosController extends ApiResponseController
                     
                     recepcionVehiculos::create($datosm);                              
                 DB::commit();
-                return $this->successResponse($datosm);
+                return $this->successResponse($datosm, $request->urlRequest);
             } 
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
     
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $recepcion = recepcionVehiculos::find($id);       
 
-        if ($recepcion == null){
-            return $this->errorResponse($recepcion);
-        }
-        return $this->successResponse($recepcion);
+        return $this->successResponse($recepcion, $request->urlRequest);
         // return response()->streamDownload(function () {
         //     echo file_get_contents('https://sites.google.com/site/dragonballshinbudokai2psp/_/rsrc/1384280284781/personajes/picolo/Piccoro.jpg?height=313&width=400');
         // },'nice-name.jpg');
@@ -147,7 +144,7 @@ class RecepcionVehiculosController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try{
                 DB::beginTransaction(); 
@@ -175,15 +172,15 @@ class RecepcionVehiculosController extends ApiResponseController
                 $recepcion->update($datosm);
                               
                 DB::commit();
-                return $this->successResponse($datosm);
+                return $this->successResponse($datosm, $request->urlRequest);
             } 
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
     
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         // return response()->json($recepcionVehiculos);
         $recepcionVehiculos = recepcionVehiculos::find($id);
@@ -196,10 +193,10 @@ class RecepcionVehiculosController extends ApiResponseController
         // }
 
         // $brand->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null, "Marca eliminada");
+        return $this->successResponse(null, $request->urlRequest, "Marca eliminada");
     }
 
-    public function autoLlenado()
+    public function autoLlenado(Request $request)
     {        
         $respuesta = array();
 
@@ -236,6 +233,6 @@ class RecepcionVehiculosController extends ApiResponseController
         array_push($respuesta,$_propiedades);
         array_push($respuesta,$_inspecciones);
 
-        return $this->successResponse($respuesta);
+        return $this->successResponse($respuesta, $request->urlRequest);
     }
 }

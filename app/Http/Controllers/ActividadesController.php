@@ -11,10 +11,10 @@ use DateTime;
 
 class ActividadesController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $actividades = Actividades::orderBy('created_at', 'desc')->where('estado','=','ACTIVO')->get();
-        return $this->successResponse($actividades);
+        return $this->successResponse($actividades, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -46,28 +46,28 @@ class ActividadesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {       
                 // return response()->json($datos);         
                 DB::beginTransaction();              
                     Actividades::create($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $categoria = Actividades::find($id);
         if ($categoria == null){
             return $this->errorResponse($categoria);
         }
-        return $this->successResponse($categoria);
+        return $this->successResponse($categoria, $request->urlRequest);
     }
 
     public function update(Request $request,  $id)
@@ -100,22 +100,22 @@ class ActividadesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {       
                 // return response()->json($datos);         
                 DB::beginTransaction();              
                     $actividad->update($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $actividad = Actividades::find($id);
 
@@ -124,7 +124,7 @@ class ActividadesController extends ApiResponseController
         }
      
         $actividad->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null,"Actividad Eliminada");
+        return $this->successResponse(null, $request->urlRequest);
     }
 
     public function busqueda(Request $request)
@@ -135,10 +135,10 @@ class ActividadesController extends ApiResponseController
                                       where('estado','=','activo')->
                                       get();
 
-        return $this->successResponse($categoria);
+        return $this->successResponse($categoria, $request->urlRequest);
     }
 
-    public function ActividadesVencidas()
+    public function ActividadesVencidas(Request $request)
     {
         $rango = array();
         $date = new DateTime;
@@ -163,9 +163,9 @@ class ActividadesController extends ApiResponseController
                 Mail::to($value->email)->send(new actividadesMailable($actividades));
                 Actividades::where('id', $value->id)->update(['enviado' => 'si']);
             }
-            return $this->successResponse($actividades);
+            return $this->successResponse($actividades, $request->urlRequest);
         }else{
-            return $this->successResponse(1);
+            return $this->successResponse(1, $request->urlRequest);
         }
     }
 }

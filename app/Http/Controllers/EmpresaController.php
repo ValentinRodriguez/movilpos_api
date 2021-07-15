@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 class EmpresaController extends ApiResponseController
 {
     
-    public function index()
+    public function index(Request $request)
     {
         $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->get();
 
@@ -40,7 +40,7 @@ class EmpresaController extends ApiResponseController
             
             $value->sucursales = $sucursales;
         }
-        return $this->successResponse($empresa);
+        return $this->successResponse($empresa, $request->urlRequest);
     }
     
     public function store(Request $request)
@@ -96,7 +96,7 @@ class EmpresaController extends ApiResponseController
 
        if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
        }else{
            if ($request->hasFile('logo')) {
                 // Storage::delete('public/'.$producto->imagen);
@@ -122,22 +122,22 @@ class EmpresaController extends ApiResponseController
                     $datos['cod_cia'] = $idsecuencia;
                     Empresa::create($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }            
-            return $this->successResponse($datos);
+            return $this->successResponse($datos, $request->urlRequest);
        }
     }
     
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $empresa = Empresa::find($id);
         if ($empresa == null){
             return $this->errorResponse($empresa);
         }
-        return $this->successResponse($empresa);
+        return $this->successResponse($empresa, $request->urlRequest);
     }
     
     public function update(Request $request){
@@ -198,7 +198,7 @@ class EmpresaController extends ApiResponseController
 
        if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
        }else{
            if ($request->hasFile('logo')) {
                 // Storage::delete('public/'.$producto->imagen);
@@ -208,7 +208,7 @@ class EmpresaController extends ApiResponseController
             }
 
             $empresa->update($datos);
-            return $this->successResponse($empresa, "Datos actualizads correctamente");
+            return $this->successResponse($empresa, $request->urlRequest);
        }
     }
     
@@ -226,7 +226,7 @@ class EmpresaController extends ApiResponseController
     //                             where('dirrecepciones.estado','=','ACTIVO')->
     //                             get();
 
-    //     return $this->successResponse($puertos);
+    //     return $this->successResponse($puertos, $request->urlRequest);
     // }
 
     public function busqueda(Request $request){
@@ -235,16 +235,16 @@ class EmpresaController extends ApiResponseController
         $busqueda = Empresa::where([['empresas.nombre','=',$empresa],
                                     ['empresas.estado','=','ACTIVO']])->get(); 
                                                         
-        return $this->successResponse($busqueda);
+        return $this->successResponse($busqueda, $request->urlRequest);
     }
 
-    public function permisosEmpresaValor()
+    public function permisosEmpresaValor(Request $request)
     {
         $empresa = permisosEmpresaValor::get();
-        return $this->successResponse($empresa);
+        return $this->successResponse($empresa, $request->urlRequest);
     }
     
-    public function AutoLlenadoPermisosEmpresa() {        
+    public function AutoLlenadoPermisosEmpresa(Request $request) {        
         $respuesta = array();
             
         $modulos = Modulos::orderBy('orden', 'asc')->get();
@@ -264,7 +264,7 @@ class EmpresaController extends ApiResponseController
         array_push($respuesta,$_generales);
         array_push($respuesta,$_menu);
     
-        return $this->successResponse($respuesta);
+        return $this->successResponse($respuesta, $request->urlRequest);
 
     }
 

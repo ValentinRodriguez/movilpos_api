@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class sucursalesController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {        
         $temp1 = array();
         $sucursales = sucursales::join('paises','paises.id_pais','=','sucursales.id_pais')->
@@ -47,10 +47,10 @@ class sucursalesController extends ApiResponseController
             $i++;
         }
 
-        return $this->successResponse($sucursales);
+        return $this->successResponse($sucursales, $request->urlRequest);
     }
 
-    public function autollenado()
+    public function autollenado(Request $request)
     {     
         $respuesta = array();
 
@@ -63,7 +63,7 @@ class sucursalesController extends ApiResponseController
         array_push($respuesta,$_empresa);  
         array_push($respuesta,$_paises);
 
-        return $this->successResponse($respuesta);
+        return $this->successResponse($respuesta, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -103,31 +103,31 @@ class sucursalesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();  
                 // return response()->json($datos);
                     sucursales::create($datos);                
                 DB::commit();                
-                return $this->successResponse(1);
+                return $this->successResponse(1, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $sucursales = sucursales::find($id);        
-        return $this->successResponse($sucursales);
+        return $this->successResponse($sucursales, $request->urlRequest);
     }
 
-    public function sucursalXempresa($codcia)
+    public function sucursalXempresa(Request $request,$codcia)
     {
         $sucursales = sucursales::where('cod_cia','=',$codcia)->get();        
-        return $this->successResponse($sucursales);
+        return $this->successResponse($sucursales, $request->urlRequest);
     }
 
     public function update(Request $request,  $id)
@@ -174,32 +174,32 @@ class sucursalesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();  
                     $sucursales->update($datos);  
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse(1, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $sucursales = sucursales::where('id','=',$id);             
         $sucursales->update(['estado' => 'eliminado']);        
-        return $this->successResponse(null,"Registro Eliminado");
+        return $this->successResponse(null, $request->urlRequest,"Registro Eliminado");
     }
 
     public function busqueda(Request $request)
     {
         $parametro = $request->get('sucursales');
         $sucursales = sucursales::orderBy('created_at', 'desc')->where([['estado','=','activo'],['descripcion','=',$parametro]])->get();
-        return $this->successResponse($sucursales);
+        return $this->successResponse($sucursales, $request->urlRequest);
     }
 
 }

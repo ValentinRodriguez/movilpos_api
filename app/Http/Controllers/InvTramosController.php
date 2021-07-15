@@ -6,20 +6,17 @@ use Illuminate\Http\Request;
 
 class InvTramosController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $tramos = InvTramosModel::join('bodegas','bodegas.id_bodega','=','invtramos.bodega')->
         join('invsecciones','invsecciones.id','=','invtramos.id_seccion')->
         select('invtramos.*','bodegas.descripcion as bodega','invsecciones.titulo as seccion')->  
         orderBy('created_at', 'desc')->
         get();
-        if ($tramos == null){
-            return $this->errorResponse($tramos);
-        }
-        return $this->successResponse($tramos);
+        return $this->successResponse($tramos, $request->urlRequest);
 }
 
-public function show($id)
+public function show(Request $request,$id)
 {
     $seccion = InvTramosModel::join('bodegas','bodegas.id_bodega','=','invtramos.bodega')->
     join('invsecciones','invsecciones.id','=','invtramos.id_seccion')->
@@ -27,10 +24,7 @@ public function show($id)
                       orderBy('created_at', 'desc')->
                       where('invtramos.id','=',"$id")->
                       get();
-                      if ($seccion == null){
-                          return $this->errorResponse($seccion);
-                      }
-                      return $this->successResponse($seccion);
+                      return $this->successResponse($seccion, $request->urlRequest);
 }
 
 public function store(Request $request)
@@ -56,10 +50,10 @@ public function store(Request $request)
     ], $message);
     if ($validator->fails()){
         $errors=$validator->errors();
-        return $this->errorResponseParams($errors->all());
+        return $this->errorResponseParams($errors->all(), $request->urlRequest);
     } else{
         InvTramosModel::create($datos);
-        return $this->successResponse($datos);
+        return $this->successResponse($datos, $request->urlRequest);
     }
 }
 

@@ -7,29 +7,23 @@ use Illuminate\Http\Request;
 class InvseccionController extends ApiResponseController
 
 {
-    public function index()
+    public function index(Request $request)
     {
         $seccion = InvseccionModel::join('bodegas','bodegas.id_bodega','=','invsecciones.bodega')->
         select('invsecciones.*','bodegas.descripcion as bodega')->  
         orderBy('created_at', 'desc')->
         get();
-        if ($seccion == null){
-            return $this->errorResponse($seccion);
-        }
-        return $this->successResponse($seccion);
+        return $this->successResponse($seccion, $request->urlRequest);
 }
 
-public function seccionporbodega($id)
+public function seccionporbodega(Request $request,$id)
 {
     $seccion = InvseccionModel::join('bodegas','bodegas.id_bodega','=','invsecciones.bodega')->
     select('invsecciones.*','bodegas.descripcion as bodega')->  
                       orderBy('created_at', 'desc')->
                       where('invsecciones.bodega','=',"$id")->
                       get();
-                      if ($seccion == null){
-                          return $this->errorResponse($seccion);
-                      }
-                      return $this->successResponse($seccion);
+                      return $this->successResponse($seccion, $request->urlRequest);
 }
 
 
@@ -54,10 +48,10 @@ public function store(Request $request)
     ], $message);
     if ($validator->fails()){
         $errors=$validator->errors();
-        return $this->errorResponseParams($errors->all());
+        return $this->errorResponseParams($errors->all(), $request->urlRequest);
     } else{
         InvseccionModel::create($datos);
-        return $this->successResponse($datos);
+        return $this->successResponse($datos, $request->urlRequest);
     }
 }
 

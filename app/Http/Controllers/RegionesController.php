@@ -7,7 +7,7 @@ use App\Librerias\regiones;
 
 class RegionesController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         //
     }
@@ -17,12 +17,12 @@ class RegionesController extends ApiResponseController
         //
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         //
     }
 
-    public function buscaRegion($id)
+    public function buscaRegion(Request $request,$id)
     {
         $ciudad = regiones::join('paises','paises.id_pais','=','regiones.id_pais')->
                             select('regiones.*')->  
@@ -32,7 +32,7 @@ class RegionesController extends ApiResponseController
                             if ($ciudad == null){
                                 return $this->errorResponse($ciudad);
                             }
-                            return $this->successResponse($ciudad);
+                            return $this->successResponse($ciudad, $request->urlRequest);
     }
 
     public function update(Request $request, $id)
@@ -40,7 +40,7 @@ class RegionesController extends ApiResponseController
         //
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         //
     }

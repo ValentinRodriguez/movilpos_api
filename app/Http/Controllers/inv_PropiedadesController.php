@@ -9,13 +9,13 @@ use App\Librerias\InvProductos;
 
 class inv_PropiedadesController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $propiedades = Propiedadesprod::orderBy('created_at', 'desc')->
                                     where('estado','=','ACTIVO')->
                                     get();
 
-        return $this->successResponse($propiedades);
+        return $this->successResponse($propiedades, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -52,28 +52,28 @@ class inv_PropiedadesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();
                     Propiedadesprod::create($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
 
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $propiedades = Propiedadesprod::find($id);
         if ($propiedades == null){
             return $this->errorResponse($propiedades);
         }
-        return $this->successResponse($propiedades);
+        return $this->successResponse($propiedades, $request->urlRequest);
     }
 
     public function update(Request $request,  $id)
@@ -103,22 +103,22 @@ class inv_PropiedadesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try {
                 DB::beginTransaction(); 
                     $propiedades->update($datos);                
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse(1, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
             return $this->successResponse($propiedades, 'Categoría actualizada');
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $propiedades = Propiedadesprod::where('id','=',$id);
         $invproductos = InvProductos::where('propiedad','=',$id)->first();
@@ -128,7 +128,7 @@ class inv_PropiedadesController extends ApiResponseController
         }
      
         $propiedades->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null,"Propiedad Eliminada");
+        return $this->successResponse(null, $request->urlRequest);
     }
 
     public function busqueda(Request $request)
@@ -138,7 +138,7 @@ class inv_PropiedadesController extends ApiResponseController
                                     where([['estado','=','activo'],['descripcion','=',$descripcion]])->
                                     get();
 
-        return $this->successResponse($propiedades);
+        return $this->successResponse($propiedades, $request->urlRequest);
     }
 
 }

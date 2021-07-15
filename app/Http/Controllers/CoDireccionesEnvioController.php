@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class CoDireccionesEnvioController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $direcciones = co_DireccionesEnvio::join('ciudades', 'ciudades.id_ciudad','=','co_direcciones_envios.id_ciudad')->
                                         join('paises', 'paises.id_pais','=','co_direcciones_envios.id_pais')->
@@ -16,7 +16,7 @@ class CoDireccionesEnvioController extends ApiResponseController
                                         where('co_direcciones_envios.estado','=','activo')->
                                         get();
 
-        return $this->successResponse($direcciones);
+        return $this->successResponse($direcciones, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -51,27 +51,27 @@ class CoDireccionesEnvioController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();              
                     co_DireccionesEnvio::create($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $categoria = co_DireccionesEnvio::find($id);
         if ($categoria == null){
             return $this->errorResponse($categoria);
         }
-        return $this->successResponse($categoria);
+        return $this->successResponse($categoria, $request->urlRequest);
     }
 
     public function update(Request $request,  $id)
@@ -109,26 +109,26 @@ class CoDireccionesEnvioController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();              
                     $direccion->update($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $direccion = co_DireccionesEnvio::find($id);
      
         $direccion->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null,"Dirección Eliminada");
+        return $this->successResponse(null, $request->urlRequest);
     }
 
     public function busqueda(Request $request)
@@ -139,6 +139,6 @@ class CoDireccionesEnvioController extends ApiResponseController
                                       where('estado','=','activo')->
                                       get();
 
-        return $this->successResponse($direccion);
+        return $this->successResponse($direccion, $request->urlRequest);
     }
 }

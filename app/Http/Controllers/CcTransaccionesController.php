@@ -13,7 +13,7 @@ use Carbon\Carbon;
 
 class CcTransaccionesController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         //
     }
@@ -71,7 +71,7 @@ class CcTransaccionesController extends ApiResponseController
         //
     }
 
-    public function avisoPagos()
+    public function avisoPagos(Request $request)
     {
         $date = Carbon::now(); 
         $hoy = $date->format('Y-m-d H:i:s');
@@ -96,7 +96,7 @@ class CcTransaccionesController extends ApiResponseController
                                             'veclientes.nombre','veclientes.email','veclientes.celular','veclientes.telefono_casa')->
                                     having('deuda', '>', 0)->
                                     get();
-        //return $this->successResponse($deudores);
+        //return $this->successResponse($deudores, $request->urlRequest);
         if (count($deudores) != 0) {
             Mail::to('vrodriguez@movilsoluciones.com.do')->send(new listaDeudoresMailable($deudores));
             // $SMS = new MensajeriaSMScontroller;
@@ -113,9 +113,9 @@ class CcTransaccionesController extends ApiResponseController
                 // $WS->send($mensaje,$telefono);
                 // cc_transacciones::where('aplica_a', $value->aplica_a)->update(['enviado' => 'si']);
             }
-            return $this->successResponse($deudores);
+            return $this->successResponse($deudores, $request->urlRequest);
         }else{
-            return $this->successResponse(1);
+            return $this->successResponse(1, $request->urlRequest);
         }
     }
 }

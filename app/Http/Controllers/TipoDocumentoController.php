@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 
 class TipoDocumentoController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $tipo_documento = tipo_documento::orderBy('tipo_documento', 'asc')->
                             where('estado','=','ACTIVO')->
                             get();
                             
-        return $this->successResponse($tipo_documento);
+        return $this->successResponse($tipo_documento, $request->urlRequest);
     }
     public function store(Request $request)
     {

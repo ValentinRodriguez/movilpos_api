@@ -18,13 +18,13 @@ use Illuminate\Http\Request;
 
 class CgTransaccionesContablesController extends ApiResponseController
 {    
-    public function index()
+    public function index(Request $request)
     {
         $cuentas = cgTransaccionesContables::all();
-        return $this->successResponse($cuentas);
+        return $this->successResponse($cuentas, $request->urlRequest);
     }    
     
-    public function autoLlenado()
+    public function autoLlenado(Request $request)
     {        
         $respuesta = array();
 
@@ -54,7 +54,7 @@ class CgTransaccionesContablesController extends ApiResponseController
         array_push($respuesta,$_monedas);
         array_push($respuesta,$_coTipoOrdenes);
 
-        return $this->successResponse($respuesta);
+        return $this->successResponse($respuesta, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -107,7 +107,7 @@ class CgTransaccionesContablesController extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try{
                 DB::beginTransaction(); 
@@ -162,7 +162,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all()); 
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest); 
                             }
                             cpTransacciones::create($datosc);
                         }                        
@@ -208,7 +208,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all()); 
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest); 
                             }                          
                             cgTransaccionesContables::create($datosd);
                         }   
@@ -216,7 +216,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                         return $this->errorResponse(null,'No hay cuentas agragadas a la transacción');
                     }               
                 DB::commit();            
-                return $this->successResponse($datosm);
+                return $this->successResponse($datosm, $request->urlRequest);
             } 
             catch (\Exception $e ){
                 return $this->errorResponse(null, $e->getMessage());
@@ -224,10 +224,10 @@ class CgTransaccionesContablesController extends ApiResponseController
         }
     }
     
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $transaccion = cgEntradasDiarioMaster::find($id);
-        return $this->successResponse($transaccion);
+        return $this->successResponse($transaccion, $request->urlRequest);
     }
     
     public function update(Request $request, $id)
@@ -256,7 +256,7 @@ class CgTransaccionesContablesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try{
                 DB::beginTransaction(); 
@@ -312,7 +312,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all()); 
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest); 
                             }                          
                             cpTransacciones::create($datosc);
                         }                        
@@ -355,7 +355,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all()); 
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest); 
                             }                          
                             cgTransaccionesContables::create($datosd);
                         }   
@@ -363,7 +363,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                         return $this->errorResponse(null,'No hay cuentas agragadas a la transacción');
                     }               
                 DB::commit();            
-                return $this->successResponse($datosm);
+                return $this->successResponse($datosm, $request->urlRequest);
             } 
             catch (\Exception $e ){
                 return $this->errorResponse(null, $e->getMessage());
@@ -371,7 +371,7 @@ class CgTransaccionesContablesController extends ApiResponseController
         }
     }
     
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         //
     }
@@ -385,7 +385,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                                 where([['tipo_doc','=',$tipo],['cuenta_no','=',$cuenta_no],['estado','=','activo']])->
                                 first();
 
-        return $this->successResponse($secuencia);
+        return $this->successResponse($secuencia, $request->urlRequest);
     }
 
     public function gastosPorDepartamentos(Request $request) {
@@ -406,7 +406,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                                                         'cp_transacciones_detalles.cod_sp_sec','proveedores.nom_sp')->
                                                 get();
 
-        return $this->successResponse($proveedores); 
+        return $this->successResponse($proveedores, $request->urlRequest); 
     }
 
     public function mayorGeneral(Request $request) {
@@ -424,6 +424,6 @@ class CgTransaccionesContablesController extends ApiResponseController
                                                    'cg_transacciones_contables.debito','cg_transacciones_contables.credito','cg_transacciones_contables.detalle',
                                                    'cgcatalogo.analitico','cgcatalogo.catalogo','cgcatalogo.depto','cgcatalogo.descripcion','cgcatalogo.cuenta_no')->
                                            get();
-        return $this->successResponse($mayor); 
+        return $this->successResponse($mayor, $request->urlRequest); 
     }
 }

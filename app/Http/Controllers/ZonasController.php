@@ -10,7 +10,7 @@ use App\Http\Controllers\ApiResponseController;
 
 class ZonasController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $zona = Zonas::orderBy('created_at', 'desc')->get();
         foreach ($zona as $key => $value) {
@@ -21,7 +21,7 @@ class ZonasController extends ApiResponseController
 
             $value->zona_provincia = $zonaProvincia;
         }
-        return $this->successResponse($zona);
+        return $this->successResponse($zona, $request->urlRequest);
     }
 
     public function create()
@@ -59,7 +59,7 @@ class ZonasController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         } else {
             DB::beginTransaction();
                 zonas::create($datos);
@@ -90,7 +90,7 @@ class ZonasController extends ApiResponseController
                         
                         if ($validator->fails()) {
                             $errors = $validator->errors();
-                            return $this->errorResponseParams($errors->all());                        
+                            return $this->errorResponseParams($errors->all(), $request->urlRequest);                        
                         }                                                               
                         zonas_provincias::create($datosd);
                     }                        
@@ -98,7 +98,7 @@ class ZonasController extends ApiResponseController
                     return $this->errorResponse(null, "No hay provincias vinculadas a la zona.");
                 }
             DB::commit();
-            return $this->successResponse($datos);
+            return $this->successResponse($datos, $request->urlRequest);
         }
     }
     
@@ -107,14 +107,14 @@ class ZonasController extends ApiResponseController
         //
     }
     
-    public function buscarZonaProvincia($id)
+    public function buscarZonaProvincia(Request $request, $id)
     {
         $zonaProv = zonas_provincias::join('zonas_local','zonas_local.id_zonalocal','=','zonas_provincias.id_zona')->
                                       select('zonas_provincias.*','zonas_local.descripcion as desc_zona')->
                                       where('id_provincia','=',$id)->
                                       get();
 
-        return $this->successResponse($zonaProv);
+        return $this->successResponse($zonaProv, $request->urlRequest);
     }
 
     public function update(Request $request, $id)
@@ -136,14 +136,14 @@ class ZonasController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         } else {
             $zona->update($request->all());
-            return $this->successResponse($zona);
+            return $this->successResponse($zona, $request->urlRequest);
         }
     }
     
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $zona = zonas::find($id);
 
@@ -159,7 +159,7 @@ class ZonasController extends ApiResponseController
     {
         $parametro = $request->get('zona');
         $zona = zonas::orderBy('created_at', 'desc')->where([['estado','=','activo'],['descripcion','=',$parametro]])->get();
-        return $this->successResponse($zona);
+        return $this->successResponse($zona, $request->urlRequest);
     }
 }
     

@@ -11,11 +11,11 @@ use Carbon\Carbon;
 
 class CgPeriodosFiscalesController extends ApiResponseController
 {   
-    public function index()
+    public function index(Request $request)
     {
         $periodosFiscales = cgPeriodosFiscales::orderBy('anio', 'desc')->get();
                                       
-        return $this->successResponse($periodosFiscales);
+        return $this->successResponse($periodosFiscales, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -41,7 +41,7 @@ class CgPeriodosFiscalesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();
@@ -90,7 +90,7 @@ class CgPeriodosFiscalesController extends ApiResponseController
                          
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all()); 
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest); 
                                
                             }                                        
                             cgPeriodosFiscales::create($datosd);                                               
@@ -99,22 +99,22 @@ class CgPeriodosFiscalesController extends ApiResponseController
                         return $this->errorResponse('Debe ingresar informacion');
                     } 
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
 
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $periodosFiscales = cgPeriodosFiscales::find($id);
         if ($periodosFiscales == null){
             return $this->errorResponse($periodosFiscales);
         }
-        return $this->successResponse($periodosFiscales);
+        return $this->successResponse($periodosFiscales, $request->urlRequest);
     }
 
     public function update(Request $request,  $id)
@@ -152,21 +152,21 @@ class CgPeriodosFiscalesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try {
                 DB::beginTransaction(); 
                     $periodosFiscales->update($datos);                
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse(1, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $periodosFiscales = cgPeriodosFiscales::where('id','=',$id)->first();
 
@@ -182,7 +182,7 @@ class CgPeriodosFiscalesController extends ApiResponseController
             return $this->errorResponse("No puede eliminar este periodo, tiene transaccion/es asociada/s");
         }else{
             $periodosFiscales->update(['estado' => 'ELIMINADO']);
-            return $this->successResponse(null,"Categoria Eliminada");
+            return $this->successResponse(null, $request->urlRequest);
         }
     }
 
@@ -194,7 +194,7 @@ class CgPeriodosFiscalesController extends ApiResponseController
                                       where([['estado','=','activo'],['anio','=',$periodo]])->
                                       get();
                                       
-        return $this->successResponse($periodosFiscales);
+        return $this->successResponse($periodosFiscales, $request->urlRequest);
     }
 
     public function restaurarPeriodo(Request $request)
@@ -207,7 +207,7 @@ class CgPeriodosFiscalesController extends ApiResponseController
         }
 
         $periodosFiscales->update(['estado' => 'activo']);
-        return $this->successResponse(null,"Periodo Restaurado");
+        return $this->successResponse(null, $request->urlRequest);
 
     }
 }

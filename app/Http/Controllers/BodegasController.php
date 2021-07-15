@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class BodegasController extends ApiResponseController
 {
 
-    public function index(){
+    public function index(Request $request){
         $bodegas = Bodegas::orderBy('id_bodega', 'asc')->
                            join('paises','paises.id_pais','=','bodegas.id_pais')->
                            join('ciudades','ciudades.id_ciudad','=','bodegas.id_ciudad')->
@@ -54,21 +54,21 @@ class BodegasController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors =  $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         } else {
             try {                
                 DB::beginTransaction();
                     bodegas::create($datos);
                 DB::commit();
-                return $this->successResponse($datos, "Bodega guardada");
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id){
+    public function show(Request $request,$id){
         $datos = bodegas::join('paises','paises.id_pais','=','bodegas.id_pais')->
                          join('ciudades','ciudades.id_ciudad','=','bodegas.id_ciudad')->
                          select('bodegas.*','paises.descripcion as pais','ciudades.descripcion as ciudad')->
@@ -77,7 +77,7 @@ class BodegasController extends ApiResponseController
       if($datos == null){
         return $this->errorResponse('No existe bodega con esta condicion');
       }
-      return $this->successResponse($datos);
+      return $this->successResponse($datos, $request->urlRequest);
     }
         
     public function update(Request $request, $id){
@@ -99,14 +99,14 @@ class BodegasController extends ApiResponseController
         
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             $bodegas->update($request->all());
-            return $this->successResponse($bodegas, "Bodega actualizada");
+            return $this->successResponse($bodegas, $request->urlRequest);
         }
     }
     
-    public function destroy($bodegas){
+    public function destroy(Request $request, $bodegas){
         $bodega = Bodegas::where('id_bodega','=',$bodegas)->first();
         // $usuario_permisos = bodegasUsuarios::where('id_bodega','=',$bodegas)->get();
         
@@ -121,7 +121,7 @@ class BodegasController extends ApiResponseController
 
         DB::table('bodegas_usuarios')->where('id_bodega','=',$bodegas)->delete();
         $bodega->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null,"Bodega Eliminada");
+        return $this->successResponse(null, $request->urlRequest);
     }
 
     public function busqueda(Request $request){
@@ -137,7 +137,7 @@ class BodegasController extends ApiResponseController
                                 where('bodegas.estado','=','ACTIVO')->
                                 get(); 
                                                         
-        return $this->successResponse($busqueda);
+        return $this->successResponse($busqueda, $request->urlRequest);
     }
 
     public function busquedaBodega(Request $request){
@@ -153,7 +153,7 @@ class BodegasController extends ApiResponseController
                                 where('bodegas.estado','=','ACTIVO')->
                                 get(); 
                                                         
-        return $this->successResponse($busqueda);
+        return $this->successResponse($busqueda, $request->urlRequest);
     }
 
     public function concederPermisosBodega(Request $request){
@@ -178,7 +178,7 @@ class BodegasController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors =  $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }
         else {            
             DB::beginTransaction();
@@ -198,11 +198,11 @@ class BodegasController extends ApiResponseController
                     }
                 }
             DB::commit();
-            return $this->successResponse($datos, "Permisos Concedidos");
+            return $this->successResponse($datos, $request->urlRequest);
         }
     }
 
-    public function usuariosPermisosBodegas($id_bodega)
+    public function usuariosPermisosBodegas(Request $request, $id_bodega)
     {
         $datos = BodegasUsuarios::join('users','users.email','=','bodegas_usuarios.email')->
                                   leftjoin('noempleados','noempleados.email','=','users.email')->
@@ -213,10 +213,10 @@ class BodegasController extends ApiResponseController
         if($datos == null){
             return $this->errorResponse('No existe bodega con esta condicion');
         }
-        return $this->successResponse($datos);
+        return $this->successResponse($datos, $request->urlRequest);
     }
 
-    public function usuarioConPermisosBodegas($email)
+    public function usuarioConPermisosBodegas(Request $request, $email)
     {
         $datos = BodegasUsuarios::join('bodegas','bodegas.id_bodega','=','bodegas_usuarios.id_bodega')->
                                   select('bodegas.descripcion','bodegas_usuarios.id_bodega')->        
@@ -226,11 +226,11 @@ class BodegasController extends ApiResponseController
         if($datos == null){
             return $this->errorResponse('No existe bodega con esta condicion');
         }
-        return $this->successResponse($datos);
+        return $this->successResponse($datos, $request->urlRequest);
     }
 
     
-    public function autoLlenado()
+    public function autoLlenado(Request $request)
     {        
         $paises = pais::orderBy('created_at', 'desc')->get();
 
@@ -238,6 +238,6 @@ class BodegasController extends ApiResponseController
                       select('users.*','nopuestos.titulo as puesto')->orderBy('id', 'asc')->get();
 
         $respuesta = array('usuarios' => $usuarios, 'paises' => $paises );
-        return $this->successResponse($respuesta);
+        return $this->successResponse($respuesta, $request->urlRequest);
     }
 }

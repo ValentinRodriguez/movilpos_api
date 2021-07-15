@@ -14,10 +14,8 @@ class MenuController extends ApiResponseController
         $menu = Menu::join('modulos','modulos.id','=','menus.modulo')->
                       select('menus.*','modulos.icon','modulos.modulo as nombre_modulo')->
                       get();
-        if ($menu == null){
-            return $this->errorResponse($menu);
-        }
-        return $this->successResponse($menu);
+                      
+        return $this->successResponse($menu, $request->urlRequest);
     }
     
     public function store(Request $request)
@@ -27,12 +25,9 @@ class MenuController extends ApiResponseController
 
     public function show(Request $request,$id)
     {
-        return response()->json($request);
-        $menu = Menu::where('modulo','=',$id)->
-                      orderBy('codigo')->
-                      get();
-                      
-        return $this->successResponse($menu, $request);
+        // return response()->json();
+        $menu = Menu::where('modulo','=',$id)->orderBy('codigo')->get();                      
+        return $this->successResponse($menu, $request->urlRequest);
     }
 
     public function update(Request $request, Menu $menu)

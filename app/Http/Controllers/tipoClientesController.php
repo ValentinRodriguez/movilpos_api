@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\DB;
 
 class tipoClientesController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $tipoCliente = tipoClientes::orderBy('tipo_cliente', 'asc')->where('estado','=','ACTIVO')->get();
         
-        return $this->successResponse($tipoCliente);
+        return $this->successResponse($tipoCliente, $request->urlRequest);
     }
     
     public function store(Request $request){
@@ -51,21 +51,21 @@ class tipoClientesController extends ApiResponseController
                     $datos = $datos + array('tipo_cliente' =>$idsecuencia);
                     tipoClientes::create($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $tipo = tipoClientes::find($id);
         if ($tipo == null){
-            return $this->errorResponse($tipo);
+            return $this->errorResponse($tipo, $request->urlRequest);
         }
-        return $this->successResponse($tipo);
+        return $this->successResponse($tipo, $request->urlRequest);
     }
     
     public function update(Request $request, $id)
@@ -90,21 +90,21 @@ class tipoClientesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try {
                 DB::beginTransaction();  
                     $tipos->update($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
     
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $tipoCliente = tipoClientes::where('tipo_cliente','=',$id)->first();
         
@@ -118,7 +118,7 @@ class tipoClientesController extends ApiResponseController
         }
 
         $tipoCliente->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null,"Tipo de cliente Eliminado");
+        return $this->successResponse(null, $request->urlRequest,"Tipo de cliente Eliminado");
     }
 
     public function busquedaTipo(Request $request)
@@ -127,6 +127,6 @@ class tipoClientesController extends ApiResponseController
         
         $tipo  = tipoClientes::orderBy('id', 'asc')->
                                where('tipos_clientes.descripcion', '=', $descripcion)->get();
-        return $this->successResponse($tipo);
+        return $this->successResponse($tipo, $request->urlRequest);
     }
 }

@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 class ve_CondicionesPagoController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $condiciones = ve_CondicionesPago::orderBy('id', 'asc')->
                                   where('estado','=','activo')->
                                   get();
         
-        return $this->successResponse($condiciones);
+        return $this->successResponse($condiciones, $request->urlRequest);
     }
     
     public function store(Request $request)
@@ -42,7 +42,7 @@ class ve_CondicionesPagoController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {
                 DB::beginTransaction(); 
@@ -60,21 +60,21 @@ class ve_CondicionesPagoController extends ApiResponseController
                     $datos = $datos + array('cond_pago' =>$idsecuencia);
                     ve_CondicionesPago::create($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
     
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $condicion = ve_CondicionesPago::find($id);
         if ($condicion == null){
             return $this->errorResponse($condicion);
         }
-        return $this->successResponse($condicion);
+        return $this->successResponse($condicion, $request->urlRequest);
     }
     
     public function update(Request $request,  $id)
@@ -106,25 +106,25 @@ class ve_CondicionesPagoController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {
                 DB::beginTransaction(); 
                     $condicion->update($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
     
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $condicion = ve_CondicionesPago::find($id);
         $condicion->update(['estado' => 'eliminado']);
-        return $this->successResponse(null, "Codición eliminada");
+        return $this->successResponse(null, $request->urlRequest);
     }
 
     public function condPagos(Request $request)
@@ -137,7 +137,7 @@ class ve_CondicionesPagoController extends ApiResponseController
                                      ])->
                                 get(); 
                                                         
-        return $this->successResponse($busqueda);
+        return $this->successResponse($busqueda, $request->urlRequest);
     }
     
 }

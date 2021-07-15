@@ -12,13 +12,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 class CuadreCajaController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $cuadre = cuadreCaja::where('estado','=','activo')->get();
-        return $this->successResponse($cuadre);
+        return $this->successResponse($cuadre, $request->urlRequest);
     }
 
-    public function autollenado(){ 
+    public function autollenado(Request $request){ 
         try {
             $respuesta = array();
             $temp1 = array();            
@@ -86,9 +86,9 @@ class CuadreCajaController extends ApiResponseController
             array_push($respuesta,$_sucursales);
             array_push($respuesta,$_caja);
 
-            return $this->successResponse($respuesta);      
+            return $this->successResponse($respuesta, $request->urlRequest);      
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     }
 
@@ -112,9 +112,9 @@ class CuadreCajaController extends ApiResponseController
         //
     }
 
-    public function busqueda()
+    public function busqueda(Request $request)
     {
         $cuadre = cuadreCaja::where('estado','=','activo')->get();
-        return $this->successResponse($cuadre);
+        return $this->successResponse($cuadre, $request->urlRequest);
     }
 }

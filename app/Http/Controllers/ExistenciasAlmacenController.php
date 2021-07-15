@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class ExistenciasAlmacenController extends ApiResponseController
 {
-    public function autoLlenado() {
+    public function autoLlenado(Request $request) {
         $respuesta = array();
 
         $tipoInv = invTipos::orderBy('created_at', 'desc')->get();
@@ -68,7 +68,7 @@ class ExistenciasAlmacenController extends ApiResponseController
         array_push($respuesta,$_bodegas);
         array_push($respuesta,$_productos);
         
-        return $this->successResponse($respuesta);
+        return $this->successResponse($respuesta, $request->urlRequest);
     }
 
     public function existenciasAlmacen(Request $request){
@@ -79,6 +79,6 @@ class ExistenciasAlmacenController extends ApiResponseController
                                    producto($datos['id_producto'])->
                                    ConDetalles();        
 
-        return $this->successResponse($productos);
+        return $this->successResponse($productos, $request->urlRequest);
     }
 }

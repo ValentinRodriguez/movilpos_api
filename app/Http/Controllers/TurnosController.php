@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class TurnosController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $turnos = turnos::orderBy('created_at', 'desc')->where('estado','=','ACTIVO')->get();
-        return $this->successResponse($turnos);
+        return $this->successResponse($turnos, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -42,27 +42,24 @@ class TurnosController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();  
                     turnos::create($datos);
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse(1, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $turno = turnos::find($id);
-        if ($turno == null){
-            return $this->errorResponse($turno);
-        }
-        return $this->successResponse($turno);
+        return $this->successResponse($turno, $request->urlRequest);
     }
 
     public function update(Request $request,  $id)
@@ -89,31 +86,31 @@ class TurnosController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();  
                     $turno->update($datos);  
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse(1, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $turno = turnos::where('id','=',$id);     
         $turno->update(['estado' => 'eliminado']);
-        return $this->successResponse(null,"Registro Eliminado");
+        return $this->successResponse(null, $request->urlRequest,"Registro Eliminado");
     }
 
     public function busqueda(Request $request)
     {
         $parametro = $request->get('turnos');
         $turnos = turnos::orderBy('created_at', 'desc')->where([['estado','=','activo'],['descripcion','=',$parametro]])->get();
-        return $this->successResponse($turnos);
+        return $this->successResponse($turnos, $request->urlRequest);
     }
 }

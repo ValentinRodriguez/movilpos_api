@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class NacionalidadesController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $nacionalidades = Nacionalidades::get();
 

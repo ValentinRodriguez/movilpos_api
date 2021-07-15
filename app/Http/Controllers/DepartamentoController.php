@@ -8,10 +8,10 @@ use App\Librerias\noempleados;
 
 class DepartamentoController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $departamento = Departamento::orderBy('id', 'asc')->where('estado','=','activo')->get();
-        return $this->successResponse($departamento);
+        return $this->successResponse($departamento, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -40,29 +40,29 @@ class DepartamentoController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{    
                     
             try {                
                 DB::beginTransaction();
                     Departamento::create($datos);               
                 DB::commit();
-                return $this->successResponse(1);                
+                return $this->successResponse(1, $request->urlRequest);                
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $departamento = Departamento::where([['id','=',$id],['estado','=','ACTIVO']])->first();
 
         if($departamento == null){
             return $this->errorResponse('No existe un departamento con esta condicion');
         }
-        return $this->successResponse($departamento);
+        return $this->successResponse($departamento, $request->urlRequest);
     }
 
     public function update(Request $request, $id)
@@ -94,21 +94,21 @@ class DepartamentoController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{                    
             try {                
                 DB::beginTransaction();
                     $departamento->update($request->all());              
                 DB::commit();
-                return $this->successResponse(1);                
+                return $this->successResponse(1, $request->urlRequest);                
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $departamento = Departamento::where('id','=',$id)->first();
                 
@@ -125,12 +125,12 @@ class DepartamentoController extends ApiResponseController
         }
 
         $departamento->update(['estado' => 'eliminado']);
-        return $this->successResponse(null,"Departamento Eliminado");
+        return $this->successResponse(null, $request->urlRequest,"Departamento Eliminado");
     }
 
     public function busqueda(Request $request){
         $departamento = $request->get('departamento');
         $busqueda = Departamento::orderBy('id', 'asc')->where([['nodepartamentos.titulo', '=', $departamento],['nodepartamentos.estado','=','activo']])->get();
-        return $this->successResponse($busqueda);
+        return $this->successResponse($busqueda, $request->urlRequest);
     }
 }

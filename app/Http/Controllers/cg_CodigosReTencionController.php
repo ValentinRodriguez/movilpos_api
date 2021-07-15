@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class cg_CodigosReTencionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         //
     }
@@ -16,7 +16,7 @@ class cg_CodigosReTencionController extends Controller
         //
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         //
     }
@@ -26,7 +26,7 @@ class cg_CodigosReTencionController extends Controller
         //
     }
     
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         //
     }

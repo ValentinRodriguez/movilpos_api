@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class RequisicionesMasterController extends ApiResponseController
 {
     
-    public function index()
+    public function index(Request $request)
     {
         $requisicion = requisicionesMaster::orderBy('num_req', 'asc')->
                                     join('nodepartamentos','nodepartamentos.departamento','=','requisiciones_masters.departamento')->
@@ -43,7 +43,7 @@ class RequisicionesMasterController extends ApiResponseController
                                                 
             $value->productos = $requisicionDetalle;
         } 
-        return $this->successResponse($requisicion);
+        return $this->successResponse($requisicion, $request->urlRequest);
     }
     
     public function store(Request $request)
@@ -103,7 +103,7 @@ class RequisicionesMasterController extends ApiResponseController
        
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             
             try{
@@ -156,7 +156,7 @@ class RequisicionesMasterController extends ApiResponseController
                                                      
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all());                               
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest);                               
                             }
                             requisicionesDetalle::create($datosd);
                         }                        
@@ -164,10 +164,10 @@ class RequisicionesMasterController extends ApiResponseController
                         return $this->errorResponse('No hay productos agragados a la transacción');
                     }
                     DB::commit();
-                    return $this->successResponse($datosd);
+                    return $this->successResponse($datosm, $request->urlRequest);
                 } 
                 catch (\Exception $e ){
-                    return $this->errorResponse($e->getMessage());
+                    return $this->errorResponse($e->getMessage(), $request->urlRequest);
                 }
             }
     }
@@ -182,7 +182,7 @@ class RequisicionesMasterController extends ApiResponseController
         //
     }
     
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try{
             DB::beginTransaction(); 
@@ -193,9 +193,9 @@ class RequisicionesMasterController extends ApiResponseController
                 $requisicion->update(['estado' => 'eliminado']);
                 requisicionesDetalle::where('num_req','=',$requisicion->num_req)->update(['estado' => 'eliminado']);
             DB::commit();
-            return $this->successResponse(1);
+            return $this->successResponse(1, $request->urlRequest);
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
         
     }

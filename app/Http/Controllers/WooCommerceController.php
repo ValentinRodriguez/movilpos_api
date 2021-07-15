@@ -22,7 +22,7 @@ class WooCommerceController extends ApiResponseController
         return $woocommerce;
     }
 
-    public function index()
+    public function index(Request $request)
     {  
         $productos = $this->woocommerce()->get('products');
         $data = [];
@@ -61,7 +61,7 @@ class WooCommerceController extends ApiResponseController
         return response()->json(1); 
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         //
     }
@@ -71,7 +71,7 @@ class WooCommerceController extends ApiResponseController
 
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         //
     }

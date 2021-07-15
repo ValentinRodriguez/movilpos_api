@@ -10,13 +10,13 @@ use Illuminate\Http\Request;
 class ModulosController extends ApiResponseController
 {
     
-    public function index()
+    public function index(Request $request)
     {
         $modulos = Modulos::orderBy('orden', 'asc')->get();
-        return $this->successResponse($modulos);
+        return $this->successResponse($modulos, $request->urlRequest);
     }
 
-    public function autoLlenado()
+    public function autoLlenado(Request $request)
     {
         $respuesta = array();
         
@@ -37,7 +37,7 @@ class ModulosController extends ApiResponseController
         array_push($respuesta,$_perfiles);
         array_push($respuesta,$_menu);
 
-        return $this->successResponse($respuesta);
+        return $this->successResponse($respuesta, $request->urlRequest);
     }
 
     public function store(Request $request)

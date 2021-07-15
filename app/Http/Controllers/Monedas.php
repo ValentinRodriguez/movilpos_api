@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\DB;
 
 class Monedas extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $monedas = tipoMonedas::orderBy('created_at', 'desc')->
                                 where('estado','=','ACTIVO')->
                                 get();
 
-        return $this->successResponse($monedas);
+        return $this->successResponse($monedas, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -43,27 +43,25 @@ class Monedas extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();  
                     tipoMonedas::create($datos);
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse(1, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $moneda = tipoMonedas::find($id);
-        if ($moneda == null){
-            return $this->errorResponse($moneda);
-        }
-        return $this->successResponse($moneda);
+        
+        return $this->successResponse($moneda, $request->urlRequest);
     }
 
     public function update(Request $request,  $id)
@@ -94,25 +92,25 @@ class Monedas extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();  
                     $moneda->update($datos);  
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse(1, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $moneda = tipoMonedas::where('id','=',$id);     
         $moneda->update(['estado' => 'eliminado']);
-        return $this->successResponse(null,"Registro Eliminado");
+        return $this->successResponse(null, $request->urlRequest,"Registro Eliminado");
     }
 
     public function busqueda(Request $request)
@@ -124,7 +122,7 @@ class Monedas extends ApiResponseController
                                       ['divisa','=',$parametro]])->
                                 get();
 
-        return $this->successResponse($monedas);
+        return $this->successResponse($monedas, $request->urlRequest);
     }
 
 }

@@ -9,19 +9,19 @@ use App\Exports\UsersExport;
 
 class DgiiController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $rnc = dgii::get();
-        return $this->successResponse($rnc);
+        return $this->successResponse($rnc, $request->urlRequest);
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         // $brand = BrandsModel::find($id);
         // if ($brand == null){
         //     return $this->errorResponse($brand);
         // }
-        // return $this->successResponse($brand);
+        // return $this->successResponse($brand, $request->urlRequest);
     }
 
     
@@ -29,7 +29,7 @@ class DgiiController extends ApiResponseController
     {
         $parametro = $request->get('rnc');
         $busqueda = dgii::where('rnc','LIKE',"%$parametro%")->get();                              
-        return $this->successResponse($busqueda);
+        return $this->successResponse($busqueda, $request->urlRequest);
     }
 
     public function formulario606()

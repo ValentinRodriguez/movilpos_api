@@ -21,7 +21,7 @@ use Illuminate\Http\Request;
 
 class CpTransaccionesController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $facturas = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
                                     join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
@@ -38,10 +38,10 @@ class CpTransaccionesController extends ApiResponseController
                                                 get();
             $value->detalle_factura = $detalle;
         }
-        return $this->successResponse($facturas);
+        return $this->successResponse($facturas, $request->urlRequest);
     }
 
-    public function facturasPendientes()
+    public function facturasPendientes(Request $request)
     {
         $facturas = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
                                     join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
@@ -82,10 +82,10 @@ class CpTransaccionesController extends ApiResponseController
             $value->detalle_factura = $detalle;
             $value->pagado = isset($pagado->valor) ? $pagado->valor : 0;
         }
-        return $this->successResponse($facturas);
+        return $this->successResponse($facturas, $request->urlRequest);
     }
 
-    public function autollenado()
+    public function autollenado(Request $request)
     {
         $respuesta = array();
 
@@ -124,9 +124,9 @@ class CpTransaccionesController extends ApiResponseController
             array_push($respuesta,$_tipoGastos);
             array_push($respuesta,$_departamento);
 
-            return $this->successResponse($respuesta);
+            return $this->successResponse($respuesta, $request->urlRequest);
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     }
     
@@ -192,7 +192,7 @@ class CpTransaccionesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try{
                 DB::beginTransaction(); 
@@ -267,7 +267,7 @@ class CpTransaccionesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all()); 
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest); 
                             }                                                              
                             
                             cpTransaccionesDetalles::create($datosd);                           
@@ -277,7 +277,7 @@ class CpTransaccionesController extends ApiResponseController
                     } 
                     // return response()->json(1);     
                 DB::commit();
-                return $this->successResponse($datosm);
+                return $this->successResponse($datosm, $request->urlRequest);
             } 
             catch (\Exception $e ){
                 return $this->errorResponse(null, $e->getMessage());
@@ -285,7 +285,7 @@ class CpTransaccionesController extends ApiResponseController
         }
     }
     
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $factura = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
                                     join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],
@@ -309,7 +309,7 @@ class CpTransaccionesController extends ApiResponseController
                                             get();
         $factura->detalle_factura = $detalle;
         
-        return $this->successResponse($factura);
+        return $this->successResponse($factura, $request->urlRequest);
     }
 
     public function update(Request $request, $id)
@@ -372,7 +372,7 @@ class CpTransaccionesController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try{
                 DB::beginTransaction(); 
@@ -441,7 +441,7 @@ class CpTransaccionesController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all()); 
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest); 
                             }        
                             $coTransaccionesCxpDetalle->update($datosd);                                                  
                         }                        
@@ -449,7 +449,7 @@ class CpTransaccionesController extends ApiResponseController
                         return $this->errorResponse(null,'No hay cuentas agragadas a la transacción');
                     }               
                 DB::commit();
-                return $this->successResponse($datosm);
+                return $this->successResponse($datosm, $request->urlRequest);
             } 
             catch (\Exception $e ){
                 return $this->errorResponse(null, $e->getMessage());
@@ -561,7 +561,7 @@ class CpTransaccionesController extends ApiResponseController
                 // ELIMINAMOS LOS REGISTROS DE LA TABLA DETALLE DE TRANSACCIONES DE PAGOS
                 DB::table('cp_transacciones_detalles')->where('factura','=',$transaccionMaster->num_doc)->delete();
             DB::commit();
-            return $this->successResponse(1);
+            return $this->successResponse(1, $request->urlRequest);
         } catch (\Exception $e ){
             return $this->errorResponse(null, $e->getMessage());
         }
@@ -579,7 +579,7 @@ class CpTransaccionesController extends ApiResponseController
         if($datos == null){
             return $this->errorResponse('No existe transacciones con esta condicion');
         }
-        return $this->successResponse($datos);
+        return $this->successResponse($datos, $request->urlRequest);
     }
 
     public function verificaNCF(Request $request){
@@ -596,6 +596,6 @@ class CpTransaccionesController extends ApiResponseController
                                          ['estado','=','ACTIVO']])->
                                   first();      
 
-        return $this->successResponse($datos);
+        return $this->successResponse($datos, $request->urlRequest);
     }
 }

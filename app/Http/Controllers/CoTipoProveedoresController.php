@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 
 class CoTipoProveedoresController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $tipoProveedor = coTipoProveedores::orderBy('id', 'asc')->where('estado','=','ACTIVO')->get();        
-        return $this->successResponse($tipoProveedor);
+        return $this->successResponse($tipoProveedor, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -39,7 +39,7 @@ class CoTipoProveedoresController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try {                
                 DB::beginTransaction();  
@@ -58,15 +58,15 @@ class CoTipoProveedoresController extends ApiResponseController
                     $datos = $datos + array('tipo_proveedor' =>$idsecuencia);
                     coTipoProveedores::create($datos);
                 DB::commit();
-                return $this->successResponse($datos);
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $tipoProveedor = coTipoProveedores::orderBy('tipo_proveedor', 'asc')->
                                where([['tipo_proveedor','=',$id],['estado','=','ACTIVO']])->
@@ -81,7 +81,7 @@ class CoTipoProveedoresController extends ApiResponseController
         if ($tipoProveedor == null){
             return $this->errorResponse($tipoProveedor);
         }
-        return $this->successResponse($tipoProveedor);
+        return $this->successResponse($tipoProveedor, $request->urlRequest);
     }
 
     public function update(Request $request, $id)
@@ -111,21 +111,21 @@ class CoTipoProveedoresController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             try {      
                 DB::beginTransaction();
                     $tipoProveedor->update($datos);  
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse(1, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $tipoProveedor = coTipoProveedores::orderBy('tipo_proveedor', 'asc')->where([['tipo_proveedor','=',$id],['estado','=','ACTIVO']])->first();
         $proveedor = proveedores::where([['cod_sp','=',$id],['estado','=','activo']])->first();
@@ -135,7 +135,7 @@ class CoTipoProveedoresController extends ApiResponseController
         }
      
         $tipoProveedor->update(['estado' => 'ELIMINADO']);
-        return $this->successResponse(null,"Tipo de Proveedor Eliminado");
+        return $this->successResponse(null, $request->urlRequest);
     }
 
     public function busqueda(Request $request)
@@ -145,6 +145,6 @@ class CoTipoProveedoresController extends ApiResponseController
                                 where([['descripcion','=',$parametro],['estado','=','ACTIVO']])->
                                 get();                              
 
-        return $this->successResponse($tipoProveedor);
+        return $this->successResponse($tipoProveedor, $request->urlRequest);
     }
 }

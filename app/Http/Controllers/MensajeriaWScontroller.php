@@ -7,7 +7,7 @@ use Twilio\Rest\Client;
 
 class MensajeriaWScontroller extends ApiResponseController
 {
-    public function send($mensaje, $telefono) {
+    public function send(Request $request,$mensaje, $telefono) {
          
         $sid    = "AC17d9010ec76f46ae67020be41ed1cec2"; 
         $token  = "157e4578c4452a954a1b7743018c1ddd"; 
@@ -21,6 +21,6 @@ class MensajeriaWScontroller extends ApiResponseController
                            ) 
                   ); 
  
-        return $this->successResponse($message->sid);  
+        return $this->successResponse($message->sid, $request->urlRequest);  
     }
 }

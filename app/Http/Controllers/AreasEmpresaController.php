@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class AreasEmpresaController extends ApiResponseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $areas = areasEmpresa::leftjoin('empresas','areas_empresas.cod_cia','=','empresas.cod_cia')->
                                leftjoin('sucursales','sucursales.id','=','areas_empresas.id')->
@@ -24,10 +24,10 @@ class AreasEmpresaController extends ApiResponseController
                                where('areas_empresas.estado','=','ACTIVO')->
                                get();
 
-        return $this->successResponse($areas);
+        return $this->successResponse($areas, $request->urlRequest);
     }
 
-    public function autollenado()
+    public function autollenado(Request $request)
     {     
         $respuesta = array();
 
@@ -43,7 +43,7 @@ class AreasEmpresaController extends ApiResponseController
         array_push($respuesta,$_sucursales);
         array_push($respuesta,$_departamentos);
 
-        return $this->successResponse($respuesta);
+        return $this->successResponse($respuesta, $request->urlRequest);
     }
 
     public function store(Request $request)
@@ -74,24 +74,24 @@ class AreasEmpresaController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();  
                     areasEmpresa::create($datos);
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse(1, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function show($id)
+    public function show(Request $request,$id)
     {
         $moneda = areasEmpresa::find($id);
-        return $this->successResponse($moneda);
+        return $this->successResponse($moneda, $request->urlRequest);
     }
 
     public function update(Request $request,  $id)
@@ -123,21 +123,21 @@ class AreasEmpresaController extends ApiResponseController
         ],$messages);
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
             try {                
                 DB::beginTransaction();  
                     $area->update($datos);  
                 DB::commit();
-                return $this->successResponse(1);
+                return $this->successResponse(1, $request->urlRequest);
             }
             catch (\Exception $e ){
-                return $this->errorResponse($e->getMessage());
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $area = areasEmpresa::where('id','=',$id);     
 
@@ -147,7 +147,7 @@ class AreasEmpresaController extends ApiResponseController
             return $this->errorResponse(null, 'Esta area tiene empleados vinculados');
         }else{
             $area->update(['estado' => 'eliminado']);
-            return $this->successResponse(null,"Registro Eliminado");
+            return $this->successResponse(null, $request->urlRequest);
         }
     }
 
@@ -155,7 +155,7 @@ class AreasEmpresaController extends ApiResponseController
     {
         $parametro = $request->get('areas');
         $areas = areasEmpresa::orderBy('created_at', 'desc')->where([['estado','=','activo'],['descripcion','=',$parametro]])->get();
-        return $this->successResponse($areas);
+        return $this->successResponse($areas, $request->urlRequest);
     }
 
 }

@@ -18,7 +18,7 @@ use App\Librerias\coCuentasProveedor;
 
 class CoOrdenesMasterController extends ApiResponseController
 {    
-    public function index()
+    public function index(Request $request)
     {
         $compra = coOrdenesMaster::orderBy('created_at', 'asc')->
                                 join('proveedores',function($join){
@@ -58,11 +58,11 @@ class CoOrdenesMasterController extends ApiResponseController
             return $this->errorResponse('No existen datos');
         }
         else {
-            return $this->successResponse($compra);
+            return $this->successResponse($compra, $request->urlRequest);
         }
     }
 
-    public function autollenado(){ 
+    public function autollenado(Request $request){ 
         try {
             $respuesta = array();
 
@@ -95,9 +95,9 @@ class CoOrdenesMasterController extends ApiResponseController
             array_push($respuesta,$_puertos);
             array_push($respuesta,$_direcciones);
 
-            return $this->successResponse($respuesta);      
+            return $this->successResponse($respuesta, $request->urlRequest);      
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     }
     
@@ -175,7 +175,7 @@ class CoOrdenesMasterController extends ApiResponseController
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return $this->errorResponseParams($errors->all());
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             
             try{
@@ -229,7 +229,7 @@ class CoOrdenesMasterController extends ApiResponseController
                          
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all()); 
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest); 
                             }                                        
                             coOrdenesDetalle::create($datosd);                                                   
                         }                        
@@ -237,16 +237,16 @@ class CoOrdenesMasterController extends ApiResponseController
                         return $this->errorResponse('No hay productos agragados a la transacción');
                     }               
                     DB::commit();
-                    return $this->successResponse($datosd);
+                    return $this->successResponse($datosm, $request->urlRequest);
                 } 
                 catch (\Exception $e ){
-                    return $this->errorResponse($e->getMessage());
+                    return $this->errorResponse($e->getMessage(), $request->urlRequest);
                 }
             }
     }
     
     
-    public function show($coOrdenesMaster)
+    public function show(Request $request,$coOrdenesMaster)
     {
         $datos = coOrdenesMaster::where([['co_ordenes_masters.id','=',$coOrdenesMaster],
                                          ['orden_cerrada','=','no']])->
@@ -272,7 +272,7 @@ class CoOrdenesMasterController extends ApiResponseController
             return $this->errorResponse('no existen ordenes o todas estan cerradas');
         }
         else{
-            return $this->successResponse($datos);
+            return $this->successResponse($datos, $request->urlRequest);
         }
     }
 
@@ -280,7 +280,7 @@ class CoOrdenesMasterController extends ApiResponseController
     {
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         try{
             DB::beginTransaction(); 
@@ -292,9 +292,9 @@ class CoOrdenesMasterController extends ApiResponseController
                 coOrdenesDetalle::where('num_oc','=',$ordenCompra->num_oc)->update(['estado' => 'eliminado']);
                 
             DB::commit();
-            return $this->successResponse(1);
+            return $this->successResponse(1, $request->urlRequest);
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }
     }
 
@@ -374,11 +374,11 @@ class CoOrdenesMasterController extends ApiResponseController
                 $value->valor_recibido = $valor;
                 array_push($data, $value);
             }
-            return $this->successResponse($data);
+            return $this->successResponse($data, $request->urlRequest);
         }
     }
 
-    public function busqueda($id){
+    public function busqueda(Request $request, $id){
         
       
         $datos = coOrdenesMaster::where([['orden_cerrada','=','no'],['co_ordenes_masters.num_oc', '=', "$id" ]])->
@@ -405,7 +405,7 @@ class CoOrdenesMasterController extends ApiResponseController
             return $this->errorResponse('no existen ordenes o todas estan cerradas');
         }
         else{
-            return $this->successResponse($datos);
+            return $this->successResponse($datos, $request->urlRequest);
         }
     }
 
@@ -465,7 +465,7 @@ class CoOrdenesMasterController extends ApiResponseController
    
             if ($validator->fails()) {                
                 $errors = $validator->errors();            
-                return $this->errorResponseParams($errors->all());
+                return $this->errorResponseParams($errors->all(), $request->urlRequest);
             }
             else{
                 try{
@@ -507,7 +507,7 @@ class CoOrdenesMasterController extends ApiResponseController
                         
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all());                             
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest);                             
                             }
                            //return response()->json($datosd['valor_neto']);
                            coOrdenesDetalle::where('co_ordenes_detalles.num_oc','=',$orden['num_oc'])->
@@ -531,10 +531,10 @@ class CoOrdenesMasterController extends ApiResponseController
    
                     DB::commit();
    
-                return $this->successResponse('1');
+                return $this->successResponse('1', $request->urlRequest);
                 } 
                 catch (\Exception $e ){
-                    return $this->errorResponse($e->getMessage());
+                    return $this->errorResponse($e->getMessage(), $request->urlRequest);
                 }
         }
     }

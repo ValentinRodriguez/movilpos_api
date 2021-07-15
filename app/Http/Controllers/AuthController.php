@@ -24,7 +24,7 @@ class AuthController extends Controller
     //     $this->middleware('jwt.auth', ['except' => ['login']]);
     // }
 
-    public function index()
+    public function index(Request $request)
     {
         $user  = User::orderBy('name', 'asc')->
                        leftjoin('noempleados','noempleados.email','=','users.email')->
@@ -76,7 +76,7 @@ class AuthController extends Controller
             DB::commit();            
             return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Desactivado"), 200);
         } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage());
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
         }  
     }
 
@@ -250,7 +250,7 @@ class AuthController extends Controller
        }
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $usuario = User::find($id);
         if ($usuario == null){
@@ -260,7 +260,7 @@ class AuthController extends Controller
         return response()->json(array("data" => $usuario, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
     }
 
-    public function show($id) {
+    public function show(Request $request,$id) {
         $user = User::find($id);
         
         if ($user == null){
