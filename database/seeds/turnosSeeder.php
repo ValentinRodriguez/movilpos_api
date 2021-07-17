@@ -8,7 +8,7 @@ class turnosSeeder extends Seeder
     public function run()
     {
         $turno = array(
-            ['descripcion' => 'turno provisional', 'usuario_creador' => 'movilsoluciones', 'estado' => 'inactivo']       
+            ['descripcion' => 'turno general', 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo']       
         );
         
         foreach ($turno as $key => $value) {

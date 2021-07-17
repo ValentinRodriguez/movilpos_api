@@ -16,9 +16,9 @@ class CreatenoDepartamentosTable extends Migration
     {
         Schema::create('nodepartamentos', function (Blueprint $table) {
             $table->id();
-            $table->text('titulo');
-            $table->text('descripcion');
-            $table->string('tipodepartamento',15); //Aqui se va a colocar si es PRODUCCION o ADMINISTRACION
+            $table->string('titulo',100);
+            $table->string('descripcion');
+            $table->string('tipodepartamento',30); //Aqui se va a colocar si es PRODUCCION o ADMINISTRACION
             $table->string('usuario_creador',50);
             $table->string('usuario_modificador',50)->nullable();
             $table->string('estado',10);

@@ -47,8 +47,8 @@ class DatabaseSeeder extends Seeder
         $this->call(areasSeeder::class);        
         $this->call(empresaSeeder::class);    
         $this->call(sucursalesSeeder::class);  
-        // $this->call(cuentaSeeder::class);  
-        $this->call(permisosEmpresaSeeder::class);  
-        
+        $this->call(cuentaSeeder::class);  
+        $this->call(tipoInventarioSeeder::class);          
+        $this->call(permisosEmpresaSeeder::class);          
     }
 }

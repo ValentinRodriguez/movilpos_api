@@ -8,7 +8,7 @@ class empresaSeeder extends Seeder
     public function run()
     {
         $empresa = array(
-            'nombre' => 'empresa provisional',
+            'nombre' => 'empresa general',
             'telefono_empresa' => '(XXX)-XXX-XXXX',
             'email_empresa' => 'XXXX@XXX.XXX',
             'rnc' => 'XXXXXXXXXXX',
@@ -19,7 +19,7 @@ class empresaSeeder extends Seeder
             'telefono_contacto' => 'XXXXXXXXXXX',
             'logo' => 'XX',
             'moneda' =>'XX',
-            'estado' =>'inactivo',
+            'estado' =>'activo',
             'id_pais' => 1,
             'id_region' => 7,
             'id_provincia' => 19,

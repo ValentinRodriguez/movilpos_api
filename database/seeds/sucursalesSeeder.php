@@ -9,7 +9,7 @@ class sucursalesSeeder extends Seeder
     {
         $empresa = array(
             "cod_cia" => 1,
-            "descripcion" => 'sucursal provisional' ,
+            "descripcion" => 'sucursal general' ,
             "direccion" => 'XXXXXXX',
             "id_zonalocal" => NULL,
             'id_pais' => 1,
@@ -18,7 +18,7 @@ class sucursalesSeeder extends Seeder
             'id_municipio'=> 69,
             'id_ciudad' => 69,
             'id_sector' => NULL,
-            "estado" => 'inactivo',
+            "estado" => 'activo',
             "usuario_creador" => 'movilsoluciones'
         );
                  

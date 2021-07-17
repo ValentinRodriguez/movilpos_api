@@ -11,7 +11,7 @@ class PuestosSeeder extends Seeder
         DB::table('nopuestos')->truncate();
         
         $puestos = array(
-            ['id_puesto'=> 1, 'titulo'=> 'puesto provicional','sueldo_inicial'  => 0,'sueldo_actual'=> 0,'descripcion'=>'puesto para el usuario inicial','usuario_creador' => 'movilsoluciones','estado'=> 'inactivo'],
+            ['id_puesto'=> 1, 'titulo'=> 'puesto general','sueldo_inicial'  => 0,'sueldo_actual'=> 0,'descripcion'=>'puesto para el usuario inicial','usuario_creador' => 'movilsoluciones','estado'=> 'activo'],
             ['id_puesto'=> 2, 'titulo'=> 'cajero/a','sueldo_inicial'  => 0,'sueldo_actual'=> 0,'descripcion'=>'puesto de caja','usuario_creador' => 'movilsoluciones','estado'=> 'activo'],
             ['id_puesto'=> 3, 'titulo'=> 'vendedor/a','sueldo_inicial'  => 0,'sueldo_actual'=> 0,'descripcion'=>'vendedor','usuario_creador' => 'movilsoluciones','estado'=> 'activo'],
         );

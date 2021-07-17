@@ -9,11 +9,11 @@ class cuentaSeeder extends Seeder
     {
         $cgcatalogo = array(
             [
-                'cuenta_no'          => 0,
-                'descripcion'        => 'prov-control',
+                'cuenta_no'          => 1,
+                'descripcion'        => 'cuenta control general',
                 'origen'             => 'deudor',
                 'nivel'              => 1,
-                'aplica_a'           => 0,
+                'aplica_a'           => 1,
                 'cuenta_resultado'   => 'si',
                 'tipo_cuenta'        => 'normal',
                 'analitico'          => 'no',
@@ -24,15 +24,15 @@ class cuentaSeeder extends Seeder
                 'retencion'          => 'no',
                 'codigo_isr'         => 1,
                 'usuario_creador'    => 'movilsoluciones',               
-                'estado'             => 'inactivo',
+                'estado'             => 'activo',
                 'grupo'              => 'pasivo'
             ],
             [
-                'cuenta_no'          => 00,
-                'descripcion'        => 'prov-sub',
+                'cuenta_no'          => 11,
+                'descripcion'        => 'cuenta sub control general',
                 'origen'             => 'deudor',
                 'nivel'              => 2,
-                'aplica_a'           => 0,
+                'aplica_a'           => 1,
                 'cuenta_resultado'   => 'si',
                 'tipo_cuenta'        => 'normal',
                 'analitico'          => 'no',
@@ -43,15 +43,15 @@ class cuentaSeeder extends Seeder
                 'retencion'          => 'no',
                 'codigo_isr'         => 1,
                 'usuario_creador'    => 'movilsoluciones',               
-                'estado'             => 'inactivo',
+                'estado'             => 'activo',
                 'grupo'              => 'pasivo'
             ],
             [
-                'cuenta_no'          => 000,
-                'descripcion'        => 'prov-aux',
+                'cuenta_no'          => 111,
+                'descripcion'        => 'cuenta auxiliar general',
                 'origen'             => 'deudor',
                 'nivel'              => 3,
-                'aplica_a'           => 00,
+                'aplica_a'           => 11,
                 'cuenta_resultado'   => 'si',
                 'tipo_cuenta'        => 'servicios',
                 'analitico'          => 'no',
@@ -62,7 +62,7 @@ class cuentaSeeder extends Seeder
                 'retencion'          => 'no',
                 'codigo_isr'         => 1,
                 'usuario_creador'    => 'movilsoluciones',               
-                'estado'             => 'inactivo',
+                'estado'             => 'activo',
                 'grupo'              => 'pasivo'
             ],
         );

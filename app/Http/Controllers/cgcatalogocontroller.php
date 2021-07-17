@@ -21,7 +21,7 @@ class cgcatalogocontroller extends ApiResponseController
         return $this->successResponse($catalogo, $request->urlRequest);
     }
 
-    public function cuentasAux()
+    public function cuentasAux(Request $request)
     {
         $tipoProveedor = cgcatalogo::orderBy('cuenta_no', 'asc')->
                                      where([['nivel','=',3],['estado','=','ACTIVO']])->
@@ -163,7 +163,7 @@ class cgcatalogocontroller extends ApiResponseController
         return $this->successResponse($busqueda, $request->urlRequest);
     }
 
-    public function codigosRetencion() {
+    public function codigosRetencion(Request $request) {
         $catalogo = cg_codigosRetenciones::orderBy('codigo_isr','asc')->get();
 
         if ($catalogo == null){

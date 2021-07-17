@@ -7,19 +7,15 @@ class marcasSeeder extends Seeder
 {
     public function run()
     {
-        $servicio = array('id_brand' => 1,
-                          'descripcion' => 'servicio',
-                          'usuario_creador' => 'movilsoluciones',
-                          'estado' => 'inactivo',
+        $data = array(
+            ['id_brand' => 1,'descripcion' => 'servicio','usuario_creador' => 'movilsoluciones','estado' => 'inactivo'],
+            ['id_brand' => 2,'descripcion' => 'digital','usuario_creador' => 'movilsoluciones','estado' => 'inactivo'],
+            ['id_brand' => 3,'descripcion' => 'marca generica','usuario_creador' => 'movilsoluciones','estado' => 'activo']
         );
 
-        $digital = array('id_brand' => 2,
-                         'descripcion' => 'digital',
-                         'usuario_creador' => 'movilsoluciones',
-                         'estado' => 'inactivo',
-        );
+        foreach ($data as $key => $value) {
+            BrandsModel::create($value);  
+        }
 
-        BrandsModel::create($servicio); 
-        BrandsModel::create($digital); 
     }
 }
