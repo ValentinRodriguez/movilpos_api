@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\sucursales;
 use App\Librerias\Empresa;

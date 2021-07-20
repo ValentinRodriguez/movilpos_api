@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\inventario;
+use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\invexistencia;
-use App\Librerias\CategoriasModel;
 use Illuminate\Http\Request;
-use PDF;
 use Illuminate\Support\Facades\DB;
 
 class InvexistenciaController extends ApiResponseController
@@ -17,17 +16,17 @@ class InvexistenciaController extends ApiResponseController
         join('categorias as c','c.id_categoria','=','a.id_categoria')->
         join('brands as d','d.id_brand','=','a.id_brand')->
         select('c.descripcion as descripcion categoria','a.descripcion as producto',
-        'd.descripcion as Marca','a.precio_venta as precio',
+               'd.descripcion as Marca','a.precio_venta as precio',
         DB::raw('sum(b.cantidad) as cantidad')
         )->
         groupby('c.descripcion','a.descripcion','d.descripcion','a.precio_venta','a.created_at')->                       
         orderBy('a.created_at', 'desc')->
         get();
-      
+        
+        return $this->successResponse($producto);
        /* if ($prouducto == null){
             return $this->errorResponse($prouducto);
         }
-        return $this->successResponse($prouducto); */
      //   $pdf = PDF::loadView('producto', compact('producto'));
     //	return $pdf->stream('producto.pdf');
  //   }*/

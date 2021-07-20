@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\inventario;
+use App\Http\Controllers\ApiResponseController;
 
 use App\librerias\invcatalogo;
 use Illuminate\Http\Request;
@@ -26,12 +27,7 @@ class InvcatalogoController extends ApiResponseController
         }
         return $this->successResponse($prouducto, $request->urlRequest);                      
     }
-                        
-    public function create()
-    {
-        //
-    }
-    
+                 
     public function store(Request $request)
     {
         //
@@ -41,12 +37,7 @@ class InvcatalogoController extends ApiResponseController
     {
         //
     }
-    
-    public function edit(invcatalogo $invcatalogo)
-    {
-        //
-    }
-    
+        
     public function update(Request $request, invcatalogo $invcatalogo)
     {
         //

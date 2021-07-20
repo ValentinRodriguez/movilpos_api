@@ -1,18 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use App\invpicking;
+namespace App\Http\Controllers\inventario;
+use App\Http\Controllers\ApiResponseController;
 use App\Librerias\invtransaccionesmodel;
 use Illuminate\Http\Request;
 
 class InvpickingController extends ApiResponseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         return $this->successResponse('Debes de enviar una bodega destino');

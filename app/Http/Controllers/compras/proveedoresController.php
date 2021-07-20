@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\compras;
+use App\Http\Controllers\ApiResponseController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Barryvdh\DomPDF\Facade as PDF;
-use App\Http\Controllers\ApiResponseController;
 use App\Librerias\proveedores;
 use App\Librerias\cgcatalogo;
 use App\Librerias\ve_CondicionesPago;

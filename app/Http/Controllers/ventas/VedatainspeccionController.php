@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\ApiResponseController;
 
 use App\vedatainspeccion;
 use Illuminate\Http\Request;

@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\inventario;
+use App\Http\Controllers\ApiResponseController;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -8,8 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 use Barryvdh\DomPDF\Facade as PDF;
 use Maatwebsite\Excel\Facades\Excel;
-
-use App\Http\Controllers\ApiResponseController;
 use App\Exports\ProductosExport;
 use App\Librerias\InvProductos;
 use App\Librerias\invnumeraciones;

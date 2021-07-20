@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\inventario;
+use App\Http\Controllers\ApiResponseController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -337,7 +338,7 @@ class Invcodigosmovimientos extends ApiResponseController
         }
     }
 
-    public function permisosMovimiento($id)
+    public function permisosMovimiento(Request $request,$id)
     {
         $usuarios = InvUsuarioMovimiento::join('users','users.email','=','invusuariosmovimientos.email')->
                                         orderby('invusuariosmovimientos.id_tipomov','ASC')->

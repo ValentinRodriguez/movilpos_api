@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\cgTransaccionesContables;
 use App\Librerias\cgTipoDocumento;
@@ -12,7 +13,6 @@ use App\Librerias\cgEntradasDiarioMaster;
 use App\Librerias\cpTransacciones;
 use App\Librerias\secuencias;
 use App\Librerias\cpTransaccionesDetalles;
-use App\Librerias\cgcatalogo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 

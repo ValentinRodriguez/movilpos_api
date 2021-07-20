@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\cuadreCaja;
 use App\Librerias\turnos;
@@ -10,6 +11,7 @@ use App\Librerias\noempleados;
 use App\Librerias\areasEmpresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class CuadreCajaController extends ApiResponseController
 {
     public function index(Request $request)

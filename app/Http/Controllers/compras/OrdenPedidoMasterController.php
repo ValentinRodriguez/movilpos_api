@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\compras;
+use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\ordenPedidoDetalle;
 use App\Librerias\ordenPedidoMaster;

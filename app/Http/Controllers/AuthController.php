@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SignUpRequest;
 use Illuminate\Http\Request;
@@ -14,7 +12,6 @@ use App\Librerias\Empresa;
 use App\Librerias\Rol;
 use Illuminate\Support\Facades\DB;
 
-use App\Http\Requests\RegisterAuthRequest;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 class AuthController extends Controller
@@ -68,7 +65,7 @@ class AuthController extends Controller
         // } 
     }
 
-    public function desactivar() {
+    public function desactivar(Request $request) {
         try {                
             DB::beginTransaction();                             
                 $email = request('email'); 

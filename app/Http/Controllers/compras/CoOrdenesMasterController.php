@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\compras;
+use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\coOrdenesDetalle;
 use App\Librerias\coOrdenesMaster;
@@ -298,7 +299,7 @@ class CoOrdenesMasterController extends ApiResponseController
         }
     }
 
-    public function buscaOrdenCompra($orden){
+    public function buscaOrdenCompra(Request $request,$orden){
         $data = array();  
         $valor = 0;
 

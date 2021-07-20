@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\inventario;
+use App\Http\Controllers\ApiResponseController;
 
 use Illuminate\Http\Request;
-use App\Librerias\ExistenciasAlmacen;
 use App\Librerias\invTipos;
 use App\Librerias\Bodegas;
 use App\Librerias\InvProductos;

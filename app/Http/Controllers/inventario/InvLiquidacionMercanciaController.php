@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\inventario;
+use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\inv_liquidacionMercancia;
 use App\Librerias\invtransaccionesmodel;

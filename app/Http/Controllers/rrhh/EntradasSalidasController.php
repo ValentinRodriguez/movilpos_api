@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\ApiResponseController;
 
 use App\librerias\EntradasSalidas;
 use Illuminate\Http\Request;
