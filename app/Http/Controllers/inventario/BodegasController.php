@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\inventario;
 
 use App\Librerias\Bodegas;
 use App\librerias\pais;
@@ -9,6 +9,7 @@ use App\librerias\invProductos;
 use App\librerias\BodegasUsuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ApiResponseController;
 
 class BodegasController extends ApiResponseController
 {

@@ -133,12 +133,12 @@ Route::post('logout', 'AuthController@logout');
     Route::apiresource('/monedas', 'Monedas');
 
     // BODEGAS
-    Route::get('/busqueda/bodega', 'BodegasController@busquedaBodega');
-    Route::get('/autollenado/bodega/{email}', 'BodegasController@autoLlenado');
-    Route::get('/usuarios/bodega/{bodega}', 'BodegasController@usuariosPermisosBodegas');
-    Route::get('/bodegas-usuarios/{email}', 'BodegasController@usuarioConPermisosBodegas');
-    Route::post('/permisos/bodegas', 'BodegasController@concederPermisosBodega');
-    Route::apiresource('/bodegas', 'BodegasController');
+    Route::get('/busqueda/bodega', 'inventario\BodegasController@busquedaBodega');
+    Route::get('/autollenado/bodega/{email}', 'inventario\BodegasController@autoLlenado');
+    Route::get('/usuarios/bodega/{bodega}', 'inventario\BodegasController@usuariosPermisosBodegas');
+    Route::get('/bodegas-usuarios/{email}', 'inventario\BodegasController@usuarioConPermisosBodegas');
+    Route::post('/permisos/bodegas', 'inventario\BodegasController@concederPermisosBodega');
+    Route::apiresource('/bodegas', 'inventario\BodegasController');
 
     // CODIGOS MOVIMIENTOS
     Route::get('/usuarios/movimientos/{id}', 'Invcodigosmovimientos@permisosMovimiento');
