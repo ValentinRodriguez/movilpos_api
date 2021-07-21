@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\empresa;
 use App\Http\Controllers\ApiResponseController;
 use App\Librerias\tipo_documento;
 use Illuminate\Http\Request;

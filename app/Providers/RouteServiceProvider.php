@@ -71,7 +71,7 @@ class RouteServiceProvider extends ServiceProvider
      * @return void
      */
     protected function mapApiRoutes()
-    {
+{
         Route::prefix('api')
             ->middleware('api')
             ->namespace($this->namespace)
@@ -79,7 +79,14 @@ class RouteServiceProvider extends ServiceProvider
                 require base_path('routes/api.php');
                 require base_path('routes/pos/inventario/inventario.routes.php');
                 require base_path('routes/pos/compras/compras.routes.php');
-                require base_path('routes/pos/contabilidad-general/contabilidadGeneral.routes.php');
+                require base_path('routes/pos/contabilidadGeneral/contabilidadGeneral.routes.php');
+                require base_path('routes/pos/cuentasXpagar/cuentaspagar.routes.php');
+                require base_path('routes/pos/globales/globales.routes.php');
+                require base_path('routes/pos/tienda/tienda.routes.php');
+                require base_path('routes/pos/empresa/empresa.routes.php');
+                require base_path('routes/pos/miscelaneos/miscelaneos.routes.php');
+                require base_path('routes/pos/rrhh/rrhh.routes.php');
+                require base_path('routes/pos/ventas/ventas.routes.php');
             });
     }
 }

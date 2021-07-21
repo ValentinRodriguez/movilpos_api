@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+
 class AuthController extends Controller
 {
     // public function __construct()

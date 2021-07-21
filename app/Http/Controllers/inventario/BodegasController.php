@@ -15,6 +15,7 @@ class BodegasController extends ApiResponseController
 {
 
     public function index(Request $request){
+        // \Log::debug("{test}");
         $bodegas = Bodegas::orderBy('id_bodega', 'asc')->
                            join('paises','paises.id_pais','=','bodegas.id_pais')->
                            join('ciudades','ciudades.id_ciudad','=','bodegas.id_ciudad')->

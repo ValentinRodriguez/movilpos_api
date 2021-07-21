@@ -1,47 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\globales;
 use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\zonahoraria;
 use Illuminate\Http\Request;
-use App\Http\Controllers\ApiResponseController;
 
 class ZonahorariaController extends ApiResponseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
-        $zona = zonahoraria::orderBy('created_at', 'desc')->
-        get();
-
-if ($zona == null){
-
-return $this->errorResponse($zona);
-}
-return $this->successResponse($zona, $request->urlRequest);
+        $zona = zonahoraria::orderBy('created_at', 'desc')->get();
+        return $this->successResponse($zona, $request->urlRequest);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $datos = array("id_zonahoraria"=>$request->input("id_zonahoraria"),
@@ -71,35 +43,11 @@ return $this->successResponse($zona, $request->urlRequest);
             }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\zonahoraria  $zonahoraria
-     * @return \Illuminate\Http\Response
-     */
     public function show(zonahoraria $zonahoraria)
     {
         //
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\zonahoraria  $zonahoraria
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(zonahoraria $zonahoraria)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\zonahoraria  $zonahoraria
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id)
     {
         $zona = zonahoraria::find($id);
@@ -130,12 +78,6 @@ return $this->successResponse($zona, $request->urlRequest);
             }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\zonahoraria  $zonahoraria
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request, $id)
     {
         $zonas = zonahoraria::find($id);
@@ -146,6 +88,6 @@ return $this->successResponse($zona, $request->urlRequest);
 
         $zonas->update(['estado' => 'ELIMINADO']);
         return response()->json(array("msj:" => "Registro Eliminado"));
-   }
     }
+}
 

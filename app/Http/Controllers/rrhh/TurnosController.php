@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\rrhh;
 use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\turnos;
-use App\Librerias\sucursales;
-use App\Librerias\Nopuesto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

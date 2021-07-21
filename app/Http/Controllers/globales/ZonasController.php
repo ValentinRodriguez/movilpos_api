@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\globales;
 use App\Http\Controllers\ApiResponseController;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Librerias\zonas;
 use App\Librerias\zonas_provincias;
-use App\Http\Controllers\ApiResponseController;
 
 class ZonasController extends ApiResponseController
 {

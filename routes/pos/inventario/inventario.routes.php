@@ -22,6 +22,13 @@ use Illuminate\Support\Facades\Route;
     Route::post('/permisos/bodegas', 'inventario\BodegasController@concederPermisosBodega');
     Route::apiresource('/bodegas', 'inventario\BodegasController');
 
+    //Secciones
+    Route::get('/invseccion/bodega/{id}','inventario\InvseccionController@seccionporbodega');
+    Route::apiresource('/invseccion','inventario\InvseccionController');
+
+    //Tramos
+    Route::apiresource('/invtramos','inventario\InvTramosController');
+
     // MARCAS
     Route::get('/busqueda/marca', 'inventario\BrandsController@busqueda');
     Route::apiresource('/marca', 'inventario\BrandsController');

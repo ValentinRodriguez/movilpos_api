@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\cuentasXpagar;
 use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\cpAnalisisSaldoPendiente;
-use App\Librerias\Empresa;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 

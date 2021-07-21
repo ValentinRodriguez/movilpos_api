@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\contabilidadGeneral;
 use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\cc_transacciones;
 use App\Mail\pagosMailable;
 use App\Mail\listaDeudoresMailable;
-use App\Http\Controllers\MensajeriaSMScontroller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +15,7 @@ class CcTransaccionesController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        //
+        return response()->json('test');
     }
     
     public function store(Request $request)

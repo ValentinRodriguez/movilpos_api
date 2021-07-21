@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\cuentasXpagar;
 use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\cpTransacciones;
@@ -13,10 +13,8 @@ use App\Librerias\cgTipoGastos;
 use App\Librerias\Departamento;
 use App\Librerias\cpTransaccionesHistoriales;
 use App\Librerias\cpTransaccionesHistorialesDetalle;
-use App\Librerias\Empresa;
 use App\Librerias\cgPeriodosFiscales;
 
-use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\globales;
 use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\Menu;

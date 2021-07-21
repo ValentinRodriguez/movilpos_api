@@ -1,29 +1,27 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\empresa;
 use App\Http\Controllers\ApiResponseController;
 
 use Illuminate\Http\Request;
-use App\Librerias\tipoNegocio;
+use App\Librerias\tipoClientes;
 use App\librerias\Mclientes;
 use Illuminate\Support\Facades\DB;
 
-class TipoNegocioController extends ApiResponseController
+class tipoClientesController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        $tipoNegocio = tipoNegocio::orderBy('tipo_negocio', 'asc')->
-                               where('estado','=','ACTIVO')->
-                               get();
+        $tipoCliente = tipoClientes::orderBy('tipo_cliente', 'asc')->where('estado','=','ACTIVO')->get();
         
-        return $this->successResponse($tipoNegocio, $request->urlRequest);
+        return $this->successResponse($tipoCliente, $request->urlRequest);
     }
     
     public function store(Request $request){
         $datos = array('descripcion'     => $request->input('descripcion'),
                        'usuario_creador' => $request->input('usuario_creador'),
                        'estado'          => 'ACTIVO');
-
+        
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
@@ -34,52 +32,52 @@ class TipoNegocioController extends ApiResponseController
             "descripcion" => 'required|string'
         ],$messages);
 
-        try {
-            DB::beginTransaction();  
-                if ($validator->fails()) {
-                    $errors =  $validator->errors();
-                    return $this->errorResponse($errors);
-                } else {
+        if ($validator->fails()) {
+            $errors =  $validator->errors();
+            return $this->errorResponse($errors);
+        } else {
+            try {
+                DB::beginTransaction();  
                     $maxid=0;
                     $idsecuencia=0;
-                    $maxid = tipoNegocio::get('tipo_negocio')->max();
-        
+                    $maxid = tipoClientes::get('tipo_cliente')->max();
+
                     if ($maxid == null){
                         $idsecuencia=1;
                     } else {
-                        $idsecuencia = $maxid->tipo_negocio;
+                        $idsecuencia = $maxid->tipo_cliente;
                         $idsecuencia=$idsecuencia + 1;
                     }
-        
-                    $datos = $datos + array('tipo_negocio' =>$idsecuencia);
-                    tipoNegocio::create($datos);
-                }
-            DB::commit();
-            return $this->successResponse($datos, $request->urlRequest);
+
+                    $datos = $datos + array('tipo_cliente' =>$idsecuencia);
+                    tipoClientes::create($datos);
+                DB::commit();
+                return $this->successResponse($datos, $request->urlRequest);
+            }
+            catch (\Exception $e ){
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
+            }
         }
-        catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage(), $request->urlRequest);
-        } 
-      
     }
 
     public function show(Request $request,$id)
     {
-        $tipo = tipoNegocio::find($id);
+        $tipo = tipoClientes::find($id);
+        if ($tipo == null){
+            return $this->errorResponse($tipo, $request->urlRequest);
+        }
         return $this->successResponse($tipo, $request->urlRequest);
     }
     
     public function update(Request $request, $id)
     {
-        $tipos = tipoNegocio::find($id);
+        $tipos = tipoClientes::find($id);
 
         $datos = array(
-            'descripcion'         =>$request->input('descripcion'),
-            'usuario_creador'     =>$request->input('usuario_creador'),
+            'descripcion'         =>$request->input('descripcion') ,
             'usuario_modificador' =>$request->input('usuario_modificador')
         );
        
-        ///return response()->json($tipos);
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
@@ -97,40 +95,39 @@ class TipoNegocioController extends ApiResponseController
         }else{
             try {
                 DB::beginTransaction();  
-                    $tipos->update($datos);                    
+                    $tipos->update($datos);
                 DB::commit();
                 return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e->getMessage(), $request->urlRequest);
-            }             
+            }
         }
     }
     
     public function destroy(Request $request, $id)
     {
-        $tipoNegocio = tipoNegocio::where('tipo_negocio','=',$id)->first();
+        $tipoCliente = tipoClientes::where('tipo_cliente','=',$id)->first();
         
-        if ($tipoNegocio == null){
-            return $this->errorResponse(null, "Este registro no existe");
+        if ($tipoCliente == null){
+            return $this->errorResponse(null, "Esta Este registro no existe no existe");
         }
 
-        $cliente = Mclientes::where('tipo_negocio','=',$id)->where('estado','=','ACTIVO')->first();
+        $cliente = Mclientes::where('tipo_cliente','=',$id)->where('estado','=','ACTIVO')->first();
         if($cliente <> null){
             return $this->errorResponse("No puede eliminar este registro, tiene cliente/s asociado/s");
         }
 
-        $tipoNegocio->update(['estado' => 'eliminado']);
-        return $this->successResponse(null, $request->urlRequest,"Tipo de negocio eliminado");
+        $tipoCliente->update(['estado' => 'ELIMINADO']);
+        return $this->successResponse(null, $request->urlRequest,"Tipo de cliente Eliminado");
     }
 
     public function busquedaTipo(Request $request)
     {
         $descripcion = $request->get('descripcion');
-
-        $tipo  = tipoNegocio::orderBy('id', 'asc')->
-                               descripcion($descripcion)->
-                               get();
+        
+        $tipo  = tipoClientes::orderBy('id', 'asc')->
+                               where('tipos_clientes.descripcion', '=', $descripcion)->get();
         return $this->successResponse($tipo, $request->urlRequest);
     }
 }

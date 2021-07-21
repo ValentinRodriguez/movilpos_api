@@ -6,7 +6,7 @@ use App\Http\Controllers\ApiResponseController;
 use App\cpnotas_debito_credito;
 use Illuminate\Http\Request;
 
-class CpnotasDebitoCreditoController extends Controller
+class CpnotasDebitoCreditoController extends ApiResponseController
 {
     /**
      * Display a listing of the resource.

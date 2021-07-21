@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\tienda;
 use App\Http\Controllers\ApiResponseController;
 
 use Illuminate\Http\Request;
-use App\Librerias\WooCommerce;
 use Automattic\WooCommerce\Client;
 
 class WooCommerceController extends ApiResponseController

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\contabilidadGeneral;
 use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\costos;
@@ -9,11 +9,6 @@ use Illuminate\Http\Request;
 
 class CostosController extends ApiResponseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $costos = costos::join('inv_productos as b','b.codigo','=','costos.codigo')->
