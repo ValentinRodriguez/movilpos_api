@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ventas;
 use App\Http\Controllers\ApiResponseController;
-
+use Illuminate\Support\Facades\DB;
 use App\librerias\verecepcion_master;
+use App\librerias\verecepcion_detalle;
 use Illuminate\Http\Request;
 
 class VerecepcionMasterController extends ApiResponseController

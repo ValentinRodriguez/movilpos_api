@@ -8,11 +8,11 @@ use Illuminate\Support\Facades\Route;
     Route::apiresource('/cctransacciones', 'contabilidadGeneral\CcTransaccionesController');
 
     // CUENTAS CONTABLES
-    Route::get('/busqueda/desc-cgcatalogo', 'cgcatalogocontroller@busquedaDescripcion');
-    Route::get('/busqueda/cgcatalogo', 'cgcatalogocontroller@busquedaCatalogo');
-    Route::get('/busqueda/codigos-retencion', 'cgcatalogocontroller@codigosRetencion');
-    Route::get('/busqueda/cuentas-auxiliares', 'cgcatalogocontroller@cuentasAux');
-    Route::apiresource('/cgcatalogo', 'cgcatalogocontroller');
+    Route::get('/busqueda/desc-cgcatalogo', 'contabilidadGeneral\cgcatalogocontroller@busquedaDescripcion');
+    Route::get('/busqueda/cgcatalogo', 'contabilidadGeneral\cgcatalogocontroller@busquedaCatalogo');
+    Route::get('/busqueda/codigos-retencion', 'contabilidadGeneral\cgcatalogocontroller@codigosRetencion');
+    Route::get('/busqueda/cuentas-auxiliares', 'contabilidadGeneral\cgcatalogocontroller@cuentasAux');
+    Route::apiresource('/cgcatalogo', 'contabilidadGeneral\cgcatalogocontroller');
 
     //ENTRADAS DE DIARIO
     Route::apiresource('/cgentradasdiarios', 'contabilidadGeneral\CgEntradasDiarioMasterController');
@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Route;
     Route::apiresource('/cgtransacciones', 'contabilidadGeneral\CgTransaccionesContablesController');
 
     //Costos
-    Route::apiresource('/costos','compras\CostosController');
+    Route::apiresource('/costos','contabilidadGeneral\CostosController');
 
     //CUADRE CAJA
     Route::get('/autollenado/cuadre-caja', 'contabilidadGeneral\CuadreCajaController@autollenado');

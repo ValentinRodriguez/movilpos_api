@@ -47,7 +47,7 @@ use Illuminate\Support\Facades\Route;
 
     //CATALOGO DE PRODUCTOS
     Route::get('/reportinv/invcatalogo', 'inventario\InvcatalogoController@reportinv');
-    Route::apiresource('/invcatalogo', 'InvcatalogoController');
+    Route::apiresource('/invcatalogo', 'inventario\InvcatalogoController');
 
     // CODIGOS MOVIMIENTOS
     Route::get('/usuarios/movimientos/{id}', 'inventario\Invcodigosmovimientos@permisosMovimiento');

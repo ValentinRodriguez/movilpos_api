@@ -36,8 +36,6 @@ class User extends Authenticatable implements JWTSubject
     {
         $this->attributes['password'] = bcrypt($value);
     }
-
-
     
     public function ScopeParametro($query, $parametro)
     {

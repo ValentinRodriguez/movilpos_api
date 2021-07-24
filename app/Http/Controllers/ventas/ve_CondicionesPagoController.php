@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ventas;
 use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\ve_CondicionesPago;

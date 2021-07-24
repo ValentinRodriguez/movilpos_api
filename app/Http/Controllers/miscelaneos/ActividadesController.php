@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\miscelaneos;
 use App\Http\Controllers\ApiResponseController;
 
 use App\Librerias\Actividades;

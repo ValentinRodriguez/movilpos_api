@@ -16,26 +16,26 @@ use Illuminate\Support\Facades\Route;
     Route::apiresource('/ordenescompras', 'compras\CoOrdenesMasterController');
 
     //PUERTOS
-    Route::get('/busqueda/puerto', 'CoPuertoController@busqueda');
-    Route::apiresource('/puertos', 'CoPuertoController');
+    Route::get('/busqueda/puerto', 'compras\CoPuertoController@busqueda');
+    Route::apiresource('/puertos', 'compras\CoPuertoController');
 
     //TIPO PROVEEDORES
-    Route::get('/busqueda/tipo-proveedor', 'CoTipoProveedoresController@busqueda');
-    Route::apiresource('/tipo-proveedores', 'CoTipoProveedoresController');
+    Route::get('/busqueda/tipo-proveedor', 'compras\CoTipoProveedoresController@busqueda');
+    Route::apiresource('/tipo-proveedores', 'compras\CoTipoProveedoresController');
 
     //ORDENES DE PEDIDOS
-    Route::get('/busqueda/orden-pedido/{orden}', 'OrdenPedidoMasterController@buscaOrden');
-    Route::apiresource('/ordenespedidos', 'OrdenPedidoMasterController');
+    Route::get('/busqueda/orden-pedido/{orden}', 'compras\OrdenPedidoMasterController@buscaOrden');
+    Route::apiresource('/ordenespedidos', 'compras\OrdenPedidoMasterController');
 
     //PROVEEDORES
-    Route::get('/busqueda/proveedores', 'proveedoresController@busquedaTitulo');
-    Route::get('/autollenado/proveedores', 'proveedoresController@autollenado');
-    Route::post('/proveedores/catalogo', 'proveedoresController@catalogoProveedores');    
-    Route::apiresource('/proveedores', 'proveedoresController');
+    Route::get('/busqueda/proveedores', 'compras\proveedoresController@busquedaTitulo');
+    Route::get('/autollenado/proveedores', 'compras\proveedoresController@autollenado');
+    Route::post('/proveedores/catalogo', 'compras\proveedoresController@catalogoProveedores');    
+    Route::apiresource('/proveedores', 'compras\proveedoresController');
 
     // REQUISICIONES
-    Route::apiresource('/requisiciones', 'RequisicionesMasterController');
+    Route::apiresource('/requisiciones', 'compras\RequisicionesMasterController');
 
     // TRANSPORTISTAS
-    Route::get('/busqueda/transportistas', 'TransportistasController@busquedaTransportista');
-    Route::apiresource('/transportistas', 'TransportistasController');
+    Route::get('/busqueda/transportistas', 'compras\TransportistasController@busquedaTransportista');
+    Route::apiresource('/transportistas', 'compras\TransportistasController');
