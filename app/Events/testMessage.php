@@ -23,6 +23,6 @@ class testMessage implements ShouldBroadcast
     
     public function broadcastOn()
     {
-        return new Channel('test');
+        return new Channel('chanel-chat');
     }
 }
