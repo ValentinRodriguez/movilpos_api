@@ -6,6 +6,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Events\userUpdated;
+use App\Events\userDeleted;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -20,6 +22,11 @@ class User extends Authenticatable implements JWTSubject
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+    protected $dispatchesEvents = [
+        'updated' => userUpdated::class,
+        'deleted' => userDeleted::class,
     ];
 
     public function getJWTIdentifier()

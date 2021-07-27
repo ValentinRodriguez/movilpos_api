@@ -80,10 +80,6 @@ class AuthController extends Controller
 
     public function signup(SignUpRequest $request)
     {
-        $empresa=noempleados::where('estado','=','activo')
-       ->get() ;
-      // ->COUNT();
-      //  return response()->json("aqui");
         $datos = array(
             'username'              =>$request->input('username') ,
             'name'                  =>$request->input('name'),
@@ -251,9 +247,9 @@ class AuthController extends Controller
     public function destroy(Request $request, $id)
     {
         $usuario = User::find($id);
-        if ($usuario == null){
-            return response()->json(array("data" => $usuario, "code" => 501, "msj" => "Respuesta Exitosa"), 501);
-        }
+        // if ($usuario == null){
+        //     return response()->json(array("data" => $usuario, "code" => 501, "msj" => "Respuesta Exitosa"), 501);
+        // }
         $usuario->update(['estado' => 'desactivado']);
         return response()->json(array("data" => $usuario, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
     }
