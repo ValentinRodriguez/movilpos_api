@@ -30,5 +30,6 @@ class CategoriasSeeder extends Seeder
         foreach ($data as $key => $value) {
             CategoriasModel::create($value);  
         }
+        
     }
 }

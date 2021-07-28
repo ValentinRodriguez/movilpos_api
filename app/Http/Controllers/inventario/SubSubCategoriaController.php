@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\inventario;
+use App\Http\Controllers\ApiResponseController;
 
-use App\SubSubCategoria;
+use App\Librerias\SubSubCategoria;
 use Illuminate\Http\Request;
 
-class SubSubCategoriaController extends Controller
+class SubSubCategoriaController extends ApiResponseController
 {
     /**
      * Display a listing of the resource.

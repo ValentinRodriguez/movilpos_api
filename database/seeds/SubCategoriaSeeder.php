@@ -10,16 +10,16 @@ class SubCategoriaSeeder extends Seeder
         $data = array(
             // ROPA MUJER
             ['id_subcategoria' => 1, 'id_categoria' => 4, 'descripcion' => 'Ropa','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            // ['id_subcategoria' => 1, 'id_categoria' => 4, 'descripcion' => 'Bolsos y Carteras','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            // ['id_subcategoria' => 1, 'id_categoria' => 4, 'descripcion' => 'Calzados','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 62, 'id_categoria' => 4, 'descripcion' => 'Bolsos y Carteras','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 63, 'id_categoria' => 4, 'descripcion' => 'Calzados','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 2, 'id_categoria' => 4, 'descripcion' => 'Trajes de bano','usuario_creador' => 'movilsoluciones','estado' => 'inactivo'],
             ['id_subcategoria' => 3, 'id_categoria' => 4, 'descripcion' => 'Lencería y ropa interior','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 4, 'id_categoria' => 4, 'descripcion' => 'Accesorios','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
 
             // ROPA HOMBRE
             ['id_subcategoria' => 5, 'id_categoria' => 5, 'descripcion' => 'Ropa','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            // ['id_subcategoria' => 1, 'id_categoria' => 4, 'descripcion' => 'Bolsos y Carteras','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            // ['id_subcategoria' => 1, 'id_categoria' => 4, 'descripcion' => 'Calzados','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 64, 'id_categoria' => 5, 'descripcion' => 'Bolsos y Carteras','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 65, 'id_categoria' => 5, 'descripcion' => 'Calzados','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 6, 'id_categoria' => 5, 'descripcion' => 'Ropa interior','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 7, 'id_categoria' => 5, 'descripcion' => 'Accesorios','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
 

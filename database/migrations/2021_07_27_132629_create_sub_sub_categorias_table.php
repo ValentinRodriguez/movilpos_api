@@ -6,15 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSubSubCategoriasTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('sub_sub_categorias', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_subsubcategoria');
             $table->unique('id_subsubcategoria');
             $table->integer('id_subcategoria');
             $table->string('descripcion',500);
@@ -25,11 +21,6 @@ class CreateSubSubCategoriasTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('sub_sub_categorias');

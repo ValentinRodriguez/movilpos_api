@@ -49,6 +49,8 @@ class DatabaseSeeder extends Seeder
         $this->call(sucursalesSeeder::class);  
         $this->call(cuentaSeeder::class);  
         $this->call(tipoInventarioSeeder::class);          
-        $this->call(permisosEmpresaSeeder::class);          
+        $this->call(permisosEmpresaSeeder::class); 
+        $this->call(SubCategoriaSeeder::class); 
+        $this->call(SubSubCategoriaSeeder::class);          
     }
 }

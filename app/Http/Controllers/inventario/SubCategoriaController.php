@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\inventario;
 use App\Http\Controllers\ApiResponseController;
-use App\SubCategoria;
+use App\Librerias\SubCategoria;
 use Illuminate\Http\Request;
 
 class SubCategoriaController extends ApiResponseController
