@@ -22,8 +22,9 @@ class CategoriasSeeder extends Seeder
             ['id_categoria' => 11, 'descripcion' => 'Juguetes y ropas de bebe','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             
             ['id_categoria' => 12, 'descripcion' => 'Deporte','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_categoria' => 13, 'descripcion' => 'Vehiculos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_categoria' => 14, 'descripcion' => 'Herramienta','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_categoria' => 13, 'descripcion' => 'Salud y belleza','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_categoria' => 14, 'descripcion' => 'automotriz','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_categoria' => 15, 'descripcion' => 'Herramienta','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
         );
 
         foreach ($data as $key => $value) {

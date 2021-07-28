@@ -66,7 +66,30 @@ class SubCategoriaSeeder extends Seeder
             ['id_subcategoria' => 37, 'id_categoria' => 11, 'descripcion' => 'Para niños','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 38, 'id_categoria' => 11, 'descripcion' => 'para embarazadas ','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 39, 'id_categoria' => 11, 'descripcion' => 'Juguetes','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            
+
+            // Deporte
+            ['id_subcategoria' => 40, 'id_categoria' => 12, 'descripcion' => 'Deportes acuáticos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 41, 'id_categoria' => 12, 'descripcion' => 'Bicicletas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 42, 'id_categoria' => 12, 'descripcion' => 'Calzado Deportivo','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 43, 'id_categoria' => 12, 'descripcion' => 'Pesca','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 44, 'id_categoria' => 12, 'descripcion' => 'ropa deportiva','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 45, 'id_categoria' => 12, 'descripcion' => 'otros','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 46, 'id_categoria' => 13, 'descripcion' => 'Extensiones de pelo y pelucas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 47, 'id_categoria' => 13, 'descripcion' => 'Maquillaje','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 48, 'id_categoria' => 13, 'descripcion' => 'Cuidado de la salud','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 49, 'id_categoria' => 13, 'descripcion' => 'Cuidado de la piel','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 50, 'id_categoria' => 13, 'descripcion' => 'Manicura y pedicura','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 51, 'id_categoria' => 13, 'descripcion' => 'cuidado personal','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 52, 'id_categoria' => 13, 'descripcion' => 'Artículos para adultos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 53, 'id_categoria' => 14, 'descripcion' => 'Repuestos para coches','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 54, 'id_categoria' => 14, 'descripcion' => 'Herramientas y mantenimiento','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 55, 'id_categoria' => 14, 'descripcion' => 'Electrónica para coche','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 56, 'id_categoria' => 14, 'descripcion' => 'Accesorios para el exterior','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 57, 'id_categoria' => 14, 'descripcion' => 'Piezas y accesorios para moto','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 58, 'id_categoria' => 14, 'descripcion' => 'Accesorios para el interior','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
         );
 
         foreach ($data as $key => $value) {
@@ -74,3 +97,45 @@ class SubCategoriaSeeder extends Seeder
         }
     }
 }
+
+
+Herramientas
+Herramientas de medición y análisis
+Herramientas manuales
+Herramientas eléctricas
+Herramientas de jardinería
+Juegos de herramientas
+Iluminación interior
+Luces de techo
+Lámparas colgantes
+Luces empotradas
+Candelabros
+Lámparas de pared
+Lámparas de noche
+ 
+Herramientas
+Equipos para soldar
+Utensilios para soldar
+Herramientas y accesorios para máquinas
+Carpintería
+Almacenamiento
+Iluminación LED
+Tiras LED
+Luces LED empotrables
+Panel de luces LED
+Focos LED
+Barras LED
+ 
+Bricolaje
+Accesorios y equipos eléctricos
+Interruptores de pared
+Ferretería
+Accesorios para cocinas
+Herramientas de pintura
+Equipos de bombeo
+Iluminación de exterior
+Linternas
+Lámparas solares
+Focos
+Cadenas de luces
+Iluminación sumergible

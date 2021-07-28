@@ -227,13 +227,109 @@ class SubSubCategoriaSeeder extends Seeder
             ['id_subcategoria' => 39, 'descripcion' => 'Peluches','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 39, 'descripcion' => 'Pegatinas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 39, 'descripcion' => 'helicopteros y Coches de control remoto','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            // deporte
+            ['id_subcategoria' => 40, 'descripcion' => 'Natación','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 40, 'descripcion' => 'Trajes de baño','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 40, 'descripcion' => 'Conjuntos de baño','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 40, 'descripcion' => 'Vestidos de playa','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 40, 'descripcion' => 'Bañadores de hombre','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 40, 'descripcion' => 'Bañadores infantiles','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 41, 'descripcion' => 'Bicicletas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 41, 'descripcion' => 'Cuadros de bicicleta','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 41, 'descripcion' => 'Luces de bicicleta','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 41, 'descripcion' => 'Cascos de bicicleta','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 41, 'descripcion' => 'ropa de ciclismo','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 41, 'descripcion' => 'Gafas de ciclismo','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 42, 'descripcion' => 'zapatillas y tenis de correr','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 42, 'descripcion' => 'zapatillas y tenis de futbol','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 42, 'descripcion' => 'zapatillas y tenis de skateboard','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 42, 'descripcion' => 'zapatillas y tenis de baloncesto','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 43, 'descripcion' => 'Carretes de pesca','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 43, 'descripcion' => 'Cebos de pesca','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 43, 'descripcion' => 'Cañas de pescar','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 43, 'descripcion' => 'Cajas de pesca','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 43, 'descripcion' => 'ropa de pesca','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 44, 'descripcion' => 'Camisetas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 44, 'descripcion' => 'Chaquetas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 44, 'descripcion' => 'Pantalones','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 44, 'descripcion' => 'Accesorios deportivos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 45, 'descripcion' => 'Camping y senderismo','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 45, 'descripcion' => 'Caza','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 45, 'descripcion' => 'Golf','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 45, 'descripcion' => 'Fitness y bodybuilding','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 45, 'descripcion' => 'Instrumentos musicales','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            // salud y belleza
+            ['id_subcategoria' => 46, 'descripcion' => 'Extensiones de pelo','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 46, 'descripcion' => 'Pelucas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 46, 'descripcion' => 'Cierres','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            
+            ['id_subcategoria' => 47, 'descripcion' => 'para Ojos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 47, 'descripcion' => 'para Labios','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 47, 'descripcion' => 'para Cara','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 47, 'descripcion' => 'Utensilios de maquillaje','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 48, 'descripcion' => 'Masaje y relajacion','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 48, 'descripcion' => 'Cuidado personal','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 49, 'descripcion' => 'Cara','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 49, 'descripcion' => 'Cuerpo','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 49, 'descripcion' => 'utensilios ','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 50, 'descripcion' => 'Esmalte de gel para uñas ','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 50, 'descripcion' => 'Pulidoras de uñas ','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 50, 'descripcion' => 'Lámparas de secado para uñas ','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 50, 'descripcion' => 'Brillantina para uñas ','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 51, 'descripcion' => 'Peluquería ','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 51, 'descripcion' => 'Afeitado y depilación','usuario_creador' => 'movilsoluciones','estado' => 'activo'],            
+            ['id_subcategoria' => 51, 'descripcion' => 'articulos higiene personal','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 52, 'descripcion' => 'Lubricantes','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 52, 'descripcion' => 'Condones','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 52, 'descripcion' => 'Vibradores','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 52, 'descripcion' => 'juegos de rol','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 53, 'descripcion' => 'Luces para coche','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 53, 'descripcion' => 'Piezas para el interior','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 53, 'descripcion' => 'Piezas para el exterior','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 53, 'descripcion' => 'Sensores para vehículos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 53, 'descripcion' => 'otros','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 54, 'descripcion' => 'Herramientas de diagnóstico','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 54, 'descripcion' => 'Utensilios de limpieza','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 54, 'descripcion' => 'Tratamiento de pintura','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 54, 'descripcion' => 'Lubricantes','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 54, 'descripcion' => 'Lubricantes','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 54, 'descripcion' => 'otros','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 55, 'descripcion' => 'Reproductores multimedia','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 55, 'descripcion' => 'Sistemas de seguridad y alarmas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 55, 'descripcion' => 'GPS','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 55, 'descripcion' => 'Monitores para coche','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 55, 'descripcion' => 'Cámaras para coche','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 55, 'descripcion' => 'Baterías de arranque','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 56, 'descripcion' => 'Pegatinas para coche','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 56, 'descripcion' => 'forros para coches','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 56, 'descripcion' => 'otros','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 57, 'descripcion' => 'Piezas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 57, 'descripcion' => 'Cascos y protección','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 57, 'descripcion' => 'Iluminación','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 57, 'descripcion' => 'accesorios','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 58, 'descripcion' => 'Cubiertas para asientos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 58, 'descripcion' => 'Llaveros','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 58, 'descripcion' => 'forros para volantes','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 58, 'descripcion' => 'Alfombras','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 58, 'descripcion' => 'ambientadores','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
         );
     }
 }
-
-
-
-
-
-
-
