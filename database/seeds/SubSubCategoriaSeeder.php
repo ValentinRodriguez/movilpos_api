@@ -330,6 +330,32 @@ class SubSubCategoriaSeeder extends Seeder
             ['id_subcategoria' => 58, 'descripcion' => 'forros para volantes','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 58, 'descripcion' => 'Alfombras','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 58, 'descripcion' => 'ambientadores','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 59, 'descripcion' => 'Herramientas de medición y análisis','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 59, 'descripcion' => 'Herramientas manuales','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 59, 'descripcion' => 'Herramientas eléctricas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 59, 'descripcion' => 'Herramientas de jardinería','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 59, 'descripcion' => 'Juegos de herramientas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 59, 'descripcion' => 'Equipos para soldar','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 59, 'descripcion' => 'Utensilios para soldar','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 59, 'descripcion' => 'Herramientas y accesorios para máquinas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 59, 'descripcion' => 'Carpintería','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 59, 'descripcion' => 'Almacenamiento','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 60, 'descripcion' => 'Luces de techo','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 60, 'descripcion' => 'Lámparas colgantes','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 60, 'descripcion' => 'Luces empotradas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 60, 'descripcion' => 'Candelabros','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 60, 'descripcion' => 'Lámparas de pared','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 60, 'descripcion' => 'Lámparas de noche','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 60, 'descripcion' => 'LEDs','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 60, 'descripcion' => 'Linternas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 60, 'descripcion' => 'Lámparas solares','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+
+            ['id_subcategoria' => 61, 'descripcion' => 'Accesorios y equipos eléctricos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 61, 'descripcion' => 'Interruptores de pared','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 61, 'descripcion' => 'plomeria','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 61, 'descripcion' => 'cocina y accesorios','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
         );
     }
 }

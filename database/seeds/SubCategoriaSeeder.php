@@ -90,6 +90,10 @@ class SubCategoriaSeeder extends Seeder
             ['id_subcategoria' => 57, 'id_categoria' => 14, 'descripcion' => 'Piezas y accesorios para moto','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 58, 'id_categoria' => 14, 'descripcion' => 'Accesorios para el interior','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
 
+            ['id_subcategoria' => 59, 'id_categoria' => 15, 'descripcion' => 'Herramientas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 60, 'id_categoria' => 15, 'descripcion' => 'Iluminación','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 61, 'id_categoria' => 15, 'descripcion' => 'Bricolaje','usuario_creador' => 'movilsoluciones','estado' => 'activo']
+
         );
 
         foreach ($data as $key => $value) {
@@ -98,44 +102,3 @@ class SubCategoriaSeeder extends Seeder
     }
 }
 
-
-Herramientas
-Herramientas de medición y análisis
-Herramientas manuales
-Herramientas eléctricas
-Herramientas de jardinería
-Juegos de herramientas
-Iluminación interior
-Luces de techo
-Lámparas colgantes
-Luces empotradas
-Candelabros
-Lámparas de pared
-Lámparas de noche
- 
-Herramientas
-Equipos para soldar
-Utensilios para soldar
-Herramientas y accesorios para máquinas
-Carpintería
-Almacenamiento
-Iluminación LED
-Tiras LED
-Luces LED empotrables
-Panel de luces LED
-Focos LED
-Barras LED
- 
-Bricolaje
-Accesorios y equipos eléctricos
-Interruptores de pared
-Ferretería
-Accesorios para cocinas
-Herramientas de pintura
-Equipos de bombeo
-Iluminación de exterior
-Linternas
-Lámparas solares
-Focos
-Cadenas de luces
-Iluminación sumergible
