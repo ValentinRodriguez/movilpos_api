@@ -14,18 +14,16 @@ class CategoriasSeeder extends Seeder
             
             ['id_categoria' => 4, 'descripcion' => 'Ropa de mujer','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_categoria' => 5, 'descripcion' => 'Ropa de hombre','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-
             ['id_categoria' => 6, 'descripcion' => 'Celulares y Tabletas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_categoria' => 8, 'descripcion' => 'Computadoras','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_categoria' => 9, 'descripcion' => 'Electrónica','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_categoria' => 10, 'descripcion' => 'Bisutería y relojes','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_categoria' => 11, 'descripcion' => 'Hogar','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_categoria' => 12, 'descripcion' => 'Bolsos y Carteras','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_categoria' => 13, 'descripcion' => 'Calzados','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_categoria' => 14, 'descripcion' => 'Juguetes','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_categoria' => 15, 'descripcion' => 'Deporte','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_categoria' => 16, 'descripcion' => 'Vehiculos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_categoria' => 17, 'descripcion' => 'Herramienta','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_categoria' => 7, 'descripcion' => 'Computadoras','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_categoria' => 8, 'descripcion' => 'Electrónica','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_categoria' => 9, 'descripcion' => 'joyeria y relojes','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_categoria' => 10, 'descripcion' => 'Hogar','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_categoria' => 11, 'descripcion' => 'Juguetes y ropas de bebe','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            
+            ['id_categoria' => 12, 'descripcion' => 'Deporte','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_categoria' => 13, 'descripcion' => 'Vehiculos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_categoria' => 14, 'descripcion' => 'Herramienta','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
         );
 
         foreach ($data as $key => $value) {
