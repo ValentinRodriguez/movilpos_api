@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\Route;
     Route::apiresource('/marca', 'inventario\BrandsController');
 
     // CATEGORIAS
-    Route::get('/busqueda/categoria', 'inventario\CategoriasController@busqueda');
+    Route::get('/busqueda/categoria', 'inventario\CategoriasController@busqueda');    
     Route::apiresource('/categorias', 'inventario\CategoriasController');
 
     // EXISTENCIAS POR ALMACEN

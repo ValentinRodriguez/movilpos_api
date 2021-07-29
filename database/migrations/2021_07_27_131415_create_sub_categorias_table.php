@@ -18,7 +18,9 @@ class CreateSubCategoriasTable extends Migration
             $table->integer('id_subcategoria');
             $table->unique('id_subcategoria');
             $table->integer('id_categoria');
-            $table->string('descripcion',500);
+            $table->string('descripcion',100);
+            $table->string('slug',100);
+            $table->string('image',100)->nullable();
             $table->string('usuario_creador',500);
             $table->string('usuario_modificador',500)->nullable();
             $table->string('estado',100);

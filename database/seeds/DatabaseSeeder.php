@@ -51,6 +51,7 @@ class DatabaseSeeder extends Seeder
         $this->call(tipoInventarioSeeder::class);          
         $this->call(permisosEmpresaSeeder::class); 
         $this->call(SubCategoriaSeeder::class); 
-        $this->call(SubSubCategoriaSeeder::class);          
+        $this->call(SubSubCategoriaSeeder::class);       
+        $this->call(CategoriaStoreSeeder::class);
     }
 }

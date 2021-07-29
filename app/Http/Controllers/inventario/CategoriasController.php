@@ -16,22 +16,6 @@ class CategoriasController extends ApiResponseController
         $categoria = CategoriasModel::orderBy('created_at', 'desc')->
                                       where('estado','=','ACTIVO')->
                                       get();
-
-        // $categoria = CategoriasModel::addSelect(['descripcion_sub' => SubCategoria::select('descripcion')
-        //     ->whereColumn('id_subcategoria', 'categorias.id_categoria')
-        //     //->limit(1)
-        // ])->get();
-
-        foreach ($categoria as $key => $value) {
-            $subCategoria = SubCategoria::all()->where('id_categoria','=',$value->id_categoria);
-            $value->subCategoria = $subCategoria;
-
-            foreach ($subCategoria as $key => $value) {
-                $subsubCategoria = SubSubCategoria::all()->where('id_subcategoria','=',$value->id_subcategoria);
-                $value->subsubCategoria = $subsubCategoria;
-            }
-        }
-        return $this->successResponse($categoria, $request->urlRequest);
     }
 
     public function store(Request $request)
