@@ -115,7 +115,7 @@ class inv_PropiedadesController extends ApiResponseController
             catch (\Exception $e ){
                 return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
-            return $this->successResponse($propiedades, 'Categoría actualizada');
+            return $this->successResponse($propiedades, 'Categoria actualizada');
         }
     }
 

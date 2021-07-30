@@ -213,7 +213,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                             cgTransaccionesContables::create($datosd);
                         }   
                     }else{                    
-                        return $this->errorResponse(null,'No hay cuentas agragadas a la transacción');
+                        return $this->errorResponse(null,'No hay cuentas agragadas a la transaccion');
                     }               
                 DB::commit();            
                 return $this->successResponse($datosm, $request->urlRequest);
@@ -360,7 +360,7 @@ class CgTransaccionesContablesController extends ApiResponseController
                             cgTransaccionesContables::create($datosd);
                         }   
                     }else{                    
-                        return $this->errorResponse(null,'No hay cuentas agragadas a la transacción');
+                        return $this->errorResponse(null,'No hay cuentas agragadas a la transaccion');
                     }               
                 DB::commit();            
                 return $this->successResponse($datosm, $request->urlRequest);

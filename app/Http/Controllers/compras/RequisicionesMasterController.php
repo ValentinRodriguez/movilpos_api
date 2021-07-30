@@ -162,7 +162,7 @@ class RequisicionesMasterController extends ApiResponseController
                             requisicionesDetalle::create($datosd);
                         }                        
                     }else{
-                        return $this->errorResponse('No hay productos agragados a la transacción');
+                        return $this->errorResponse('No hay productos agragados a la transaccion');
                     }
                     DB::commit();
                     return $this->successResponse($datosm, $request->urlRequest);

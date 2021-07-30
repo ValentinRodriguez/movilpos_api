@@ -6,7 +6,7 @@ use App\Http\Controllers\ApiResponseController;
 use App\ve_cotizaciones;
 use Illuminate\Http\Request;
 
-class VeCotizacionesController extends Controller
+class veCotizacionesController extends Controller
 {
     /**
      * Display a listing of the resource.

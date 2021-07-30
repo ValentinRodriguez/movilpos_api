@@ -120,7 +120,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                             cgTransaccionesContables::create($datosd);                                                   
                         }                        
                     }else{
-                        return $this->errorResponse('No hay cuentas agragadas a la transacción');
+                        return $this->errorResponse('No hay cuentas agragadas a la transaccion');
                     }             
                 DB::commit();
 
@@ -226,7 +226,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                             cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$entrada['ref'])->update($datosd);                                                                     
                         }                        
                     }else{
-                        return $this->errorResponse('No hay cuentas agragadas a la transacción');
+                        return $this->errorResponse('No hay cuentas agragadas a la transaccion');
                     }             
                 DB::commit();
 

@@ -256,7 +256,7 @@ class invtransacciones extends ApiResponseController
                             Invtransaccdetallemodel::create($datosd);                           
                         }                                      
                     }else{
-                        return $this->errorResponse('No hay productos agragados a la transacción');
+                        return $this->errorResponse('No hay productos agragados a la transaccion');
                     }
                     invnumeraciones::where('id_tipomov','=',$idtipomov)->
                                     update(['num_doc' =>$documentomov,
@@ -701,7 +701,7 @@ class invtransacciones extends ApiResponseController
                                                          get();
                                                                                                
         if ($transacciones == null){
-            return $this->errorResponse('Esta transacción no existe');
+            return $this->errorResponse('Esta transaccion no existe');
         }
         else {
             $empresa = Empresa::orderBy('created_at', 'desc')->first();

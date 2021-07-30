@@ -235,7 +235,7 @@ class CoOrdenesMasterController extends ApiResponseController
                             coOrdenesDetalle::create($datosd);                                                   
                         }                        
                     }else{
-                        return $this->errorResponse('No hay productos agragados a la transacción');
+                        return $this->errorResponse('No hay productos agragados a la transaccion');
                     }               
                     DB::commit();
                     return $this->successResponse($datosm, $request->urlRequest);
@@ -527,7 +527,7 @@ class CoOrdenesMasterController extends ApiResponseController
                         } 
                         
                     }else{
-                        return $this->errorResponse('No hay productos agragados a la transacción');
+                        return $this->errorResponse('No hay productos agragados a la transaccion');
                     }
    
                     DB::commit();

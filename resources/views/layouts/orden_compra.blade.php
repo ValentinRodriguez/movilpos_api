@@ -53,7 +53,7 @@
       if ( isset($pdf) ) {
           $pdf->page_script('
               $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
-              $pdf->text(260, 790, "Pág $PAGE_NUM de $PAGE_COUNT", $font, 10);
+              $pdf->text(260, 790, "Pag $PAGE_NUM de $PAGE_COUNT", $font, 10);
           ');
       }
     </script>
@@ -68,7 +68,7 @@
     if ( isset($pdf) ) {
         $pdf->page_script('
             $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
-            $pdf->text(270, 820, "Pág $PAGE_NUM de $PAGE_COUNT", $font, 10);
+            $pdf->text(270, 820, "Pag $PAGE_NUM de $PAGE_COUNT", $font, 10);
         ');
     }
 </script> --}}
@@ -78,7 +78,7 @@
         if ( isset($pdf) ) {
             $pdf->page_script('
                 $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
-                $pdf->text(370, 570, "Pág $PAGE_NUM de $PAGE_COUNT", $font, 10);
+                $pdf->text(370, 570, "Pag $PAGE_NUM de $PAGE_COUNT", $font, 10);
             ');
         }
     </script> --}}

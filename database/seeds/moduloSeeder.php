@@ -15,7 +15,7 @@ class moduloSeeder extends Seeder
             ['modulo' =>'ventas','orden' => 5,'label' =>'ventas','routerLink' =>'/menu-ventas','icon' => 'fas fa-dollar-sign'],    
             ['modulo' =>'compras','orden' => 6,'label' =>'compras','routerLink' =>'/menu-compras','icon' => 'fas fa-shopping-cart'],    
             ['modulo' =>'contabilidad','orden' => 7,'label' =>'contabilidad General','routerLink' =>'/menu-contabilidad-general','icon' => 'fas fa-file-invoice-dollar'],    
-            ['modulo' =>'entradas automáticas','orden' => 8,'label' =>'entradas automaticas','routerLink' =>'/menu-entradas-automaticas','icon' => 'fas fa-door-open'],            
+            ['modulo' =>'entradas automaticas','orden' => 8,'label' =>'entradas automaticas','routerLink' =>'/menu-entradas-automaticas','icon' => 'fas fa-door-open'],            
             ['modulo' =>'RR.HH','orden' => 9,'label' =>'recursos humanos','routerLink' =>'/menu-recursos-humanos','icon' => 'fas fa-users'],    
             ['modulo' =>'cuentas por pagar','orden' => 10,'label' =>'cuentas por pagar','routerLink' =>'/menu-cuentas-pagar','icon' => 'fas fa-hand-holding-usd'],    
             ['modulo' =>'Tienda','orden' => 11,'label' =>'tienda online','routerLink' =>'/menu-tienda-online','icon' => 'fas fa-store-slash'],        );

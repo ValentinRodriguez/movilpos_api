@@ -103,7 +103,7 @@ class VerecepcionMasterController extends ApiResponseController
                            verecepcion_detalle::create($datosd);                       
                         } 
                     }else{
-                        return $this->errorResponse('No hay productos agragados a la transacción');
+                        return $this->errorResponse('No hay productos agragados a la transaccion');
                     }
                
                     DB::commit();

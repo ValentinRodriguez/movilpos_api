@@ -6,7 +6,7 @@ use App\Http\Controllers\ApiResponseController;
 use App\librerias\veinspeccion;
 use Illuminate\Http\Request;
 
-class VeinspeccionController extends ApiResponseController
+class veinspeccionController extends ApiResponseController
 {
     /**
      * Display a listing of the resource.

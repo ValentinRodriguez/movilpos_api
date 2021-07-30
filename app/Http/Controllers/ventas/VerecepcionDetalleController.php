@@ -6,7 +6,7 @@ use App\Http\Controllers\ApiResponseController;
 use App\verecepcion_detalle;
 use Illuminate\Http\Request;
 
-class VerecepcionDetalleController extends Controller
+class verecepcionDetalleController extends Controller
 {
     /**
      * Display a listing of the resource.

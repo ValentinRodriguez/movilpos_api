@@ -13,7 +13,7 @@ class SubCategoriaSeeder extends Seeder
             ['id_subcategoria' => 62, 'id_categoria' => 4,   'slug' => Str::slug('Bolsos y Carteras'),  'descripcion' => 'Bolsos y Carteras','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 63, 'id_categoria' => 4,   'slug' => Str::slug('Calzados'),  'descripcion' => 'Calzados','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 2, 'id_categoria' => 4,  'slug' => Str::slug('Trajes de bano'),  'descripcion' => 'Trajes de bano','usuario_creador' => 'movilsoluciones','estado' => 'inactivo'],
-            ['id_subcategoria' => 3, 'id_categoria' => 4,  'slug' => Str::slug('Lencería y ropa interior'),  'descripcion' => 'Lencería y ropa interior','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 3, 'id_categoria' => 4,  'slug' => Str::slug('Lenceria y ropa interior'),  'descripcion' => 'Lenceria y ropa interior','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 4, 'id_categoria' => 4,  'slug' => Str::slug('Accesorios'),  'descripcion' => 'Accesorios','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
 
             // ROPA HOMBRE
@@ -27,25 +27,25 @@ class SubCategoriaSeeder extends Seeder
             ['id_subcategoria' => 8, 'id_categoria' => 6,  'slug' => Str::slug('Celulares'),  'descripcion' => 'Celulares','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 9, 'id_categoria' => 6,  'slug' => Str::slug('Accesorios para Celulares'),  'descripcion' => 'Accesorios para Celulares','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 10, 'id_categoria' => 6,   'slug' => Str::slug('Piezas para Celulares'),  'descripcion' => 'Piezas para Celulares','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_subcategoria' => 11, 'id_categoria' => 6,   'slug' => Str::slug('Equipos de comunicación'),  'descripcion' => 'Equipos de comunicación','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 11, 'id_categoria' => 6,   'slug' => Str::slug('Equipos de comunicacion'),  'descripcion' => 'Equipos de comunicacion','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
 
             // Computadoras
-            ['id_subcategoria' => 12, 'id_categoria' => 7,   'slug' => Str::slug('Componentes y periféricos'),  'descripcion' => 'Componentes y periféricos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 12, 'id_categoria' => 7,   'slug' => Str::slug('Componentes y perifericos'),  'descripcion' => 'Componentes y perifericos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 13, 'id_categoria' => 7,   'slug' => Str::slug('Laptops'),  'descripcion' => 'Laptops','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 14, 'id_categoria' => 7,   'slug' => Str::slug('Sistemas de Seguridad'),  'descripcion' => 'Sistemas de Seguridad','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 15, 'id_categoria' => 7,   'slug' => Str::slug('Dispositivos de almacenamiento'),  'descripcion' => 'Dispositivos de almacenamiento','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 16, 'id_categoria' => 7,   'slug' => Str::slug('Equipos de oficina'),  'descripcion' => 'Equipos de oficina','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 17, 'id_categoria' => 7,   'slug' => Str::slug('Redes'),  'descripcion' => 'Redes','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
 
-            // Electrónica
+            // Electronica
             ['id_subcategoria' => 18, 'id_categoria' => 8,   'slug' => Str::slug('Piezas y accesorios'),  'descripcion' => 'Piezas y accesorios','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_subcategoria' => 19, 'id_categoria' => 8,   'slug' => Str::slug('Audio y vídeo'),  'descripcion' => 'Audio y vídeo','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_subcategoria' => 20, 'id_categoria' => 8,   'slug' => Str::slug('Cámaras y fotografía'),  'descripcion' => 'Cámaras y fotografía','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_subcategoria' => 21, 'id_categoria' => 8,   'slug' => Str::slug('Electrónica inteligente'),  'descripcion' => 'Electrónica inteligente','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 19, 'id_categoria' => 8,   'slug' => Str::slug('Audio y video'),  'descripcion' => 'Audio y video','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 20, 'id_categoria' => 8,   'slug' => Str::slug('Camaras y fotografia'),  'descripcion' => 'Camaras y fotografia','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 21, 'id_categoria' => 8,   'slug' => Str::slug('Electronica inteligente'),  'descripcion' => 'Electronica inteligente','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 22, 'id_categoria' => 8,   'slug' => Str::slug('Videojuegos'),  'descripcion' => 'Videojuegos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
 
             // Joyeria y relojes
-            ['id_subcategoria' => 23, 'id_categoria' => 9,   'slug' => Str::slug('Joyería fina'),  'descripcion' => 'Joyería fina','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 23, 'id_categoria' => 9,   'slug' => Str::slug('Joyeria fina'),  'descripcion' => 'Joyeria fina','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 24, 'id_categoria' => 9,   'slug' => Str::slug('Relojes de hombre'),  'descripcion' => 'Relojes de hombre','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 25, 'id_categoria' => 9,   'slug' => Str::slug('Relojes de mujer'),  'descripcion' => 'Relojes de mujer','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 26, 'id_categoria' => 9,   'slug' => Str::slug('joyeria fantasia'),  'descripcion' => 'joyeria fantasia','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
@@ -57,18 +57,18 @@ class SubCategoriaSeeder extends Seeder
             ['id_subcategoria' => 30, 'id_categoria' => 10, 'slug' => Str::slug('Muebles'),  'descripcion' => 'Muebles','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 31, 'id_categoria' => 10, 'slug' => Str::slug('Cocina'),  'descripcion' => 'Cocina','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 32, 'id_categoria' => 10, 'slug' => Str::slug('electrodomesticos'),  'descripcion' => 'electrodomesticos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_subcategoria' => 33, 'id_categoria' => 10, 'slug' => Str::slug('Jardinería'),  'descripcion' => 'Jardinería','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 33, 'id_categoria' => 10, 'slug' => Str::slug('Jardineria'),  'descripcion' => 'Jardineria','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             
             // Juguetes y ropas de bebe
-            ['id_subcategoria' => 34, 'id_categoria' => 11, 'slug' => Str::slug('Categorías populares'),  'descripcion' => 'Categorías populares','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_subcategoria' => 35, 'id_categoria' => 11, 'slug' => Str::slug('Bebé (0-3 años)'),  'descripcion' => 'Bebé (0-3 años)','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 34, 'id_categoria' => 11, 'slug' => Str::slug('Categorias populares'),  'descripcion' => 'Categorias populares','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 35, 'id_categoria' => 11, 'slug' => Str::slug('Bebe (0-3 años)'),  'descripcion' => 'Bebe (0-3 años)','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 36, 'id_categoria' => 11, 'slug' => Str::slug('Para niñas'),  'descripcion' => 'Para niñas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 37, 'id_categoria' => 11, 'slug' => Str::slug('Para niños'),  'descripcion' => 'Para niños','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 38, 'id_categoria' => 11, 'slug' => Str::slug('para embarazadas '),  'descripcion' => 'para embarazadas ','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 39, 'id_categoria' => 11, 'slug' => Str::slug('Juguetes'),  'descripcion' => 'Juguetes','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
 
             // Deporte
-            ['id_subcategoria' => 40, 'id_categoria' => 12, 'slug' => Str::slug('Deportes acuáticos'),  'descripcion' => 'Deportes acuáticos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 40, 'id_categoria' => 12, 'slug' => Str::slug('Deportes acuaticos'),  'descripcion' => 'Deportes acuaticos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 41, 'id_categoria' => 12, 'slug' => Str::slug('Bicicletas'),  'descripcion' => 'Bicicletas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 42, 'id_categoria' => 12, 'slug' => Str::slug('Calzado Deportivo'),  'descripcion' => 'Calzado Deportivo','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 43, 'id_categoria' => 12, 'slug' => Str::slug('Pesca'),  'descripcion' => 'Pesca','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
@@ -81,17 +81,17 @@ class SubCategoriaSeeder extends Seeder
             ['id_subcategoria' => 49, 'id_categoria' => 13, 'slug' => Str::slug('Cuidado de la piel'),  'descripcion' => 'Cuidado de la piel','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 50, 'id_categoria' => 13, 'slug' => Str::slug('Manicura y pedicura'),  'descripcion' => 'Manicura y pedicura','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 51, 'id_categoria' => 13, 'slug' => Str::slug('cuidado personal'),  'descripcion' => 'cuidado personal','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_subcategoria' => 52, 'id_categoria' => 13, 'slug' => Str::slug('Artículos para adultos'),  'descripcion' => 'Artículos para adultos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 52, 'id_categoria' => 13, 'slug' => Str::slug('Articulos para adultos'),  'descripcion' => 'Articulos para adultos','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
 
             ['id_subcategoria' => 53, 'id_categoria' => 14, 'slug' => Str::slug('Repuestos para coches'),  'descripcion' => 'Repuestos para coches','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 54, 'id_categoria' => 14, 'slug' => Str::slug('Herramientas y mantenimiento'),  'descripcion' => 'Herramientas y mantenimiento','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_subcategoria' => 55, 'id_categoria' => 14, 'slug' => Str::slug('Electrónica para coche'),  'descripcion' => 'Electrónica para coche','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 55, 'id_categoria' => 14, 'slug' => Str::slug('Electronica para coche'),  'descripcion' => 'Electronica para coche','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 56, 'id_categoria' => 14, 'slug' => Str::slug('Accesorios para el exterior'),  'descripcion' => 'Accesorios para el exterior','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 57, 'id_categoria' => 14, 'slug' => Str::slug('Piezas y accesorios para moto'),  'descripcion' => 'Piezas y accesorios para moto','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 58, 'id_categoria' => 14, 'slug' => Str::slug('Accesorios para el interior'),  'descripcion' => 'Accesorios para el interior','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
 
             ['id_subcategoria' => 59, 'id_categoria' => 15, 'slug' => Str::slug('Herramientas'),  'descripcion' => 'Herramientas','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
-            ['id_subcategoria' => 60, 'id_categoria' => 15, 'slug' => Str::slug('Iluminación'),  'descripcion' => 'Iluminación','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            ['id_subcategoria' => 60, 'id_categoria' => 15, 'slug' => Str::slug('Iluminacion'),  'descripcion' => 'Iluminacion','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             ['id_subcategoria' => 61, 'id_categoria' => 15, 'slug' => Str::slug('Bricolaje'),  'descripcion' => 'Bricolaje','usuario_creador' => 'movilsoluciones','estado' => 'activo']
 
         );

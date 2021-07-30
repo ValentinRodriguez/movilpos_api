@@ -6,7 +6,7 @@ use App\Http\Controllers\ApiResponseController;
 use App\vedatainspeccion;
 use Illuminate\Http\Request;
 
-class VedatainspeccionController extends Controller
+class vedatainspeccionController extends Controller
 {
     /**
      * Display a listing of the resource.

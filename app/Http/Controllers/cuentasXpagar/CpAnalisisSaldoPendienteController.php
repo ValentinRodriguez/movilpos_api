@@ -7,7 +7,7 @@ use App\Librerias\cpAnalisisSaldoPendiente;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 
-class CpAnalisisSaldoPendienteController extends ApiResponseController
+class cpAnalisisSaldoPendienteController extends ApiResponseController
 {
     public function index(Request $request)
     {

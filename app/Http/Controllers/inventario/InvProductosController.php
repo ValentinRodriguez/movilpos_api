@@ -113,7 +113,7 @@ class InvProductosController extends ApiResponseController
              'unique'   => 'El campo :attribute debe ser unico',
              'numeric'  => 'El campo :attribute debe ser numerico',
              'min'      => 'El campo :attribute debe tener minimo 10 caracteres',
-             'required_if' => 'El campo :attribute es requerido cuando :other es físico'
+             'required_if' => 'El campo :attribute es requerido cuando :other es fisico'
         ];
         
         $validator = validator($datos, [

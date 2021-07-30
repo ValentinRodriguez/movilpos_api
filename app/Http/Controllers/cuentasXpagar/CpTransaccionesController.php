@@ -272,7 +272,7 @@ class CpTransaccionesController extends ApiResponseController
                             cpTransaccionesDetalles::create($datosd);                           
                         }                     
                     }else{
-                        return $this->errorResponse(null,'No hay cuentas agragadas a la transacción');
+                        return $this->errorResponse(null,'No hay cuentas agragadas a la transaccion');
                     } 
                     // return response()->json(1);     
                 DB::commit();
@@ -445,7 +445,7 @@ class CpTransaccionesController extends ApiResponseController
                             $coTransaccionesCxpDetalle->update($datosd);                                                  
                         }                        
                     }else{
-                        return $this->errorResponse(null,'No hay cuentas agragadas a la transacción');
+                        return $this->errorResponse(null,'No hay cuentas agragadas a la transaccion');
                     }               
                 DB::commit();
                 return $this->successResponse($datosm, $request->urlRequest);
@@ -475,7 +475,7 @@ class CpTransaccionesController extends ApiResponseController
                 $fecha_fin = strtotime($periodo->fecha_corte);
                 
                 if( !(($fechaComoEntero >= $fecha_inicio) && ($fechaComoEntero <= $fecha_fin)) ) {           
-                    return $this->errorResponse(null, 'Esta transacción esta fuera del periodo fiscal.');        
+                    return $this->errorResponse(null, 'Esta transaccion esta fuera del periodo fiscal.');        
                 }
                 // ************************************************************************************* //
 
@@ -488,7 +488,7 @@ class CpTransaccionesController extends ApiResponseController
                                                          ['estado','=','activo']])->
                                                    get();
                 if (count($cpPagosHechos)) {
-                    return $this->errorResponse(null, 'Esta transacción presenta pagos realizados.');
+                    return $this->errorResponse(null, 'Esta transaccion presenta pagos realizados.');
                 }
                 // ************************************************************************************* //
                 

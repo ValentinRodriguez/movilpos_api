@@ -126,7 +126,7 @@ class WooCommerceController extends ApiResponseController
             
             if ($producto->type === "simple") {
                 if ($costo_amazon === false || $tasa_dolar === false || $beneficio_prod === false) {
-                    return response()->json(array("data" => $producto, "code" => 200, "msj" => "Costo o tasa de dolar vacía en este producto"), 200);
+                    return response()->json(array("data" => $producto, "code" => 200, "msj" => "Costo o tasa de dolar vacia en este producto"), 200);
                 }else {
                     $nuevo_costo_producto = round( floatval($costo_amazon->value) * $dolar_actual) + $costo_envio;
                     $beneficio = round( floatval($beneficio_prod->value));
@@ -147,7 +147,7 @@ class WooCommerceController extends ApiResponseController
             if ($producto->type === "variable") {
                 
                 if ($amazon_costo_variaciones === false || $tasa_dolar === false || $beneficio_prod === false) {
-                    return response()->json(array("data" => $producto, "code" => 200, "msj" => "Costo de variaciones o tasa de dolar vacía en este producto"), 200);
+                    return response()->json(array("data" => $producto, "code" => 200, "msj" => "Costo de variaciones o tasa de dolar vacia en este producto"), 200);
                 }else {                        
                     $costos_variantes = explode(",", $amazon_costo_variaciones->value);
                     $variacion = null;

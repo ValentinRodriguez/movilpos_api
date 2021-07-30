@@ -22,7 +22,7 @@ class CategoriaStoreSeeder extends Seeder
             ['id_categoria' => 5, 'descripcion' => 'Ropa de hombre',            'slug' => Str::slug('Ropa de hombre'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
             ['id_categoria' => 6, 'descripcion' => 'Celulares y Tabletas',      'slug' => Str::slug('Celulares y Tabletas'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
             ['id_categoria' => 7, 'descripcion' => 'Computadoras',              'slug' => Str::slug('Computadoras'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
-            ['id_categoria' => 8, 'descripcion' => 'Electrónica',               'slug' => Str::slug('Electrónica'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
+            ['id_categoria' => 8, 'descripcion' => 'Electronica',               'slug' => Str::slug('Electronica'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
             ['id_categoria' => 9, 'descripcion' => 'joyeria y relojes',         'slug' => Str::slug('joyeria y relojes'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
             ['id_categoria' => 10, 'descripcion' => 'Hogar',                    'slug' => Str::slug('Hogar'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
             ['id_categoria' => 11, 'descripcion' => 'Juguetes y ropas de bebe', 'slug' => Str::slug('Juguetes y ropas de bebe'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
@@ -30,7 +30,7 @@ class CategoriaStoreSeeder extends Seeder
             ['id_categoria' => 12, 'descripcion' => 'Deporte',                  'slug' => Str::slug('Deporte'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
             ['id_categoria' => 13, 'descripcion' => 'Salud y belleza',          'slug' => Str::slug('Salud y belleza'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
             ['id_categoria' => 14, 'descripcion' => 'automotriz',               'slug' => Str::slug('automotriz'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
-            ['id_categoria' => 15, 'descripcion' => 'Herramienta',              'slug' => Str::slug('Herramienta'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
+            ['id_categoria' => 15, 'descripcion' => 'Herramientas',             'slug' => Str::slug('Herramienta'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
         );
 
         foreach ($data as $key => $value) {

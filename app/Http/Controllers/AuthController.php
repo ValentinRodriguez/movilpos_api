@@ -43,7 +43,7 @@ class AuthController extends Controller
             $sessionId = md5(uniqid());
 
             if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'Usuario ó clave incorrecta'], 401);
+                return response()->json(['error' => 'Usuario o clave incorrecta'], 401);
             }           
             User::where('email','=',$email)->update(['session_id' => $sessionId]);  
             return $this->respondWithToken($token, $email, $sessionId);
@@ -188,7 +188,7 @@ class AuthController extends Controller
 
         $user=    user::where('email','=',$email)->update()->all();
         if($user == null){
-            return response()->json(['error' => 'Email ó clave incorrecta'], 401);
+            return response()->json(['error' => 'Email o clave incorrecta'], 401);
         }
         else{
             return response()->json(['email' => 'Actualizacion Exitosa'], 200);

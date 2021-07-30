@@ -188,7 +188,7 @@ class OrdenPedidoMasterController extends ApiResponseController
                             //return response()->json($datosd);
                         }                        
                     }else{
-                        return $this->errorResponse('No hay productos agragados a la transacción');
+                        return $this->errorResponse('No hay productos agragados a la transaccion');
                     }
                     DB::commit();
                     return $this->successResponse($datosm, $request->urlRequest);
