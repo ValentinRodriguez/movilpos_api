@@ -8,5 +8,8 @@ use Illuminate\Support\Facades\Route;
     Route::get('/woocommerce/contarprecio/{page}', 'tienda\WooCommerceController@countProducts');
     Route::apiresource('/woocommerce', 'tienda\WooCommerceController');
 
+     // CATEGORIAS
+     Route::apiresource('/productos-plaza', 'tienda\InvProductoStoreController');
+
     // CATEGORIAS
     Route::apiresource('/categorias-plaza', 'tienda\CategoriaStoreController');

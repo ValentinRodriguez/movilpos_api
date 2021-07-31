@@ -22,21 +22,21 @@ class CategoriaStoreController extends ApiResponseController
         // ])->get();
 
         foreach ($categoria as $key => $value1) {
-            $subCategoria = SubCategoria::all()->where('id_categoria','=',$value1->id_categoria);
+            $subCategoria = SubCategoria::where('id_categoria','=',$value1->id_categoria)->get();
             $value1->children = $subCategoria;
             $value1->depth = 0;
-            $value1->path = $value1->slug;
+            $value1->url = $value1->slug;
 
             foreach ($subCategoria as $key => $value) {
-                $subsubCategoria = SubSubCategoria::all()->where('id_subcategoria','=',$value->id_subcategoria);
+                $subsubCategoria = SubSubCategoria::where('id_subcategoria','=',$value->id_subcategoria)->get();
 
                 foreach ($subsubCategoria as $key => $value2) {
                     $value2->depth = 2;
-                    $value2->path = $value->slug.'/'.$value1->slug.'/'.$value2->slug;
+                    $value2->url = $value->slug.'/'.$value1->slug.'/'.$value2->slug;
                 }
                 $value->children = $subsubCategoria;
                 $value->depth = 1;
-                $value->path = $value->slug.'/'.$value1->slug;
+                $value->url = $value->slug.'/'.$value1->slug;
                 
             }
         }
