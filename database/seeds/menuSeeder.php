@@ -86,8 +86,10 @@ class menuSeeder extends Seeder
 
             //MODULO CUENTAS POR PAGAR
             ['id_menu' => 2,'modulo' => 10,'status' => 1,'codigo' => 'cpp1','nombre' => 'Analisis de Saldo','descripcion' => 'Modulo Cuentas por pagar','url' => 'reporte-analisis-saldo','estado' =>'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 10,'status' => 1,'codigo' => 'cpp2','nombre' => 'Facturas de proveedores','descripcion' => 'Modulo Compras','url' => 'gestion-factura-proveedores','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 10,'status' => 1,'codigo' => 'cpp2','nombre' => 'Facturas de proveedores','descripcion' => 'Modulo Cuentas por pagar','url' => 'gestion-factura-proveedores','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 10,'status' => 1,'codigo' => 'cpp3','nombre' => 'Gestion documentos(ND, NC)','descripcion' => 'Modulo Cuentas por pagar','url' => 'gestion-documentos-ndnc','estado' => 'ACTIVO'],
 
+            
             //MODULO PLAZA ONLINE
             ['id_menu' => 1,'modulo' => 11,'status' => 1,'codigo' => 'tpo1','nombre' => 'Creacion de productos','descripcion' => 'Modulo creacion de productos','url' => 'creacion-productos-plaza','estado' =>'ACTIVO']            
         );
