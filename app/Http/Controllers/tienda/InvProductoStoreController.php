@@ -26,13 +26,9 @@ class InvProductoStoreController extends ApiResponseController
             $idsecuencia = $maxid->id;
             $idsecuencia = $idsecuencia + 1;
         }
-
+        
         $datos = array(
-            "titulo"                =>$request->input("titulo"),          
-            "chasis"                =>$request->input("chasis"),
-            "motor"                 =>$request->input("motor"),
-            "fabricacion"           =>$request->input("fabricacion"),
-            "asientos"              =>$request->input("asientos"),
+            "titulo"                =>$request->input("titulo"),                      
             "asientosAd"            =>$request->input("asientosAd"),
             "id_propiedad"          =>$request->input("id_propiedad"),
             "id_tipoinventario"     =>$request->input("id_tipoinventario"),
@@ -58,7 +54,7 @@ class InvProductoStoreController extends ApiResponseController
             "estado"                =>$request->input("estado"),
             "usuario_creador"       =>$request->input("usuario_creador")
         );
-        
+        return response()->json($datos);
         // SI EL EL TIPO DE PRODUCTO ES DIGITAL
         if ($datos["tipo_producto"] == 2) {
             $datos["id_brand"] = 2;

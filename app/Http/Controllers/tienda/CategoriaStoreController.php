@@ -13,7 +13,7 @@ class CategoriaStoreController extends ApiResponseController
     {
         $categoria = CategoriaStore::orderBy('created_at', 'desc')->
         // selected('categoria_stores.*',)->
-        where('estado','=','ACTIVO')->
+        where('estado','=','activo')->
         get();
 
         // $categoria = CategoriasModel::addSelect(['descripcion_sub' => SubCategoria::select('descripcion')
