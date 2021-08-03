@@ -16,6 +16,7 @@ class UsuarioSeeder extends Seeder
             'email'     => 'valentinrodriguez1427@gmail.com',
             'password'  => '123',            
             'foto'      => '',
+            'is_vend'   => 'V',
             'impresora' => '192.168.1.565/printer',
             'estado'    => 'activo'
         );        

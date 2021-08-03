@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\empresa\EmpresaController;
 use App\Http\Requests\SignUpRequest;
 use Illuminate\Http\Request;
 use App\Librerias\User;
@@ -80,20 +81,8 @@ class AuthController extends Controller
 
     public function signup(SignUpRequest $request)
     {
-        $datos = array(
-            'username'              =>$request->input('username') ,
-            'name'                  =>$request->input('name'),
-            'surname'               =>$request->input('surname'),
-            'email'                 =>$request->input('email'),
-            'id'                    =>$request->input('id'),
-            'is_vend'               =>$request->input('tipo'),
-            'password'              =>$request->input('password'),
-            'password_confirmation' =>$request->input('password_confirmation'),
-            'foto'                  =>$request->input('foto'),
-            'impresora'             =>$request->input('impresora'),
-            'estado'                =>$request->input('estado')
-        );
-        //return response()->json($datos);
+        $datos = $request->all();
+        
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
@@ -101,10 +90,8 @@ class AuthController extends Controller
         ];
 
         $validator = validator($datos, [
-            "username"  => 'required|string',
             "name"      => 'required|string',
             "surname"   => 'required|string',
-            "id"        => 'required|string',
             "password"  => 'required|string',
             "email"     => 'required|string',
             "estado"    => 'required|string',
@@ -120,6 +107,14 @@ class AuthController extends Controller
                 $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
                 $datos['foto']=$request->file('foto')->storeAs('uploads', 'usuarios/'.$nombreImagen, 'public');
             }
+            return response()->json($datos);
+            if ($datos['tipo'] === 'store') {
+                
+            } else {
+                //$objeto = new EmpresaController;
+                //$myVariable = $objeto->store($request);
+            }
+            
             $user = User::create($datos);
             return response()->json(array("data" => $user, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
         }
