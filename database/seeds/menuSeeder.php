@@ -45,7 +45,6 @@ class menuSeeder extends Seeder
             
             // MODULO DE VENTAS
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep1','nombre' => 'Interfaz de ventas','descripcion' => 'modulo de ventas','url' => 'interfaz-ventas','estado' => 'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep1b','nombre' => 'Interfaz de ventas 2','descripcion' => 'modulo de ventas','url' => 'interfaz-ventas2','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep2','nombre' => 'Generacion formulario 607','descripcion' => 'Modulo ventas','url' => 'generacion_formulario_607','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep3','nombre' => 'Ofertas y Promociones','descripcion' => 'Modulo ventas','url' => 'ofertas-promociones','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep4','nombre' => 'Gestion de clientes','descripcion' => 'Modulo ventas','url' => 'gestion-de-clientes','estado' => 'ACTIVO'],

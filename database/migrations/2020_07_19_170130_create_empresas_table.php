@@ -28,7 +28,8 @@ class CreateEmpresasTable extends Migration
             $table->smallInteger('id_municipio');
             $table->smallInteger('id_provincia');
             $table->smallInteger('id_sector')->nullable();
-            $table->string('rnc',30);
+            $table->char('tipo_documento',1);
+            $table->string('documento',30);
             $table->integer('limite_usuarios');
             $table->string('estado',30);
             $table->char('empresa_verde',2);
