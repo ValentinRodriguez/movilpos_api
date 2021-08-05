@@ -13,6 +13,7 @@ class empresaSeeder extends Seeder
             'email_empresa' => 'XXXX@XXX.XXX',
             'documento' => 'XXXXXXXXXXX',
             'tipo_documento' => 'X',
+            'tipo_empresa' => 'D',
             'calle' =>'XXXXXXXXXXX',
             'web' =>'XXXXXXXXXXX',
             'empresa_verde' => 'no',

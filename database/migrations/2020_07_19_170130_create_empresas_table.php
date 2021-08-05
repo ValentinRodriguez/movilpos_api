@@ -29,6 +29,7 @@ class CreateEmpresasTable extends Migration
             $table->smallInteger('id_provincia');
             $table->smallInteger('id_sector')->nullable();
             $table->char('tipo_documento',1);
+            $table->char('tipo_empresa',1);
             $table->string('documento',30);
             $table->integer('limite_usuarios');
             $table->string('estado',30);

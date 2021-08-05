@@ -3,21 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\empresa\EmpresaController;
 use App\Http\Requests\SignUpRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Librerias\User;
 use App\Librerias\bodegasUsuarios;
 use App\Librerias\noempleados;
 use App\Librerias\Empresa;
 use App\Librerias\Rol;
-use Illuminate\Support\Facades\DB;
+use App\Traits\empresasTrait;
 
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
+    use empresasTrait;
+
     // public function __construct()
     // {
     //     $this->middleware('jwt.auth', ['except' => ['login']]);
@@ -107,16 +109,46 @@ class AuthController extends Controller
                 $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
                 $datos['foto']=$request->file('foto')->storeAs('uploads', 'usuarios/'.$nombreImagen, 'public');
             }
-            return response()->json($datos);
-            if ($datos['tipo'] === 'store') {
+
+            try {                
+                return $this->crearEmpresa($request);
+                // return response()->json($datos);
+                $user = User::create($datos);
                 
-            } else {
-                //$objeto = new EmpresaController;
-                //$myVariable = $objeto->store($request);
+                if ($datos['tipo_empresa'] === 'D') {
+
+                    $datos = array(
+                        'nombre'            =>$request->input('nombre_tienda'),
+                        'telefono_empresa'  =>$request->input('telefono'),
+                        'email_empresa'     =>$request->input('email'),
+                        'documento'         =>$request->input('documento'),
+                        'tipo_documento'    =>$request->input('tipo_documento'),
+                        'id_pais'           =>$request->input('1'),
+                        'id_region'         =>$request->input('7'),
+                        'id_provincia'      =>$request->input('19'),
+                        'id_municipio'      =>$request->input('69'),
+                        'id_ciudad'         =>$request->input('69'),
+                        'calle'             =>$request->input(''),
+                        'web'               =>$request->input(''),
+                        'contacto'          =>$request->input('username'),
+                        'telefono_contacto' =>$request->input('telefono'),
+                        'moneda'            =>$request->input('1'),
+                        'empresa_verde'     =>$request->input('si'),
+                        'tipo_cuadre'       =>$request->input('m'),
+                        'valuacion_inv'     =>$request->input('standard'),
+                        'tipo_empresa'      =>$request->input('D'),
+                        'logo'              =>$request->input(''),
+                    );
+
+                    return $this->crearEmpresa($datos);
+                } else {
+                    return response()->json(array("data" => $user, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
+                }
             }
-            
-            $user = User::create($datos);
-            return response()->json(array("data" => $user, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
+            catch (\Exception $e ){
+                return response()->json(array("data" => $user, "code" => 501, "msj" => "Respuesta con errores"), 501);
+            }
+
         }
     }
 
