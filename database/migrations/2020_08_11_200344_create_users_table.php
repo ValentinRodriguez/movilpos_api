@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('is_vend')->nullable();
             $table->string('session_id',50)->nullable();
-            $table->text('impresora');
+            $table->text('impresora')->nullable();
             $table->string('estado',20);
             $table->text('foto')->nullable();
             $table->rememberToken();
