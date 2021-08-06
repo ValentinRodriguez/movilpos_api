@@ -23,7 +23,7 @@ class CreateEmpresasTable extends Migration
             $table->string('valuacion_inv',10);
             $table->char('tipo_cuadre',2);
             $table->integer('id_pais');
-            $table->integer('id_ciudad')->nullable();
+            $table->integer('id_ciudad');
             $table->smallInteger('id_region');
             $table->smallInteger('id_municipio');
             $table->smallInteger('id_provincia');
