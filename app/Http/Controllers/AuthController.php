@@ -7,21 +7,9 @@ use App\Http\Requests\SignUpRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Librerias\User;
-use App\Librerias\bodegasUsuarios;
-use App\Librerias\noempleados;
-use App\Librerias\Empresa;
-use App\Librerias\Rol;
-
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
-
-    // public function __construct()
-    // {
-    //     $this->middleware('jwt.auth', ['except' => ['login']]);
-    // }
 
     public function index(Request $request)
     {
@@ -38,45 +26,20 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        try {                          
+        // try {                          
             $credentials = request(['email', 'password']);
             $email = request('email');
             $sessionId = md5(uniqid());
 
-            if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'Usuario o clave incorrecta'], 401);
-            }           
+            // if (!$token = JWTAuth::attempt($credentials)) {
+            //     return response()->json(['error' => 'Usuario o clave incorrecta'], 401);
+            // }           
             User::where('email','=',$email)->update(['session_id' => $sessionId]);  
-            return $this->respondWithToken($token, $email, $sessionId);
-        }
-        catch (JWTException $e ){
-            return response()->json(array("data" => false, "code" => 501, "msj" => $e->getMessage()), 501);
-        }      
-    }
-
-    public function logout()
-    {
-        return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
-
-        // $token = JWTAuth::getToken();
-        // try { 
-        //     $token = JWTAuth::invalidate($token);
-        //     return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
-        // } catch (JWTException $e ){
-        //     return response()->json(array("data" => false, "code" => 422, "msj" => $e->getMessage()), 501);
-        // } 
-    }
-
-    public function desactivar(Request $request) {
-        try {                
-            DB::beginTransaction();                             
-                $email = request('email'); 
-                User::where('email','=',$email)->update(['estado' => 'inactivo']);                
-            DB::commit();            
-            return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Desactivado"), 200);
-        } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage(), $request->urlRequest);
-        }  
+            // return $this->respondWithToken($token, $email, $sessionId);
+        // }
+        // catch (JWTException $e ){
+        //     return response()->json(array("data" => false, "code" => 501, "msj" => $e->getMessage()), 501);
+        // }      
     }
 
     public function signup(SignUpRequest $request)
@@ -109,18 +72,40 @@ class AuthController extends Controller
             }
 
             try {                
-                User::create($datos);
-                $credentials = request(['email', 'password']);
+                $user = User::create($datos);
                 $sessionId = md5(uniqid());
-
-                $token = JWTAuth::attempt($credentials);
+                $token = $user->createToken('Si22500192319.')->accessToken;
                 return $this->respondWithToken($token, $sessionId);
-            }
-            catch (\Exception $e ){
+            } catch (\Exception $e ){
                 return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
             }
 
         }
+    }
+    
+    public function logout()
+    {
+        return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
+
+        // $token = JWTAuth::getToken();
+        // try { 
+        //     $token = JWTAuth::invalidate($token);
+        //     return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
+        // } catch (JWTException $e ){
+        //     return response()->json(array("data" => false, "code" => 422, "msj" => $e->getMessage()), 501);
+        // } 
+    }
+
+    public function desactivar(Request $request) {
+        try {                
+            DB::beginTransaction();                             
+                $email = request('email'); 
+                User::where('email','=',$email)->update(['estado' => 'inactivo']);                
+            DB::commit();            
+            return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Desactivado"), 200);
+        } catch (\Exception $e ){
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
+        }  
     }
 
     public function me()
@@ -158,8 +143,6 @@ class AuthController extends Controller
 
         $data = [
             'access_token' => $token,
-            'token_type' => 'bearer',
-            'access_type' => 'bearer',
             'sessionId' => $sessionId,
             // 'expires_in' => auth::factory()->getTTL() * 8,
             // 'bodegas_permisos' => $bodegas_permiso,
