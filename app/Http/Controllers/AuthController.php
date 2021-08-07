@@ -109,9 +109,12 @@ class AuthController extends Controller
             }
 
             try {                
-                // return response()->json($datos);
-                $user = User::create($datos);
-                return response()->json(array("data" => $user, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
+                User::create($datos);
+                $credentials = request(['email', 'password']);
+                $sessionId = md5(uniqid());
+
+                $token = JWTAuth::attempt($credentials);
+                return $this->respondWithToken($token, $sessionId);
             }
             catch (\Exception $e ){
                 return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
@@ -140,31 +143,33 @@ class AuthController extends Controller
 
     // }
 
-    protected function respondWithToken($token, $email = null, $sessionId = null)
+    protected function respondWithToken($token, $sessionId = null)
     {
-        if ($email !== null) {
-            $bodegas_permiso = bodegasUsuarios::join('bodegas','bodegas_usuarios.id_bodega','=','bodegas.id_bodega')->
-                                      select('bodegas_usuarios.*','bodegas.descripcion')->
-                                      where('bodegas_usuarios.email','=',$email)->
-                                      get();
+        // if ($email !== null) {
+        //     $bodegas_permiso = bodegasUsuarios::join('bodegas','bodegas_usuarios.id_bodega','=','bodegas.id_bodega')->
+        //                               select('bodegas_usuarios.*','bodegas.descripcion')->
+        //                               where('bodegas_usuarios.email','=',$email)->
+        //                               get();
 
-            $empleados = noempleados::where('noempleados.email','=',$email)->first();
-            $permisos = Rol::where('rols.email','=',$email)->first();
-            $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->first();
-        }
+        //     $empleados = noempleados::where('noempleados.email','=',$email)->first();
+        //     $permisos = Rol::where('rols.email','=',$email)->first();
+        //     $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->first();
+        // }
 
-        return response()->json([
+        $data = [
             'access_token' => $token,
             'token_type' => 'bearer',
             'access_type' => 'bearer',
             'sessionId' => $sessionId,
             // 'expires_in' => auth::factory()->getTTL() * 8,
-            'bodegas_permisos' => $bodegas_permiso,
-            'empleado' => $empleados,
-            'empresa' => $empresa,
-            'permisos' => $permisos,
+            // 'bodegas_permisos' => $bodegas_permiso,
+            // 'empleado' => $empleados,
+            // 'empresa' => $empresa,
+            // 'permisos' => $permisos,
             'user' => auth()->user()
-        ]);
+        ];
+
+        return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
     }
 
     public function busqueda(Request $request)
