@@ -7,21 +7,9 @@ use App\Http\Requests\SignUpRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Librerias\User;
-use App\Librerias\bodegasUsuarios;
-use App\Librerias\noempleados;
-use App\Librerias\Empresa;
-use App\Librerias\Rol;
-
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
-
-    // public function __construct()
-    // {
-    //     $this->middleware('jwt.auth', ['except' => ['login']]);
-    // }
 
     public function index(Request $request)
     {
@@ -38,45 +26,20 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        try {                          
+        // try {                          
             $credentials = request(['email', 'password']);
             $email = request('email');
             $sessionId = md5(uniqid());
 
-            if (!$token = JWTAuth::attempt($credentials)) {
-                return response()->json(['error' => 'Usuario o clave incorrecta'], 401);
-            }           
+            // if (!$token = JWTAuth::attempt($credentials)) {
+            //     return response()->json(['error' => 'Usuario o clave incorrecta'], 401);
+            // }           
             User::where('email','=',$email)->update(['session_id' => $sessionId]);  
-            return $this->respondWithToken($token, $email, $sessionId);
-        }
-        catch (JWTException $e ){
-            return response()->json(array("data" => false, "code" => 501, "msj" => $e->getMessage()), 501);
-        }      
-    }
-
-    public function logout()
-    {
-        return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
-
-        // $token = JWTAuth::getToken();
-        // try { 
-        //     $token = JWTAuth::invalidate($token);
-        //     return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
-        // } catch (JWTException $e ){
-        //     return response()->json(array("data" => false, "code" => 422, "msj" => $e->getMessage()), 501);
-        // } 
-    }
-
-    public function desactivar(Request $request) {
-        try {                
-            DB::beginTransaction();                             
-                $email = request('email'); 
-                User::where('email','=',$email)->update(['estado' => 'inactivo']);                
-            DB::commit();            
-            return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Desactivado"), 200);
-        } catch (\Exception $e ){
-            return $this->errorResponse($e->getMessage(), $request->urlRequest);
-        }  
+            // return $this->respondWithToken($token, $email, $sessionId);
+        // }
+        // catch (JWTException $e ){
+        //     return response()->json(array("data" => false, "code" => 501, "msj" => $e->getMessage()), 501);
+        // }      
     }
 
     public function signup(SignUpRequest $request)
@@ -109,15 +72,40 @@ class AuthController extends Controller
             }
 
             try {                
-                // return response()->json($datos);
                 $user = User::create($datos);
-                return response()->json(array("data" => $user, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
-            }
-            catch (\Exception $e ){
+                $sessionId = md5(uniqid());
+                $token = $user->createToken('Si22500192319.')->accessToken;
+                return $this->respondWithToken($token, $sessionId);
+            } catch (\Exception $e ){
                 return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
             }
 
         }
+    }
+    
+    public function logout()
+    {
+        return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
+
+        // $token = JWTAuth::getToken();
+        // try { 
+        //     $token = JWTAuth::invalidate($token);
+        //     return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
+        // } catch (JWTException $e ){
+        //     return response()->json(array("data" => false, "code" => 422, "msj" => $e->getMessage()), 501);
+        // } 
+    }
+
+    public function desactivar(Request $request) {
+        try {                
+            DB::beginTransaction();                             
+                $email = request('email'); 
+                User::where('email','=',$email)->update(['estado' => 'inactivo']);                
+            DB::commit();            
+            return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Desactivado"), 200);
+        } catch (\Exception $e ){
+            return $this->errorResponse($e->getMessage(), $request->urlRequest);
+        }  
     }
 
     public function me()
@@ -140,31 +128,31 @@ class AuthController extends Controller
 
     // }
 
-    protected function respondWithToken($token, $email = null, $sessionId = null)
+    protected function respondWithToken($token, $sessionId = null)
     {
-        if ($email !== null) {
-            $bodegas_permiso = bodegasUsuarios::join('bodegas','bodegas_usuarios.id_bodega','=','bodegas.id_bodega')->
-                                      select('bodegas_usuarios.*','bodegas.descripcion')->
-                                      where('bodegas_usuarios.email','=',$email)->
-                                      get();
+        // if ($email !== null) {
+        //     $bodegas_permiso = bodegasUsuarios::join('bodegas','bodegas_usuarios.id_bodega','=','bodegas.id_bodega')->
+        //                               select('bodegas_usuarios.*','bodegas.descripcion')->
+        //                               where('bodegas_usuarios.email','=',$email)->
+        //                               get();
 
-            $empleados = noempleados::where('noempleados.email','=',$email)->first();
-            $permisos = Rol::where('rols.email','=',$email)->first();
-            $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->first();
-        }
+        //     $empleados = noempleados::where('noempleados.email','=',$email)->first();
+        //     $permisos = Rol::where('rols.email','=',$email)->first();
+        //     $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->first();
+        // }
 
-        return response()->json([
+        $data = [
             'access_token' => $token,
-            'token_type' => 'bearer',
-            'access_type' => 'bearer',
             'sessionId' => $sessionId,
             // 'expires_in' => auth::factory()->getTTL() * 8,
-            'bodegas_permisos' => $bodegas_permiso,
-            'empleado' => $empleados,
-            'empresa' => $empresa,
-            'permisos' => $permisos,
+            // 'bodegas_permisos' => $bodegas_permiso,
+            // 'empleado' => $empleados,
+            // 'empresa' => $empresa,
+            // 'permisos' => $permisos,
             'user' => auth()->user()
-        ]);
+        ];
+
+        return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
     }
 
     public function busqueda(Request $request)

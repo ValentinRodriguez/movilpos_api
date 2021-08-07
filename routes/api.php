@@ -6,18 +6,11 @@ use Illuminate\Support\Facades\Route;
 // RUTAS DEL LOGIN NUEVAMENTE
 Route::post('login', 'AuthController@login');
 Route::post('logout', 'AuthController@logout');
+Route::post('logout', 'AuthController@register');
 
-// Route::group([
-//     'middleware' => ['isLogged']
-// ], function ($router) { 
-//     Route::apiresource('/invproductos', 'InvProductosController');
-// });
-
-// Route::group([
-//     'middleware' => ['jwt.auth']
-// ], function ($router) {   
-    //Ruta Users
-    // Route::get('users','AuthController@index');
+Route::group([
+    'middleware' => ['jwt.auth']
+], function ($router) {   
     Route::get('users/{id}','AuthController@show');
     Route::get('busqueda/users','AuthController@busqueda');
     Route::get('busqueda/username','AuthController@busquedaUsuario');
@@ -39,4 +32,4 @@ Route::post('logout', 'AuthController@logout');
     
     // HOME
     Route::get('/autollenado/home', 'Home@autollenado');
-// });
+});
