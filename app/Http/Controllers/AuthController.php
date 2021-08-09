@@ -7,6 +7,7 @@ use App\Http\Requests\SignUpRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Librerias\User;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -25,21 +26,25 @@ class AuthController extends Controller
     }
 
     public function login(Request $request)
-    {
-        // try {                          
-            $credentials = request(['email', 'password']);
-            $email = request('email');
-            $sessionId = md5(uniqid());
+    {                
+        $credentials = $request->only('email', 'password');
+        if (!Auth::guard('web')->attempt($credentials)) {
+            return response()->json(array("data" => false, "code" => 401, "msj" => 'Credenciales Incorrectas'), 401);
+        }
+         /**
+          * @var User $user
+          */
+        $user = Auth::guard('web')->user();
+        $token = $user->createToken($user->email)->accessToken;
+        $sessionId = md5(uniqid());
+        
+        $data = [
+            'access_token' => $token,
+            'sessionId' => $sessionId,
+            'user' => auth('web')->user()
+        ];
 
-            if (auth()->attempt($credentials)) {
-                return response()->json(['error' => 'Usuario o clave incorrecta'], 401);
-            }           
-            User::where('email','=',$email)->update(['session_id' => $sessionId]);  
-            // return $this->respondWithToken($token, $email, $sessionId);
-        // }
-        // catch (JWTException $e ){
-        //     return response()->json(array("data" => false, "code" => 501, "msj" => $e->getMessage()), 501);
-        // }      
+        return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
     }
 
     public function signup(SignUpRequest $request)
@@ -111,7 +116,6 @@ class AuthController extends Controller
     public function me()
     {
         return response()->json(auth()->user());
-
     }
 
     // public function refresh()
@@ -144,12 +148,12 @@ class AuthController extends Controller
         $data = [
             'access_token' => $token,
             'sessionId' => $sessionId,
-            // 'expires_in' => auth::factory()->getTTL() * 8,
+            // 'expires_in' => $token->token->expires_at,
             // 'bodegas_permisos' => $bodegas_permiso,
             // 'empleado' => $empleados,
             // 'empresa' => $empresa,
             // 'permisos' => $permisos,
-            'user' => auth()->user()
+            'user' => auth('web')->user()
         ];
 
         return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
