@@ -9,10 +9,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Librerias\bodegasUsuarios;
+use App\Librerias\noempleados;
+use App\Librerias\Rol;
+use App\Librerias\Empresa;
 
 class AuthController extends Controller
 {
-
     public function index(Request $request)
     {
         $user  = User::orderBy('name', 'asc')->
@@ -54,15 +57,16 @@ class AuthController extends Controller
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
-            'numeric'  => 'El campo :attribute debe ser numerico',
+            'numeric'  => 'El campo :attribute debe ser numerico'
         ];
 
         $validator = validator($datos, [
-            "name"      => 'required|string',
-            "surname"   => 'required|string',
-            "password"  => 'required|string',
-            "email"     => 'required|string',
-            "estado"    => 'required|string',
+            "name"                  => 'required|string',
+            "surname"               => 'required|string',
+            "password"              => 'required|string',
+            "password_confirmation" => 'required|confirmed',
+            "email"                 => 'required|unique:users',
+            "estado"                => 'required|string',
         ],$messages);
 
         if ($validator->fails()) {
