@@ -35,11 +35,12 @@ class AuthController extends Controller
           * @var User $user
           */
         $user = Auth::guard('web')->user();
-        $token = $user->createToken($user->email)->accessToken;
+        $token = $user->createToken($user->email);
         $sessionId = md5(uniqid());
         
         $data = [
-            'access_token' => $token,
+            'access_token' => $token->accessToken,
+            'token_expires_at' => $token->token->expires_at,
             'sessionId' => $sessionId,
             'user' => auth('web')->user()
         ];
