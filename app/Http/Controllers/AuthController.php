@@ -40,14 +40,7 @@ class AuthController extends Controller
             $token = $user->createToken($user->email);
             $sessionId = md5(uniqid());
             
-            $data = [
-                'access_token' => $token->accessToken,
-                'token_expires_at' => $token->token->expires_at,
-                'sessionId' => $sessionId,
-                'user' => auth('web')->user()
-            ];
-    
-            return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
+            return $this->respondWithTokenStore($token, $sessionId);
 
         } catch (\Exception $e ){
                         return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
@@ -89,18 +82,11 @@ class AuthController extends Controller
                 $sessionId = md5(uniqid());
                 $token = $user->createToken('Si22500192319.')->accessToken;
 
-                $data = [
-                    'access_token' => $token->accessToken,
-                    'token_expires_at' => $token->token->expires_at,
-                    'sessionId' => $sessionId,
-                    'user' => auth('web')->user()
-                ];
-        
-                return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
+                return $this->respondWithTokenStore($token, $sessionId);
+
             } catch (\Exception $e ){
                 return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
             }
-
         }
     }
     
@@ -147,27 +133,39 @@ class AuthController extends Controller
 
     // }
 
-    protected function respondWithToken($token, $sessionId = null)
+    protected function respondWithTokenStore($token, $sessionId = null)
     {
-        // if ($email !== null) {
-        //     $bodegas_permiso = bodegasUsuarios::join('bodegas','bodegas_usuarios.id_bodega','=','bodegas.id_bodega')->
-        //                               select('bodegas_usuarios.*','bodegas.descripcion')->
-        //                               where('bodegas_usuarios.email','=',$email)->
-        //                               get();
+        $data = [
+            'access_token' => $token->accessToken,
+            'token_expires_at' => $token->token->expires_at,
+            'sessionId' => $sessionId,
+            'user' => auth('web')->user()
+        ];
 
-        //     $empleados = noempleados::where('noempleados.email','=',$email)->first();
-        //     $permisos = Rol::where('rols.email','=',$email)->first();
-        //     $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->first();
-        // }
+        return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
+    }
+
+    protected function respondWithToken($token,$email, $sessionId = null)
+    {
+        if ($email !== null) {
+            $bodegas_permiso = bodegasUsuarios::join('bodegas','bodegas_usuarios.id_bodega','=','bodegas.id_bodega')->
+                                      select('bodegas_usuarios.*','bodegas.descripcion')->
+                                      where('bodegas_usuarios.email','=',$email)->
+                                      get();
+
+            $empleados = noempleados::where('noempleados.email','=',$email)->first();
+            $permisos = Rol::where('rols.email','=',$email)->first();
+            $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->first();
+        }
 
         $data = [
             'access_token' => $token,
             'sessionId' => $sessionId,
             // 'expires_in' => $token->token->expires_at,
-            // 'bodegas_permisos' => $bodegas_permiso,
-            // 'empleado' => $empleados,
-            // 'empresa' => $empresa,
-            // 'permisos' => $permisos,
+            'bodegas_permisos' => $bodegas_permiso,
+            'empleado' => $empleados,
+            'empresa' => $empresa,
+            'permisos' => $permisos,
             'user' => auth('web')->user()
         ];
 
