@@ -5,12 +5,12 @@ use Illuminate\Support\Facades\Route;
 
 // RUTAS DEL LOGIN NUEVAMENTE
 Route::post('login', 'AuthController@login');
-Route::post('logout', 'AuthController@logout');
 Route::post('signup', 'AuthController@signup');
 
 Route::group([
     'middleware' => ['auth:api']
 ], function ($router) {   
+    Route::post('logout', 'AuthController@logout');
     Route::get('users/{id}','AuthController@show');
     Route::get('busqueda/users','AuthController@busqueda');
     Route::get('busqueda/username','AuthController@busquedaUsuario');

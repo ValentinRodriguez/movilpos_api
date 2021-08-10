@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SignUpRequest;
+use App\Librerias\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Librerias\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -27,25 +28,30 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {                
-        $credentials = $request->only('email', 'password');
-        if (!Auth::guard('web')->attempt($credentials)) {
-            return response()->json(array("data" => false, "code" => 401, "msj" => 'Credenciales Incorrectas'), 401);
-        }
-         /**
-          * @var User $user
-          */
-        $user = Auth::guard('web')->user();
-        $token = $user->createToken($user->email);
-        $sessionId = md5(uniqid());
-        
-        $data = [
-            'access_token' => $token->accessToken,
-            'token_expires_at' => $token->token->expires_at,
-            'sessionId' => $sessionId,
-            'user' => auth('web')->user()
-        ];
+        try {  
+            $credentials = $request->only('email', 'password');
+            if (!Auth::guard('web')->attempt($credentials)) {
+                return response()->json(array("data" => false, "code" => 401, "msj" => 'Credenciales Incorrectas'), 401);
+            }
+            /**
+             * @var User $user
+            */
+            $user = Auth::guard('web')->user();
+            $token = $user->createToken($user->email);
+            $sessionId = md5(uniqid());
+            
+            $data = [
+                'access_token' => $token->accessToken,
+                'token_expires_at' => $token->token->expires_at,
+                'sessionId' => $sessionId,
+                'user' => auth('web')->user()
+            ];
+    
+            return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
 
-        return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
+        } catch (\Exception $e ){
+                        return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
+        }
     }
 
     public function signup(SignUpRequest $request)
@@ -77,11 +83,20 @@ class AuthController extends Controller
                 $datos['foto']=$request->file('foto')->storeAs('uploads', 'usuarios/'.$nombreImagen, 'public');
             }
 
-            try {                
+            try {     
+                $datos['password'] = Hash::make($datos['password']);
                 $user = User::create($datos);
                 $sessionId = md5(uniqid());
                 $token = $user->createToken('Si22500192319.')->accessToken;
-                return $this->respondWithToken($token, $sessionId);
+
+                $data = [
+                    'access_token' => $token->accessToken,
+                    'token_expires_at' => $token->token->expires_at,
+                    'sessionId' => $sessionId,
+                    'user' => auth('web')->user()
+                ];
+        
+                return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
             } catch (\Exception $e ){
                 return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
             }
@@ -91,15 +106,14 @@ class AuthController extends Controller
     
     public function logout()
     {
-        return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
+        /**
+        * @var User $user
+        */
+        $user = Auth::user();
+        $userToken = $user->token();
+        $userToken->delete();
 
-        // $token = JWTAuth::getToken();
-        // try { 
-        //     $token = JWTAuth::invalidate($token);
-        //     return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
-        // } catch (JWTException $e ){
-        //     return response()->json(array("data" => false, "code" => 422, "msj" => $e->getMessage()), 501);
-        // } 
+        return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
     }
 
     public function desactivar(Request $request) {
