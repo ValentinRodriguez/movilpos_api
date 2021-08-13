@@ -2,34 +2,23 @@
 
 use Illuminate\Database\Seeder;
 use App\Librerias\tipo_documento;
+// use Illuminate\Support\Facades\DB;
 
 class TipoDocumentosSeeder extends Seeder
 {
     public function run()
     {
-        $cedula = array('tipo_documento' => 1,
-                        'descripcion' => 'cedula',
-                        'origen'=> 'debito',
-                        'estado' => 'activo', 
-                        'usuario_creador'=> 'movilsoluciones'
+        // DB::table('tipo_documento')->truncate();
+
+        $documentos = array(
+            ['tipo_documento' => 1,'descripcion' => 'Cedula','origen'=> 'debito','estado' => 'activo','usuario_creador'=> 'movilsoluciones'],
+            ['tipo_documento' => 2,'descripcion' => 'RNC','origen'=> 'debito','estado' => 'activo', 'usuario_creador'=> 'movilsoluciones'],
+            ['tipo_documento' => 3,'descripcion' => 'Pasaporte','origen'=> 'debito','estado' => 'activo', 'usuario_creador'=> 'movilsoluciones'],
+            ['tipo_documento' => 4,'descripcion' => 'Ninguno','origen'=> 'debito','estado' => 'activo', 'usuario_creador'=> 'movilsoluciones']
         );
 
-        $rnc = array('tipo_documento' => 2,
-                     'descripcion' => 'RNC',
-                     'origen'=> 'debito',
-                     'estado' => 'activo', 
-                     'usuario_creador'=> 'movilsoluciones'
-        );
-
-        $pasaporte = array('tipo_documento' => 3,
-                           'descripcion' => 'pasaporte',
-                           'origen'=> 'debito',
-                           'estado' => 'activo', 
-                           'usuario_creador'=> 'movilsoluciones'
-        );
-        
-        tipo_documento::create($pasaporte);
-        tipo_documento::create($cedula);
-        tipo_documento::create($rnc);
+        foreach ($documentos as $key => $value) {
+            tipo_documento::create($value);
+        }
     }
 }

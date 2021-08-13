@@ -11,14 +11,14 @@ class CreateEmpresasTable extends Migration
         Schema::create('empresas', function (Blueprint $table) {
             $table->id();
             $table->integer('cod_cia')->index();
-            $table->text('nombre');
+            $table->string('nombre', 100)->unique();
             $table->text('telefono_empresa');
             $table->text('email_empresa');
             $table->text('calle');
-            $table->text('web')->nullable();;
+            $table->text('web')->nullable();
             $table->text('contacto');
             $table->text('telefono_contacto');
-            $table->text('logo');
+            $table->text('logo')->nullable();
             $table->text('moneda');
             $table->string('valuacion_inv',10);
             $table->char('tipo_cuadre',2);

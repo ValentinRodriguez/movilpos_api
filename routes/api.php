@@ -18,7 +18,6 @@ Route::group([
     Route::get('busqueda/numemp','AuthController@busquedaNumEmp');
     Route::post('usuario-logado', 'AuthController@getAuthUser');
     Route::post('desactivar', 'AuthController@unLockLogin');
-    // Route::post('signup', 'AuthController@signup');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('cambia', 'AuthController@cambia');
     Route::post('act/usuario/{id}', 'AuthController@actualizar');
