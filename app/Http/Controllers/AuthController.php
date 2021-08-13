@@ -8,11 +8,11 @@ use App\Librerias\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use App\Librerias\bodegasUsuarios;
 use App\Librerias\noempleados;
 use App\Librerias\Rol;
 use App\Librerias\Empresa;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -43,17 +43,22 @@ class AuthController extends Controller
             $token = $user->createToken($user->email);
             $sessionId = md5(uniqid());
             
-            return $this->respondWithTokenStore($token, $sessionId);
-
+            Log::debug($request->input("store"));
+            
+            if (!$request->input("store")) {
+                return $this->respondWithToken($token, $user, $sessionId);
+            } else {
+                return $this->respondWithTokenStore($token, $user, $sessionId);
+            }
         } catch (\Exception $e ){
-                        return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
+            return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
         }
     }
 
     public function signup(SignUpRequest $request)
     {
         $datos = $request->all();
-        
+         
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
@@ -63,15 +68,15 @@ class AuthController extends Controller
         $validator = validator($datos, [
             "name"                  => 'required|string',
             "surname"               => 'required|string',
-            "password"              => 'required|string',
-            "password_confirmation" => 'required|confirmed',
+            "password"              => 'required|string|confirmed',
             "email"                 => 'required|unique:users',
+            "username"              => 'required|string',
             "estado"                => 'required|string',
         ],$messages);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return response()->json($errors->all());
+            return response()->json(array("error" => true, "code" => 422, "msj" => $errors->all()), 422);
         }else{
             if ($request->hasFile('foto')) {
                 // Storage::delete('public/'.$producto->imagen);
@@ -81,12 +86,15 @@ class AuthController extends Controller
             }
 
             try {     
-                $datos['password'] = Hash::make($datos['password']);
-                $user = User::create($datos);
-                $sessionId = md5(uniqid());
-                $token = $user->createToken('Si22500192319.')->accessToken;
-
-                return $this->respondWithTokenStore($token, $sessionId);
+                DB::beginTransaction();
+                    $user = User::create($datos);
+                    $sessionId = md5(uniqid());
+                    $token = $user->createToken($datos['email']);
+                DB::commit();
+                
+                // Log::debug($datos);
+                // return response()->json(array("data" => '', "code" => 200, "msj" => "Respuesta Exitosa"), 200);
+                return $this->respondWithTokenStore($token, $user, $sessionId);          
 
             } catch (\Exception $e ){
                 return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
@@ -123,27 +131,13 @@ class AuthController extends Controller
         return response()->json(auth()->user());
     }
 
-    // public function refresh()
-    // {
-    //     $token = JWTAuth::getToken();
-    //     try{
-    //         $token = JWTAuth::refresh($token);
-    //         $email = request('email');
-    //         $sessionId = request('sessionId');
-    //         return $this->respondWithToken($token,$email,$sessionId);
-    //     }catch (JWTException $e ){
-    //         return response()->json(array("data" => $e, "code" => 501, "msj" => "Error"), 501);
-    //     }
-
-    // }
-
-    protected function respondWithTokenStore($token, $sessionId = null)
+    protected function respondWithTokenStore($token, $user, $sessionId = null)
     {
         $data = [
             'access_token' => $token->accessToken,
             'token_expires_at' => $token->token->expires_at,
             'sessionId' => $sessionId,
-            'user' => auth('web')->user()
+            'user' => $user
         ];
 
         return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
