@@ -13,3 +13,6 @@ use Illuminate\Support\Facades\Route;
 
     // CATEGORIAS
     Route::apiresource('/categorias-plaza', 'tienda\CategoriaStoreController');
+
+    // PLANES
+    Route::apiresource('/planes', 'tienda\planesController');

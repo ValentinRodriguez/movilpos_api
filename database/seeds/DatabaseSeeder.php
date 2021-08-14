@@ -53,5 +53,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SubCategoriaSeeder::class); 
         $this->call(SubSubCategoriaSeeder::class);       
         $this->call(CategoriaStoreSeeder::class);
+        // $this->call(planesSeeder::class);
     }
 }
