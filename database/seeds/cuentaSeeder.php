@@ -9,7 +9,7 @@ class cuentaSeeder extends Seeder
     {
         $cgcatalogo = array(
             [
-                'cuenta_no'          => 0,
+                'cuenta_no'          => '0',
                 'descripcion'        => 'prov-control',
                 'origen'             => 'deudor',
                 'nivel'              => 1,
@@ -23,12 +23,12 @@ class cuentaSeeder extends Seeder
                 'selectivo_consumo'  => 'no',
                 'retencion'          => 'no',
                 'codigo_isr'         => 1,
-                'usuario_creador'    => 'movilsoluciones',               
+                'usuario_creador'    => 'movilsoluciones',
                 'estado'             => 'inactivo',
                 'grupo'              => 'pasivo'
             ],
             [
-                'cuenta_no'          => 00,
+                'cuenta_no'          => '00',
                 'descripcion'        => 'prov-sub',
                 'origen'             => 'deudor',
                 'nivel'              => 2,
@@ -42,12 +42,12 @@ class cuentaSeeder extends Seeder
                 'selectivo_consumo'  => 'no',
                 'retencion'          => 'no',
                 'codigo_isr'         => 1,
-                'usuario_creador'    => 'movilsoluciones',               
+                'usuario_creador'    => 'movilsoluciones',
                 'estado'             => 'inactivo',
                 'grupo'              => 'pasivo'
             ],
             [
-                'cuenta_no'          => 000,
+                'cuenta_no'          => '000',
                 'descripcion'        => 'prov-aux',
                 'origen'             => 'deudor',
                 'nivel'              => 3,
@@ -61,7 +61,7 @@ class cuentaSeeder extends Seeder
                 'selectivo_consumo'  => 'no',
                 'retencion'          => 'no',
                 'codigo_isr'         => 1,
-                'usuario_creador'    => 'movilsoluciones',               
+                'usuario_creador'    => 'movilsoluciones',
                 'estado'             => 'inactivo',
                 'grupo'              => 'pasivo'
             ],
@@ -69,6 +69,6 @@ class cuentaSeeder extends Seeder
 
         foreach ($cgcatalogo as $key => $value) {
             cgcatalogo::create($value);
-        } 
+        }
     }
 }
