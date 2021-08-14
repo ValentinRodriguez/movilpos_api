@@ -5,22 +5,22 @@ namespace App\Librerias;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
+use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable
 {
-    use Notifiable;
-  //  protected $table='users'
-    protected $fillable = ['username','name','surname','email','impresora',
-                           'password','foto','estado','id_numemp'];
+    use HasApiTokens, Notifiable;
+  
+    protected $fillable = ['username','name','surname','email','impresora','password','foto','estado','id'];
 
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    protected $casts = ['email_verified_at' => 'datetime'];
+
+    // protected $dispatchesEvents = [
+    //     'updated' => userUpdated::class,
+    //     'deleted' => userDeleted::class,
+    // ];
 
     public function getJWTIdentifier()
     {
@@ -36,8 +36,6 @@ class User extends Authenticatable implements JWTSubject
     {
         $this->attributes['password'] = bcrypt($value);
     }
-
-
     
     public function ScopeParametro($query, $parametro)
     {

@@ -6,7 +6,4 @@ use App\Traits\ApiResponse;
 
 class ApiResponseController extends Controller{
       use ApiResponse;
-
-      
-
 }

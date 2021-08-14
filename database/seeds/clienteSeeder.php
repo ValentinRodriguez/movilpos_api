@@ -10,11 +10,11 @@ class clienteSeeder extends Seeder
     public function run()
     {   
         $tipo_cliente = array(
-            'tipo_cliente' => 1,'descripcion' => 'CLIENTE CONTADO','estado' => 'inactivo','usuario_creador' => 'movilsoluciones'
+            'tipo_cliente' => 1,'descripcion' => 'CLIENTE CONTADO','estado' => 'activo','usuario_creador' => 'movilsoluciones'
         );
         
         $tipo_negocio = array(
-            'tipo_negocio' => 1,'descripcion' => 'PROVISIONAL','estado' => 'inactivo','usuario_creador' => 'movilsoluciones'
+            'tipo_negocio' => 1,'descripcion' => 'NEGOCIO GENERAL','estado' => 'activo','usuario_creador' => 'movilsoluciones'
         );
 
         $cliente = array(
@@ -30,7 +30,6 @@ class clienteSeeder extends Seeder
             'ncf' => 00000000000,
             'generico' => 'SI',
             'calle' => 'XXXXXXXXXXXXX',
-            'casa_num' => 'XXX',
             'telefono_oficina' => '(XXX)-XXX-XXXX',
             'id_pais' => 1,
             'id_sector' => 173,
@@ -42,7 +41,7 @@ class clienteSeeder extends Seeder
             'telefono_casa' => '(XXX)-XXX-XXXX',
             'email' => 'xxxxxxxxxxxxxxxxxxx',
             'url' => 'xxxxxxxxxxxxxxxxxxx',
-            'estado' => 'inactivo',
+            'estado' => 'activo',
             'usuario_creador' => 'movilsoluciones'
         );
 

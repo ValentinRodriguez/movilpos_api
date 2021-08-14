@@ -20,13 +20,12 @@ class CreateTransportistasTable extends Migration
             $table->string('nombre',50);
             $table->string('cedula',15);
             $table->string('calle',50);
-            $table->char('casa_num',5);
             $table->smallInteger('id_ciudad');
             $table->smallInteger('id_pais');
             $table->smallInteger('id_region');
             $table->smallInteger('id_provincia');
             $table->smallInteger('id_municipio');
-            $table->smallInteger('id_sector');
+            $table->smallInteger('id_sector')->nullable();
             $table->string('telefono',20);
             $table->string('estado',20);
             $table->string('usuario_creador',50);

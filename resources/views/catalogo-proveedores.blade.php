@@ -1,7 +1,7 @@
 @extends('layouts.reportes-internos')
 
 @section('titulo')
-  Catálogo de Proveedores
+  Catalogo de Proveedores
 @endsection
 
 @section('company-info')

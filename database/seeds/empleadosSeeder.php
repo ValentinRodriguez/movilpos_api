@@ -32,11 +32,11 @@ class empleadosSeeder extends Seeder
                 'licencia'              => '654654',
                 'paga_seg'              => 'si',
                 'poncha'                => 'si',
-                'primernombre'          => 'provisional', 
-                'segundonombre'         => 'provisional',
-                'primerapellido'        => 'provisional',
+                'primernombre'          => 'empleado general', 
+                'segundonombre'         => 'empleado general',
+                'primerapellido'        => 'empleado general',
                 'is_sup'                => 'si',
-                'segundoapellido'       => 'provisional',
+                'segundoapellido'       => 'empleado general',
                 'sexo'                  => "M",
                 'cod_tss'               => "12586523981",
                 'sueldo'                => 1000000,
@@ -47,7 +47,7 @@ class empleadosSeeder extends Seeder
                 'nomina'                => 1,
                 'no_cuenta_banco'       => '1254523695214526',
                 'id_moneda'             => 1,
-                'estado'                => 'inactivo',
+                'estado'                => 'activo',
                 'usuario_creador'       => 'movilsoluciones'
             ]
         );

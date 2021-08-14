@@ -57,7 +57,7 @@
     <thead>
       <tr>
         <th colspan="3">Producto/s</th>
-        <th>Código</th>
+        <th>Codigo</th>
         <th>Cantidad</th>
         <th>Precio</th>
         <th>% Descuento</th>

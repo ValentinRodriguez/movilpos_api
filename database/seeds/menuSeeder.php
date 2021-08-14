@@ -45,7 +45,6 @@ class menuSeeder extends Seeder
             
             // MODULO DE VENTAS
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep1','nombre' => 'Interfaz de ventas','descripcion' => 'modulo de ventas','url' => 'interfaz-ventas','estado' => 'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep1b','nombre' => 'Interfaz de ventas 2','descripcion' => 'modulo de ventas','url' => 'interfaz-ventas2','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep2','nombre' => 'Generacion formulario 607','descripcion' => 'Modulo ventas','url' => 'generacion_formulario_607','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep3','nombre' => 'Ofertas y Promociones','descripcion' => 'Modulo ventas','url' => 'ofertas-promociones','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep4','nombre' => 'Gestion de clientes','descripcion' => 'Modulo ventas','url' => 'gestion-de-clientes','estado' => 'ACTIVO'],
@@ -86,10 +85,12 @@ class menuSeeder extends Seeder
 
             //MODULO CUENTAS POR PAGAR
             ['id_menu' => 2,'modulo' => 10,'status' => 1,'codigo' => 'cpp1','nombre' => 'Analisis de Saldo','descripcion' => 'Modulo Cuentas por pagar','url' => 'reporte-analisis-saldo','estado' =>'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 10,'status' => 1,'codigo' => 'cpp2','nombre' => 'Facturas de proveedores','descripcion' => 'Modulo Compras','url' => 'gestion-factura-proveedores','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 10,'status' => 1,'codigo' => 'cpp2','nombre' => 'Facturas de proveedores','descripcion' => 'Modulo Cuentas por pagar','url' => 'gestion-factura-proveedores','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 10,'status' => 1,'codigo' => 'cpp3','nombre' => 'Gestion documentos(ND, NC)','descripcion' => 'Modulo Cuentas por pagar','url' => 'gestion-documentos-ndnc','estado' => 'ACTIVO'],
 
+            
             //MODULO PLAZA ONLINE
-            ['id_menu' => 1,'modulo' => 11,'status' => 1,'codigo' => 'tpo1','nombre' => 'Creación de productos','descripcion' => 'Modulo creación de productos','url' => 'creacion-productos-plaza','estado' =>'ACTIVO']            
+            ['id_menu' => 1,'modulo' => 11,'status' => 1,'codigo' => 'tpo1','nombre' => 'Creacion de productos','descripcion' => 'Modulo creacion de productos','url' => 'creacion-productos-plaza','estado' =>'ACTIVO']            
         );
 
         foreach ($menues as $key => $value) {
