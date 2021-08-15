@@ -18,8 +18,6 @@ class CreateInvProductoStoresTable extends Migration
             $table->text('titulo');
             $table->integer('tipo_producto');
             $table->foreign('tipo_producto')->references('id_tipo')->on('tipo_productos');
-            $table->integer('id_tipoinventario');
-            $table->foreign('id_tipoinventario')->references('id_tipoinventario')->on('invtipos_inventarios');
             $table->integer('id_categoria');
             $table->foreign('id_categoria')->references('id_categoria')->on('categorias');
             $table->integer('id_brand');
@@ -28,7 +26,6 @@ class CreateInvProductoStoresTable extends Migration
             $table->integer('id_propiedad');
             $table->foreign('id_propiedad')->references('id_propiedad')->on('propiedades');
             $table->string('codigo',30)->unique();
-            $table->string('codigo_referencia',20)->nullable();
             $table->string('origen',50)->default('debito');
             $table->integer('existenciaMinima');
             $table->integer('existenciaMaxima')->nullable();
@@ -50,11 +47,9 @@ class CreateInvProductoStoresTable extends Migration
             $table->float('ventas')->nullable();
             $table->float('devoluciones')->nullable();            
             $table->text('galeriaImagenes');
-            $table->char('editando', 1)->default('0');
-            $table->text('usuario_editando')->nullable();
             $table->string('estado', 10);
-            $table->text('usuario_creador');
-            $table->text('usuario_modificador')->nullable();
+            $table->string('usuario_creador',50);
+            $table->string('tienda',50);
             $table->timestamps();
         });
     }

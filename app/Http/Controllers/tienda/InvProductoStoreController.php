@@ -14,6 +14,11 @@ class InvProductoStoreController extends ApiResponseController
         return $this->successResponse($productos);
     }
 
+    public function myProducts(Request $request)
+    {
+        $productos = invProductoStore::where([['usuario_creador','=',''],['tienda','=','']])->get();
+        return $this->successResponse($productos);
+    }
     public function store(Request $request)
     {        
         $maxid=0;

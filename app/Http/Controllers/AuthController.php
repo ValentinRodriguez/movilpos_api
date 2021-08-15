@@ -38,7 +38,7 @@ class AuthController extends Controller
             }
             /**
              * @var User $user
-            */
+             */
             $user = Auth::guard('web')->user();
             $token = $user->createToken($user->email);
             $sessionId = md5(uniqid());
