@@ -90,7 +90,7 @@ class menuSeeder extends Seeder
 
             
             //MODULO PLAZA ONLINE
-            ['id_menu' => 1,'modulo' => 11,'status' => 1,'codigo' => 'tpo1','nombre' => 'Creacion de productos','descripcion' => 'Modulo creacion de productos','url' => 'creacion-productos-plaza','estado' =>'ACTIVO']            
+            ['id_menu' => 1,'modulo' => 11,'status' => 1,'codigo' => 'tpo1','nombre' => 'Creacion de productos tienda','descripcion' => 'Modulo creacion de productos','url' => 'creacion-productos-plaza','estado' =>'ACTIVO']            
         );
 
         foreach ($menues as $key => $value) {
