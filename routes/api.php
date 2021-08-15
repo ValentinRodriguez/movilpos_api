@@ -29,6 +29,7 @@ Route::post('logout', 'AuthController@logout');
     Route::get('/formulario606/dgii-rnc', 'DgiiController@formulario606');
     Route::apiResource('/dgii-rnc', 'DgiiController');
 
+
     // PRODUCTOS EN EL INVENTARIO
     Route::post('/act/productos/{id}', 'InvProductosController@updateProducts');
     Route::get('/noexistencia/invproductos', 'InvProductosController@indexSinExistencia');
@@ -288,6 +289,9 @@ Route::post('logout', 'AuthController@logout');
 
     //recepcion vehiculo
     Route::apiresource('/recepcion','VerecepcionMasterController');
+
+    //Pagos
+    Route::apiresource('/recibo','/CcRecibosIngresoMasterController');
 
     //Ruta Users
     // Route::get('users','AuthController@index');
