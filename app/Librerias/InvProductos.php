@@ -45,6 +45,27 @@ class InvProductos extends Model
         }
     }
 
+    public function ScopetipoInventario($query, $tipo)
+    {
+        if ($tipo) {
+            return $query->where('inv_productos.id_tipoinventario', '=', $tipo);
+        }
+    }
+
+    public function ScopeBodega($query, $bodega)
+    {
+        if ($bodega) {
+            return $query->where('inv_productos.id_bodega', '=', $bodega);
+        }
+    }
+
+    public function ScopeProducto($query, $id)
+    {
+        if ($id) {
+            return $query->where('inv_productos.id', '=', $id);
+        }
+    }
+
     public function ScopecodigoReferencia($query, $codigoReferencia)
     {
         if ($codigoReferencia) {
@@ -65,7 +86,7 @@ class InvProductos extends Model
     public function ScopeConDetalles($query)
     {
         return $query-> leftjoin('invtransaccionesdetalle','invtransaccionesdetalle.codigo','=','inv_productos.codigo')->
-
+                        leftjoin('orden_pedido_detalles','orden_pedido_detalles.codigo','=','inv_productos.codigo')->
                         join('bodegas','bodegas.id_bodega','=','inv_productos.id_bodega')->                        
                         join('categorias','categorias.id_categoria','=','inv_productos.id_categoria')->
                         join('brands','brands.id_brand','=','inv_productos.id_brand')->
@@ -79,14 +100,18 @@ class InvProductos extends Model
                                 'inv_productos.devoluciones', 'inv_productos.galeriaImagenes', 'inv_productos.descripcion','inv_productos.porcientodescuento',         
                                 'inv_productos.cod_sp','inv_productos.cod_sp_sec','inv_productos.id_propiedad','inv_productos.tipo_producto',
 
-                        DB::raw('sum(invtransaccionesdetalle.cantidad1) as cantidad1'),
-                        DB::raw('sum(invtransaccionesdetalle.cantidad) as cantidad'),
+                            DB::raw('sum(invtransaccionesdetalle.cantidad1) as cantidad1'),
+                            DB::raw('sum(invtransaccionesdetalle.cantidad) as cantidad'),
                             
                             'categorias.descripcion as categoria',
                             'brands.descripcion as marca',
                             'invtipos_inventarios.descripcion as tipoinventario',
-                            'bodegas.descripcion as almacen',
-                            'propiedades.descripcion as propiedad'
+                            'bodegas.descripcion as almacen','bodegas.id_bodega',
+                            'propiedades.descripcion as propiedad',
+
+                            DB::raw('IFNULL(sum(orden_pedido_detalles.cantidad), 0) as cantidad_orden'),
+
+                            DB::raw('sum(invtransaccionesdetalle.cantidad1 - IFNULL(orden_pedido_detalles.cantidad,0)) as disponible'),
                         )-> 
                         where([['inv_productos.estado','=','ACTIVO']])->
                         groupby('inv_productos.id','inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo', 
@@ -94,7 +119,7 @@ class InvProductos extends Model
                                 'inv_productos.precio_venta','inv_productos.costo','inv_productos.fechaInicioDescuento','inv_productos.fechaFinDescuento', 
                                 'inv_productos.ventas','inv_productos.devoluciones','inv_productos.galeriaImagenes','inv_productos.descripcion',
                                 'inv_productos.cod_sp','inv_productos.cod_sp_sec','categorias.descripcion','brands.descripcion','invtipos_inventarios.descripcion',
-                                'inv_productos.tipo_producto','bodegas.descripcion','propiedades.descripcion')->
+                                'inv_productos.tipo_producto','bodegas.descripcion','bodegas.id_bodega','propiedades.descripcion')->
 
                         orderBy('inv_productos.created_at', 'desc')->  
                         get();

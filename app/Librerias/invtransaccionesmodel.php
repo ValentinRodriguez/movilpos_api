@@ -10,7 +10,7 @@ class invtransaccionesmodel extends Model
     protected $fillable = ['num_doc','numerosecuencia','fecha','id_tipomov','conduce_no','factura','tipo_cliente','sec_cliente',
                            'cod_sp','cod_sp_sec','num_rnc','direccion','email','id_num_oc','id_num_op','id_bodega',
                            'id_bodega_d','placa','cod_mov_entrada','num_doc_entrada','cod_transportista','cod_tarifa','comentario',
-                           'departamento','id_numemp','nombre_departamento','cuenta_no','inv_tipomov_transferencia','documento_origen',
+                           'departamento','id','nombre_departamento','cuenta_no','inv_tipomov_transferencia','documento_origen',
                            'codigo_movimiento_origen','descripcion_cuenta','nombre_recibido_por','origen','firma_recibido_por','controlCliente',
                            'controlDespacho','controlDepartamento','controlDevoluciones','controlTransferencia','controlOrdCompra','bodega_origen',
                            'nombre_entregado_por','firma_entregado_por','estado','condicion_recibo','usuario_creador','usuario_modificador'];
@@ -31,7 +31,7 @@ class invtransaccionesmodel extends Model
                         
                         join('bodegas','invtransaccionesmaster.id_bodega','=','bodegas.id_bodega')->
                         leftjoin('nodepartamentos','invtransaccionesmaster.departamento','=','nodepartamentos.departamento')->
-                        leftjoin('noempleados','invtransaccionesmaster.id_numemp','=','noempleados.id_numemp')->
+                        leftjoin('noempleados','invtransaccionesmaster.id','=','noempleados.id')->
                         leftjoin('transportistas','invtransaccionesmaster.cod_transportista','=','transportistas.cod_transportista')->
                         leftjoin('bodegas_usuarios','bodegas.id_bodega','=','bodegas_usuarios.id_bodega')->
                         select('invtransaccionesmaster.*',

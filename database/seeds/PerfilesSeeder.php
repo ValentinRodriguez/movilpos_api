@@ -7,7 +7,7 @@ class PerfilesSeeder extends Seeder
 {
     public function run()
     {
-        $perfil = array('descripcion' => 'teconologia',
+        $perfil = array('descripcion' => 'tecnologia',
                         'usuario_creador' => 'movilsoluciones',
                         'estado' => 'activo'
         );

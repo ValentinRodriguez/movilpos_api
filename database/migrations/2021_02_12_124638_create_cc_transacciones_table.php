@@ -13,7 +13,7 @@ class CreateCcTransaccionesTable extends Migration
             $table->string('cuenta_no',8)->nullable();
             $table->smallInteger('cod_cia')->nullable();
             $table->string('tipo_doc',2)->nullable();
-            $table->integer('num_do')->nullable();
+            $table->integer('num_doc')->nullable();
             $table->smallInteger('tipo_cliente')->nullable();
             $table->smallInteger('sec_cliente')->nullable();
             $table->smallInteger('cod_emp')->nullable();

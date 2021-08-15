@@ -7,9 +7,9 @@ class departamentoSeeder extends Seeder
     public function run()
     {
         $departamento = array(
-            'titulo'	       => 'provisional',
-            'descripcion'	   => 'provisional',
-            'tipodepartamento' => 'provisional',
+            'titulo'	       => 'departamento general',
+            'descripcion'	   => 'departamento general',
+            'tipodepartamento' => 'departamento general',
             'usuario_creador'  => 'movilsoluciones',
             'estado'	       => 'activo',
         );

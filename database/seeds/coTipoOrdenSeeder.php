@@ -10,25 +10,25 @@ class coTipoOrdenSeeder extends Seeder
         $general = array('id' => 1,
             'descripcion' => 'Generales',
             'usuario_creador' => 'movilsoluciones',
-            'estado' => 'inactivo'
+            'estado' => 'activo'
         );
 
         $rov = array('id' => 2,
             'descripcion' => 'Rov.ltd',
             'usuario_creador' => 'movilsoluciones',
-            'estado' => 'inactivo'
+            'estado' => 'activo'
         );
 
         $locales = array('id' => 2,
             'descripcion' => 'Locales',
             'usuario_creador' => 'movilsoluciones',
-            'estado' => 'inactivo'
+            'estado' => 'activo'
         );
 
         $miscelaneas = array('id' => 2,
             'descripcion' => 'Miscelaneas',
             'usuario_creador' => 'movilsoluciones',
-            'estado' => 'inactivo'
+            'estado' => 'activo'
         );
 
         coTipoOrden::create($general);  

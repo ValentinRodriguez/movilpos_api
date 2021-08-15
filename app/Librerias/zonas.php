@@ -8,5 +8,5 @@ class zonas extends Model
 {
     protected $table = "zonas_local";
 
-    protected $fillable = ["id_zonalocal","descripcion"];
+    protected $fillable = ["id_zonalocal","descripcion","estado"];
 }

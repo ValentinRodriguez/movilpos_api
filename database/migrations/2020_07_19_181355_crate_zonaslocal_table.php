@@ -11,6 +11,7 @@ class CrateZonaslocalTable extends Migration
         Schema::create('zonas_local', function (Blueprint $table) {
             $table->id();
             $table->integer('id_zonalocal')->unique();
+            $table->string('estado',20);
             $table->string('descripcion',100);
             $table->timestamps();
         });

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Librerias\tipoProducto;
+// use Illuminate\Support\Facades\DB;
 
 class TipoProductosSeeder extends Seeder
 {
@@ -12,6 +13,8 @@ class TipoProductosSeeder extends Seeder
      */
     public function run()
     {
+        // DB::table('tipo_productos')->truncate();
+
         $fisico = array(
             'titulo' => 'fisico',
             'id_tipo' => 1,
