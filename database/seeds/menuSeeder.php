@@ -32,7 +32,7 @@ class menuSeeder extends Seeder
             ['id_menu' => 2,'modulo' => 4,'status' => 1,'codigo' => 'invr2','nombre' => 'Reporte de operaciones por movimientos','descripcion' => 'menu de inventario','url' => 'reporte-operaciones-por-movimientos','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp1','nombre' => 'Maestra de productos','descripcion' => 'menu de inventario','url' => 'gestion-de-productos','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp2','nombre' => 'Gestion de bodegas','descripcion' => 'menu de inventario','url' => 'gestion-de-bodegas','estado' => 'ACTIVO'],
-            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp3','nombre' => 'Gestion de modelos','descripcion' => 'menu de inventario','url' => 'gestion-de-modelos','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp3','nombre' => 'Gestion de modelos','descripcion' => 'menu de inventario','url' => 'gestion-lde-modelos','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp4','nombre' => 'Gestion de tipos de inventarios','descripcion' => 'menu de inventario','url' => 'gestion-tipos-inventarios','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp5','nombre' => 'Gestion de marcas','descripcion' => 'menu de inventario','url' => 'gestion-de-marcas','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp6','nombre' => 'Gestion de tipos de movimientos','descripcion' => 'menu de inventario','url' => 'gestion-tipos-movimientos','estado' => 'ACTIVO'],
@@ -42,7 +42,8 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp10','nombre' => 'gestion de propiedades','descripcion' => 'menu de gestion de inventario','url' => 'gestion-de-propiedades','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp11','nombre' => 'Consulta existencias por almacenes','descripcion' => 'menu de gestion de inventario','url' => 'gestion-existencias-almacenes','estado' => 'ACTIVO'],            
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp12','nombre' => 'Gestion de liquidacion de mercancias','descripcion' => 'menu de gestion de inventario','url' => 'gestion-liquidacion-mercancias','estado' => 'ACTIVO'],            
-            
+            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp13','nombre' => 'Costo Standard','descripcion' => 'menu de gestion de inventario','url' => 'gestion-costo-standard','estado' => 'ACTIVO'],
+
             // MODULO DE VENTAS
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep1','nombre' => 'Interfaz de ventas','descripcion' => 'modulo de ventas','url' => 'interfaz-ventas','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep2','nombre' => 'Generacion formulario 607','descripcion' => 'Modulo ventas','url' => 'generacion_formulario_607','estado' => 'ACTIVO'],
