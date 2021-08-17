@@ -105,11 +105,12 @@ class AuthController extends Controller
     public function logout()
     {
         /**
-        * @var User $user
-        */
+         * @var User $user
+         */
         $user = Auth::user();
         $userToken = $user->token();
         $userToken->delete();
+        // return response()->json($user);
 
         return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
     }
