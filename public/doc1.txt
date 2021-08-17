@@ -1,0 +1,14 @@
+Token
+
+php artisan passport:client --personal --no-interaction
+
+Para el refresh
+php artisan migrate:refresh --seed
+
+creacion de nuevas modelos con migracion controller y recursos
+
+php artisan make:model <nombre> -mcr
+
+resolver problemas de sincronizacion entre los modelos, por el tema de modifiacion nombres
+
+composer dumpautoload
