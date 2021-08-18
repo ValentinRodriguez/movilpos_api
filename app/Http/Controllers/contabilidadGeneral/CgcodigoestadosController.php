@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\contabilidadGeneral;
 use App\Http\Controllers\ApiResponseController;
 use App\Controller\contabilidadGeneral\cgcodigoestados;
 use App\Librerias\cgcodigoestados as LibreriasCgcodigoestados;
@@ -20,31 +20,15 @@ class CgcodigoestadosController extends  ApiResponseController
         select('CONCAT(cgcodigoestado.id_estado,'-',cgcodigoestado.descripcion_esp as descripcion')->
         get();
 
-if ($estados == null){
-return $this->errorResponse($estados);
-}
-return $this->successResponse($estados, $request->urlRequest);
+        if ($estados == null){
+            return $this->errorResponse($estados);
+        }
+        return $this->successResponse($estados, $request->urlRequest);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        return response()->json($request->all());
     }
 
     /**
@@ -53,18 +37,7 @@ return $this->successResponse($estados, $request->urlRequest);
      * @param  \App\cgcodigoestados  $cgcodigoestados
      * @return \Illuminate\Http\Response
      */
-    public function show(cgcodigoestados $cgcodigoestados)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\cgcodigoestados  $cgcodigoestados
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(cgcodigoestados $cgcodigoestados)
+    public function show(LibreriasCgcodigoestados $cgcodigoestados)
     {
         //
     }
@@ -76,7 +49,7 @@ return $this->successResponse($estados, $request->urlRequest);
      * @param  \App\cgcodigoestados  $cgcodigoestados
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, cgcodigoestados $cgcodigoestados)
+    public function update(Request $request, LibreriasCgcodigoestados $cgcodigoestados)
     {
         //
     }
@@ -87,7 +60,7 @@ return $this->successResponse($estados, $request->urlRequest);
      * @param  \App\cgcodigoestados  $cgcodigoestados
      * @return \Illuminate\Http\Response
      */
-    public function destroy(cgcodigoestados $cgcodigoestados)
+    public function destroy(LibreriasCgcodigoestados $cgcodigoestados)
     {
         //
     }

@@ -39,4 +39,6 @@ use Illuminate\Support\Facades\Route;
     Route::get('/autollenado/cuadre-caja', 'contabilidadGeneral\CuadreCajaController@autollenado');
     Route::get('/busqueda/cuadre-caja', 'contabilidadGeneral\CuadreCajaController@busqueda');
     Route::apiresource('/cuadre-caja', 'contabilidadGeneral\CuadreCajaController');
-    //Route::apiresource('/estados', 'contabilidadGeneral\CgcodigoestadosController');
+
+    // ESTADOS
+    Route::apiresource('/estados', 'contabilidadGeneral\CgcodigoestadosController');
