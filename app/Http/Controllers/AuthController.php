@@ -41,6 +41,7 @@ class AuthController extends Controller
              */
             $user = Auth::guard('web')->user();
             $token = $user->createToken($user->email);
+            // return response()->json($token);
             $sessionId = md5(uniqid());
             
             Log::debug($request->input("store"));
