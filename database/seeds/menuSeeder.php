@@ -73,6 +73,7 @@ class menuSeeder extends Seeder
             ['id_menu' => 2,'modulo' => 7,'status' => 1,'codigo' => 'cgr6','nombre' => 'Gastos por departamento','descripcion' => 'menu de contabilidad general','url' => 'gastos-departamento','estado' => 'ACTIVO'],
             ['id_menu' => 2,'modulo' => 7,'status' => 1,'codigo' => 'cgr7','nombre' => 'reporte mayor general','descripcion' => 'menu de contabilidad general','url' => 'reporte-mayor-general','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgr8','nombre' => 'Cuadre de caja','descripcion' => 'menu de contabilidad general','url' => 'cuadre-caja','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgr9','nombre' => 'Gestion Codigos Estados Financieros','descripcion' => 'Adiciona, Modifica identificador punto Estaods','url' => 'gestion-estados','estado' => 'ACTIVO'],
 
             //MODULO DE ENTRADAS AUTOMATICAS
             ['id_menu' => 1,'modulo' => 8,'status' => 1,'codigo' => 'entp1','nombre' => 'Cobros','descripcion' => 'menu de entradas automaticas','url' => 'cobros','estado' => 'ACTIVO'],
