@@ -24,7 +24,7 @@ class CreateCgcodigoestadosTable extends Migration
             $table->string('tipo_estado',20);
             $table->integer('signo'); // 1-POSITIVO      2-NEGATIVO
             $table->string('usuario_creador',100);
-            $table->string('usuario_modificador',100);
+            $table->string('usuario_modificador',100)->nullable();
             $table->timestamps();
         });
     }
