@@ -13,7 +13,7 @@ class CambiarCamposToInvtransaccionesdetalleTable extends Migration
      */
     public function up()
     {
-        Schema::table('invtransaccionesdetalle', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->table('invtransaccionesdetalle', function (Blueprint $table) {
             $table->renameColumn('precio_venta', 'precio');
             $table->integer('id_bodega')->nullable()->change();
         });
@@ -21,7 +21,7 @@ class CambiarCamposToInvtransaccionesdetalleTable extends Migration
 
     public function down()
     {
-        Schema::table('invtransaccionesdetalle', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->table('invtransaccionesdetalle', function (Blueprint $table) {
             $table->renameColumn('precio', 'precio_venta');
         });
     }

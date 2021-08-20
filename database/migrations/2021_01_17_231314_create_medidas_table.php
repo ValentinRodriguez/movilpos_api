@@ -13,7 +13,7 @@ class CreateMedidasTable extends Migration
      */
     public function up()
     {
-        Schema::create('medidas', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('medidas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre',20);
             $table->char('codigo',5);
@@ -31,6 +31,6 @@ class CreateMedidasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medidas');
+        Schema::connection('mov_globales')->dropIfExists('medidas');
     }
 }

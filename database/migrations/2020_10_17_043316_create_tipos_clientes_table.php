@@ -13,7 +13,7 @@ class CreateTiposClientesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipos_clientes', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->create('tipos_clientes', function (Blueprint $table) {
             $table->id();
             $table->integer('tipo_cliente');
             $table->unique('tipo_cliente');
@@ -32,6 +32,6 @@ class CreateTiposClientesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipos_clientes');
+        Schema::connection('mov_ventas')->dropIfExists('tipos_clientes');
     }
 }

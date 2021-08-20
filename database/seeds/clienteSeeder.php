@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\Mclientes;
-use App\Librerias\tipoClientes;
-use App\Librerias\TipoNegocio;
+use App\Librerias\ventas\Mclientes;
+use App\Librerias\ventas\tipoClientes;
+use App\Librerias\empresa\TipoNegocio;
 
 class clienteSeeder extends Seeder
 {

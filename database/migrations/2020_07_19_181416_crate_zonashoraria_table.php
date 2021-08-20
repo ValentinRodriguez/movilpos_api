@@ -8,7 +8,7 @@ class CrateZonashorariaTable extends Migration
 {    
     public function up()
     {
-        Schema::create('zonas_horaria', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('zonas_horaria', function (Blueprint $table) {
             $table->id();
             $table->string('id_zonahoraria',30)->nullable();
             $table->unique('id_zonahoraria');
@@ -20,6 +20,6 @@ class CrateZonashorariaTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('zonas_horaria');
+        Schema::connection('mov_globales')->dropIfExists('zonas_horaria');
     }
 }

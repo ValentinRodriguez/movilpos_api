@@ -13,7 +13,7 @@ class CreateInvtiposmovimientosTable extends Migration
      */
     public function up()
     {
-        Schema::create('invtiposmovimientos', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('invtiposmovimientos', function (Blueprint $table) {
             $table->id();
             $table->integer('id_tipomov')->unique();
             $table->string('titulo',100);
@@ -42,6 +42,6 @@ class CreateInvtiposmovimientosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invtiposmovimientos');
+        Schema::connection('mov_inventario')->dropIfExists('invtiposmovimientos');
     }
 }

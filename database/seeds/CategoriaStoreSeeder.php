@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\CategoriaStore;
+use App\Librerias\tienda\CategoriaStore;
 use Illuminate\Support\Str;
 
 class CategoriaStoreSeeder extends Seeder

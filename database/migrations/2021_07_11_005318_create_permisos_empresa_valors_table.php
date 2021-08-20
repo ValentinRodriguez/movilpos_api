@@ -13,7 +13,7 @@ class CreatePermisosEmpresaValorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('permisos_empresa_valors', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->create('permisos_empresa_valors', function (Blueprint $table) {
             $table->id();
             $table->text('modulos');
             $table->text('generales');
@@ -31,6 +31,6 @@ class CreatePermisosEmpresaValorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permisos_empresa_valors');
+        Schema::connection('mov_empresa')->dropIfExists('permisos_empresa_valors');
     }
 }

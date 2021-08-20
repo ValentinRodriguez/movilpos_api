@@ -8,7 +8,7 @@ class CreateCgTipoGastosTable extends Migration
 {
     public function up()
     {
-        Schema::create('cg_tipo_gastos', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('cg_tipo_gastos', function (Blueprint $table) {
             $table->id();
             $table->smallInteger('codigo_fiscal');
             $table->string('descripcion',50);     
@@ -21,6 +21,6 @@ class CreateCgTipoGastosTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('cg_tipo_gastos');
+        Schema::connection('mov_contabilidad')->dropIfExists('cg_tipo_gastos');
     }
 }

@@ -8,7 +8,7 @@ class CreateBrandsTable extends Migration
 {
     public function up()
     {
-        Schema::create('brands', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('brands', function (Blueprint $table) {
             $table->id();
             $table->integer('id_brand');
             $table->unique('id_brand');
@@ -22,6 +22,6 @@ class CreateBrandsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('brands');
+        Schema::connection('mov_inventario')->dropIfExists('brands');
     }
 }

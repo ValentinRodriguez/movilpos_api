@@ -13,7 +13,7 @@ class CreateTipoMonedasTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_monedas', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->create('tipo_monedas', function (Blueprint $table) {
             $table->id();
             $table->string("divisa",5);
             $table->string("descripcion",30);
@@ -32,6 +32,6 @@ class CreateTipoMonedasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_monedas');
+        Schema::connection('mov_empresa')->dropIfExists('tipo_monedas');
     }
 }

@@ -13,7 +13,7 @@ class CreateCpTransaccionesHistorialesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cp_transacciones_historiales', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('cp_transacciones_historiales', function (Blueprint $table) {
             $table->id();
             $table->string('num_doc',25);
             $table->date('fecha_orig');
@@ -54,6 +54,6 @@ class CreateCpTransaccionesHistorialesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cp_transacciones_historiales');
+        Schema::connection('mov_contabilidad')->dropIfExists('cp_transacciones_historiales');
     }
 }

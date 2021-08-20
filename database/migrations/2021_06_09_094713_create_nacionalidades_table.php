@@ -8,7 +8,7 @@ class CreateNacionalidadesTable extends Migration
 {
     public function up()
     {
-        Schema::create('nacionalidades', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('nacionalidades', function (Blueprint $table) {
             $table->id();
             $table->string('pais',30);
             $table->string('nacionalidad',50);
@@ -18,6 +18,6 @@ class CreateNacionalidadesTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('nacionalidades');
+        Schema::connection('mov_globales')->dropIfExists('nacionalidades');
     }
 }

@@ -13,7 +13,7 @@ class CreateRolsTable extends Migration
      */
     public function up()
     {
-        Schema::create('rols', function (Blueprint $table) {
+        Schema::connection('mov_usuarios')->create('rols', function (Blueprint $table) {
             $table->id();
             $table->string('email',50);
             $table->string('usuario');
@@ -35,6 +35,6 @@ class CreateRolsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rols');
+        Schema::connection('mov_usuarios')->dropIfExists('rols');
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\Modulos;
+use App\Librerias\globales\Modulos;
 
 class moduloSeeder extends Seeder
 {
@@ -18,7 +18,9 @@ class moduloSeeder extends Seeder
             ['modulo' =>'entradas automaticas','orden' => 8,'label' =>'entradas automaticas','routerLink' =>'/menu-entradas-automaticas','icon' => 'fas fa-door-open'],            
             ['modulo' =>'RR.HH','orden' => 9,'label' =>'recursos humanos','routerLink' =>'/menu-recursos-humanos','icon' => 'fas fa-users'],    
             ['modulo' =>'cuentas por pagar','orden' => 10,'label' =>'cuentas por pagar','routerLink' =>'/menu-cuentas-pagar','icon' => 'fas fa-hand-holding-usd'],    
-            ['modulo' =>'Tienda','orden' => 11,'label' =>'tienda online','routerLink' =>'/menu-tienda-online','icon' => 'fas fa-store-slash'],        );
+            ['modulo' =>'Cuentas por cobrar','orden' => 11,'label' =>'tienda online','routerLink' =>'/menu-tienda-online','icon' => 'fas fa-store-slash'],
+            ['modulo' =>'Tienda','orden' => 12,'label' =>'tienda online','routerLink' =>'/menu-tienda-online','icon' => 'fas fa-store-slash']
+        );
 
         foreach ($modulos as $key => $value) {
             Modulos::create($value);

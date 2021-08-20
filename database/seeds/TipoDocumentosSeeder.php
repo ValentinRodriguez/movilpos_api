@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\tipo_documento;
+use App\Librerias\empresa\tipo_documento;
 // use Illuminate\Support\Facades\DB;
 
 class TipoDocumentosSeeder extends Seeder

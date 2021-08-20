@@ -13,7 +13,7 @@ class CreateTipoSangresTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_sangres', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('tipo_sangres', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',50);
             $table->string('usuario_creador',50);
@@ -29,6 +29,6 @@ class CreateTipoSangresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_sangres');
+        Schema::connection('mov_globales')->dropIfExists('tipo_sangres');
     }
 }

@@ -13,7 +13,7 @@ class CreateVefacturasmasterTable extends Migration
      */
     public function up()
     {
-        Schema::create('vefacturasmaster', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->create('vefacturasmaster', function (Blueprint $table) {
             $table->id();
             $table->integer('factura')->index();
             $table->integer('cod_cia')->foreign('cod_cia')->references('cod_cia')->on('empresas');
@@ -56,6 +56,6 @@ class CreateVefacturasmasterTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vefacturasmaster');
+        Schema::connection('mov_ventas')->dropIfExists('vefacturasmaster');
     }
 }

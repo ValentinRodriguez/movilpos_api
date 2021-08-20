@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\cgcodigoestados;
+use App\Librerias\contabilidadGeneral\cgcodigoestados;
 
 class cgcodigoestadosseed extends Seeder
 {

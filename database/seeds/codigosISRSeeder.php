@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\cg_codigosRetenciones;
+use App\Librerias\contabilidadGeneral\cg_codigosRetenciones;
 
 class codigosISRSeeder extends Seeder
 {

@@ -8,14 +8,14 @@ class CambiarPropiedadesToInvProductosTable extends Migration
 {
     public function up()
     {
-        Schema::table('inv_productos', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->table('inv_productos', function (Blueprint $table) {
             $table->text('galeriaImagenes')->nullable()->change();
         });
     }
 
     public function down()
     {
-        Schema::table('inv_productos', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->table('inv_productos', function (Blueprint $table) {
             $table->text('galeriaImagenes')->change();
         });
     }

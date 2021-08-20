@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MedidasSeeder::class);
         $this->call(TipoProductosSeeder::class);
         $this->call(TipoDocumentosSeeder::class);
-        $this->call(codigosISRSeeder::class);
+        // $this->call(codigosISRSeeder::class);
         $this->call(moduloSeeder::class);
         $this->call(menuSeeder::class);
         $this->call(marcasSeeder::class);

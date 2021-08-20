@@ -13,7 +13,7 @@ class CrateInvtransaccionesmasterTable extends Migration
      */
     public function up()
     {
-        Schema::create('invtransaccionesmaster', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('invtransaccionesmaster', function (Blueprint $table) {
             $table->id();
             $table->integer('num_doc')->index();
             $table->integer('numerosecuencia')->index();
@@ -75,6 +75,6 @@ class CrateInvtransaccionesmasterTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invtransaccionesmaster');
+        Schema::connection('mov_inventario')->dropIfExists('invtransaccionesmaster');
     }
 }

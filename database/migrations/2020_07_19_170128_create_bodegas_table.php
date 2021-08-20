@@ -13,7 +13,7 @@ class CreateBodegasTable extends Migration
      */
     public function up()
     {
-        Schema::create('bodegas', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('bodegas', function (Blueprint $table) {
             $table->id();
             $table->integer('id_bodega')->index();
             $table->string('descripcion',100);
@@ -35,6 +35,6 @@ class CreateBodegasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bodegas');
+        Schema::connection('mov_inventario')->dropIfExists('bodegas');
     }
 }

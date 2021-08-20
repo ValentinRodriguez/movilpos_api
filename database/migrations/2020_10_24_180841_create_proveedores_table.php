@@ -8,7 +8,7 @@ class CreateProveedoresTable extends Migration
 {
     public function up()
     {
-        Schema::create('proveedores', function (Blueprint $table) {
+        Schema::connection('mov_compras')->create('proveedores', function (Blueprint $table) {
             $keys = array('cod_sp', 'cod_sp_sec');
             $table->integer('cod_sp');
             $table->integer('cod_sp_sec');
@@ -37,6 +37,6 @@ class CreateProveedoresTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('proveedores');
+        Schema::connection('mov_compras')->dropIfExists('proveedores');
     }
 }

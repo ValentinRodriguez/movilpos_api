@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\sectores;
+use App\Librerias\globales\sectores;
 
 class sectoresSeeder extends Seeder
 {

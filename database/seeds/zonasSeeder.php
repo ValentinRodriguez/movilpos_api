@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\zonas;
+use App\Librerias\globales\zonas;
 
 class zonasSeeder extends Seeder
 {

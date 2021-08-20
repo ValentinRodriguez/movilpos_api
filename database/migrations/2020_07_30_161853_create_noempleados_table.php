@@ -8,7 +8,7 @@ class CreateNoempleadosTable extends Migration
 {
     public function up()
     {
-        Schema::create('noempleados', function (Blueprint $table) {
+        Schema::connection('mov_rrhh')->create('noempleados', function (Blueprint $table) {
             $table->id();
             $table->string('primernombre',100);
             $table->string('segundonombre',100)->nullable();
@@ -81,6 +81,6 @@ class CreateNoempleadosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('noempleados');
+        Schema::connection('mov_rrhh')->dropIfExists('noempleados');
     }
 }

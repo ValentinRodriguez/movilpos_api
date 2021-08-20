@@ -13,18 +13,18 @@ class CreateInvProductoStoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('inv_producto_stores', function (Blueprint $table) {
+        Schema::connection('mov_tienda')->create('inv_producto_stores', function (Blueprint $table) {
             $table->id();
             $table->text('titulo');
             $table->integer('tipo_producto');
-            $table->foreign('tipo_producto')->references('id_tipo')->on('tipo_productos');
+            // $table->foreign('tipo_producto')->references('id_tipo')->on('vov_inventariotipo_productos');
             $table->integer('id_categoria');
-            $table->foreign('id_categoria')->references('id_categoria')->on('categorias');
+            // $table->foreign('id_categoria')->references('id_categoria')->on('vov_inventariocategorias');
             $table->integer('id_brand');
-            $table->foreign('id_brand')->references('id_brand')->on('brands');
+            // $table->foreign('id_brand')->references('id_brand')->on('vov_inventariobrands');
             $table->text('descripcion');
             $table->integer('id_propiedad');
-            $table->foreign('id_propiedad')->references('id_propiedad')->on('propiedades');
+            // $table->foreign('id_propiedad')->references('id_propiedad')->on('propiedades');
             $table->string('codigo',30)->unique();
             $table->string('origen',50)->default('debito');
             $table->integer('existenciaMinima');
@@ -32,7 +32,7 @@ class CreateInvProductoStoresTable extends Migration
             $table->char('controlDeExistencias',2)->nullable();
             $table->char('descuento',2)->nullable();
             $table->integer('id_bodega')->default(1);
-            $table->foreign('id_bodega')->references('id_bodega')->on('bodegas');
+            // $table->foreign('id_bodega')->references('id_bodega')->on('bodegas');
             $table->string('controlItbis',2);
             $table->text('ultimoproveedor')->nullable();
             $table->integer('cod_sp')->nullable();
@@ -61,6 +61,6 @@ class CreateInvProductoStoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inv_producto_stores');
+        Schema::connection('mov_tienda')->dropIfExists('inv_producto_stores');
     }
 }

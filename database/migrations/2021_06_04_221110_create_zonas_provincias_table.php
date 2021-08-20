@@ -13,7 +13,7 @@ class CreateZonasProvinciasTable extends Migration
      */
     public function up()
     {
-        Schema::create('zonas_provincias', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('zonas_provincias', function (Blueprint $table) {
             $table->id();
             $table->smallInteger('id_zona');
             $table->smallInteger('id_provincia');
@@ -28,6 +28,6 @@ class CreateZonasProvinciasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('zonas_provincias');
+        Schema::connection('mov_globales')->dropIfExists('zonas_provincias');
     }
 }

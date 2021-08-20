@@ -13,7 +13,7 @@ class CreateCgcodigoestadosTable extends Migration
      */
     public function up()
     {
-        Schema::create('cgcodigoestados', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('cgcodigoestados', function (Blueprint $table) {
             $table->id();
             $table->string('id_estado');
             $table->string('descripcion_esp',100)->require();
@@ -36,6 +36,6 @@ class CreateCgcodigoestadosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cgcodigoestados');
+        Schema::connection('mov_contabilidad')->dropIfExists('cgcodigoestados');
     }
 }

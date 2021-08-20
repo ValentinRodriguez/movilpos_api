@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\BrandsModel;
+use App\Librerias\inventario\BrandsModel;
 
 class marcasSeeder extends Seeder
 {

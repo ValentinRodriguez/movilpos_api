@@ -13,7 +13,7 @@ class CreateBancosTable extends Migration
      */
     public function up()
     {
-        Schema::create('bancos', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('bancos', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',100);
             $table->string('estado',20);
@@ -30,6 +30,6 @@ class CreateBancosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bancos');
+        Schema::connection('mov_globales')->dropIfExists('bancos');
     }
 }

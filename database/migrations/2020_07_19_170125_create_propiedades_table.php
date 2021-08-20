@@ -8,7 +8,7 @@ class CreatePropiedadesTable extends Migration
 {
     public function up()
     {
-        Schema::create('propiedades', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('propiedades', function (Blueprint $table) {
             $table->id();
             $table->integer('id_propiedad')->unique();
             $table->string('descripcion',50);
@@ -21,6 +21,6 @@ class CreatePropiedadesTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('propiedades');
+        Schema::connection('mov_inventario')->dropIfExists('propiedades');
     }
 }

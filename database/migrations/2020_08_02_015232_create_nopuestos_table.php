@@ -8,7 +8,7 @@ class CreateNopuestosTable extends Migration
 {
     public function up()
     {
-        Schema::create('nopuestos', function (Blueprint $table) {
+        Schema::connection('mov_rrhh')->create('nopuestos', function (Blueprint $table) {
             $table->id();
             $table->integer('id_puesto')->unique();
             $table->string('titulo',100);
@@ -29,6 +29,6 @@ class CreateNopuestosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nopuestos');
+        Schema::connection('mov_rrhh')->dropIfExists('nopuestos');
     }
 }

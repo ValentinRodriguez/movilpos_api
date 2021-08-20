@@ -13,7 +13,7 @@ class CambiarCamposToInvTransaccionesTable extends Migration
      */
     public function up()
     {
-        Schema::table('invtransaccionesmaster', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->table('invtransaccionesmaster', function (Blueprint $table) {
             $table->string('tipo_doc',20)->after('factura')->nullable();
             $table->string('num_rnc',20)->change();
             $table->renameColumn('num_rnc', 'documento');
@@ -27,7 +27,7 @@ class CambiarCamposToInvTransaccionesTable extends Migration
      */
     public function down()
     {
-        Schema::table('invtransaccionesmaster', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->table('invtransaccionesmaster', function (Blueprint $table) {
             $table->dropColumn('tipo_doc');
             $table->renameColumn('documento', 'num_rnc');
         });

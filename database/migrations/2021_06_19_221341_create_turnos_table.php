@@ -8,7 +8,7 @@ class CreateTurnosTable extends Migration
 {
     public function up()
     {
-        Schema::create('turnos', function (Blueprint $table) {
+        Schema::connection('mov_rrhh')->create('turnos', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',100);
             $table->string('estado',20);
@@ -20,6 +20,6 @@ class CreateTurnosTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('turnos');
+        Schema::connection('mov_rrhh')->dropIfExists('turnos');
     }
 }

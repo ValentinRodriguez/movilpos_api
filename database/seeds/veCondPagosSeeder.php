@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\ve_CondicionesPago;
+use App\Librerias\ventas\ve_CondicionesPago;
 
 class veCondPagosSeeder extends Seeder
 {

@@ -13,21 +13,21 @@ class CreateVeclientesTable extends Migration
      */
     public function up()
     {
-        Schema::create('veclientes', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->create('veclientes', function (Blueprint $table) {
             $table->id();
             $table->integer('tipo_cliente');
             $table->foreign('tipo_cliente')->references('tipo_cliente')->on('tipos_clientes');
             $table->integer('sec_cliente');
             $table->string('nombre',100);
             $table->integer('tipo_documento');
-            $table->foreign('tipo_documento')->references('tipo_documento')->on('tipo_documento');
+            $table->foreign('tipo_documento')->references('tipo_documento')->on('mov_empresa.tipo_documento');
             $table->string('calle',100)->nullable();
             $table->string('documento',25);
             $table->integer('vendedor');
             $table->integer('limite_credito');
             $table->integer('cond_pago');
             $table->integer('tipo_negocio');
-            $table->foreign('tipo_negocio')->references('tipo_negocio')->on('tipo_negocio');
+            $table->foreign('tipo_negocio')->references('tipo_negocio')->on('mov_empresa.tipo_negocio');
             $table->string('ncf',100)->nullable();
             $table->string('generico',10)->nullable();
             $table->string('direccion',200)->nullable();
@@ -36,7 +36,7 @@ class CreateVeclientesTable extends Migration
             $table->integer('id_pais')->nullable();
             // $table->foreign('id_pais')->references('id_pais')->on('paises');
             $table->integer('id_zonalocal')->nullable();
-            $table->foreign('id_zonalocal')->references('id_zonalocal')->on('zonas_local');
+            $table->foreign('id_zonalocal')->references('id_zonalocal')->on('mov_globales.zonas_local');
             $table->integer('id_ciudad')->nullable();
             // $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
             $table->string('celular');
@@ -54,6 +54,6 @@ class CreateVeclientesTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('veclientes');
+        Schema::connection('mov_ventas')->dropIfExists('veclientes');
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\planes;
+use App\Librerias\tienda\planes;
 
 class planesSeeder extends Seeder
 {

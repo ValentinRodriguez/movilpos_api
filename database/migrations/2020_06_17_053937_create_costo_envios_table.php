@@ -13,7 +13,7 @@ class CreateCostoEnviosTable extends Migration
      */
     public function up()
     {
-        Schema::create('costo_envios', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('costo_envios', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateCostoEnviosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('costo_envios');
+        Schema::connection('mov_inventario')->dropIfExists('costo_envios');
     }
 }

@@ -13,7 +13,7 @@ class CreateVerecepcionMastersTable extends Migration
      */
     public function up()
     {
-        Schema::create('verecepcion_masters', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->create('verecepcion_masters', function (Blueprint $table) {
             $table->id();
             $table->string('num_oc');
             $table->integer('tipo_cliente')->foreign('tipo_cliente')->references('tipo_cliente')->on('veclientes');
@@ -44,6 +44,6 @@ class CreateVerecepcionMastersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('verecepcion_masters');
+        Schema::connection('mov_ventas')->dropIfExists('verecepcion_masters');
     }
 }

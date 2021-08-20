@@ -8,7 +8,7 @@ class CreateEmpresasTable extends Migration
 {
     public function up()
     {
-        Schema::create('empresas', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->create('empresas', function (Blueprint $table) {
             $table->id();
             $table->integer('cod_cia')->index();
             $table->string('nombre', 100)->unique();
@@ -40,6 +40,6 @@ class CreateEmpresasTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('empresas');
+        Schema::connection('mov_empresa')->dropIfExists('empresas');
     }
 }

@@ -13,7 +13,7 @@ class CreateInvLiquidacionMercanciaDetallesTable extends Migration
      */
     public function up()
     {
-        Schema::create('inv_liquidacion_mercancia_detalles', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('inv_liquidacion_mercancia_detalles', function (Blueprint $table) {
             $table->id();
             $table->smallinteger('tipo')->nullable();
             $table->integer('num_oc')->nullable();
@@ -41,6 +41,6 @@ class CreateInvLiquidacionMercanciaDetallesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inv_liquidacion_mercancia_detalles');
+        Schema::connection('mov_inventario')->dropIfExists('inv_liquidacion_mercancia_detalles');
     }
 }

@@ -13,7 +13,7 @@ class CreateMenusTable extends Migration
      */
     public function up()
     {
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('menus', function (Blueprint $table) {
             $table->id();
             $table->integer('id_menu');
             $table->text('modulo');
@@ -34,6 +34,6 @@ class CreateMenusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('menus');
+        Schema::connection('mov_globales')->dropIfExists('menus');
     }
 }

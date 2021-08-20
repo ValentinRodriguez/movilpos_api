@@ -8,14 +8,14 @@ class CambiarPropiedadesToCgcatalogoTable extends Migration
 {
     public function up()
     {
-        Schema::table('cgcatalogo', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->table('cgcatalogo', function (Blueprint $table) {
             $table->text('codigo_estado')->nullable()->change();
         });
     }
 
     public function down()
     {
-        Schema::table('cgcatalogo', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->table('cgcatalogo', function (Blueprint $table) {
             $table->text('codigo_estado')->change();
         });
     }

@@ -13,12 +13,12 @@ class VefacturasdetalleTable extends Migration
      */
     public function up()
     {
-        Schema::create('vefacturasdetalle', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->create('vefacturasdetalle', function (Blueprint $table) {
             $table->id();
             $table->integer('factura');
             $table->foreign('factura')->references('factura')->on('vefacturasmaster');
             $table->string('codigo');
-            $table->foreign('codigo')->references('codigo')->on('inv_productos');
+            $table->foreign('codigo')->references('codigo')->on('mov_inventario.inv_productos');
             $table->text('titulo')->nullable();
             $table->float('porc_desc')->nullable();
             $table->float('descuento')->nullable();
@@ -41,6 +41,6 @@ class VefacturasdetalleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vefacturasdetalle');
+        Schema::connection('mov_ventas')->dropIfExists('vefacturasdetalle');
     }
 }

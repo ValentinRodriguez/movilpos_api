@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\tipoEmpleado;
+use App\Librerias\rrhh\tipoEmpleado;
 
 class tipoEmpleadoSeeder extends Seeder
 {

@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\Menu;
 use Illuminate\Support\Facades\DB;
+use App\Librerias\globales\Menu;
 
 class menuSeeder extends Seeder
 {
