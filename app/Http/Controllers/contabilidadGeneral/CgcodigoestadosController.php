@@ -70,9 +70,10 @@ class CgcodigoestadosController extends  ApiResponseController
      * @param  \App\cgcodigoestados  $cgcodigoestados
      * @return \Illuminate\Http\Response
      */
-    public function show(LibreriasCgcodigoestados $cgcodigoestados)
+    public function show($id)
     {
-        //
+        $estado = LibreriasCgcodigoestados::find($id);
+        return $this->successResponse($estado);
     }
 
     /**
@@ -82,9 +83,45 @@ class CgcodigoestadosController extends  ApiResponseController
      * @param  \App\cgcodigoestados  $cgcodigoestados
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LibreriasCgcodigoestados $cgcodigoestados)
+    public function update(Request $request, $id)
     {
-        //
+        $datos = $request->all();
+        $datos['tipo_estado'] = $datos['tipo_estado']['values'];
+        $datos['signo'] = $datos['signo']['values'];
+
+        $estado = LibreriasCgcodigoestados::find($id);
+        
+        $messages = [
+            'required' => 'El campo :attribute es requerido.',
+            'unique'   => 'El campo :attribute debe ser unico',
+            'numeric'  => 'El campo :attribute debe ser numerico',
+        ];
+        
+        $validator = validator($datos, [
+            'descripcion_esp' => 'required',
+            'id_estado' => 'required',
+            'grupo' => 'required',
+            'orden_grupo' => 'required',
+            'tipo_estado' => 'required',
+            'signo' => 'required',
+            'estado' => 'required', 
+            'usuario_creador'   => 'required'  
+        ],$messages);  
+        
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
+        }else{
+            try {                
+                DB::beginTransaction();                
+                    $estado->update($datos);
+                DB::commit();
+                return $this->successResponse($datos, $request->urlRequest);                
+            }
+            catch (\Exception $e ){
+                return $this->errorResponse($e->getMessage(), $request->urlRequest);
+            }            
+        }
     }
 
     /**
@@ -93,9 +130,14 @@ class CgcodigoestadosController extends  ApiResponseController
      * @param  \App\cgcodigoestados  $cgcodigoestados
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LibreriasCgcodigoestados $cgcodigoestados)
+    public function destroy($id)
     {
-        //
+        $catalogo = LibreriasCgcodigoestados::find($id);
+        if ($catalogo == null){
+            return $this->response()->json(array("msj:" => "Registro no Existe"));
+        }
+        $catalogo->update(['estado' => 'ELIMINADO']);
+        return $this->successResponse(null);
     }
 
     public function busqueda(Request $request)
