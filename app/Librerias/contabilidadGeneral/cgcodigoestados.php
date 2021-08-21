@@ -4,7 +4,7 @@ namespace App\Librerias\contabilidadGeneral;
 
 use Illuminate\Database\Eloquent\Model;
 
-class cgcodigoestados extends Model
+class cgcodigoestadosModel extends Model
 {
     protected $connection = 'mov_contabilidad';
     

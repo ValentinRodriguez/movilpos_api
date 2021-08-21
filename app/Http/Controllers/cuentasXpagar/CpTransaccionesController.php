@@ -30,8 +30,8 @@ class CpTransaccionesController extends ApiResponseController
                                     get();
 
         foreach ($facturas as $key => $value) {
-            $detalle = cpTransaccionesDetalles::leftjoin('nodepartamentos','cp_transacciones_detalles.departamento','=','nodepartamentos.id')->
-                                                select('cp_transacciones_detalles.*','nodepartamentos.titulo as departamento_descripcion')->
+            $detalle = cpTransaccionesDetalles::leftjoin('mov_rrhh.nodepartamentos','cp_transacciones_detalles.departamento','=','mov_rrhh.nodepartamentos.id')->
+                                                select('cp_transacciones_detalles.*','mov_rrhh.nodepartamentos.titulo as departamento_descripcion')->
                                                 where([['.cp_transacciones_detalles.estado','=','activo'],
                                                         ['cp_transacciones_detalles.num_doc','=',$value->num_doc]])->
                                                 get();
@@ -56,8 +56,8 @@ class CpTransaccionesController extends ApiResponseController
                                     get();
         
         foreach ($facturas as $key => $value) {
-            $detalle = cpTransaccionesDetalles::join('nodepartamentos','nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
-                                        select('cp_transacciones_detalles.*','nodepartamentos.titulo as departamento_descripcion')->
+            $detalle = cpTransaccionesDetalles::join('mov_rrhh.nodepartamentos','mov_rrhh.nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
+                                        select('cp_transacciones_detalles.*','mov_rrhh.nodepartamentos.titulo as departamento_descripcion')->
                                         where([['.cp_transacciones_detalles.estado','=','activo'],
                                                 ['cp_transacciones_detalles.num_doc','=',$value->num_doc]])->
                                         get();
@@ -89,9 +89,9 @@ class CpTransaccionesController extends ApiResponseController
         $respuesta = array();
 
         try {
-            $proveedores = proveedores::join('ciudades', 'ciudades.id_ciudad','=','proveedores.id_ciudad')->
-                            join('paises', 'paises.id_pais','=','proveedores.id_pais')->
-                            select('proveedores.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
+            $proveedores = proveedores::join('mov_globales.ciudades', 'mov_globales.ciudades.id_ciudad','=','proveedores.id_ciudad')->
+                            join('mov_globales.paises', 'mov_globales.paises.id_pais','=','proveedores.id_pais')->
+                            select('proveedores.*','mov_globales.ciudades.descripcion as ciudad','mov_globales.paises.descripcion as pais') ->
                             where('proveedores.estado','=','activo')->
                             get();
 
@@ -296,11 +296,11 @@ class CpTransaccionesController extends ApiResponseController
                                     where('cp_transacciones.id','=',$id)->
                                     first();
                                         
-        $detalle = cpTransaccionesDetalles::leftjoin('nodepartamentos','cp_transacciones_detalles.departamento','=','nodepartamentos.id')->
+        $detalle = cpTransaccionesDetalles::leftjoin('mov_rrhh.nodepartamentos','cp_transacciones_detalles.departamento','=','mov_rrhh.nodepartamentos.id')->
                                             join('cgcatalogo','cgcatalogo.cuenta_no','=','cp_transacciones_detalles.cuenta_no')->
                                             join('cp_transacciones','cp_transacciones.num_doc','=','cp_transacciones_detalles.num_doc')->
                                             select('cp_transacciones_detalles.*',
-                                                    'nodepartamentos.titulo as departamento_descripcion',
+                                                    'mov_rrhh.nodepartamentos.titulo as departamento_descripcion',
                                                     'cgcatalogo.descripcion','cgcatalogo.depto','cgcatalogo.catalogo','cgcatalogo.referencia',
                                                     'cgcatalogo.tipo_cuenta','cgcatalogo.retencion')->
                                             where([['.cp_transacciones_detalles.estado','=','activo'],

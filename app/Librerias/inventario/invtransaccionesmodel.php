@@ -25,28 +25,28 @@ class invtransaccionesmodel extends Model
     public function ScopeSinDetalles($query)
     {
         return $query-> join('invtiposmovimientos','invtransaccionesmaster.id_tipomov','=','invtiposmovimientos.id_tipomov')->
-                        leftjoin('veclientes',[['invtransaccionesmaster.tipo_cliente','=','veclientes.tipo_cliente'],
-                                            ['invtransaccionesmaster.sec_cliente','=','veclientes.sec_cliente']])->
+                        leftjoin('mov_ventas.veclientes',[['invtransaccionesmaster.tipo_cliente','=','mov_ventas.veclientes.tipo_cliente'],
+                                            ['invtransaccionesmaster.sec_cliente','=','mov_ventas.veclientes.sec_cliente']])->
                         leftjoin('proveedores',[['invtransaccionesmaster.cod_sp','=','proveedores.cod_sp'],
                                             ['invtransaccionesmaster.cod_sp_sec','=','proveedores.cod_sp_sec']])->
                         
                         join('bodegas','invtransaccionesmaster.id_bodega','=','bodegas.id_bodega')->
-                        leftjoin('nodepartamentos','invtransaccionesmaster.departamento','=','nodepartamentos.departamento')->
-                        leftjoin('noempleados','invtransaccionesmaster.id','=','noempleados.id')->
+                        leftjoin('mov_rrhh.nodepartamentos','invtransaccionesmaster.departamento','=','mov_rrhh.nodepartamentos.departamento')->
+                        leftjoin('mov_rrhh.noempleados','invtransaccionesmaster.id','=','mov_rrhh.noempleados.id')->
                         leftjoin('transportistas','invtransaccionesmaster.cod_transportista','=','transportistas.cod_transportista')->
                         leftjoin('bodegas_usuarios','bodegas.id_bodega','=','bodegas_usuarios.id_bodega')->
                         select('invtransaccionesmaster.*',
                         
-                            'veclientes.nombre as veclientes_nombre','veclientes.num_rnc as veclientes_num_rnc',
-                            'veclientes.direccion as veclientes_direccion','veclientes.email as veclientes_email',
-                            'veclientes.telefono_oficina as veclientes_telefono_oficina','veclientes.telefono_oficina as veclientes_telefono_oficina',
-                            'veclientes.telefono_casa as veclientes_telefono_casa',
+                            'mov_ventas.veclientes.nombre as veclientes_nombre','mov_ventas.veclientes.num_rnc as veclientes_num_rnc',
+                            'mov_ventas.veclientes.direccion as veclientes_direccion','mov_ventas.veclientes.email as veclientes_email',
+                            'mov_ventas.veclientes.telefono_oficina as veclientes_telefono_oficina','mov_ventas.veclientes.telefono_oficina as veclientes_telefono_oficina',
+                            'mov_ventas.veclientes.telefono_casa as veclientes_telefono_casa',
 
                             'proveedores.nom_sp as proveedores_nom_sp','proveedores.tel_sp as proveedores_tel_sp',
                             'bodegas.descripcion as bodegas_descripcion',
-                            'nodepartamentos.titulo as nodepartamento_titulo',
-                            'noempleados.primernombre as nodepartamento_primernombre',                                                    
-                            'noempleados.primerapellido as nodepartamento_primerapellido',  
+                            'mov_rrhh.nodepartamentos.titulo as nodepartamento_titulo',
+                            'mov_rrhh.noempleados.primernombre as nodepartamento_primernombre',                                                    
+                            'mov_rrhh.noempleados.primerapellido as nodepartamento_primerapellido',  
                             'invtiposmovimientos.titulo as titulo_mov',
 
                             'transportistas.nombre as transportista_nombre'                                                       

@@ -16,8 +16,8 @@ class CreateVerecepcionMastersTable extends Migration
         Schema::connection('mov_ventas')->create('verecepcion_masters', function (Blueprint $table) {
             $table->id();
             $table->string('num_oc');
-            $table->integer('tipo_cliente')->foreign('tipo_cliente')->references('tipo_cliente')->on('veclientes');
-            $table->Integer('sec_cliente')->foreign('sec_cliente')->references('sec_cliente')->on('veclientes');
+            $table->integer('tipo_cliente')->foreign('tipo_cliente')->references('tipo_cliente')->on('mov_ventas.veclientes');
+            $table->Integer('sec_cliente')->foreign('sec_cliente')->references('sec_cliente')->on('mov_ventas.veclientes');
             $table->string('recibe');
             $table->string('entrega');
             $table->date('fecha_entrega');

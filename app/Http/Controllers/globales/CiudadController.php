@@ -11,8 +11,8 @@ class CiudadController extends ApiResponseController
     
     public function index(Request $request)
     {
-        $ciudad = ciudad::join('paises','paises.id_pais','=','ciudades.id_pais')->
-                          select('ciudades.*','paises.descripcion as pais')->  
+        $ciudad = ciudad::join('mov_globales.paises','mov_globales.paises.id_pais','=','mov_globales.ciudades.id_pais')->
+                          select('mov_globales.ciudades.*','mov_globales.paises.descripcion as pais')->  
                           orderBy('created_at', 'desc')->
                           get();
                           if ($ciudad == null){
@@ -23,10 +23,10 @@ class CiudadController extends ApiResponseController
 
     public function ciudadesPorPais(Request $request,$id)
     {        
-        $ciudad = ciudad::join('municipios','municipios.id_municipio','=','ciudades.id_municipio')->
-                          select('ciudades.*')->  
+        $ciudad = ciudad::join('municipios','municipios.id_municipio','=','mov_globales.ciudades.id_municipio')->
+                          select('mov_globales.ciudades.*')->  
                           orderBy('created_at', 'desc')->
-                          where('ciudades.id_ciudad','=',$id)->
+                          where('mov_globales.ciudades.id_ciudad','=',$id)->
                           get();
                           if ($ciudad == null){
                               return $this->errorResponse($ciudad);

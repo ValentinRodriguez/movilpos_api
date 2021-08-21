@@ -28,10 +28,10 @@ class PaisController extends ApiResponseController
 
     public function ciudadesPorPais(Request $request,$id)
     {
-        $ciudad = ciudad::join('paises','paises.id_pais','=','ciudades.id_pais')->
-                          select('ciudades.*','paises.descripcion as pais')->
+        $ciudad = ciudad::join('mov_globales.paises','mov_globales.paises.id_pais','=','mov_globales.ciudades.id_pais')->
+                          select('mov_globales.ciudades.*','mov_globales.paises.descripcion as pais')->
                           orderBy('created_at', 'desc')->
-                          where('ciudades.id_pais','=',"$id")->
+                          where('mov_globales.ciudades.id_pais','=',"$id")->
                           get();
                           if ($ciudad == null){
                               return $this->errorResponse($ciudad);

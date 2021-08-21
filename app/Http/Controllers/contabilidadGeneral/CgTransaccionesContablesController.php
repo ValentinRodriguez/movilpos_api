@@ -1,20 +1,20 @@
 <?php
 
 namespace App\Http\Controllers\contabilidadGeneral;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\cgTransaccionesContables;
-use App\Librerias\cgTipoDocumento;
-use App\Librerias\proveedores;
-use App\Librerias\tipoMonedas;
-use App\Librerias\coTipoOrden;
-use App\Librerias\Departamento;
-use App\Librerias\cgEntradasDiarioMaster;
-use App\Librerias\cpTransacciones;
-use App\Librerias\secuencias;
-use App\Librerias\cpTransaccionesDetalles;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\DB;
+use App\Librerias\rrhh\Departamento;
+use App\Librerias\compras\coTipoOrden;
+use App\Librerias\compras\proveedores;
+use App\Librerias\empresa\tipoMonedas;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\cuentasXpagar\cpTransacciones;
+use App\Librerias\contabilidadGeneral\secuencias;
+use App\Librerias\contabilidadGeneral\cgTipoDocumento;
+use App\Librerias\cuentasXpagar\cpTransaccionesDetalles;
+use App\Librerias\contabilidadGeneral\cgEntradasDiarioMaster;
+use App\Librerias\contabilidadGeneral\cgTransaccionesContables;
 
 class CgTransaccionesContablesController extends ApiResponseController
 {    
@@ -30,9 +30,9 @@ class CgTransaccionesContablesController extends ApiResponseController
 
         $tipoDocumentos = cgTipoDocumento::all();
 
-        $proveedores= proveedores::join('ciudades', 'ciudades.id_ciudad','=','proveedores.id_ciudad')->
-                                join('paises', 'paises.id_pais','=','proveedores.id_pais')->
-                                select('proveedores.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
+        $proveedores= proveedores::join('mov_globales.ciudades', 'mov_globales.ciudades.id_ciudad','=','proveedores.id_ciudad')->
+                                join('mov_globales.paises', 'mov_globales.paises.id_pais','=','proveedores.id_pais')->
+                                select('proveedores.*','mov_globales.ciudades.descripcion as ciudad','mov_globales.paises.descripcion as pais') ->
                                 where('proveedores.estado','=','activo')->
                                 get();
 
@@ -325,8 +325,8 @@ class CgTransaccionesContablesController extends ApiResponseController
                             
                             $datosd = array('cuenta_no'       => $detalle_cuentas[$i]['cuenta_no'],
                                             'departamento'    => isset($detalle_cuentas[$i]['departamento']['id']) ? 
-                                                                    $detalle_cuentas[$i]['departamento']['id'] : 
-                                                                    $detalle_cuentas[$i]['departamento'],
+                                                                       $detalle_cuentas[$i]['departamento']['id'] : 
+                                                                       $detalle_cuentas[$i]['departamento'],
                                             'ref'             => $detalle_cuentas[$i]['ref'],
                                             'cuenta_banco'    => $detalle_cuentas[$i]['cuenta_banco'],
                                             'debito'          => $detalle_cuentas[$i]['debito'],
@@ -391,17 +391,17 @@ class CgTransaccionesContablesController extends ApiResponseController
     public function gastosPorDepartamentos(Request $request) {
         $datos = $request->all();
         $proveedores = cpTransaccionesDetalles::where([['proveedores.estado','=','activo'],
-                                                       ['nodepartamentos.estado','=','activo'],
+                                                       ['mov_rrhh.nodepartamentos.estado','=','activo'],
                                                        ['cp_transacciones_detalles.estado','=','activo']])->
                                                 cuenta($datos['cuenta_no'])->
                                                 fechaCreacion($datos['fecha_inicial'],$datos['fecha_final'])->
-                                                leftJoin('nodepartamentos','nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
+                                                leftJoin('mov_rrhh.nodepartamentos','mov_rrhh.nodepartamentos.id','=','cp_transacciones_detalles.departamento')->
                                                 join('proveedores',[['proveedores.cod_sp','=','cp_transacciones_detalles.cod_sp'],
                                                                     ['proveedores.cod_sp_sec','=','cp_transacciones_detalles.cod_sp_sec']])->
-                                                select('cp_transacciones_detalles.departamento','nodepartamentos.descripcion','cp_transacciones_detalles.fecha',
+                                                select('cp_transacciones_detalles.departamento','mov_rrhh.nodepartamentos.descripcion','cp_transacciones_detalles.fecha',
                                                        'cp_transacciones_detalles.factura','cp_transacciones_detalles.cod_sp',                                                      'cp_transacciones_detalles.cod_sp_sec','proveedores.nom_sp',
                                                        DB::Raw('SUM(cp_transacciones_detalles.debito - cp_transacciones_detalles.credito) as gasto'))->
-                                                groupby('cp_transacciones_detalles.departamento','nodepartamentos.descripcion','cp_transacciones_detalles.fecha',
+                                                groupby('cp_transacciones_detalles.departamento','mov_rrhh.nodepartamentos.descripcion','cp_transacciones_detalles.fecha',
                                                         'cp_transacciones_detalles.factura','cp_transacciones_detalles.factura','cp_transacciones_detalles.cod_sp',
                                                         'cp_transacciones_detalles.cod_sp_sec','proveedores.nom_sp')->
                                                 get();

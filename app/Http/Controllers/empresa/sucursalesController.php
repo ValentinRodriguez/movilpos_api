@@ -15,15 +15,15 @@ class sucursalesController extends ApiResponseController
     public function index(Request $request)
     {        
         $temp1 = array();
-        $sucursales = sucursales::join('paises','paises.id_pais','=','sucursales.id_pais')->
-                                join('ciudades','ciudades.id_ciudad','=','sucursales.id_ciudad')->
+        $sucursales = sucursales::join('mov_globales.paises','mov_globales.paises.id_pais','=','sucursales.id_pais')->
+                                join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','sucursales.id_ciudad')->
                                 join('regiones','regiones.id_region','=','sucursales.id_region')->
                                 join('municipios','municipios.id_municipio','=','sucursales.id_municipio')->
                                 join('provincias','provincias.id_provincia','=','sucursales.id_provincia')->
                                 leftjoin('sectores','sectores.id_sector','=','sucursales.id_sector')->
                                 select('sucursales.*',
-                                        'paises.descripcion as pais',
-                                        'ciudades.descripcion as ciudad',
+                                        'mov_globales.paises.descripcion as pais',
+                                        'mov_globales.ciudades.descripcion as ciudad',
                                         'municipios.descripcion as municipio',
                                         'regiones.descripcion as region',
                                         'sectores.descripcion as sector',
@@ -59,7 +59,7 @@ class sucursalesController extends ApiResponseController
         $paises = pais::where('estado','=','ACTIVO')->get();
 
         $_empresa = array("label" => 'empresas', "data" => $empresa, "icono" => 'fas fa-dolly-flatbed');
-        $_paises = array("label" => 'paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
+        $_paises = array("label" => 'mov_globales.paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
         
         array_push($respuesta,$_empresa);  
         array_push($respuesta,$_paises);

@@ -131,7 +131,7 @@ class DepartamentoController extends ApiResponseController
 
     public function busqueda(Request $request){
         $departamento = $request->get('departamento');
-        $busqueda = Departamento::orderBy('id', 'asc')->where([['nodepartamentos.titulo', '=', $departamento],['nodepartamentos.estado','=','activo']])->get();
+        $busqueda = Departamento::orderBy('id', 'asc')->where([['mov_rrhh.nodepartamentos.titulo', '=', $departamento],['mov_rrhh.nodepartamentos.estado','=','activo']])->get();
         return $this->successResponse($busqueda, $request->urlRequest);
     }
 }

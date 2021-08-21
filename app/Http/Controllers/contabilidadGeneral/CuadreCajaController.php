@@ -1,16 +1,16 @@
 <?php
 
 namespace App\Http\Controllers\contabilidadGeneral;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\cuadreCaja;
-use App\Librerias\turnos;
-use App\Librerias\sucursales;
 use App\Librerias\Nopuesto;
-use App\Librerias\noempleados;
-use App\Librerias\areasEmpresa;
+
 use Illuminate\Http\Request;
+use App\Librerias\rrhh\turnos;
 use Illuminate\Support\Facades\DB;
+use App\Librerias\rrhh\noempleados;
+use App\Librerias\empresa\sucursales;
+use App\Librerias\empresa\areasEmpresa;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\contabilidadGeneral\cuadreCaja;
 
 class CuadreCajaController extends ApiResponseController
 {
@@ -26,19 +26,19 @@ class CuadreCajaController extends ApiResponseController
             $temp1 = array();            
             $i=0;
             
-            $sucursales = sucursales::join('paises','paises.id_pais','=','sucursales.id_pais')->
-                                    join('ciudades','ciudades.id_ciudad','=','sucursales.id_ciudad')->
-                                    join('regiones','regiones.id_region','=','sucursales.id_region')->
-                                    join('municipios','municipios.id_municipio','=','sucursales.id_municipio')->
-                                    join('provincias','provincias.id_provincia','=','sucursales.id_provincia')->
-                                    leftjoin('sectores','sectores.id_sector','=','sucursales.id_sector')->
-                                    select('sucursales.*',
-                                            'paises.descripcion as pais',
-                                            'ciudades.descripcion as ciudad',
-                                            'municipios.descripcion as municipio',
-                                            'regiones.descripcion as region',
-                                            'sectores.descripcion as sector',
-                                            'provincias.descripcion as provincia')->        
+            $sucursales = sucursales::join('mov_globales.paises','mov_globales.paises.id_pais','=','mov_empresa.sucursales.id_pais')->
+                                    join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','mov_empresa.sucursales.id_ciudad')->
+                                    join('mov_globales.regiones','mov_globales.regiones.id_region','=','mov_empresa.sucursales.id_region')->
+                                    join('mov_globales.municipios','mov_globales.municipios.id_municipio','=','mov_empresa.sucursales.id_municipio')->
+                                    join('mov_globales.provincias','mov_globales.provincias.id_provincia','=','mov_empresa.sucursales.id_provincia')->
+                                    leftjoin('mov_globales.sectores','mov_globales.sectores.id_sector','=','mov_empresa.sucursales.id_sector')->
+                                    select('mov_empresa.sucursales.*',
+                                            'mov_globales.paises.descripcion as pais',
+                                            'mov_globales.ciudades.descripcion as ciudad',
+                                            'mov_globales.municipios.descripcion as municipio',
+                                            'mov_globales.regiones.descripcion as region',
+                                            'mov_globales.sectores.descripcion as sector',
+                                            'mov_globales.provincias.descripcion as provincia')->        
                                     orderBy('created_at', 'desc')->
                                     where('sucursales.estado','=','ACTIVO')->get();
         
@@ -61,15 +61,15 @@ class CuadreCajaController extends ApiResponseController
             $noempleados = noempleados::orderBy('id', 'asc')->
                                 join('nodepartamentos','noempleados.departamento','=','nodepartamentos.id')->
                                 join('nopuestos','noempleados.id_puesto','=','nopuestos.id_puesto')->
-                                join('ciudades','noempleados.id_ciudad','=','ciudades.id_ciudad')->
-                                join('paises','noempleados.id_pais','=','paises.id_pais')->
-                                leftjoin('tipo_monedas','noempleados.id_moneda','=','tipo_monedas.id')->
+                                join('mov_globales.ciudades','noempleados.id_ciudad','=','mov_globales.ciudades.id_ciudad')->
+                                join('mov_globales.paises','noempleados.id_pais','=','mov_globales.paises.id_pais')->
+                                leftjoin('mov_empresa.tipo_monedas','noempleados.id_moneda','=','mov_empresa.tipo_monedas.id')->
                                 select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"),
-                                       'nodepartamentos.titulo as depto',
+                                       'mov_rrhh.nodepartamentos.titulo as depto',
                                        'nopuestos.descripcion as puesto',
-                                       'ciudades.descripcion as ciudad',
-                                       'paises.descripcion as pais',
-                                       'tipo_monedas.divisa as divisa','tipo_monedas.simbolo as simbolo_moneda'
+                                       'mov_globales.ciudades.descripcion as ciudad',
+                                       'mov_globales.paises.descripcion as pais',
+                                       'mov_empresa.tipo_monedas.divisa as divisa','mov_empresa.tipo_monedas.simbolo as simbolo_moneda'
                                 )->
                                 where([['.noempleados.id_puesto','=', 2],['noempleados.estado','=','ACTIVO']])->
                                 get();

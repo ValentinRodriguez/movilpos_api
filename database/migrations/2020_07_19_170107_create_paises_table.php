@@ -14,7 +14,7 @@ class CreatePaisesTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mov_globales')->create('paises', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('mov_globales.paises', function (Blueprint $table) {
             $table->id();
             $table->integer('id_pais')->unsigned();
             // $table->unique('id_pais');
@@ -37,7 +37,7 @@ class CreatePaisesTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');        
-            Schema::connection('mov_globales')->dropIfExists('paises');
+            Schema::connection('mov_globales')->dropIfExists('mov_globales.paises');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

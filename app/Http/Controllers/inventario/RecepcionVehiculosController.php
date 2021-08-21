@@ -19,10 +19,10 @@ class RecepcionVehiculosController extends ApiResponseController
         $recepcion = recepcionVehiculos::join('categorias','categorias.id_categoria','=','recepcion_vehiculos.id_categoria')->
                                         join('brands','brands.id_brand','=','recepcion_vehiculos.id_brand')->
                                         join('propiedades','propiedades.id_propiedad','=','recepcion_vehiculos.id_propiedad')->
-                                        join('veclientes','veclientes.id','=','recepcion_vehiculos.cliente')->
+                                        join('mov_ventas.veclientes','mov_ventas.veclientes.id','=','recepcion_vehiculos.cliente')->
                                         where('recepcion_vehiculos.estado','=','ACTIVO')->
                                         select('recepcion_vehiculos.*','brands.descripcion as marca','propiedades.descripcion as color','categorias.descripcion as categoria',
-                                               'veclientes.nombre as nombre_cliente')->
+                                               'mov_ventas.veclientes.nombre as nombre_cliente')->
                                         get();
         return $this->successResponse($recepcion, $request->urlRequest);
     }
@@ -201,11 +201,11 @@ class RecepcionVehiculosController extends ApiResponseController
     {        
         $respuesta = array();
 
-        $clientes = Mclientes::join('paises','paises.id_pais','=','veclientes.id_pais')->
-                                join('ciudades','ciudades.id_ciudad','=','veclientes.id_ciudad')->
-                                select('veclientes.*','paises.descripcion as pais','ciudades.descripcion as ciudad')->
+        $clientes = Mclientes::join('mov_globales.paises','mov_globales.paises.id_pais','=','mov_ventas.veclientes.id_pais')->
+                                join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','mov_ventas.veclientes.id_ciudad')->
+                                select('mov_ventas.veclientes.*','mov_globales.paises.descripcion as pais','mov_globales.ciudades.descripcion as ciudad')->
                                 orderBy('created_at', 'desc')->
-                                where('veclientes.estado','=','ACTIVO')->
+                                where('mov_ventas.veclientes.estado','=','ACTIVO')->
                                 get();
 
         $modelos = CategoriasModel::orderBy('created_at', 'desc')->

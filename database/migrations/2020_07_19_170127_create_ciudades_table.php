@@ -9,7 +9,7 @@ class CreateCiudadesTable extends Migration
 {
     public function up()
     {
-        Schema::connection('mov_globales')->create('ciudades', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('mov_globales.ciudades', function (Blueprint $table) {
             $table->id();
             $table->integer('id_ciudad')->unsigned();
             $table->integer('id_municipio');
@@ -22,7 +22,7 @@ class CreateCiudadesTable extends Migration
     public function down()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0'); 
-            Schema::connection('mov_globales')->dropIfExists('ciudades');
+            Schema::connection('mov_globales')->dropIfExists('mov_globales.ciudades');
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

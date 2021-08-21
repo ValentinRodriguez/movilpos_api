@@ -1,18 +1,17 @@
 <?php
 
 namespace App\Http\Controllers\contabilidadGeneral;
-use App\Http\Controllers\ApiResponseController;
-
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
-use App\Librerias\cgcatalogo;
-use App\Librerias\cg_codigosRetenciones;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\contabilidadGeneral\cgcatalogo;
+use App\Librerias\contabilidadGeneral\cg_codigosRetenciones;
 
 class cgcatalogocontroller extends ApiResponseController
 {
     public function index(Request $request) {
-        $catalogo = cgcatalogo::orderBy('cuenta_no', 'asc')->
-                                where('estado','=','ACTIVO')->                                
+        $catalogo = cgcatalogo::orderBy('cuenta_no', 'asc')->where('estado','=','ACTIVO')->                                
                                 select('cgcatalogo.*',DB::raw("CONCAT(cgcatalogo.cuenta_no,'-',cgcatalogo.descripcion) AS descripcion_c"))->
                                 get();
 

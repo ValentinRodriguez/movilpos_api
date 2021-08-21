@@ -312,9 +312,9 @@ class InvProductosController extends ApiResponseController
                                   get();
     
             $bodegas = Bodegas::orderBy('id_bodega', 'asc')->
-                                join('paises','paises.id_pais','=','bodegas.id_pais')->
-                                join('ciudades','ciudades.id_ciudad','=','bodegas.id_ciudad')->
-                                select('bodegas.*','paises.descripcion as pais','ciudades.descripcion as ciudad')->
+                                join('mov_globales.paises','mov_globales.paises.id_pais','=','bodegas.id_pais')->
+                                join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','bodegas.id_ciudad')->
+                                select('bodegas.*','mov_globales.paises.descripcion as pais','mov_globales.ciudades.descripcion as ciudad')->
                                 where('bodegas.estado','=','ACTIVO')->
                                 get();
     

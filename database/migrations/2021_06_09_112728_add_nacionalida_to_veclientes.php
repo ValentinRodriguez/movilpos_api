@@ -8,14 +8,14 @@ class AddNacionalidaToVeclientes extends Migration
 {
     public function up()
     {
-        Schema::connection('mov_ventas')->table('veclientes', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->table('mov_ventas.veclientes', function (Blueprint $table) {
             $table->smallInteger('nacionalidad')->after('documento')->nullable();
         });
     }
     
     public function down()
     {
-        Schema::connection('mov_ventas')->table('veclientes', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->table('mov_ventas.veclientes', function (Blueprint $table) {
             $table->dropColumn('nacionalidad');
         });
     }

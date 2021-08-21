@@ -31,25 +31,25 @@ class invtransacciones extends ApiResponseController
     {
         $transacciones = invtransaccionesmodel::where('invtransaccionesmaster.estado','=','ACTIVO')-> 
                                                 join('invtiposmovimientos','invtransaccionesmaster.id_tipomov','=','invtiposmovimientos.id_tipomov')->
-                                                leftjoin('veclientes',[['invtransaccionesmaster.tipo_cliente','=','veclientes.tipo_cliente'],
-                                                                       ['invtransaccionesmaster.sec_cliente','=','veclientes.sec_cliente']])->
+                                                leftjoin('mov_ventas.veclientes',[['invtransaccionesmaster.tipo_cliente','=','mov_ventas.veclientes.tipo_cliente'],
+                                                                       ['invtransaccionesmaster.sec_cliente','=','mov_ventas.veclientes.sec_cliente']])->
                                                 leftjoin('proveedores',[['invtransaccionesmaster.cod_sp','=','proveedores.cod_sp'],
                                                                         ['invtransaccionesmaster.cod_sp_sec','=','proveedores.cod_sp_sec']])->
-                                                leftjoin('nodepartamentos','invtransaccionesmaster.departamento','=','nodepartamentos.id')->
-                                                leftjoin('noempleados','invtransaccionesmaster.id','=','noempleados.id')->
+                                                leftjoin('mov_rrhh.nodepartamentos','invtransaccionesmaster.departamento','=','mov_rrhh.nodepartamentos.id')->
+                                                leftjoin('mov_rrhh.noempleados','invtransaccionesmaster.id','=','mov_rrhh.noempleados.id')->
                                                 leftjoin('transportistas','invtransaccionesmaster.cod_transportista','=','transportistas.cod_transportista')->
                                                 //leftjoin('bodegas_usuarios','bodegas.id_bodega','=','bodegas_usuarios.id_bodega')->
                                                 leftjoin('bodegas','invtransaccionesmaster.id_bodega','=','bodegas.id_bodega')->
                                                 select('invtransaccionesmaster.*',
                                                        'invtiposmovimientos.titulo as titulo_mov',
-                                                       'veclientes.nombre as veclientes_nombre','veclientes.documento as veclientes_documento',
-                                                       'veclientes.direccion as veclientes_direccion','veclientes.email as veclientes_email',
-                                                       'veclientes.telefono_oficina as veclientes_telefono_oficina','veclientes.telefono_oficina as veclientes_telefono_oficina',
-                                                       'veclientes.telefono_casa as veclientes_telefono_casa',
+                                                       'mov_ventas.veclientes.nombre as veclientes_nombre','mov_ventas.veclientes.documento as veclientes_documento',
+                                                       'mov_ventas.veclientes.direccion as veclientes_direccion','mov_ventas.veclientes.email as veclientes_email',
+                                                       'mov_ventas.veclientes.telefono_oficina as veclientes_telefono_oficina','mov_ventas.veclientes.telefono_oficina as veclientes_telefono_oficina',
+                                                       'mov_ventas.veclientes.telefono_casa as veclientes_telefono_casa',
                                                        'proveedores.nom_sp as proveedores_nom_sp','proveedores.tel_sp as proveedores_tel_sp',
                                                        'bodegas.descripcion as bodegas_descripcion',
-                                                       'nodepartamentos.titulo as nodepartamento_titulo',
-                                                       'noempleados.primernombre as nodepartamento_primernombre', 'noempleados.primerapellido as nodepartamento_primerapellido',
+                                                       'mov_rrhh.nodepartamentos.titulo as nodepartamento_titulo',
+                                                       'mov_rrhh.noempleados.primernombre as nodepartamento_primernombre', 'mov_rrhh.noempleados.primerapellido as nodepartamento_primerapellido',
                                                        'transportistas.nombre as transportista_nombre' )->
                                                 orderBy('created_at', 'desc')->
                                                 get();
@@ -180,7 +180,7 @@ class invtransacciones extends ApiResponseController
                     'id_num_op'         => 'exclude_if:controlDespacho,no|exists:prordenesmaster,num_oc',
                     'departamento'      => 'exclude_if:controlDepartamento,no|exists:nodepartamentos,departamento',
                     'sec_cliente'       => ['exclude_if:controlCliente,no',
-                                        Rule::exists('veclientes','sec_cliente')->
+                                        Rule::exists('mov_ventas.veclientes','sec_cliente')->
                                                 where(function ($query) use ($idtipocliente){
                                                     $query->where('tipo_cliente', '=',$idtipocliente);
                                                 })],
@@ -572,11 +572,11 @@ class invtransacciones extends ApiResponseController
         try {
             $respuesta = array();
 
-            $clientes = Mclientes::join('paises','paises.id_pais','=','veclientes.id_pais')->
-                                join('ciudades','ciudades.id_ciudad','=','veclientes.id_ciudad')->
-                                select('veclientes.*','paises.descripcion as pais','ciudades.descripcion as ciudad')->
+            $clientes = Mclientes::join('mov_globales.paises','mov_globales.paises.id_pais','=','mov_ventas.veclientes.id_pais')->
+                                join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','mov_ventas.veclientes.id_ciudad')->
+                                select('mov_ventas.veclientes.*','mov_globales.paises.descripcion as pais','mov_globales.ciudades.descripcion as ciudad')->
                                 orderBy('created_at', 'desc')->
-                                where('veclientes.estado','=','ACTIVO')->
+                                where('mov_ventas.veclientes.estado','=','ACTIVO')->
                                 get();
             
             $transportistas = transportistas::orderBy('id', 'asc')->
@@ -585,20 +585,20 @@ class invtransacciones extends ApiResponseController
 
             $departamentos = Departamento::orderBy('id', 'asc')->where('estado','=','activo')->get();
             
-            $proveedores = proveedores::join('ciudades', 'ciudades.id_ciudad','=','proveedores.id_ciudad')->
-                                join('paises', 'paises.id_pais','=','proveedores.id_pais')->
-                                select('proveedores.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
+            $proveedores = proveedores::join('mov_globales.ciudades', 'mov_globales.ciudades.id_ciudad','=','proveedores.id_ciudad')->
+                                join('mov_globales.paises', 'mov_globales.paises.id_pais','=','proveedores.id_pais')->
+                                select('proveedores.*','mov_globales.ciudades.descripcion as ciudad','mov_globales.paises.descripcion as pais') ->
                                 where('proveedores.estado','=','activo')->
                                 get();
 
-            $vendedor = noempleados::where('noempleados.id_puesto','=',3)->
-                                select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
+            $vendedor = noempleados::where('mov_rrhh.noempleados.id_puesto','=',3)->
+                                select('mov_rrhh.noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
                                 get();
             
             $bodegas = Bodegas::orderBy('id_bodega', 'asc')->
-                                join('paises','paises.id_pais','=','bodegas.id_pais')->
-                                join('ciudades','ciudades.id_ciudad','=','bodegas.id_ciudad')->
-                                select('bodegas.*','paises.descripcion as pais','ciudades.descripcion as ciudad')->
+                                join('mov_globales.paises','mov_globales.paises.id_pais','=','bodegas.id_pais')->
+                                join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','bodegas.id_ciudad')->
+                                select('bodegas.*','mov_globales.paises.descripcion as pais','mov_globales.ciudades.descripcion as ciudad')->
                                 where('bodegas.estado','=','ACTIVO')->
                                 get();
 
@@ -647,24 +647,24 @@ class invtransacciones extends ApiResponseController
         $transacciones = invtransaccionesmodel::where([['invtransaccionesmaster.estado','=','ACTIVO'],
                                                        ['invtransaccionesmaster.num_doc','=',$num_doc]])-> 
                                                 join('invtiposmovimientos','invtransaccionesmaster.id_tipomov','=','invtiposmovimientos.id_tipomov')->
-                                                leftjoin('veclientes',[['invtransaccionesmaster.tipo_cliente','=','veclientes.tipo_cliente'],
-                                                                       ['invtransaccionesmaster.sec_cliente','=','veclientes.sec_cliente']])->
+                                                leftjoin('mov_ventas.veclientes',[['invtransaccionesmaster.tipo_cliente','=','mov_ventas.veclientes.tipo_cliente'],
+                                                                       ['invtransaccionesmaster.sec_cliente','=','mov_ventas.veclientes.sec_cliente']])->
                                                 leftjoin('proveedores',[['invtransaccionesmaster.cod_sp','=','proveedores.cod_sp'],
                                                                         ['invtransaccionesmaster.cod_sp_sec','=','proveedores.cod_sp_sec']])->
-                                                leftjoin('nodepartamentos','invtransaccionesmaster.departamento','=','nodepartamentos.id')->
-                                                leftjoin('noempleados','invtransaccionesmaster.id','=','noempleados.id')->
+                                                leftjoin('mov_rrhh.nodepartamentos','invtransaccionesmaster.departamento','=','mov_rrhh.nodepartamentos.id')->
+                                                leftjoin('mov_rrhh.noempleados','invtransaccionesmaster.id','=','mov_rrhh.noempleados.id')->
                                                 leftjoin('transportistas','invtransaccionesmaster.cod_transportista','=','transportistas.cod_transportista')->
                                                 join('bodegas','invtransaccionesmaster.id_bodega','=','bodegas.id_bodega')->
                                                 select('invtransaccionesmaster.*',
                                                        'invtiposmovimientos.titulo as titulo_mov',
-                                                       'veclientes.nombre as veclientes_nombre','veclientes.documento as veclientes_documento',
-                                                       'veclientes.direccion as veclientes_direccion','veclientes.email as veclientes_email',
-                                                       'veclientes.telefono_oficina as veclientes_telefono_oficina','veclientes.telefono_oficina as veclientes_telefono_oficina',
-                                                       'veclientes.telefono_casa as veclientes_telefono_casa','veclientes.celular as veclientes_celular',
+                                                       'mov_ventas.veclientes.nombre as veclientes_nombre','mov_ventas.veclientes.documento as veclientes_documento',
+                                                       'mov_ventas.veclientes.direccion as veclientes_direccion','mov_ventas.veclientes.email as veclientes_email',
+                                                       'mov_ventas.veclientes.telefono_oficina as veclientes_telefono_oficina','mov_ventas.veclientes.telefono_oficina as veclientes_telefono_oficina',
+                                                       'mov_ventas.veclientes.telefono_casa as veclientes_telefono_casa','mov_ventas.veclientes.celular as veclientes_celular',
                                                        'proveedores.nom_sp as proveedores_nom_sp','proveedores.tel_sp as proveedores_tel_sp',
                                                        'bodegas.descripcion as bodega_destino',
-                                                       'nodepartamentos.titulo as nodepartamento_titulo',
-                                                       'noempleados.primernombre as vendedor_primernombre', 'noempleados.primerapellido as vendedor_primerapellido',
+                                                       'mov_rrhh.nodepartamentos.titulo as nodepartamento_titulo',
+                                                       'mov_rrhh.noempleados.primernombre as vendedor_primernombre', 'mov_rrhh.noempleados.primerapellido as vendedor_primerapellido',
                                                        'transportistas.nombre as transportista_nombre','transportistas.nombre as transportista_telefono')->
                                                 orderBy('created_at', 'desc')->
                                                 get();

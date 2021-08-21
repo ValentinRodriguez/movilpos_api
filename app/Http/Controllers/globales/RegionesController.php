@@ -25,7 +25,7 @@ class RegionesController extends ApiResponseController
 
     public function buscaRegion(Request $request,$id)
     {
-        $ciudad = regiones::join('paises','paises.id_pais','=','regiones.id_pais')->
+        $ciudad = regiones::join('mov_globales.paises','mov_globales.paises.id_pais','=','regiones.id_pais')->
                             select('regiones.*')->  
                             orderBy('created_at', 'desc')->
                             where('regiones.id_pais','=',$id)->
