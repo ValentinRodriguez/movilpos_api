@@ -1,21 +1,21 @@
 <?php
 
 namespace App\Http\Controllers\compras;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\coOrdenesDetalle;
-use App\Librerias\coOrdenesMaster;
-use App\Librerias\co_puerto;
-use App\Librerias\proveedores;
-use App\Librerias\ve_CondicionesPago;
 use Illuminate\Http\Request;
+
+use App\Librerias\empresa\Empresa;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
-use App\Librerias\Empresa;
-use App\Librerias\co_DireccionesEnvio;
-use App\Librerias\invtransaccionesmodel;
-use App\Librerias\Invtransaccdetallemodel;
-use App\Librerias\coCuentasProveedor;
+use App\Librerias\compras\co_puerto;
+use App\Librerias\compras\proveedores;
+use App\Librerias\compras\coOrdenesMaster;
+use App\Librerias\compras\coOrdenesDetalle;
+use App\Librerias\ventas\ve_CondicionesPago;
+use App\Librerias\compras\coCuentasProveedor;
+use App\Librerias\compras\co_DireccionesEnvio;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\inventario\invtransaccionesmodel;
+use App\Librerias\inventario\Invtransaccdetallemodel;
 
 class CoOrdenesMasterController extends ApiResponseController
 {    
@@ -27,28 +27,28 @@ class CoOrdenesMasterController extends ApiResponseController
                                     where('co_ordenes_masters.cod_sp_sec','=','proveedores.cod_sp_sec' )->
                                     orwhere([['co_ordenes_masters.estado','=',"activo"], ['co_ordenes_masters.orden_cerrada','=','no']]);
                                 })->
-                                join('ve_cond_pagos','ve_cond_pagos.cond_pago','=','co_ordenes_masters.cond_pago')->
-                                select('co_ordenes_masters.*','proveedores.nom_sp','ve_cond_pagos.descripcion as descripcion_pago')->                                
+                                join('mov_ventas.mov_ventas.ve_cond_pagos','mov_ventas.mov_ventas.ve_cond_pagos.cond_pago','=','co_ordenes_masters.cond_pago')->
+                                select('co_ordenes_masters.*','proveedores.nom_sp','mov_ventas.mov_ventas.ve_cond_pagos.descripcion as descripcion_pago')->                                
                                 get();
 
                                 
         foreach ($compra as $key => $value) { 
             $compraDetalle = coOrdenesDetalle::where([['co_ordenes_detalles.estado','=','activo'], 
                                                      ['co_ordenes_detalles.num_oc','=', $value->num_oc]])-> 
-                                                join('inv_productos','co_ordenes_detalles.codigo','=','inv_productos.codigo')->
-                                                join('categorias','categorias.id_categoria','=','inv_productos.id_categoria')->
-                                                join('brands','brands.id_brand','=','inv_productos.id_brand')->
-                                                join('invtipos_inventarios','invtipos_inventarios.id_tipoinventario','=','inv_productos.id_tipoinventario')->
-                                                join('bodegas','bodegas.id_bodega','=','inv_productos.id_bodega')->
+                                                join('mov_inventario.mov_inventario.inv_productos','co_ordenes_detalles.codigo','=','mov_inventario.mov_inventario.inv_productos.codigo')->
+                                                join('mov_inventario.categorias','mov_inventario.categorias.id_categoria','=','mov_inventario.mov_inventario.inv_productos.id_categoria')->
+                                                join('mov_inventario.brands','mov_inventario.brands.id_brand','=','mov_inventario.mov_inventario.inv_productos.id_brand')->
+                                                join('mov_inventario.invtipos_inventarios','mov_inventario.invtipos_inventarios.id_tipoinventario','=','mov_inventario.mov_inventario.inv_productos.id_tipoinventario')->
+                                                join('mov_inventario.bodegas','mov_inventario.bodegas.id_bodega','=','mov_inventario.mov_inventario.inv_productos.id_bodega')->
                                                 select('co_ordenes_detalles.*',
                                                     
-                                                        'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.origen',
-                                                        'inv_productos.porcientodescuento','inv_productos.galeriaImagenes',
+                                                        'mov_inventario.mov_inventario.inv_productos.titulo','mov_inventario.mov_inventario.inv_productos.descripcion','mov_inventario.mov_inventario.inv_productos.codigo','mov_inventario.mov_inventario.inv_productos.origen',
+                                                        'mov_inventario.mov_inventario.inv_productos.porcientodescuento','mov_inventario.mov_inventario.inv_productos.galeriaImagenes',
 
-                                                        'categorias.descripcion as categoria',
-                                                        'brands.descripcion as marca',
-                                                        'invtipos_inventarios.descripcion as tipoinventario',
-                                                        'bodegas.descripcion as almacen'
+                                                        'mov_inventario.categorias.descripcion as categoria',
+                                                        'mov_inventario.brands.descripcion as marca',
+                                                        'mov_inventario.invtipos_inventarios.descripcion as tipoinventario',
+                                                        'mov_inventario.bodegas.descripcion as almacen'
                                                 )->
                                                 get();        
             $value->productos = $compraDetalle;
@@ -67,22 +67,20 @@ class CoOrdenesMasterController extends ApiResponseController
         try {
             $respuesta = array();
 
-            $condiciones = ve_CondicionesPago::orderBy('id', 'asc')->
-                                where('estado','=','activo')->
-                                get();
+            $condiciones = ve_CondicionesPago::orderBy('id', 'asc')->where('estado','=','activo')->get();
 
-            $proveedores= proveedores::join('ciudades', 'ciudades.id_ciudad','=','proveedores.id_ciudad')->
-                                join('paises', 'paises.id_pais','=','proveedores.id_pais')->
-                                select('proveedores.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
+            $proveedores= proveedores::join('mov_globales.ciudades', 'mov_globales.ciudades.id_ciudad','=','proveedores.id_ciudad')->
+                                join('mov_globales.paises', 'mov_globales.paises.id_pais','=','proveedores.id_pais')->
+                                select('proveedores.*','mov_globales.ciudades.descripcion as ciudad','mov_globales.paises.descripcion as pais') ->
                                 where('proveedores.estado','=','activo')->
                                 get();
 
             $puertos = co_puerto::orderBy('created_at', 'desc')->
                                 get();
 
-            $direcciones = co_DireccionesEnvio::join('ciudades', 'ciudades.id_ciudad','=','co_direcciones_envios.id_ciudad')->
-                                join('paises', 'paises.id_pais','=','co_direcciones_envios.id_pais')->
-                                select('co_direcciones_envios.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
+            $direcciones = co_DireccionesEnvio::join('mov_globales.ciudades', 'mov_globales.ciudades.id_ciudad','=','co_direcciones_envios.id_ciudad')->
+                                join('mov_globales.paises', 'mov_globales.paises.id_pais','=','co_direcciones_envios.id_pais')->
+                                select('co_direcciones_envios.*','mov_globales.ciudades.descripcion as ciudad','mov_globales.paises.descripcion as pais') ->
                                 where('co_direcciones_envios.estado','=','activo')->
                                 get();
 
@@ -252,21 +250,21 @@ class CoOrdenesMasterController extends ApiResponseController
         $datos = coOrdenesMaster::where([['co_ordenes_masters.id','=',$coOrdenesMaster],
                                          ['orden_cerrada','=','no']])->
                                 join('co_ordenes_detalles','co_ordenes_masters.num_oc','=','co_ordenes_detalles.num_oc')->
-                                join('inv_productos','co_ordenes_detalles.codigo','=','inv_productos.codigo')->
-                                join('categorias','categorias.id_categoria','=','inv_productos.id_categoria')->
-                                join('brands','brands.id_brand','=','inv_productos.id_brand')->
-                                join('invtipos_inventarios','invtipos_inventarios.id_tipoinventario','=','inv_productos.id_tipoinventario')->
-                                join('bodegas','bodegas.id_bodega','=','inv_productos.id_bodega')->
+                                join('mov_inventario.inv_productos','co_ordenes_detalles.codigo','=','mov_inventario.inv_productos.codigo')->
+                                join('mov_inventario.categorias','mov_inventario.categorias.id_categoria','=','mov_inventario.inv_productos.id_categoria')->
+                                join('mov_inventario.brands','mov_inventario.brands.id_brand','=','mov_inventario.inv_productos.id_brand')->
+                                join('mov_inventario.invtipos_inventarios','mov_inventario.invtipos_inventarios.id_tipoinventario','=','mov_inventario.inv_productos.id_tipoinventario')->
+                                join('mov_inventario.bodegas','mov_inventario.bodegas.id_bodega','=','mov_inventario.inv_productos.id_bodega')->
 
                                 select('co_ordenes_masters.*',
 
                                     'co_ordenes_detalles.cantidad','co_ordenes_detalles.precio as precio_venta','co_ordenes_detalles.porc_desc',
                                     'co_ordenes_detalles.valor_bruto','co_ordenes_detalles.valor_neto','co_ordenes_detalles.valor_neto',
 
-                                    'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.imagenPrincipal',
-                                    'inv_productos.galeriaImagenes','categorias.descripcion as c','brands.descripcion as marca',
-                                    'invtipos_inventarios.descripcion as tipoinventario',
-                                    'bodegas.descripcion as almacen')->
+                                    'mov_inventario.inv_productos.titulo','mov_inventario.inv_productos.descripcion','mov_inventario.inv_productos.codigo','mov_inventario.inv_productos.imagenPrincipal',
+                                    'mov_inventario.inv_productos.galeriaImagenes','mov_inventario.categorias.descripcion as c','mov_inventario.brands.descripcion as marca',
+                                    'mov_inventario.invtipos_inventarios.descripcion as tipoinventario',
+                                    'mov_inventario.bodegas.descripcion as almacen')->
                                 get();
         
         if($datos == null){
@@ -311,34 +309,34 @@ class CoOrdenesMasterController extends ApiResponseController
                                    select('co_ordenes_masters.*','proveedores.nom_sp','proveedores.documento','proveedores.email')->
                                    get();
 
-        $proveedor = proveedores::join('ciudades', 'ciudades.id_ciudad','=','proveedores.id_ciudad')->
-                                  join('paises', 'paises.id_pais','=','proveedores.id_pais')->
-                                  select('proveedores.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
+        $proveedor = proveedores::join('mov_globales.ciudades', 'mov_globales.ciudades.id_ciudad','=','proveedores.id_ciudad')->
+                                  join('mov_globales.paises', 'mov_globales.paises.id_pais','=','proveedores.id_pais')->
+                                  select('proveedores.*','mov_globales.ciudades.descripcion as ciudad','mov_globales.paises.descripcion as pais') ->
                                   where([['proveedores.estado','=','activo'],
                                          ['proveedores.cod_sp','=',$compra[0]['cod_sp']],
                                          ['proveedores.cod_sp_sec','=',$compra[0]['cod_sp_sec']]
                                         ])->
                                   first();
         
-        $coCuentasProveedor = coCuentasProveedor::join('cgcatalogo','cgcatalogo.cuenta_no','=','co_cuentas_proveedores.cuenta_no')->
+        $coCuentasProveedor = coCuentasProveedor::join('mov)contabilidad.cgcatalogo','mov)contabilidad.cgcatalogo.cuenta_no','=','co_cuentas_proveedores.cuenta_no')->
                                                   select('co_cuentas_proveedores.*',
-                                                         'cgcatalogo.depto','cgcatalogo.catalogo','cgcatalogo.referencia',
-                                                         'cgcatalogo.tipo_cuenta','cgcatalogo.retencion')->      
+                                                         'mov)contabilidad.cgcatalogo.depto','mov)contabilidad.cgcatalogo.catalogo','mov)contabilidad.cgcatalogo.referencia',
+                                                         'mov)contabilidad.cgcatalogo.tipo_cuenta','mov)contabilidad.cgcatalogo.retencion')->      
                                                   where([['co_cuentas_proveedores.cod_sp','=',$proveedor->cod_sp],
                                                          ['co_cuentas_proveedores.cod_sp_sec','=',$proveedor->cod_sp_sec],
                                                          ['co_cuentas_proveedores.estado','=','activo']])->                                                
                                                 get();
         $proveedor->cuentas_proveedor = $coCuentasProveedor;
     
-        $transacciones = invtransaccionesmodel::where([['invtransaccionesmaster.estado','=','ACTIVO'],
-                                                       ['invtransaccionesmaster.num_doc','=',$compra[0]['num_oc']]])->
+        $transacciones = invtransaccionesmodel::where([['mov_inventario.invtransaccionesmaster.estado','=','ACTIVO'],
+                                                       ['mov_inventario.invtransaccionesmaster.num_doc','=',$compra[0]['num_oc']]])->
                                                 first();
         
         if ($transacciones != null){       
-            $transaccionesDetalle = Invtransaccdetallemodel::where([['invtransaccionesdetalle.estado','=','ACTIVO'],
-                                                                    ['invtransaccionesdetalle.num_doc','=',$transacciones->num_doc],
-                                                                    ['invtransaccionesdetalle.id_tipomov','=',$transacciones->id_tipomov],
-                                                                    ['invtransaccionesdetalle.id_bodega','=',$transacciones->id_bodega]])->  
+            $transaccionesDetalle = Invtransaccdetallemodel::where([['mov_inventario.invtransaccionesdetalle.estado','=','ACTIVO'],
+                                                                    ['mov_inventario.invtransaccionesdetalle.num_doc','=',$transacciones->num_doc],
+                                                                    ['mov_inventario.invtransaccionesdetalle.id_tipomov','=',$transacciones->id_tipomov],
+                                                                    ['mov_inventario.invtransaccionesdetalle.id_bodega','=',$transacciones->id_bodega]])->  
                                                              get();
 
             for ($i=0; $i < count($transaccionesDetalle); $i++) { 
@@ -349,20 +347,20 @@ class CoOrdenesMasterController extends ApiResponseController
         
         $compraDetalle = coOrdenesDetalle::where([['co_ordenes_detalles.estado','=','activo'], 
                                                   ['co_ordenes_detalles.num_oc','=',$orden]])-> 
-                                           join('inv_productos','co_ordenes_detalles.codigo','=','inv_productos.codigo')->
-                                           join('categorias','categorias.id_categoria','=','inv_productos.id_categoria')->
-                                           join('brands','brands.id_brand','=','inv_productos.id_brand')->
-                                           join('invtipos_inventarios','invtipos_inventarios.id_tipoinventario','=','inv_productos.id_tipoinventario')->
-                                           join('bodegas','bodegas.id_bodega','=','inv_productos.id_bodega')->
+                                           join('mov_inventario.inv_productos','co_ordenes_detalles.codigo','=','mov_inventario.inv_productos.codigo')->
+                                           join('mov_inventario.categorias','mov_inventario.categorias.id_categoria','=','mov_inventario.inv_productos.id_categoria')->
+                                           join('mov_inventario.brands','mov_inventario.brands.id_brand','=','mov_inventario.inv_productos.id_brand')->
+                                           join('mov_inventario.invtipos_inventarios','mov_inventario.invtipos_inventarios.id_tipoinventario','=','mov_inventario.inv_productos.id_tipoinventario')->
+                                           join('mov_inventario.bodegas','mov_inventario.bodegas.id_bodega','=','mov_inventario.inv_productos.id_bodega')->
                                            select('co_ordenes_detalles.*',
                                                 
-                                                'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.origen',
-                                                'inv_productos.porcientodescuento','inv_productos.galeriaImagenes','inv_productos.costo',
+                                                'mov_inventario.inv_productos.titulo','mov_inventario.inv_productos.descripcion','mov_inventario.inv_productos.codigo','mov_inventario.inv_productos.origen',
+                                                'mov_inventario.inv_productos.porcientodescuento','mov_inventario.inv_productos.galeriaImagenes','mov_inventario.inv_productos.costo',
 
-                                                'categorias.descripcion as categoria',
-                                                'brands.descripcion as marca',
-                                                'invtipos_inventarios.descripcion as tipoinventario',
-                                                'bodegas.descripcion as almacen')->
+                                                'mov_inventario.categorias.descripcion as categoria',
+                                                'mov_inventario.brands.descripcion as marca',
+                                                'mov_inventario.invtipos_inventarios.descripcion as tipoinventario',
+                                                'mov_inventario.bodegas.descripcion as almacen')->
                                            get();       
        
         if ($compra == null){
@@ -384,11 +382,11 @@ class CoOrdenesMasterController extends ApiResponseController
       
         $datos = coOrdenesMaster::where([['orden_cerrada','=','no'],['co_ordenes_masters.num_oc', '=', "$id" ]])->
                                 join('co_ordenes_detalles','co_ordenes_masters.num_oc','=','co_ordenes_detalles.num_oc')->
-                                join('inv_productos','co_ordenes_detalles.codigo','=','inv_productos.codigo')->
-                                join('categorias','categorias.id_categoria','=','inv_productos.id_categoria')->
-                                join('brands','brands.id_brand','=','inv_productos.id_brand')->
-                                join('invtipos_inventarios','invtipos_inventarios.id_tipoinventario','=','inv_productos.id_tipoinventario')->
-                                join('bodegas','bodegas.id_bodega','=','inv_productos.id_bodega')->
+                                join('mov_inventario.inv_productos','co_ordenes_detalles.codigo','=','mov_inventario.inv_productos.codigo')->
+                                join('mov_inventario.categorias','mov_inventario.categorias.id_categoria','=','mov_inventario.inv_productos.id_categoria')->
+                                join('mov_inventario.brands','mov_inventario.brands.id_brand','=','mov_inventario.inv_productos.id_brand')->
+                                join('mov_inventario.invtipos_inventarios','mov_inventario.invtipos_inventarios.id_tipoinventario','=','mov_inventario.inv_productos.id_tipoinventario')->
+                                join('mov_inventario.bodegas','mov_inventario.bodegas.id_bodega','=','mov_inventario.inv_productos.id_bodega')->
 
                                 select('co_ordenes_masters.*',
 
@@ -396,10 +394,10 @@ class CoOrdenesMasterController extends ApiResponseController
                                 'co_ordenes_detalles.total_desc','co_ordenes_detalles.valor_bruto','co_ordenes_detalles.itbis',
                                 'co_ordenes_detalles.valor_neto','co_ordenes_detalles.num_req',
 
-                                'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.imagenPrincipal',
-                                'inv_productos.galeriaImagenes','categorias.descripcion as c','brands.descripcion as marca',
-                                'invtipos_inventarios.descripcion as tipoinventario',
-                                'bodegas.descripcion as almacen')->
+                                'mov_inventario.inv_productos.titulo','mov_inventario.inv_productos.descripcion','mov_inventario.inv_productos.codigo','mov_inventario.inv_productos.imagenPrincipal',
+                                'mov_inventario.inv_productos.galeriaImagenes','mov_inventario.categorias.descripcion as c','mov_inventario.brands.descripcion as marca',
+                                'mov_inventario.invtipos_inventarios.descripcion as tipoinventario',
+                                'mov_inventario.bodegas.descripcion as almacen')->
                                 get();
 
         if($datos == null){
@@ -451,7 +449,7 @@ class CoOrdenesMasterController extends ApiResponseController
    
             $validator = validator($datosm, [
             // 'cond_pago'        => 'exists:invtiposmovimientos,id_tipomov',
-            'cod_sp'   => 'required|numeric',
+            'cod_sp'           => 'required|numeric',
             'cod_sp_sec'       => 'required|numeric',
             'cond_pago'        => 'required',
             'via_envio'        => 'required',
@@ -522,8 +520,7 @@ class CoOrdenesMasterController extends ApiResponseController
                                                 'itbis'=>$datosd['itbis'],
                                                 'valor_bruto'=>$datosd['valor_bruto'],
                                                 'valor_neto'=>$datosd['valor_neto']
-                                             ]);
-                        
+                                             ]);                        
                         } 
                         
                     }else{
@@ -550,34 +547,34 @@ class CoOrdenesMasterController extends ApiResponseController
                                     where('co_ordenes_masters.cod_sp_sec','=','proveedores.cod_sp_sec' )->
                                     orwhere([['co_ordenes_masters.estado','=',"activo"], ['co_ordenes_masters.orden_cerrada','=','no']]);
                                 })->
-                                join('ve_cond_pagos','ve_cond_pagos.cond_pago','=','co_ordenes_masters.cond_pago')->
-                                join('tipo_monedas','tipo_monedas.id','=','co_ordenes_masters.id_moneda')->
+                                join('mov_ventas.ve_cond_pagos','mov_ventas.ve_cond_pagos.cond_pago','=','co_ordenes_masters.cond_pago')->
+                                join('mov_empresa.tipo_monedas','mov_empresa.tipo_monedas.id','=','co_ordenes_masters.id_moneda')->
                                 select('co_ordenes_masters.*',
                                        'proveedores.nom_sp as nombre_proveedor','proveedores.tel_sp as telefono_provedor',
                                        'proveedores.dir_sp as direccion_proveedor','proveedores.email as email_proveedor',
-                                       'tipo_monedas.simbolo','tipo_monedas.divisa',
-                                       've_cond_pagos.descripcion as descripcion_pago')->                                
+                                       'mov_empresa.tipo_monedas.simbolo','mov_empresa.tipo_monedas.divisa',
+                                       'mov_ventas.ve_cond_pagos.descripcion as descripcion_pago')->                                
                                 get();
 
                                 
         $compraDetalle = coOrdenesDetalle::where([['co_ordenes_detalles.estado','=','activo'], 
                                         ['co_ordenes_detalles.num_oc','=', $compra[0]->num_oc]])-> 
-                                join('inv_productos','co_ordenes_detalles.codigo','=','inv_productos.codigo')->
-                                join('categorias','categorias.id_categoria','=','inv_productos.id_categoria')->
-                                join('brands','brands.id_brand','=','inv_productos.id_brand')->
-                                join('invtipos_inventarios','invtipos_inventarios.id_tipoinventario','=','inv_productos.id_tipoinventario')->
-                                join('bodegas','bodegas.id_bodega','=','inv_productos.id_bodega')->
+                                join('mov_inventario.inv_productos','co_ordenes_detalles.codigo','=','mov_inventario.inv_productos.codigo')->
+                                join('mov_inventario.categorias','mov_inventario.categorias.id_categoria','=','mov_inventario.inv_productos.id_categoria')->
+                                join('mov_inventario.brands','mov_inventario.brands.id_brand','=','mov_inventario.inv_productos.id_brand')->
+                                join('mov_inventario.invtipos_inventarios','mov_inventario.invtipos_inventarios.id_tipoinventario','=','mov_inventario.inv_productos.id_tipoinventario')->
+                                join('mov_inventario.bodegas','mov_inventario.bodegas.id_bodega','=','mov_inventario.inv_productos.id_bodega')->
                                 select('co_ordenes_detalles.*',
                                     
-                                        'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.codigo_referencia',
-                                        'inv_productos.origen','inv_productos.existenciaMinima','inv_productos.existenciaMaxima','inv_productos.ultimaFechaCompra',
-                                        'inv_productos.precio_compra','inv_productos.precio_venta','inv_productos.costo','inv_productos.fechaInicioDescuento',
-                                        'inv_productos.fechaFinDescuento','inv_productos.porcientodescuento','inv_productos.ventas','inv_productos.devoluciones',
-                                        'inv_productos.galeriaImagenes',                                        
-                                        'categorias.descripcion as categoria',
-                                        'brands.descripcion as marca',
-                                        'invtipos_inventarios.descripcion as tipoinventario',
-                                        'bodegas.descripcion as almacen'
+                                        'mov_inventario.inv_productos.titulo','mov_inventario.inv_productos.descripcion','mov_inventario.inv_productos.codigo','mov_inventario.inv_productos.codigo_referencia',
+                                        'mov_inventario.inv_productos.origen','mov_inventario.inv_productos.existenciaMinima','mov_inventario.inv_productos.existenciaMaxima','mov_inventario.inv_productos.ultimaFechaCompra',
+                                        'mov_inventario.inv_productos.precio_compra','mov_inventario.inv_productos.precio_venta','mov_inventario.inv_productos.costo','mov_inventario.inv_productos.fechaInicioDescuento',
+                                        'mov_inventario.inv_productos.fechaFinDescuento','mov_inventario.inv_productos.porcientodescuento','mov_inventario.inv_productos.ventas','mov_inventario.inv_productos.devoluciones',
+                                        'mov_inventario.inv_productos.galeriaImagenes',                                        
+                                        'mov_inventario.categorias.descripcion as categoria',
+                                        'mov_inventario.brands.descripcion as marca',
+                                        'mov_inventario.invtipos_inventarios.descripcion as tipoinventario',
+                                        'mov_inventario.bodegas.descripcion as almacen'
                                 )->
                                 get();        
 

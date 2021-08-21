@@ -1,18 +1,18 @@
 <?php
 
 namespace App\Http\Controllers\compras;
-use App\Http\Controllers\ApiResponseController;
+use App\Librerias\pais;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Librerias\proveedores;
 use App\Librerias\cgcatalogo;
-use App\Librerias\ve_CondicionesPago;
 use App\Librerias\tipoMonedas;
 use App\Librerias\tipo_documento;
+use Illuminate\Support\Facades\DB;
 use App\Librerias\coTipoProveedores;
 use App\Librerias\coCuentasProveedor;
-use App\Librerias\pais;
+use App\Librerias\ve_CondicionesPago;
+use App\Librerias\compras\proveedores;
+use App\Http\Controllers\ApiResponseController;
 
 class proveedoresController extends ApiResponseController
 {
