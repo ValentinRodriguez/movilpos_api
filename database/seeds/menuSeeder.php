@@ -8,7 +8,7 @@ class menuSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('menus')->truncate();
+        DB::table('mov_globales.menus')->truncate();
         $menues = array(
 
             // PANEL DE CONTROL 1

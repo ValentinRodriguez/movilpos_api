@@ -15,6 +15,8 @@ class CreateInvCuentasMovimientosTable extends Migration
     public function up()
     {
         Schema::connection('mov_inventario')->create('invcuentasmovimientos', function (Blueprint $table) {
+            // $databaseName = Config::get('database.connections.'.Config::get('database.default'));
+            // $table->foreign('id_tipomov')->references('id_tipomov')->on(new Expression($databaseName['database'] . '.invtiposmovimientos'));
             $table->id();
             $table->integer('id_tipomov');
             $table->string('cuenta_no',25);

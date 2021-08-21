@@ -9,7 +9,7 @@ class empleadosSeeder extends Seeder
     public function run()
     {
 
-        DB::table('noempleados')->truncate();
+        DB::table('mov_rrhh.noempleados')->truncate();
         
         $empleado = array(
             [
