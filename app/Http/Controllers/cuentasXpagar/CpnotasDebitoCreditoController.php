@@ -1,39 +1,18 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Controllers\ApiResponseController;
-
-use App\cpnotas_debito_credito;
 use Illuminate\Http\Request;
+
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\cuentasXpagar\cpnotas_debito_credito;
 
 class cpnotasDebitoCreditoController extends ApiResponseController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         //
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $datosm =array('num_doc'         => $request->input('num_doc'),
@@ -78,47 +57,17 @@ class cpnotasDebitoCreditoController extends ApiResponseController
             return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\cpnotas_debito_credito  $cpnotas_debito_credito
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show(cpnotas_debito_credito $cpnotas_debito_credito)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\cpnotas_debito_credito  $cpnotas_debito_credito
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(cpnotas_debito_credito $cpnotas_debito_credito)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\cpnotas_debito_credito  $cpnotas_debito_credito
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, cpnotas_debito_credito $cpnotas_debito_credito)
     {
         //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\cpnotas_debito_credito  $cpnotas_debito_credito
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(cpnotas_debito_credito $cpnotas_debito_credito)
     {
         //

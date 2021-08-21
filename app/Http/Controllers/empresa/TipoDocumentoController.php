@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\empresa;
-use App\Http\Controllers\ApiResponseController;
-use App\Librerias\tipo_documento;
 use Illuminate\Http\Request;
+use App\Librerias\empresa\tipo_documento;
+use App\Http\Controllers\ApiResponseController;
 
 class TipoDocumentoController extends ApiResponseController
 {

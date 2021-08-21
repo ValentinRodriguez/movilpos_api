@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\empresa;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\sucursales;
-use App\Librerias\Empresa;
-use App\Librerias\pais;
-
 use Illuminate\Http\Request;
+
+use App\Librerias\globales\pais;
+use App\Librerias\empresa\Empresa;
 use Illuminate\Support\Facades\DB;
+
+use App\Librerias\empresa\sucursales;
+use App\Http\Controllers\ApiResponseController;
 
 class sucursalesController extends ApiResponseController
 {

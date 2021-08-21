@@ -1,17 +1,17 @@
 <?php
 
 namespace App\Http\Controllers\empresa;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\Empresa;
-use App\Librerias\sucursales;
-use App\Librerias\permisosEmpresa;
-use App\Librerias\permisosEmpresaValor;
-use App\Librerias\Modulos;
-use App\Librerias\Menu;
-
 use Illuminate\Http\Request;
+
+use App\Librerias\globales\Menu;
+use App\Librerias\empresa\Empresa;
 use Illuminate\Support\Facades\DB;
+use App\Librerias\globales\Modulos;
+use App\Librerias\empresa\sucursales;
+
+use App\Librerias\empresa\permisosEmpresa;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\empresa\permisosEmpresaValor;
 
 class EmpresaController extends ApiResponseController
 {
@@ -22,21 +22,21 @@ class EmpresaController extends ApiResponseController
 
         foreach ($empresa as $key => $value) {
             $sucursales = sucursales::join('mov_globales.paises','mov_globales.paises.id_pais','=','sucursales.id_pais')->
-            join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','sucursales.id_ciudad')->
-            join('regiones','regiones.id_region','=','sucursales.id_region')->
-            join('municipios','municipios.id_municipio','=','sucursales.id_municipio')->
-            join('provincias','provincias.id_provincia','=','sucursales.id_provincia')->
-            leftjoin('sectores','sectores.id_sector','=','sucursales.id_sector')->
-            select('sucursales.*',
-                   'mov_globales.paises.descripcion as pais',
-                   'mov_globales.ciudades.descripcion as ciudad',
-                   'municipios.descripcion as municipio',
-                   'regiones.descripcion as region',
-                   'sectores.descripcion as sector',
-                   'provincias.descripcion as provincia')->        
-            orderBy('created_at', 'desc')->
-            where([['sucursales.estado','=','ACTIVO'],['sucursales.cod_cia','=',$value->cod_cia]])->
-            get();
+                        join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','sucursales.id_ciudad')->
+                        join('mov_globales.regiones','mov_globales.regiones.id_region','=','sucursales.id_region')->
+                        join('mov_globales.municipios','mov_globales.municipios.id_municipio','=','sucursales.id_municipio')->
+                        join('mov_globales.provincias','mov_globales.provincias.id_provincia','=','sucursales.id_provincia')->
+                        leftjoin('sectores','sectores.id_sector','=','sucursales.id_sector')->
+                        select('sucursales.*',
+                            'mov_globales.paises.descripcion as pais',
+                            'mov_globales.ciudades.descripcion as ciudad',
+                            'mov_globales.municipios.descripcion as municipio',
+                            'mov_globales.regiones.descripcion as region',
+                            'sectores.descripcion as sector',
+                            'mov_globales.provincias.descripcion as provincia')->        
+                        orderBy('created_at', 'desc')->
+                        where([['sucursales.estado','=','ACTIVO'],['sucursales.cod_cia','=',$value->cod_cia]])->
+                        get();
             
             $value->sucursales = $sucursales;
         }
@@ -150,8 +150,6 @@ class EmpresaController extends ApiResponseController
             "valuacion_inv"       =>$request->input("valuacion_inv"),
             "usuario_modificador" =>$request->input("usuario_modificador")
        );
-
-    //    return response()->json( $datos);
 
        $messages = [
             'required' => 'El campo :attribute es requerido.',

@@ -1,30 +1,32 @@
 <?php
 
 namespace App\Http\Controllers\cuentasXpagar;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\cpTransacciones;
-use App\Librerias\cpTransaccionesDetalles;
-use App\Librerias\proveedores;
-use App\Librerias\coCuentasProveedor;
-use App\Librerias\ve_CondicionesPago;
-use App\Librerias\tipoMonedas;
-use App\Librerias\cgTipoGastos;
-use App\Librerias\Departamento;
-use App\Librerias\cpTransaccionesHistoriales;
-use App\Librerias\cpTransaccionesHistorialesDetalle;
-use App\Librerias\cgPeriodosFiscales;
+use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
+use App\Librerias\rrhh\Departamento;
+use App\Librerias\compras\proveedores;
+use App\Librerias\empresa\tipoMonedas;
+use App\Librerias\ventas\ve_CondicionesPago;
+use App\Librerias\compras\coCuentasProveedor;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\cuentasXpagar\cpTransacciones;
+use App\Librerias\contabilidadGeneral\cgTipoGastos;
+use App\Librerias\cuentasXpagar\cpTransaccionesDetalles;
+use App\Librerias\contabilidadGeneral\cgPeriodosFiscales;
+
+use App\Librerias\cuentasXpagar\cpTransaccionesHistoriales;
+use App\Librerias\cuentasXpagar\cpTransaccionesHistorialesDetalle;
 
 class CpTransaccionesController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        $facturas = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
-                                    join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
-                                    select('cp_transacciones.*','tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa','proveedores.nom_sp as proveedor_nombre')->
+        $facturas = cpTransacciones::join('mov_empresa.tipo_monedas','mov_empresa.tipo_monedas.id','=','cp_transacciones.moneda')->
+                                    join('mov_compras.proveedores',[['mov_compras.proveedores.cod_sp','=','cp_transacciones.cod_sp'],
+                                                                    ['mov_compras.proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
+                                    select('cp_transacciones.*','mov_empresa.tipo_monedas.descripcion as moneda','mov_empresa.tipo_monedas.simbolo',
+                                           'mov_empresa.tipo_monedas.divisa','mov_compras.proveedores.nom_sp as proveedor_nombre')->
                                     orderBy('cp_transacciones.created_at', 'desc')->
                                     where([['cp_transacciones.estado','=','ACTIVO'],['cp_transacciones.tipo_doc','=','FT']])->
                                     get();
@@ -42,15 +44,16 @@ class CpTransaccionesController extends ApiResponseController
 
     public function facturasPendientes(Request $request)
     {
-        $facturas = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
-                                    join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
+        $facturas = cpTransacciones::join('mov_empresa.tipo_monedas','mov_empresa.tipo_monedas.id','=','cp_transacciones.moneda')->
+                                    join('mov_compras.proveedores',[['mov_compras.proveedores.cod_sp','=','cp_transacciones.cod_sp'],
+                                                                    ['mov_compras.proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
                                     select('cp_transacciones.num_doc','cp_transacciones.valor','cp_transacciones.monto_itbi','cp_transacciones.tipo_doc',
-                                           'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
-                                           'proveedores.nom_sp as proveedor_nombre',
+                                           'mov_empresa.tipo_monedas.descripcion as moneda','mov_empresa.tipo_monedas.simbolo','mov_empresa.tipo_monedas.divisa',
+                                           'mov_compras.proveedores.nom_sp as proveedor_nombre',
                                            DB::Raw('SUM(cp_transacciones.valor) as deuda'))->
                                     groupby('cp_transacciones.num_doc','cp_transacciones.valor','cp_transacciones.monto_itbi','cp_transacciones.tipo_doc',
-                                            'tipo_monedas.descripcion','tipo_monedas.simbolo','tipo_monedas.divisa',
-                                            'proveedores.nom_sp')->
+                                            'mov_empresa.tipo_monedas.descripcion','mov_empresa.tipo_monedas.simbolo','mov_empresa.tipo_monedas.divisa',
+                                            'mov_compras.proveedores.nom_sp')->
                                     where([['cp_transacciones.estado','=','ACTIVO'],['cp_transacciones.tipo_doc','=','FT']])->
                                     having('deuda', '>', 0)->
                                     get();
@@ -62,21 +65,20 @@ class CpTransaccionesController extends ApiResponseController
                                                 ['cp_transacciones_detalles.num_doc','=',$value->num_doc]])->
                                         get();
 
-            $pagado = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
-                                       join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
+            $pagado = cpTransacciones::join('mov_empresa.tipo_monedas','mov_empresa.tipo_monedas.id','=','cp_transacciones.moneda')->
+                                       join('mov_compras.proveedores',[['mov_compras.proveedores.cod_sp','=','cp_transacciones.cod_sp'],
+                                                                       ['mov_compras.proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
                                        select('cp_transacciones.num_doc',
-                                              'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
-                                              'proveedores.nom_sp as proveedor_nombre',DB::Raw('SUM(cp_transacciones.valor) as valor'),
+                                              'mov_empresa.tipo_monedas.descripcion as moneda','mov_empresa.tipo_monedas.simbolo','mov_empresa.tipo_monedas.divisa',
+                                              'mov_compras.proveedores.nom_sp as proveedor_nombre',DB::Raw('SUM(cp_transacciones.valor) as valor'),
                                               DB::Raw('SUM(cp_transacciones.monto_itbi) as itbi_pagado'))->
                                        groupby('cp_transacciones.num_doc',
-                                              'tipo_monedas.descripcion','tipo_monedas.simbolo','tipo_monedas.divisa',
-                                              'proveedores.nom_sp')->
+                                              'mov_empresa.tipo_monedas.descripcion','mov_empresa.tipo_monedas.simbolo','mov_empresa.tipo_monedas.divisa',
+                                              'mov_compras.proveedores.nom_sp')->
                                        where([['cp_transacciones.estado','=','ACTIVO'],['cp_transacciones.tipo_doc','!=','FT'],
                                               ['cp_transacciones.num_doc','=',$value->num_doc]])->
                                        // having('pagado', '>', 0)->
                                        first();     
-
-            // return response()->json($pagado);
             
             $value->detalle_factura = $detalle;
             $value->pagado = isset($pagado->valor) ? $pagado->valor : 0;
@@ -89,11 +91,11 @@ class CpTransaccionesController extends ApiResponseController
         $respuesta = array();
 
         try {
-            $proveedores = proveedores::join('mov_globales.ciudades', 'mov_globales.ciudades.id_ciudad','=','proveedores.id_ciudad')->
-                            join('mov_globales.paises', 'mov_globales.paises.id_pais','=','proveedores.id_pais')->
-                            select('proveedores.*','mov_globales.ciudades.descripcion as ciudad','mov_globales.paises.descripcion as pais') ->
-                            where('proveedores.estado','=','activo')->
-                            get();
+            $proveedores = proveedores::join('mov_globales.ciudades', 'mov_globales.ciudades.id_ciudad','=','mov_compras.proveedores.id_ciudad')->
+                                        join('mov_globales.paises', 'mov_globales.paises.id_pais','=','mov_compras.proveedores.id_pais')->
+                                        select('mov_compras.proveedores.*','mov_globales.ciudades.descripcion as ciudad','mov_globales.paises.descripcion as pais') ->
+                                        where('mov_compras.proveedores.estado','=','activo')->
+                                        get();
 
             foreach ($proveedores as $key => $value) {
                 $coCuentasProveedor = coCuentasProveedor::where([['co_cuentas_proveedores.cod_sp','=',$value->cod_sp],
@@ -111,7 +113,7 @@ class CpTransaccionesController extends ApiResponseController
             $monedas      = tipoMonedas::orderBy('created_at', 'desc')->where('estado','=','ACTIVO')->get();
             $tipoGastos   = cgTipoGastos::all();
 
-            $_proveedores = array("label" => 'proveedores', "data" => $proveedores, "icono" => 'fas fa-dolly-flatbed');
+            $_proveedores = array("label" => 'mov_compras.proveedores', "data" => $proveedores, "icono" => 'fas fa-dolly-flatbed');
             $_condiciones = array("label" => 'condiciones', "data" => $condiciones, "icono" => 'fas fa-dolly-flatbed');
             $_monedas     = array("label" => 'monedas', "data" => $monedas, "icono" => 'fas fa-dolly-flatbed');
             $_tipoGastos  = array("label" => 'tipo gastos', "data" => $tipoGastos, "icono" => 'fas fa-dolly-flatbed');
@@ -286,12 +288,12 @@ class CpTransaccionesController extends ApiResponseController
     
     public function show(Request $request,$id)
     {
-        $factura = cpTransacciones::join('tipo_monedas','tipo_monedas.id','=','cp_transacciones.moneda')->
-                                    join('proveedores',[['proveedores.cod_sp','=','cp_transacciones.cod_sp'],
-                                                        ['proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
+        $factura = cpTransacciones::join('mov_empresa.tipo_monedas','mov_empresa.tipo_monedas.id','=','cp_transacciones.moneda')->
+                                    join('mov_compras.proveedores',[['mov_compras.proveedores.cod_sp','=','cp_transacciones.cod_sp'],
+                                                        ['mov_compras.proveedores.cod_sp_sec','=','cp_transacciones.cod_sp_sec']])->
                                     select('cp_transacciones.*',
-                                            'tipo_monedas.descripcion as moneda','tipo_monedas.simbolo','tipo_monedas.divisa',
-                                            'proveedores.nom_sp as proveedor_nombre')->
+                                            'mov_empresa.tipo_monedas.descripcion as moneda','mov_empresa.tipo_monedas.simbolo','mov_empresa.tipo_monedas.divisa',
+                                            'mov_compras.proveedores.nom_sp as proveedor_nombre')->
                                     orderBy('cp_transacciones.created_at', 'desc')->
                                     where('cp_transacciones.id','=',$id)->
                                     first();

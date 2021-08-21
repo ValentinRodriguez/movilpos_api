@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\empresa;
-use App\Http\Controllers\ApiResponseController;
-
 use Illuminate\Http\Request;
-use App\Librerias\tipoClientes;
-use App\librerias\Mclientes;
+
 use Illuminate\Support\Facades\DB;
+use App\Librerias\ventas\Mclientes;
+use App\Librerias\ventas\tipoClientes;
+use App\Http\Controllers\ApiResponseController;
 
 class tipoClientesController extends ApiResponseController
 {
