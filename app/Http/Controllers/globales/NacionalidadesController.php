@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\Nacionalidades;
 use Illuminate\Http\Request;
+
+use App\Librerias\globales\Nacionalidades;
+use App\Http\Controllers\ApiResponseController;
 
 class NacionalidadesController extends ApiResponseController
 {

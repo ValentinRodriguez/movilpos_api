@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
 use Illuminate\Http\Request;
-use App\Librerias\regiones;
+
+use App\Librerias\globales\regiones;
+use App\Http\Controllers\ApiResponseController;
 
 class RegionesController extends ApiResponseController
 {
@@ -25,14 +25,12 @@ class RegionesController extends ApiResponseController
 
     public function buscaRegion(Request $request,$id)
     {
-        $ciudad = regiones::join('mov_globales.paises','mov_globales.paises.id_pais','=','regiones.id_pais')->
+        $ciudad = regiones::join('paises','paises.id_pais','=','regiones.id_pais')->
                             select('regiones.*')->  
                             orderBy('created_at', 'desc')->
                             where('regiones.id_pais','=',$id)->
                             get();
-                            if ($ciudad == null){
-                                return $this->errorResponse($ciudad);
-                            }
+                            
                             return $this->successResponse($ciudad, $request->urlRequest);
     }
 

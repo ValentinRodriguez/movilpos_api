@@ -1,24 +1,25 @@
 <?php
 
 namespace App\Http\Controllers\ventas;
-use App\Http\Controllers\ApiResponseController;
+use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
-use App\Librerias\vefacturasmaster;
-use App\Librerias\vefacturadetalle;
-use Illuminate\Http\Request;
-use App\Librerias\secuenciaCobros;
+use App\Librerias\ventas\vefacturadetalle;
+use App\Librerias\ventas\vefacturasmaster;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\cuentasXcobrar\secuenciaCobros;
 
 class VefacturasController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        $facturas = vefacturasmaster::join('mov_ventas.veclientes',function($join){
-                                        $join->on('vefacturasmaster.tipo_cliente','=','mov_ventas.veclientes.tipo_cliente')->
-                                        oron('vefacturasmaster.sec_cliente','=','mov_ventas.veclientes.sec_cliente');
-                                    })->select('vefacturasmaster.*','mov_ventas.veclientes.nombre')
+        $facturas = vefacturasmaster::join('veclientes',function($join){
+                                    $join->on('vefacturasmaster.tipo_cliente','=','veclientes.tipo_cliente')->
+                                    oron('vefacturasmaster.sec_cliente','=','veclientes.sec_cliente');
+                                    })->select('vefacturasmaster.*','veclientes.nombre')
                                       ->where('vefacturasmaster.estado','=','ACTIVO')
                                       ->get();
+                                      
                                       return $this->successResponse($facturas, $request->urlRequest);
          
     }

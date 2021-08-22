@@ -1,17 +1,17 @@
 <?php
 
 namespace App\Http\Controllers\ventas;
-use App\Http\Controllers\ApiResponseController;
 use Illuminate\Http\Request;
+use App\Librerias\globales\pais;
 use Illuminate\Support\Facades\DB;
-use App\librerias\Mclientes;
-use App\librerias\ve_CondicionesPago;
-use App\Librerias\tipo_documento;
-use App\Librerias\noempleados;
-use App\Librerias\tipoNegocio;
-use App\Librerias\tipoClientes;
-use App\Librerias\Nacionalidades;
-use App\Librerias\pais;
+use App\Librerias\rrhh\noempleados;
+use App\Librerias\ventas\Mclientes;
+use App\Librerias\empresa\tipoNegocio;
+use App\Librerias\ventas\tipoClientes;
+use App\Librerias\empresa\tipo_documento;
+use App\Librerias\globales\Nacionalidades;
+use App\Librerias\ventas\ve_CondicionesPago;
+use App\Http\Controllers\ApiResponseController;
 
 class MclientesController extends ApiResponseController
 {
@@ -69,19 +69,19 @@ class MclientesController extends ApiResponseController
     {
         $clientes = Mclientes::join('mov_globales.paises','mov_globales.paises.id_pais','=','mov_ventas.veclientes.id_pais')->
                                join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','mov_ventas.veclientes.id_ciudad')->
-                               join('municipios','municipios.id_municipio','=','mov_ventas.veclientes.id_municipio')->
-                               join('provincias','provincias.id_provincia','=','mov_ventas.veclientes.id_provincia')->
-                               join('regiones','regiones.id_region','=','mov_ventas.veclientes.id_region')->
-                               join('nacionalidades','nacionalidades.id','=','mov_ventas.veclientes.nacionalidad')->
-                               leftjoin('sectores','sectores.id_sector','=','mov_ventas.veclientes.id_sector')->
+                               join('mov_globales.municipios','mov_globales.municipios.id_municipio','=','mov_ventas.veclientes.id_municipio')->
+                               join('mov_globales.provincias','mov_globales.provincias.id_provincia','=','mov_ventas.veclientes.id_provincia')->
+                               join('mov_globales.regiones','mov_globales.regiones.id_region','=','mov_ventas.veclientes.id_region')->
+                               join('mov_globales.nacionalidades','mov_globales.nacionalidades.id','=','mov_ventas.veclientes.nacionalidad')->
+                               leftjoin('mov_globales.sectores','mov_globales.sectores.id_sector','=','mov_ventas.veclientes.id_sector')->
                                select('mov_ventas.veclientes.*',
                                       'mov_globales.paises.descripcion as pais',
                                       'mov_globales.ciudades.descripcion as ciudad',
-                                      'municipios.descripcion as municipio',
-                                      'regiones.descripcion as region',
-                                      'sectores.descripcion as sector',
-                                      'nacionalidades.nacionalidad as nacionalidad_cliente',
-                                      'provincias.descripcion as provincia'
+                                      'mov_globales.municipios.descripcion as municipio',
+                                      'mov_globales.regiones.descripcion as region',
+                                      'mov_globales.sectores.descripcion as sector',
+                                      'mov_globales.nacionalidades.nacionalidad as nacionalidad_cliente',
+                                      'mov_globales.provincias.descripcion as provincia'
                                       )->
                                orderBy('created_at', 'desc')->
                                where('mov_ventas.veclientes.estado','=','ACTIVO')->
@@ -284,10 +284,12 @@ class MclientesController extends ApiResponseController
         $vendedor =$request->get('vendedor');
         
         $busqueda = Mclientes::join('mov_globales.paises','mov_globales.paises.id_pais','=','mov_ventas.veclientes.id_pais')->
-        join('zonas_local','zonas_local.id_zonalocal','=','mov_ventas.veclientes.id_zonalocal')->
+        join('mov_globales.zonas_local','mov_globales.zonas_local.id_zonalocal','=','mov_ventas.veclientes.id_zonalocal')->
         join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','mov_ventas.veclientes.id_ciudad')->
-        select('mov_ventas.veclientes.*','mov_globales.paises.descripcion as pais','mov_globales.ciudades.descripcion as ciudad',
-               'zonas_local.descripcion as zona local')->           
+        select('mov_ventas.veclientes.*',
+               'mov_globales.paises.descripcion as pais',
+               'mov_globales.ciudades.descripcion as ciudad',
+               'mov_globales.zonas_local.descripcion as zona local')->           
                parametro($parametro)->
                rnc($num_rnc)->
                vendedor($vendedor)->

@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\rrhh;
-use App\Http\Controllers\ApiResponseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Librerias\Departamento;
-use App\Librerias\noempleados;
+use App\Librerias\rrhh\noempleados;
+use App\Librerias\rrhh\Departamento;
+use App\Http\Controllers\ApiResponseController;
 
 class DepartamentoController extends ApiResponseController
 {
@@ -131,7 +131,10 @@ class DepartamentoController extends ApiResponseController
 
     public function busqueda(Request $request){
         $departamento = $request->get('departamento');
-        $busqueda = Departamento::orderBy('id', 'asc')->where([['mov_rrhh.nodepartamentos.titulo', '=', $departamento],['mov_rrhh.nodepartamentos.estado','=','activo']])->get();
+        $busqueda = Departamento::orderBy('id', 'asc')->
+                                where([['mov_rrhh.nodepartamentos.titulo', '=', $departamento],
+                                       ['mov_rrhh.nodepartamentos.estado','=','activo']])->
+                                get();
         return $this->successResponse($busqueda, $request->urlRequest);
     }
 }

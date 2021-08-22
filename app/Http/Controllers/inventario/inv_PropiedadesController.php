@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
-use App\Http\Controllers\ApiResponseController;
-
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
-use App\Librerias\Propiedadesprod;
-use App\Librerias\InvProductos;
+use App\Librerias\inventario\InvProductos;
+use App\Librerias\inventario\Propiedadesprod;
+use App\Http\Controllers\ApiResponseController;
 
 class inv_PropiedadesController extends ApiResponseController
 {

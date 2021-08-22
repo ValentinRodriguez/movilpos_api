@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\Bodegas;
-use App\librerias\pais;
-use App\librerias\User;
-use App\librerias\invProductos;
-use App\librerias\BodegasUsuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
+use App\Http\Controllers\ApiResponseController;
+use App\librerias\usuarios\User;
+use App\Librerias\globales\pais;
+use App\librerias\usuarios\bodegasUsuarios;
+use App\Librerias\inventario\Bodegas;
+use App\Librerias\inventario\InvProductos;
 
 class BodegasController extends ApiResponseController
 {
@@ -131,13 +131,13 @@ class BodegasController extends ApiResponseController
         $id_bodega = $request->get('id_bodega');
         
         $busqueda = Bodegas::orderBy('id_bodega', 'asc')->
-                                join('mov_globales.paises','mov_globales.paises.id_pais','=','bodegas.id_pais')->
-                                join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','bodegas.id_ciudad')->
-                                select('bodegas.*','mov_globales.paises.descripcion as pais','mov_globales.ciudades.descripcion as ciudad')->
-                                existe($existe)->
-                                codigo($id_bodega)->
-                                where('bodegas.estado','=','ACTIVO')->
-                                get(); 
+                            join('mov_globales.paises','mov_globales.paises.id_pais','=','bodegas.id_pais')->
+                            join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','bodegas.id_ciudad')->
+                            select('bodegas.*','mov_globales.paises.descripcion as pais','mov_globales.ciudades.descripcion as ciudad')->
+                            existe($existe)->
+                            codigo($id_bodega)->
+                            where('bodegas.estado','=','ACTIVO')->
+                            get(); 
                                                         
         return $this->successResponse($busqueda, $request->urlRequest);
     }

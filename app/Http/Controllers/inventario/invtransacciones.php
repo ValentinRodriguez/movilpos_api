@@ -1,29 +1,29 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
-use App\Http\Controllers\ApiResponseController;
+use DateTime;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\DB;
-
-use Barryvdh\DomPDF\Facade as PDF;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ProductosExport;
-use App\Librerias\InvProductos;
-use App\Librerias\invnumeraciones;
-use App\Librerias\Invtiposmovimientos;
-use App\Librerias\invtransaccionesmodel;
-use App\Librerias\Invtransaccdetallemodel;
-use App\Librerias\bodegasUsuarios;
-use App\Librerias\Empresa;
-use App\Librerias\transportistas;
-use App\librerias\Mclientes;
-use App\Librerias\Departamento;
-use App\Librerias\proveedores;
-use App\Librerias\noempleados;
-use App\Librerias\Bodegas;
-use DateTime;
+
+use App\Librerias\empresa\Empresa;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\DB;
+use App\Librerias\rrhh\noempleados;
+use App\Librerias\ventas\Mclientes;
+use App\Librerias\rrhh\Departamento;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Librerias\inventario\Bodegas;
+use App\Librerias\compras\proveedores;
+use App\Librerias\inventario\InvProductos;
+use App\Librerias\usuarios\bodegasUsuarios;
+use App\Librerias\inventario\transportistas;
+use App\Librerias\inventario\invnumeraciones;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\inventario\Invtiposmovimientos;
+use App\Librerias\inventario\invtransaccionesmodel;
+use App\Librerias\inventario\Invtransaccdetallemodel;
 
 class invtransacciones extends ApiResponseController
 {    
@@ -33,8 +33,8 @@ class invtransacciones extends ApiResponseController
                                                 join('invtiposmovimientos','invtransaccionesmaster.id_tipomov','=','invtiposmovimientos.id_tipomov')->
                                                 leftjoin('mov_ventas.veclientes',[['invtransaccionesmaster.tipo_cliente','=','mov_ventas.veclientes.tipo_cliente'],
                                                                        ['invtransaccionesmaster.sec_cliente','=','mov_ventas.veclientes.sec_cliente']])->
-                                                leftjoin('proveedores',[['invtransaccionesmaster.cod_sp','=','proveedores.cod_sp'],
-                                                                        ['invtransaccionesmaster.cod_sp_sec','=','proveedores.cod_sp_sec']])->
+                                                leftjoin('mov.compras.proveedores',[['invtransaccionesmaster.cod_sp','=','mov.compras.proveedores.cod_sp'],
+                                                                        ['invtransaccionesmaster.cod_sp_sec','=','mov.compras.proveedores.cod_sp_sec']])->
                                                 leftjoin('mov_rrhh.nodepartamentos','invtransaccionesmaster.departamento','=','mov_rrhh.nodepartamentos.id')->
                                                 leftjoin('mov_rrhh.noempleados','invtransaccionesmaster.id','=','mov_rrhh.noempleados.id')->
                                                 leftjoin('transportistas','invtransaccionesmaster.cod_transportista','=','transportistas.cod_transportista')->
@@ -46,7 +46,7 @@ class invtransacciones extends ApiResponseController
                                                        'mov_ventas.veclientes.direccion as veclientes_direccion','mov_ventas.veclientes.email as veclientes_email',
                                                        'mov_ventas.veclientes.telefono_oficina as veclientes_telefono_oficina','mov_ventas.veclientes.telefono_oficina as veclientes_telefono_oficina',
                                                        'mov_ventas.veclientes.telefono_casa as veclientes_telefono_casa',
-                                                       'proveedores.nom_sp as proveedores_nom_sp','proveedores.tel_sp as proveedores_tel_sp',
+                                                       'mov.compras.proveedores.nom_sp as mov.compras.proveedores_nom_sp','mov.compras.proveedores.tel_sp as mov.compras.proveedores_tel_sp',
                                                        'bodegas.descripcion as bodegas_descripcion',
                                                        'mov_rrhh.nodepartamentos.titulo as nodepartamento_titulo',
                                                        'mov_rrhh.noempleados.primernombre as nodepartamento_primernombre', 'mov_rrhh.noempleados.primerapellido as nodepartamento_primerapellido',
@@ -99,10 +99,10 @@ class invtransacciones extends ApiResponseController
                 $numerosecuencia = 0;
                 
                 $controlmovimientos = Invtiposmovimientos::where('id_tipomov','=',$idtipomov)->
-                                                        select('control_clientes','control_despachos',
-                                                                'control_devoluciones','control_transferencia',
-                                                                'control_departamento','control_orden_compra','origen')->
-                                                        first();
+                                                            select('control_clientes','control_despachos',
+                                                                    'control_devoluciones','control_transferencia',
+                                                                    'control_departamento','control_orden_compra','origen')->
+                                                            first();
                                                                                              
                 $controlcliente       =strtolower($controlmovimientos->control_clientes);
                 $controldespacho      =strtolower($controlmovimientos->control_despachos);
@@ -579,17 +579,15 @@ class invtransacciones extends ApiResponseController
                                 where('mov_ventas.veclientes.estado','=','ACTIVO')->
                                 get();
             
-            $transportistas = transportistas::orderBy('id', 'asc')->
-                                where('estado','=','activo')->                             
-                                get();
+            $transportistas = transportistas::orderBy('id', 'asc')->where('estado','=','activo')->get();
 
             $departamentos = Departamento::orderBy('id', 'asc')->where('estado','=','activo')->get();
             
             $proveedores = proveedores::join('mov_globales.ciudades', 'mov_globales.ciudades.id_ciudad','=','proveedores.id_ciudad')->
-                                join('mov_globales.paises', 'mov_globales.paises.id_pais','=','proveedores.id_pais')->
-                                select('proveedores.*','mov_globales.ciudades.descripcion as ciudad','mov_globales.paises.descripcion as pais') ->
-                                where('proveedores.estado','=','activo')->
-                                get();
+                                        join('mov_globales.paises', 'mov_globales.paises.id_pais','=','proveedores.id_pais')->
+                                        select('proveedores.*','mov_globales.ciudades.descripcion as ciudad','mov_globales.paises.descripcion as pais') ->
+                                        where('proveedores.estado','=','activo')->
+                                        get();
 
             $vendedor = noempleados::where('mov_rrhh.noempleados.id_puesto','=',3)->
                                 select('mov_rrhh.noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->

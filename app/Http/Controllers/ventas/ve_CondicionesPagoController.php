@@ -1,19 +1,17 @@
 <?php
 
 namespace App\Http\Controllers\ventas;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\ve_CondicionesPago;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
+use App\Librerias\ventas\ve_CondicionesPago;
+use App\Http\Controllers\ApiResponseController;
 
 class ve_CondicionesPagoController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        $condiciones = ve_CondicionesPago::orderBy('id', 'asc')->
-                                  where('estado','=','activo')->
-                                  get();
+        $condiciones = ve_CondicionesPago::orderBy('id', 'asc')->where('estado','=','activo')->get();
         
         return $this->successResponse($condiciones, $request->urlRequest);
     }

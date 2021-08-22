@@ -1,41 +1,33 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\pais;
-use App\Librerias\regiones;
-use App\Librerias\municipios;
-use App\Librerias\provincias;
-use App\Librerias\sectores;
-use App\Librerias\ciudad;
 use Illuminate\Http\Request;
+
+use App\Librerias\globales\pais;
+use App\Librerias\globales\ciudad;
+use App\Librerias\globales\regiones;
+use App\Librerias\globales\sectores;
+use App\Librerias\globales\municipios;
+use App\Librerias\globales\provincias;
+use App\Http\Controllers\ApiResponseController;
 
 class PaisController extends ApiResponseController
 {
 
     public function index(Request $request)
     {
-        $paises = pais::orderBy('created_at', 'desc')->
-                           get();
-
-         if ($paises == null){
-
-            return $this->errorResponse($paises);
-        }
+        $paises = pais::orderBy('created_at', 'desc')->get();
         return $this->successResponse($paises, $request->urlRequest);
     }
 
     public function ciudadesPorPais(Request $request,$id)
     {
-        $ciudad = ciudad::join('mov_globales.paises','mov_globales.paises.id_pais','=','mov_globales.ciudades.id_pais')->
-                          select('mov_globales.ciudades.*','mov_globales.paises.descripcion as pais')->
+        $ciudad = ciudad::join('paises','paises.id_pais','=','ciudades.id_pais')->
+                          select('ciudades.*','paises.descripcion as pais')->
                           orderBy('created_at', 'desc')->
-                          where('mov_globales.ciudades.id_pais','=',"$id")->
+                          where('ciudades.id_pais','=',"$id")->
                           get();
-                          if ($ciudad == null){
-                              return $this->errorResponse($ciudad);
-                          }
+                          
                           return $this->successResponse($ciudad, $request->urlRequest);
     }
 
@@ -71,10 +63,10 @@ class PaisController extends ApiResponseController
 
     public function store(Request $request)
     {
-        $datos = array("id_pais"        =>$request->input("id_pais"),
-                       "descripcion"        =>$request->input("descripcion"),
-                       "latitud"        =>$request->input("latitud"),
-                       "longitud"        =>$request->input("longitud"),
+        $datos = array("id_pais"     =>$request->input("id_pais"),
+                       "descripcion" =>$request->input("descripcion"),
+                       "latitud"     =>$request->input("latitud"),
+                       "longitud"    =>$request->input("longitud"),
                        );
 
         $messages = ['required' => 'El campo :attribute es requerido.',
@@ -82,29 +74,23 @@ class PaisController extends ApiResponseController
                      'numeric'  => 'El campo :attribute debe ser numerico',
                     ];
 
-             $validator = validator($datos, [
-                'id_pais'             => 'required',
-                'descripcion'         => 'required|string',
-                'longitud'             => 'numeric',
-                'latitud'             => 'numeric',
+        $validator = validator($datos, [
+            'id_pais'     => 'required',
+            'descripcion' => 'required|string',
+            'longitud'    => 'numeric',
+            'latitud'     => 'numeric',
+        ], $messages);
 
-            ], $messages);
-
-            if ($validator->fails()) {
-                $errors = $validator->errors();
-                return $this->errorResponseParams($errors->all(), $request->urlRequest);
-            } else {
-                pais::create($datos);
-                return $this->successResponse($datos, $request->urlRequest);
-            }
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
+        } else {
+            pais::create($datos);
+            return $this->successResponse($datos, $request->urlRequest);
+        }
     }
 
     public function show(pais $pais)
-    {
-        //
-    }
-
-    public function edit(pais $pais)
     {
         //
     }
@@ -114,27 +100,28 @@ class PaisController extends ApiResponseController
         $paises = pais::find($pais);
 
         $datos = array(
-        "descripcion"=>$request->input("descripcion"),
-        "usuario_modificador"=>$request->input("usuario_modificador"));
+            "descripcion"=>$request->input("descripcion"),
+            "usuario_modificador"=>$request->input("usuario_modificador")
+        );
 
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
             'numeric'  => 'El campo :attribute debe ser numerico',
-            ];
+        ];
 
-            $validator = validator($datos, [
+        $validator = validator($datos, [
             'descripcion' => 'required|string',
             'usuario_modificador' => 'required|string'
-            ], $messages);
+        ], $messages);
 
-            if ($validator->fails()) {
-                $errors = $validator->errors();
-                return $this->errorResponseParams($errors->all(), $request->urlRequest);
-            } else {
-                $paises->update($request->all());
-                return $this->successResponse($paises, $request->urlRequest);
-            }
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return $this->errorResponseParams($errors->all(), $request->urlRequest);
+        } else {
+            $paises->update($request->all());
+            return $this->successResponse($paises, $request->urlRequest);
+        }
     }
 
     public function destroy(Request $request, $id)

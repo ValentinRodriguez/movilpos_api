@@ -1,18 +1,18 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\ciudad;
 use Illuminate\Http\Request;
+
+use App\Librerias\globales\ciudad;
+use App\Http\Controllers\ApiResponseController;
 
 class CiudadController extends ApiResponseController
 {
     
     public function index(Request $request)
     {
-        $ciudad = ciudad::join('mov_globales.paises','mov_globales.paises.id_pais','=','mov_globales.ciudades.id_pais')->
-                          select('mov_globales.ciudades.*','mov_globales.paises.descripcion as pais')->  
+        $ciudad = ciudad::join('paises','paises.id_pais','=','ciudades.id_pais')->
+                          select('ciudades.*','paises.descripcion as pais')->  
                           orderBy('created_at', 'desc')->
                           get();
                           if ($ciudad == null){
@@ -23,10 +23,10 @@ class CiudadController extends ApiResponseController
 
     public function ciudadesPorPais(Request $request,$id)
     {        
-        $ciudad = ciudad::join('municipios','municipios.id_municipio','=','mov_globales.ciudades.id_municipio')->
-                          select('mov_globales.ciudades.*')->  
+        $ciudad = ciudad::join('municipios','municipios.id_municipio','=','ciudades.id_municipio')->
+                          select('ciudades.*')->  
                           orderBy('created_at', 'desc')->
-                          where('mov_globales.ciudades.id_ciudad','=',$id)->
+                          where('ciudades.id_ciudad','=',$id)->
                           get();
                           if ($ciudad == null){
                               return $this->errorResponse($ciudad);
@@ -71,36 +71,12 @@ class CiudadController extends ApiResponseController
     {
         //
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ciudad  $ciudad
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ciudad $ciudad)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ciudad  $ciudad
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, ciudad $ciudad)
     {
         //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\ciudad  $ciudad
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(ciudad $ciudad)
     {
         //

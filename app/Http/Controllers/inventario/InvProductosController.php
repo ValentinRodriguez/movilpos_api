@@ -1,23 +1,22 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
+use Illuminate\Http\Request;
+
+use App\Librerias\globales\medidas;
+use App\Librerias\inventario\Bodegas;
+use App\Librerias\inventario\invTipos;
+use Illuminate\Support\Facades\Storage;
+use App\Librerias\inventario\BrandsModel;
+use App\Librerias\inventario\InvProductos;
+use App\Librerias\inventario\tipoProducto;
+use App\Librerias\compras\coOrdenesDetalle;
+use App\Librerias\ventas\ordenPedidoDetalle;
+use App\Librerias\inventario\CategoriasModel;
+use App\Librerias\inventario\Propiedadesprod;
 use App\Http\Controllers\ApiResponseController;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Librerias\InvProductos;
-use App\Librerias\Invtransaccdetallemodel;
-use App\Librerias\coOrdenesDetalle;
-use App\Librerias\ordenPedidoDetalle;
-use App\Librerias\invTipos;
-use App\Librerias\CategoriasModel;
-use App\Librerias\BrandsModel;
-use App\Librerias\Bodegas;
-use App\Librerias\tipoProducto;
-use App\Librerias\medidas;
-use App\Librerias\Propiedadesprod;
-
-use App\Librerias\iptb00002;
+use App\Librerias\inventario\Invtransaccdetallemodel;
 
 class InvProductosController extends ApiResponseController
 {

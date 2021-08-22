@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\rrhh;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\areasEmpresa;
-use App\Librerias\Empresa;
-use App\Librerias\sucursales;
-use App\Librerias\Departamento;
-use App\Librerias\noempleados;
 use Illuminate\Http\Request;
+
+use App\Librerias\empresa\Empresa;
 use Illuminate\Support\Facades\DB;
+use App\Librerias\rrhh\noempleados;
+use App\Librerias\rrhh\Departamento;
+use App\Librerias\empresa\sucursales;
+use App\Librerias\empresa\areasEmpresa;
+use App\Http\Controllers\ApiResponseController;
 
 class AreasEmpresaController extends ApiResponseController
 {

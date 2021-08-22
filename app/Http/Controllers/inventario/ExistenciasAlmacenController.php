@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
-use App\Http\Controllers\ApiResponseController;
-
 use Illuminate\Http\Request;
-use App\Librerias\invTipos;
-use App\Librerias\Bodegas;
-use App\Librerias\InvProductos;
+
 use Illuminate\Support\Facades\DB;
+use App\Librerias\inventario\Bodegas;
+use App\Librerias\inventario\invTipos;
+use App\Librerias\inventario\InvProductos;
+use App\Http\Controllers\ApiResponseController;
 
 class ExistenciasAlmacenController extends ApiResponseController
 {

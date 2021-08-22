@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use App\Librerias\usuarios\Rol;
+use App\Librerias\usuarios\User;
+use App\Librerias\empresa\Empresa;
+use Illuminate\Support\Facades\DB;
+use App\Librerias\rrhh\noempleados;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SignUpRequest;
-use App\Librerias\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Librerias\bodegasUsuarios;
-use App\Librerias\noempleados;
-use App\Librerias\Rol;
-use App\Librerias\Empresa;
-use Illuminate\Support\Facades\Log;
+use App\Librerias\usuarios\bodegasUsuarios;
 
 class AuthController extends Controller
 {

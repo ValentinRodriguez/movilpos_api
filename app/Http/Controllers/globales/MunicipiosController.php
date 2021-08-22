@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
 use Illuminate\Http\Request;
-use App\Librerias\municipios;
+
+use App\Librerias\globales\municipios;
+use App\Http\Controllers\ApiResponseController;
 
 class MunicipiosController extends ApiResponseController
 {

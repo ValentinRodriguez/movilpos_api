@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\tienda;
 
 use Illuminate\Http\Request;
-use App\Librerias\planes;
+use App\Librerias\tienda\planes;
 use App\Http\Controllers\ApiResponseController;
 
 class planesController extends ApiResponseController

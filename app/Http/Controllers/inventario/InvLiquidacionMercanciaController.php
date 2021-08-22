@@ -1,16 +1,16 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\inv_liquidacionMercancia;
-use App\Librerias\invtransaccionesmodel;
-use App\Librerias\Invtransaccdetallemodel;
-use App\Librerias\coOrdenesMaster;
-use App\Librerias\proveedores;
-use App\Librerias\coCuentasProveedor;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
+use App\Librerias\compras\proveedores;
+use App\Librerias\compras\coOrdenesMaster;
+use App\Librerias\compras\coCuentasProveedor;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\inventario\invtransaccionesmodel;
+use App\Librerias\inventario\Invtransaccdetallemodel;
+use App\Librerias\inventario\inv_liquidacionMercancia;
 
 class InvLiquidacionMercanciaController extends ApiResponseController
 {

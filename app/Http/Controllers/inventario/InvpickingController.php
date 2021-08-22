@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
-use App\Http\Controllers\ApiResponseController;
-use App\Librerias\invtransaccionesmodel;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\inventario\invtransaccionesmodel;
 
 class InvpickingController extends ApiResponseController
 {

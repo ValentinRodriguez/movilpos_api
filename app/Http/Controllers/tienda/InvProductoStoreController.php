@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\tienda;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\invProductoStore;
 use Illuminate\Http\Request;
+
+use App\Librerias\inventario\invProductoStore;
+use App\Http\Controllers\ApiResponseController;
 
 class InvProductoStoreController extends ApiResponseController
 {
