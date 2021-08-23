@@ -11,3 +11,4 @@ use Illuminate\Support\Facades\Route;
     Route::get('/transacciones-cxp/verificancf', 'cuentasXpagar\CpTransaccionesController@verificaNCF');
     Route::get('/facturas-pendientes/transacciones-cxp', 'cuentasXpagar\CpTransaccionesController@facturasPendientes');
     Route::apiresource('/transacciones-cxp', 'cuentasXpagar\CpTransaccionesController');
+    Route::apiresource('/gestion-documentos-ndnc', 'cuentasXpagar\CpGestionDocNcndController');

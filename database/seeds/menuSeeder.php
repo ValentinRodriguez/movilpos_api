@@ -41,7 +41,8 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp9','nombre' => 'Gestion de transportistas','descripcion' => 'menu de inventario','url' => 'gestion-de-transportistas','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp10','nombre' => 'gestion de propiedades','descripcion' => 'menu de gestion de inventario','url' => 'gestion-de-propiedades','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp11','nombre' => 'Consulta existencias por almacenes','descripcion' => 'menu de gestion de inventario','url' => 'gestion-existencias-almacenes','estado' => 'ACTIVO'],            
-            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp12','nombre' => 'Gestion de liquidacion de mercancias','descripcion' => 'menu de gestion de inventario','url' => 'gestion-liquidacion-mercancias','estado' => 'ACTIVO'],            
+            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp12','nombre' => 'Gestion de liquidacion de mercancias','descripcion' => 'menu de gestion de inventario','url' => 'gestion-liquidacion-mercancias','estado' => 'ACTIVO'],
+            ['id_menu' => 1,'modulo' => 4,'status' => 1,'codigo' => 'invp13','nombre' => 'Costo Standard','descripcion' => 'Costo Standard','url' => 'gestion-costo-standard','estado' => 'ACTIVO'],                        
             
             // MODULO DE VENTAS
             ['id_menu' => 1,'modulo' => 5,'status' => 1,'codigo' => 'vep1','nombre' => 'Interfaz de ventas','descripcion' => 'modulo de ventas','url' => 'interfaz-ventas','estado' => 'ACTIVO'],
