@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\Bodegas;
-use App\librerias\pais;
-use App\librerias\User;
-use App\librerias\invProductos;
-use App\librerias\BodegasUsuarios;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
+use App\Http\Controllers\ApiResponseController;
+use App\librerias\usuarios\User;
+use App\Librerias\globales\pais;
+use App\librerias\usuarios\bodegasUsuarios;
+use App\Librerias\inventario\Bodegas;
+use App\Librerias\inventario\InvProductos;
 
 class BodegasController extends ApiResponseController
 {
@@ -17,9 +17,9 @@ class BodegasController extends ApiResponseController
     public function index(Request $request){
         // \Log::debug("{test}");
         $bodegas = Bodegas::orderBy('id_bodega', 'asc')->
-                           join('paises','paises.id_pais','=','bodegas.id_pais')->
-                           join('ciudades','ciudades.id_ciudad','=','bodegas.id_ciudad')->
-                           select('bodegas.*','paises.descripcion as pais','ciudades.descripcion as ciudad')->
+                           join('mov_globales.paises','mov_globales.paises.id_pais','=','bodegas.id_pais')->
+                           join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','bodegas.id_ciudad')->
+                           select('bodegas.*','mov_globales.paises.descripcion as pais','mov_globales.ciudades.descripcion as ciudad')->
                            where('bodegas.estado','=','ACTIVO')->
                            get();
 
@@ -71,9 +71,9 @@ class BodegasController extends ApiResponseController
     }
 
     public function show(Request $request,$id){
-        $datos = bodegas::join('paises','paises.id_pais','=','bodegas.id_pais')->
-                         join('ciudades','ciudades.id_ciudad','=','bodegas.id_ciudad')->
-                         select('bodegas.*','paises.descripcion as pais','ciudades.descripcion as ciudad')->
+        $datos = bodegas::join('mov_globales.paises','mov_globales.paises.id_pais','=','bodegas.id_pais')->
+                         join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','bodegas.id_ciudad')->
+                         select('bodegas.*','mov_globales.paises.descripcion as pais','mov_globales.ciudades.descripcion as ciudad')->
                          where([['id_bodega', '=', "$id"],['bodegas.estado','=','ACTIVO']])->
                          first();
       if($datos == null){
@@ -131,13 +131,13 @@ class BodegasController extends ApiResponseController
         $id_bodega = $request->get('id_bodega');
         
         $busqueda = Bodegas::orderBy('id_bodega', 'asc')->
-                                join('paises','paises.id_pais','=','bodegas.id_pais')->
-                                join('ciudades','ciudades.id_ciudad','=','bodegas.id_ciudad')->
-                                select('bodegas.*','paises.descripcion as pais','ciudades.descripcion as ciudad')->
-                                existe($existe)->
-                                codigo($id_bodega)->
-                                where('bodegas.estado','=','ACTIVO')->
-                                get(); 
+                            join('mov_globales.paises','mov_globales.paises.id_pais','=','bodegas.id_pais')->
+                            join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','bodegas.id_ciudad')->
+                            select('bodegas.*','mov_globales.paises.descripcion as pais','mov_globales.ciudades.descripcion as ciudad')->
+                            existe($existe)->
+                            codigo($id_bodega)->
+                            where('bodegas.estado','=','ACTIVO')->
+                            get(); 
                                                         
         return $this->successResponse($busqueda, $request->urlRequest);
     }
@@ -147,9 +147,9 @@ class BodegasController extends ApiResponseController
         $id_bodega = $request->get('id_bodega');
         
         $busqueda = Bodegas::orderBy('id_bodega', 'asc')->
-                                join('paises','paises.id_pais','=','bodegas.id_pais')->
-                                join('ciudades','ciudades.id_ciudad','=','bodegas.id_ciudad')->
-                                select('bodegas.*','paises.descripcion as pais','ciudades.descripcion as ciudad')->
+                                join('mov_globales.paises','mov_globales.paises.id_pais','=','bodegas.id_pais')->
+                                join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','bodegas.id_ciudad')->
+                                select('bodegas.*','mov_globales.paises.descripcion as pais','mov_globales.ciudades.descripcion as ciudad')->
                                 existe($existe)->
                                 codigo($id_bodega)->
                                 where('bodegas.estado','=','ACTIVO')->
@@ -207,8 +207,8 @@ class BodegasController extends ApiResponseController
     public function usuariosPermisosBodegas(Request $request, $id_bodega)
     {
         $datos = BodegasUsuarios::join('users','users.email','=','bodegas_usuarios.email')->
-                                  leftjoin('noempleados','noempleados.email','=','users.email')->
-                                  leftjoin('nopuestos','nopuestos.id_puesto','=','noempleados.id_puesto')->
+                                  leftjoin('mov_rrhh.noempleados','mov_rrhh.noempleados.email','=','users.email')->
+                                  leftjoin('nopuestos','nopuestos.id_puesto','=','mov_rrhh.noempleados.id_puesto')->
                                   select('users.*','bodegas_usuarios.id_bodega','nopuestos.titulo as puesto')->        
                                   where('id_bodega','=',$id_bodega)->
                                   get();
@@ -239,7 +239,7 @@ class BodegasController extends ApiResponseController
         $usuarios = User::join('nopuestos','nopuestos.id_puesto','=','users.id_puesto')->
                       select('users.*','nopuestos.titulo as puesto')->orderBy('id', 'asc')->get();
 
-        $respuesta = array('usuarios' => $usuarios, 'paises' => $paises );
+        $respuesta = array('usuarios' => $usuarios, 'mov_globales.paises' => $paises );
         return $this->successResponse($respuesta, $request->urlRequest);
     }
 }

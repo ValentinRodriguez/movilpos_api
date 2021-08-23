@@ -13,7 +13,7 @@ class CreateCgCodigosRetencionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cg_codigos_retenciones', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('cg_codigos_retenciones', function (Blueprint $table) {
             $table->id();
             $table->integer('codigo_isr');
             $table->string('descripcion',50);
@@ -28,6 +28,6 @@ class CreateCgCodigosRetencionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cg_codigos_retenciones');
+        Schema::connection('mov_contabilidad')->dropIfExists('cg_codigos_retenciones');
     }
 }

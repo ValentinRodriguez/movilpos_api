@@ -2,27 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use App\Librerias\usuarios\Rol;
+use App\Librerias\User;
+use App\Librerias\empresa\Empresa;
+use Illuminate\Support\Facades\DB;
+use App\Librerias\rrhh\noempleados;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SignUpRequest;
-use App\Librerias\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Librerias\bodegasUsuarios;
-use App\Librerias\noempleados;
-use App\Librerias\Rol;
-use App\Librerias\Empresa;
-use Illuminate\Support\Facades\Log;
+use App\Librerias\usuarios\bodegasUsuarios;
 
 class AuthController extends Controller
 {
     public function index(Request $request)
     {
         $user  = User::orderBy('name', 'asc')->
-                       leftjoin('noempleados','noempleados.email','=','users.email')->
-                       leftjoin('nopuestos','nopuestos.id_puesto','=','noempleados.id_puesto')->
-                       select('users.*','noempleados.primernombre','noempleados.segundonombre',
-                              'noempleados.primerapellido','noempleados.segundoapellido','nopuestos.titulo as puesto')->
+                       leftjoin('mov_rrhh.noempleados','mov_rrhh.noempleados.email','=','users.email')->
+                       leftjoin('mov_rrhh.nopuestos','mov_rrhh.nopuestos.id_puesto','=','mov_rrhh.noempleados.id_puesto')->
+                       select('users.*','mov_rrhh.noempleados.primernombre','mov_rrhh.noempleados.segundonombre',
+                              'mov_rrhh.noempleados.primerapellido','mov_rrhh.noempleados.segundoapellido','mov_rrhh.nopuestos.titulo as puesto')->
                        where('users.estado','=','ACTIVO')->
                        get();
 
@@ -38,9 +38,10 @@ class AuthController extends Controller
             }
             /**
              * @var User $user
-            */
+             */
             $user = Auth::guard('web')->user();
             $token = $user->createToken($user->email);
+            // return response()->json($token);
             $sessionId = md5(uniqid());
             
             Log::debug($request->input("store"));
@@ -105,11 +106,12 @@ class AuthController extends Controller
     public function logout()
     {
         /**
-        * @var User $user
-        */
+         * @var User $user
+         */
         $user = Auth::user();
         $userToken = $user->token();
         $userToken->delete();
+        // return response()->json($user);
 
         return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
     }
@@ -146,12 +148,12 @@ class AuthController extends Controller
     protected function respondWithToken($token,$email, $sessionId = null)
     {
         if ($email !== null) {
-            $bodegas_permiso = bodegasUsuarios::join('bodegas','bodegas_usuarios.id_bodega','=','bodegas.id_bodega')->
-                                      select('bodegas_usuarios.*','bodegas.descripcion')->
+            $bodegas_permiso = bodegasUsuarios::join('mov_inventario.bodegas','bodegas_usuarios.id_bodega','=','bodegas.id_bodega')->
+                                      select('bodegas_usuarios.*','mov_inventario.bodegas.descripcion')->
                                       where('bodegas_usuarios.email','=',$email)->
                                       get();
 
-            $empleados = noempleados::where('noempleados.email','=',$email)->first();
+            $empleados = noempleados::where('mov_rrhh.noempleados.email','=',$email)->first();
             $permisos = Rol::where('rols.email','=',$email)->first();
             $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->first();
         }

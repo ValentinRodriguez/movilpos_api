@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\educacion;
+use App\Librerias\rrhh\educacion;
 
 class educacionSeeder extends Seeder
 {

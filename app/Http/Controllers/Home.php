@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Librerias\cgcatalogo;
-use App\Librerias\Empresa;
-use App\Librerias\ve_CondicionesPago;
+use App\Librerias\empresa\Empresa;
+use App\Librerias\ventas\ve_CondicionesPago;
+use App\Librerias\contabilidadGeneral\cgcatalogo;
 
 class Home extends ApiResponseController
 {

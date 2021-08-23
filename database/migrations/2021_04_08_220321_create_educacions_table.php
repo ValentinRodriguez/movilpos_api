@@ -8,7 +8,7 @@ class CreateEducacionsTable extends Migration
 {
     public function up()
     {
-        Schema::create('educacion', function (Blueprint $table) {
+        Schema::connection('mov_rrhh')->create('educacion', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',50);
             $table->string('usuario_creador',50);
@@ -19,6 +19,6 @@ class CreateEducacionsTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('educacion');
+        Schema::connection('mov_rrhh')->dropIfExists('educacion');
     }
 }

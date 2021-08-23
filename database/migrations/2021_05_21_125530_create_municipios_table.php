@@ -13,7 +13,7 @@ class CreateMunicipiosTable extends Migration
      */
     public function up()
     {
-        Schema::create('municipios', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('municipios', function (Blueprint $table) {
             $table->id();
             $table->integer('id_municipio');
             $table->integer('id_provincia');
@@ -30,6 +30,6 @@ class CreateMunicipiosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('municipios');
+        Schema::connection('mov_globales')->dropIfExists('municipios');
     }
 }

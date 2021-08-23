@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\Departamento;
+use App\Librerias\rrhh\Departamento;
 class departamentoSeeder extends Seeder
 {
     public function run()

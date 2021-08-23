@@ -13,7 +13,7 @@ class CreateOrdenPedidoMastersTable extends Migration
      */
     public function up()
     {
-        Schema::create('orden_pedido_masters', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->create('orden_pedido_masters', function (Blueprint $table) {
             $table->id();
             $table->integer('num_oc')->unique();
             $table->char('ventas',1)->nullable();
@@ -63,6 +63,6 @@ class CreateOrdenPedidoMastersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orden_pedido_masters');
+        Schema::connection('mov_ventas')->dropIfExists('orden_pedido_masters');
     }
 }

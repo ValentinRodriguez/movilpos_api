@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\cgTipoDocumento;
+use App\Librerias\contabilidadGeneral\cgTipoDocumento;
 
 class cgTipoDocumentos extends Seeder
 {

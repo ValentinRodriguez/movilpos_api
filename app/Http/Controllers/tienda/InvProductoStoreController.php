@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\tienda;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\invProductoStore;
 use Illuminate\Http\Request;
+
+use App\Librerias\inventario\invProductoStore;
+use App\Http\Controllers\ApiResponseController;
 
 class InvProductoStoreController extends ApiResponseController
 {
@@ -14,6 +14,11 @@ class InvProductoStoreController extends ApiResponseController
         return $this->successResponse($productos);
     }
 
+    public function myProducts(Request $request)
+    {
+        $productos = invProductoStore::where([['usuario_creador','=',''],['tienda','=','']])->get();
+        return $this->successResponse($productos);
+    }
     public function store(Request $request)
     {        
         $maxid=0;

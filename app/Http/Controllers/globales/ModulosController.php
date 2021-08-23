@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\Modulos;
-use App\Librerias\Perfiles;
-use App\Librerias\Menu;
 use Illuminate\Http\Request;
+
+use App\Librerias\globales\Menu;
+use App\Librerias\globales\Modulos;
+use App\Librerias\usuarios\Perfiles;
+use App\Http\Controllers\ApiResponseController;
 
 class ModulosController extends ApiResponseController
 {

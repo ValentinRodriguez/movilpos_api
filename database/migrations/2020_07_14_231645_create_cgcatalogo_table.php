@@ -13,7 +13,7 @@ class CreateCgcatalogoTable extends Migration
      */
     public function up()
     {
-        Schema::create('cgcatalogo', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('cgcatalogo', function (Blueprint $table) {
             $table->id();
             $table->string('cuenta_no',25);
             $table->unique('cuenta_no');
@@ -30,7 +30,6 @@ class CreateCgcatalogoTable extends Migration
             $table->char('catalogo',2);
             $table->char('selectivo_consumo',2);
             $table->char('retencion',2);
-
             $table->string('codigo_isr');
             $table->string('usuario_creador',100);
             $table->string('usuario_modificador',100)->nullable();
@@ -51,6 +50,6 @@ class CreateCgcatalogoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cgcatalogo');
+        Schema::connection('mov_contabilidad')->dropIfExists('cgcatalogo');
     }
 }

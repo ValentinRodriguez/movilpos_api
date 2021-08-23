@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\compras;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\coTipoProveedores;
-use App\Librerias\cgcatalogo;
-use App\Librerias\proveedores;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
+use App\Librerias\compras\proveedores;
+use App\Librerias\compras\coTipoProveedores;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\contabilidadGeneral\cgcatalogo;
 
 class CoTipoProveedoresController extends ApiResponseController
 {
@@ -73,8 +73,7 @@ class CoTipoProveedoresController extends ApiResponseController
                                where([['tipo_proveedor','=',$id],['estado','=','ACTIVO']])->
                                first();
 
-        $catalogo = cgcatalogo::orderBy('nivel','asc')->
-                                where([['cuenta_no','=',$tipoProveedor->cuenta_no],['estado','=','ACTIVO']])->
+        $catalogo = cgcatalogo::orderBy('nivel','asc')->where([['cuenta_no','=',$tipoProveedor->cuenta_no],['estado','=','ACTIVO']])->
                                 first();
 
         $tipoProveedor->cuenta_no = $catalogo;        

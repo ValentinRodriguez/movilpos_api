@@ -8,7 +8,7 @@ class CreatePermisosEmpresasTable extends Migration
 {
     public function up()
     {
-        Schema::create('permisos_empresas', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->create('permisos_empresas', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',100);
             $table->string('usuario_creador',50);
@@ -19,6 +19,6 @@ class CreatePermisosEmpresasTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('permisos_empresas');
+        Schema::connection('mov_empresa')->dropIfExists('permisos_empresas');
     }
 }

@@ -8,7 +8,7 @@ class CreateCgEntradasDiarioMastersTable extends Migration
 {
     public function up()
     {
-        Schema::create('cg_entradas_diario_masters', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('cg_entradas_diario_masters', function (Blueprint $table) {
             $table->id();
             $table->date('fecha');
             $table->integer('documento');
@@ -32,6 +32,6 @@ class CreateCgEntradasDiarioMastersTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('cg_entradas_diario_masters');
+        Schema::connection('mov_contabilidad')->dropIfExists('cg_entradas_diario_masters');
     }
 }

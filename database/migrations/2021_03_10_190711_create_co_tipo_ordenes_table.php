@@ -8,7 +8,7 @@ class CreateCoTipoOrdenesTable extends Migration
 {
     public function up()
     {
-        Schema::create('co_tipo_ordenes', function (Blueprint $table) {
+        Schema::connection('mov_compras')->create('co_tipo_ordenes', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion');
             $table->string('usuario_creador');
@@ -19,6 +19,6 @@ class CreateCoTipoOrdenesTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('co_tipo_ordenes');
+        Schema::connection('mov_compras')->dropIfExists('co_tipo_ordenes');
     }
 }

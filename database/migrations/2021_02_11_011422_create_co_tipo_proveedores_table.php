@@ -8,12 +8,12 @@ class CreateCoTipoProveedoresTable extends Migration
 {
     public function up()
     {
-        Schema::create('co_tipo_proveedores', function (Blueprint $table) {
+        Schema::connection('mov_compras')->create('co_tipo_proveedores', function (Blueprint $table) {
             $table->id();
             $table->integer('tipo_proveedor');
             $table->string('descripcion',100);
             $table->string('cuenta_no',25);
-            $table->foreign('cuenta_no')->references('cuenta_no')->on('cgcatalogo');
+            $table->foreign('cuenta_no')->references('cuenta_no')->on('mov_contabilidad.cgcatalogo');
             $table->string('estado',10);
             $table->string('usuario_creador');
             $table->string('usuario_modificador',50)->nullable();
@@ -23,6 +23,6 @@ class CreateCoTipoProveedoresTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('co_tipo_proveedores');
+        Schema::connection('mov_compras')->dropIfExists('co_tipo_proveedores');
     }
 }

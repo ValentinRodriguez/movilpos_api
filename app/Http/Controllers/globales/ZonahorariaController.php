@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\zonahoraria;
 use Illuminate\Http\Request;
+
+use App\Librerias\globales\zonahoraria;
+use App\Http\Controllers\ApiResponseController;
 
 class ZonahorariaController extends ApiResponseController
 {

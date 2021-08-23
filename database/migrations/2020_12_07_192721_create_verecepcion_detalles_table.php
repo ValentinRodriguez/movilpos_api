@@ -13,7 +13,7 @@ class CreateVerecepcionDetallesTable extends Migration
      */
     public function up()
     {
-        Schema::create('verecepcion_detalles', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->create('verecepcion_detalles', function (Blueprint $table) {
             $table->id();
             $table->string('num_oc')->foreign('num_oc')->references('num_oc')->on('verecepcion_masters');
             $table->integer('id_inspeccion');
@@ -29,6 +29,6 @@ class CreateVerecepcionDetallesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('verecepcion_detalles');
+        Schema::connection('mov_ventas')->dropIfExists('verecepcion_detalles');
     }
 }

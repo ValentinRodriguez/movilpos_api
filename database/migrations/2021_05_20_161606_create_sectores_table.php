@@ -13,7 +13,7 @@ class CreateSectoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('sectores', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('sectores', function (Blueprint $table) {
             $table->id();
             $table->char('id_sector',10);
             $table->char('id_ciudad',10);
@@ -31,6 +31,6 @@ class CreateSectoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sectores');
+        Schema::connection('mov_globales')->dropIfExists('sectores');
     }
 }

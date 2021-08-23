@@ -13,7 +13,7 @@ class CreateInvnumeracionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('invnumeraciones', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('invnumeraciones', function (Blueprint $table) {
             $table->id();
             $table->integer('id_tipomov')->foreign()->references('id_tipomov')->on('invtiposmovimientos');
             $table->integer('num_doc')->nullable();
@@ -31,6 +31,6 @@ class CreateInvnumeracionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invnumeraciones');
+        Schema::connection('mov_inventario')->dropIfExists('invnumeraciones');
     }
 }

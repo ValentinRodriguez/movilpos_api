@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\medidas;
+use App\Librerias\globales\medidas;
 
 class MedidasSeeder extends Seeder
 {

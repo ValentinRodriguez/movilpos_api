@@ -13,7 +13,7 @@ class CreateRequisicionesDetallesTable extends Migration
      */
     public function up()
     {
-        Schema::create('requisiciones_detalles', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('requisiciones_detalles', function (Blueprint $table) {
             $table->id();
             $table->integer('num_req');
             $table->char('tipo_inv',20);
@@ -35,6 +35,6 @@ class CreateRequisicionesDetallesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('requisiciones_detalles');
+        Schema::connection('mov_inventario')->dropIfExists('requisiciones_detalles');
     }
 }

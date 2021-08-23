@@ -1,24 +1,25 @@
 <?php
 
 namespace App\Http\Controllers\ventas;
-use App\Http\Controllers\ApiResponseController;
+use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
-use App\Librerias\vefacturasmaster;
-use App\Librerias\vefacturadetalle;
-use Illuminate\Http\Request;
-use App\Librerias\secuenciaCobros;
+use App\Librerias\ventas\vefacturadetalle;
+use App\Librerias\ventas\vefacturasmaster;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\cuentasXcobrar\secuenciaCobros;
 
 class VefacturasController extends ApiResponseController
 {
     public function index(Request $request)
     {
         $facturas = vefacturasmaster::join('veclientes',function($join){
-                                        $join->on('vefacturasmaster.tipo_cliente','=','veclientes.tipo_cliente')->
-                                        oron('vefacturasmaster.sec_cliente','=','veclientes.sec_cliente');
+                                    $join->on('vefacturasmaster.tipo_cliente','=','veclientes.tipo_cliente')->
+                                    oron('vefacturasmaster.sec_cliente','=','veclientes.sec_cliente');
                                     })->select('vefacturasmaster.*','veclientes.nombre')
                                       ->where('vefacturasmaster.estado','=','ACTIVO')
                                       ->get();
+                                      
                                       return $this->successResponse($facturas, $request->urlRequest);
          
     }
@@ -139,9 +140,9 @@ class VefacturasController extends ApiResponseController
     {
         $data = array();
         $facturas = vefacturasmaster::where([['vefacturasmaster.factura','=',$vefactura],['vefacturasmaster.estado','=','activo']])->
-                                      leftjoin('veclientes',[['veclientes.tipo_cliente','=','vefacturasmaster.tipo_cliente'],
-                                                             ['veclientes.sec_cliente','=','vefacturasmaster.sec_cliente']])->
-                                      select('vefacturasmaster.*','veclientes.email','veclientes.num_rnc')->
+                                      leftjoin('mov_ventas.veclientes',[['mov_ventas.veclientes.tipo_cliente','=','vefacturasmaster.tipo_cliente'],
+                                                             ['mov_ventas.veclientes.sec_cliente','=','vefacturasmaster.sec_cliente']])->
+                                      select('vefacturasmaster.*','mov_ventas.veclientes.email','mov_ventas.veclientes.num_rnc')->
                                       get();
 
         $facturasDetalle = vefacturadetalle::where([['vefacturasdetalle.factura','=',$vefactura],['vefacturasdetalle.estado','=','activo']])->

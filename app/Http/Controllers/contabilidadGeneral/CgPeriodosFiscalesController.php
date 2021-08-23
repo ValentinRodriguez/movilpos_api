@@ -1,20 +1,19 @@
 <?php
 
 namespace App\Http\Controllers\contabilidadGeneral;
-use App\Http\Controllers\ApiResponseController;
+use Carbon\Carbon;
 
-use App\Librerias\cgPeriodosFiscales;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Librerias\cgTransaccionesContables;
-use Carbon\Carbon;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\contabilidadGeneral\cgPeriodosFiscales;
+use App\Librerias\contabilidadGeneral\cgTransaccionesContables;
 
 class CgPeriodosFiscalesController extends ApiResponseController
 {   
     public function index(Request $request)
     {
-        $periodosFiscales = cgPeriodosFiscales::orderBy('anio', 'desc')->get();
-                                      
+        $periodosFiscales = cgPeriodosFiscales::orderBy('anio', 'desc')->get();                                      
         return $this->successResponse($periodosFiscales, $request->urlRequest);
     }
 
@@ -48,17 +47,15 @@ class CgPeriodosFiscalesController extends ApiResponseController
                     $periodoFiscal = cgPeriodosFiscales::orderBy('anio', 'desc')->
                                                          where([['estado','=','activo'],['anio','=',$datos['anio']]])->
                                                          get();
-                                            // return response()->json($periodoFiscal);
+                                                         
                     if(count($periodoFiscal) != 0){
                         return $this->errorResponse("Este periodo fiscal ya esta registrado");                    
-                    }                    
-
+                    }   
 
                     if ($request->meses !== 0) {
                         $datosd = null;
                         
-                        for ($i=0; $i < count($datos['meses']); $i++) {
-                           
+                        for ($i=0; $i < count($datos['meses']); $i++) {                           
                             $datosd = array(
                                 'anio'	          => $datos['anio'],
                                 'mes'	          => $datos['meses'][$i]['mes'],
@@ -77,7 +74,6 @@ class CgPeriodosFiscalesController extends ApiResponseController
                             ];
                             
                             $validator = validator($datosd, [
-                                // 'num_oc'          => 'required',
                                 'anio'            => 'required',
                                 'mes'             => 'required',
                                 'fecha_inicio'    => 'required',
@@ -90,8 +86,7 @@ class CgPeriodosFiscalesController extends ApiResponseController
                          
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
-                                return $this->errorResponseParams($errors->all(), $request->urlRequest); 
-                               
+                                return $this->errorResponseParams($errors->all(), $request->urlRequest);                                
                             }                                        
                             cgPeriodosFiscales::create($datosd);                                               
                         }                        
@@ -105,7 +100,6 @@ class CgPeriodosFiscalesController extends ApiResponseController
                 return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
-
     }
 
     public function show(Request $request,$id)
@@ -138,6 +132,7 @@ class CgPeriodosFiscalesController extends ApiResponseController
              'unique'   => 'El campo :attribute debe ser unico',
              'numeric'  => 'El campo :attribute debe ser numerico',
         ];
+
         $validator = validator($datos, [
             'anio'	              => 'required',
             'mes'	              => 'required',
@@ -189,11 +184,11 @@ class CgPeriodosFiscalesController extends ApiResponseController
     public function busqueda(Request $request)
     {
         $periodo = $request->get('periodos');
-        // return response()->json($periodo);
+        
         $periodosFiscales = cgPeriodosFiscales::orderBy('anio', 'desc')->
-                                      where([['estado','=','activo'],['anio','=',$periodo]])->
-                                      get();
-                                      
+                            where([['estado','=','activo'],['anio','=',$periodo]])->
+                            get();
+                            
         return $this->successResponse($periodosFiscales, $request->urlRequest);
     }
 
@@ -201,13 +196,12 @@ class CgPeriodosFiscalesController extends ApiResponseController
     {
         $datos = $request->all();
         $periodosFiscales = cgPeriodosFiscales::where('id','=',$datos["periodo"])->first();
-        //return response()->json($periodosFiscales);
+        
         if($periodosFiscales == null){
             return $this->errorResponse("Este periodo no existe");
         }
 
         $periodosFiscales->update(['estado' => 'activo']);
         return $this->successResponse(null, $request->urlRequest);
-
     }
 }

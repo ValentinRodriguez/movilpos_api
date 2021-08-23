@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\Nopuesto;
+use App\Librerias\rrhh\Nopuesto;
 use Illuminate\Support\Facades\DB;
 
 class PuestosSeeder extends Seeder
 {    
     public function run()   {
         
-        DB::table('nopuestos')->truncate();
+        DB::table('mov_rrhh.nopuestos')->truncate();
         
         $puestos = array(
             ['id_puesto'=> 1, 'titulo'=> 'puesto general','sueldo_inicial'  => 0,'sueldo_actual'=> 0,'descripcion'=>'puesto para el usuario inicial','usuario_creador' => 'movilsoluciones','estado'=> 'activo'],

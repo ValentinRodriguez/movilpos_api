@@ -8,7 +8,7 @@ class CreateNoempleadosTable extends Migration
 {
     public function up()
     {
-        Schema::create('noempleados', function (Blueprint $table) {
+        Schema::connection('mov_rrhh')->create('mov_rrhh.noempleados', function (Blueprint $table) {
             $table->id();
             $table->string('primernombre',100);
             $table->string('segundonombre',100)->nullable();
@@ -20,23 +20,23 @@ class CreateNoempleadosTable extends Migration
             $table->string('codigo_retiro_bco',20)->nullable();
             $table->char('credito',2)->nullable();
             $table->char('educacion',3)->nullable();
-            $table->integer('departamento')->foreign()->references('departamento')->on('nodepartamentos');
+            $table->integer('departamento')->foreign()->references('departamento')->on('mov_rrhh.nodepartamentos');
             $table->date('fecha_inicio_c');
             $table->date('fecha_suspencion')->nullable();
             $table->date('fecha_ultimo_aumento')->nullable();
             $table->integer('suc_id')->foreign()->references('id')->on('sucursales');
             $table->integer('id_puesto')->foreign()->references('id_puesto')->on('nopuestos');
-            $table->string('id_pais')->foreign()->references('id_pais')->on('paises');
-            $table->string('id_municipio')->foreign()->references('id_pais')->on('paises');
-            $table->string('id_provincia')->foreign()->references('id_pais')->on('paises');
-            $table->string('id_region')->foreign()->references('id_pais')->on('paises');
-            $table->string('id_ciudad')->foreign()->references('id_ciudad')->on('ciudades');
+            $table->string('id_pais')->foreign()->references('id_pais')->on('mov_globales.paises');
+            $table->string('id_municipio')->foreign()->references('id_pais')->on('mov_globales.paises');
+            $table->string('id_provincia')->foreign()->references('id_pais')->on('mov_globales.paises');
+            $table->string('id_region')->foreign()->references('id_pais')->on('mov_globales.paises');
+            $table->string('id_ciudad')->foreign()->references('id_ciudad')->on('mov_globales.ciudades');
             $table->string('id_sector')->nullable();
             $table->string('calle',100);
             $table->string('cedula',20)->unique();
             $table->string('codbancodestino',20)->nullable();
             $table->smallInteger('cod_nac')->nullable();
-            $table->string('email',50)->foreign()->references('id_pais')->on('paises');
+            $table->string('email',50)->foreign()->references('id_pais')->on('mov_globales.paises');
             $table->char('digiverbancodestino',2)->nullable();
             $table->string('cuenta_no',25)->foreign()->references('cuenta_no')->on('cgcatalogo');
             $table->string('estado_civil',1)->nullable(); // Aqui se va acoloar un combo con CASADO, SOLTERO, UNION LIBRE
@@ -81,6 +81,6 @@ class CreateNoempleadosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('noempleados');
+        Schema::connection('mov_rrhh')->dropIfExists('mov_rrhh.noempleados');
     }
 }

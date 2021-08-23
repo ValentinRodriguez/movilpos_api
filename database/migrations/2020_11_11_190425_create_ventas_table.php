@@ -13,7 +13,7 @@ class CreateVentasTable extends Migration
      */
     public function up()
     {
-        Schema::create('ventas', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->create('ventas', function (Blueprint $table) {
             $table->id();
             $table->integer('venta');
             $table->string('descripcion');
@@ -31,6 +31,6 @@ class CreateVentasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ventas');
+        Schema::connection('mov_ventas')->dropIfExists('ventas');
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\compras;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\ordenPedidoDetalle;
-use App\Librerias\ordenPedidoMaster;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\DB;
+use App\Librerias\ventas\ordenPedidoMaster;
+use App\Librerias\ventas\ordenPedidoDetalle;
+use App\Http\Controllers\ApiResponseController;
 
 class OrdenPedidoMasterController extends ApiResponseController
 {
@@ -14,32 +14,32 @@ class OrdenPedidoMasterController extends ApiResponseController
     public function index(Request $request)
     {
         $pedido = ordenPedidoMaster::orderBy('num_oc', 'asc')->
-                                    join('noempleados','noempleados.id','=','orden_pedido_masters.sec_vend')->
-                                    join('veclientes',[['veclientes.tipo_cliente','=','orden_pedido_masters.tipo_cliente'],['veclientes.sec_cliente','=','orden_pedido_masters.sec_cliente']])->
-                                    join('ciudades','ciudades.id_ciudad','=','orden_pedido_masters.id_ciudad')->
-                                    join('paises','paises.id_pais','=','orden_pedido_masters.id_pais')->
-                                    select('orden_pedido_masters.*','veclientes.nombre','ciudades.descripcion as ciudad_cliente','paises.descripcion as pais_cliente',
-                                        DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
+                                    join('mov_rrhh.noempleados','mov_rrhh.noempleados.id','=','orden_pedido_masters.sec_vend')->
+                                    join('mov_ventas.veclientes',[['mov_ventas.veclientes.tipo_cliente','=','orden_pedido_masters.tipo_cliente'],['mov_ventas.veclientes.sec_cliente','=','orden_pedido_masters.sec_cliente']])->
+                                    join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','orden_pedido_masters.id_ciudad')->
+                                    join('mov_globales.paises','mov_globales.paises.id_pais','=','orden_pedido_masters.id_pais')->
+                                    select('orden_pedido_masters.*','mov_ventas.veclientes.nombre','mov_globales.ciudades.descripcion as ciudad_cliente','mov_globales.paises.descripcion as pais_cliente',
+                                        DB::raw("CONCAT(mov_rrhh.noempleados.primernombre,' ',mov_rrhh.noempleados.primerapellido) AS nombre_empleado"))->
                                     where('orden_pedido_masters.estado','=','ACTIVO')->
                                     get();
 
         foreach ($pedido as $key => $value) {      
             $pedidoDetalle = ordenPedidoDetalle::where([['orden_pedido_detalles.num_oc','=',$value->num_oc],['orden_pedido_detalles.estado','=','activo']])->
-                                                join('inv_productos', 'orden_pedido_detalles.codigo','=','inv_productos.codigo')->
-                                                join('categorias','categorias.id_categoria','=','inv_productos.id_categoria')->
-                                                join('brands','brands.id_brand','=','inv_productos.id_brand')->
-                                                join('invtipos_inventarios','invtipos_inventarios.id_tipoinventario','=','inv_productos.id_tipoinventario')->
-                                                join('bodegas','bodegas.id_bodega','=','inv_productos.id_bodega')->
+                                                join('mov_inventario.inv_productos', 'orden_pedido_detalles.codigo','=','mov_inventario.inv_productos.codigo')->
+                                                join('mov_inventario.categorias','mov_inventario.categorias.id_categoria','=','mov_inventario.inv_productos.id_categoria')->
+                                                join('mov_inventario.brands','mov_inventario.brands.id_brand','=','mov_inventario.inv_productos.id_brand')->
+                                                join('mov_inventario.invtipos_inventarios','mov_inventario.invtipos_inventarios.id_tipoinventario','=','mov_inventario.inv_productos.id_tipoinventario')->
+                                                join('mov_inventario.bodegas','mov_inventario.bodegas.id_bodega','=','mov_inventario.inv_productos.id_bodega')->
                                                 select('orden_pedido_detalles.*',
-                                                        'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.codigo_referencia',
-                                                        'inv_productos.origen','inv_productos.existenciaMinima','inv_productos.existenciaMaxima','inv_productos.ultimaFechaCompra',
-                                                        'inv_productos.precio_compra','inv_productos.precio_venta','inv_productos.costo','inv_productos.fechaInicioDescuento',
-                                                        'inv_productos.fechaFinDescuento','inv_productos.porcientodescuento','inv_productos.ventas','inv_productos.devoluciones',
-                                                        'inv_productos.galeriaImagenes',
-                                                        'categorias.descripcion as categoria',
-                                                        'brands.descripcion as marca',
-                                                        'invtipos_inventarios.descripcion as tipoinventario',
-                                                        'bodegas.descripcion as almacen')->
+                                                        'mov_inventario.inv_productos.titulo','mov_inventario.inv_productos.descripcion','mov_inventario.inv_productos.codigo','mov_inventario.inv_productos.codigo_referencia',
+                                                        'mov_inventario.inv_productos.origen','mov_inventario.inv_productos.existenciaMinima','mov_inventario.inv_productos.existenciaMaxima','mov_inventario.inv_productos.ultimaFechaCompra',
+                                                        'mov_inventario.inv_productos.precio_compra','mov_inventario.inv_productos.precio_venta','mov_inventario.inv_productos.costo','mov_inventario.inv_productos.fechaInicioDescuento',
+                                                        'mov_inventario.inv_productos.fechaFinDescuento','mov_inventario.inv_productos.porcientodescuento','mov_inventario.inv_productos.ventas','mov_inventario.inv_productos.devoluciones',
+                                                        'mov_inventario.inv_productos.galeriaImagenes',
+                                                        'mov_inventario.categorias.descripcion as categoria',
+                                                        'mov_inventario.brands.descripcion as marca',
+                                                        'mov_inventario.invtipos_inventarios.descripcion as tipoinventario',
+                                                        'mov_inventario.bodegas.descripcion as almacen')->
                                                 get(); 
             $value->productos = $pedidoDetalle;
         } 
@@ -202,32 +202,32 @@ class OrdenPedidoMasterController extends ApiResponseController
     public function show(Request $request,$id)
     {
         $pedido = ordenPedidoMaster::orderBy('num_oc', 'asc')->
-                            join('noempleados','noempleados.id','=','orden_pedido_masters.sec_vend')->
-                            join('veclientes',[['veclientes.tipo_cliente','=','orden_pedido_masters.tipo_cliente'],['veclientes.sec_cliente','=','orden_pedido_masters.sec_cliente']])->
-                            join('ciudades','ciudades.id_ciudad','=','orden_pedido_masters.id_ciudad')->
-                            join('paises','paises.id_pais','=','orden_pedido_masters.id_pais')->
-                            select('orden_pedido_masters.*','veclientes.nombre','ciudades.descripcion as ciudad_cliente','paises.descripcion as pais_cliente',
-                                DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
+                            join('mov_rrhh.noempleados','mov_rrhh.noempleados.id','=','orden_pedido_masters.sec_vend')->
+                            join('mov_ventas.veclientes',[['mov_ventas.veclientes.tipo_cliente','=','orden_pedido_masters.tipo_cliente'],['mov_ventas.veclientes.sec_cliente','=','orden_pedido_masters.sec_cliente']])->
+                            join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','orden_pedido_masters.id_ciudad')->
+                            join('mov_globales.paises','mov_globales.paises.id_pais','=','orden_pedido_masters.id_pais')->
+                            select('orden_pedido_masters.*','mov_ventas.veclientes.nombre','mov_globales.ciudades.descripcion as ciudad_cliente','mov_globales.paises.descripcion as pais_cliente',
+                                DB::raw("CONCAT(mov_rrhh.noempleados.primernombre,' ',mov_rrhh.noempleados.primerapellido) AS nombre_empleado"))->
                             where([['orden_pedido_masters.id','=',$id],['orden_pedido_masters.estado','=','ACTIVO']])->
                             get();
 
         foreach ($pedido as $key => $value) {      
             $pedidoDetalle = ordenPedidoDetalle::where([['orden_pedido_detalles.num_oc','=',$value->num_oc],['orden_pedido_detalles.estado','=','activo']])->
-                                join('inv_productos', 'orden_pedido_detalles.codigo','=','inv_productos.codigo')->
-                                join('categorias','categorias.id_categoria','=','inv_productos.id_categoria')->
-                                join('brands','brands.id_brand','=','inv_productos.id_brand')->
-                                join('invtipos_inventarios','invtipos_inventarios.id_tipoinventario','=','inv_productos.id_tipoinventario')->
-                                join('bodegas','bodegas.id_bodega','=','inv_productos.id_bodega')->
+                                join('mov_inventario.inv_productos', 'orden_pedido_detalles.codigo','=','mov_inventario.inv_productos.codigo')->
+                                join('mov_inventario.categorias','mov_inventario.categorias.id_categoria','=','mov_inventario.inv_productos.id_categoria')->
+                                join('mov_inventario.brands','mov_inventario.brands.id_brand','=','mov_inventario.inv_productos.id_brand')->
+                                join('mov_inventario.invtipos_inventarios','mov_inventario.invtipos_inventarios.id_tipoinventario','=','mov_inventario.inv_productos.id_tipoinventario')->
+                                join('mov_inventario.bodegas','mov_inventario.bodegas.id_bodega','=','mov_inventario.inv_productos.id_bodega')->
                                 select('orden_pedido_detalles.*',
-                                        'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.codigo_referencia',
-                                        'inv_productos.origen','inv_productos.existenciaMinima','inv_productos.existenciaMaxima','inv_productos.ultimaFechaCompra',
-                                        'inv_productos.precio_compra','inv_productos.precio_venta','inv_productos.costo','inv_productos.fechaInicioDescuento',
-                                        'inv_productos.fechaFinDescuento','inv_productos.porcientodescuento','inv_productos.ventas','inv_productos.devoluciones',
-                                        'inv_productos.galeriaImagenes',
-                                        'categorias.descripcion as categoria',
-                                        'brands.descripcion as marca',
-                                        'invtipos_inventarios.descripcion as tipoinventario',
-                                        'bodegas.descripcion as almacen')->
+                                        'mov_inventario.inv_productos.titulo','mov_inventario.inv_productos.descripcion','mov_inventario.inv_productos.codigo','mov_inventario.inv_productos.codigo_referencia',
+                                        'mov_inventario.inv_productos.origen','mov_inventario.inv_productos.existenciaMinima','mov_inventario.inv_productos.existenciaMaxima','mov_inventario.inv_productos.ultimaFechaCompra',
+                                        'mov_inventario.inv_productos.precio_compra','mov_inventario.inv_productos.precio_venta','mov_inventario.inv_productos.costo','mov_inventario.inv_productos.fechaInicioDescuento',
+                                        'mov_inventario.inv_productos.fechaFinDescuento','mov_inventario.inv_productos.porcientodescuento','mov_inventario.inv_productos.ventas','mov_inventario.inv_productos.devoluciones',
+                                        'mov_inventario.inv_productos.galeriaImagenes',
+                                        'mov_inventario.categorias.descripcion as categoria',
+                                        'mov_inventario.brands.descripcion as marca',
+                                        'mov_inventario.invtipos_inventarios.descripcion as tipoinventario',
+                                        'mov_inventario.bodegas.descripcion as almacen')->
                                 get(); 
             $value->productos = $pedidoDetalle;
         } 
@@ -262,27 +262,27 @@ class OrdenPedidoMasterController extends ApiResponseController
         $data = array();  
         
         $pedido = ordenPedidoMaster::where([['orden_pedido_masters.num_oc','=',$orden],['orden_pedido_masters.estado','=','activo']])->
-                                     join('veclientes',[['veclientes.tipo_cliente','=','orden_pedido_masters.tipo_cliente'],
-                                                        ['veclientes.sec_cliente','=','orden_pedido_masters.sec_cliente']])->
-                                     select('orden_pedido_masters.*','veclientes.email','veclientes.num_rnc')->
+                                     join('mov_ventas.veclientes',[['mov_ventas.veclientes.tipo_cliente','=','orden_pedido_masters.tipo_cliente'],
+                                                        ['mov_ventas.veclientes.sec_cliente','=','orden_pedido_masters.sec_cliente']])->
+                                     select('orden_pedido_masters.*','mov_ventas.veclientes.email','mov_ventas.veclientes.num_rnc')->
                                      get();
         
         $pedidoDetalle = ordenPedidoDetalle::where([['orden_pedido_detalles.num_oc','=',$orden],['orden_pedido_detalles.estado','=','activo']])->
-                                             join('inv_productos', 'orden_pedido_detalles.codigo','=','inv_productos.codigo')->
-                                             join('categorias','categorias.id_categoria','=','inv_productos.id_categoria')->
-                                             join('brands','brands.id_brand','=','inv_productos.id_brand')->
-                                             join('invtipos_inventarios','invtipos_inventarios.id_tipoinventario','=','inv_productos.id_tipoinventario')->
-                                             join('bodegas','bodegas.id_bodega','=','inv_productos.id_bodega')->
+                                             join('mov_inventario.inv_productos', 'orden_pedido_detalles.codigo','=','mov_inventario.inv_productos.codigo')->
+                                             join('mov_inventario.categorias','mov_inventario.categorias.id_categoria','=','mov_inventario.inv_productos.id_categoria')->
+                                             join('mov_inventario.brands','mov_inventario.brands.id_brand','=','mov_inventario.inv_productos.id_brand')->
+                                             join('mov_inventario.invtipos_inventarios','mov_inventario.invtipos_inventarios.id_tipoinventario','=','mov_inventario.inv_productos.id_tipoinventario')->
+                                             join('mov_inventario.bodegas','mov_inventario.bodegas.id_bodega','=','mov_inventario.inv_productos.id_bodega')->
                                              select('orden_pedido_detalles.*',
-                                                    'inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo','inv_productos.codigo_referencia',
-                                                    'inv_productos.origen','inv_productos.existenciaMinima','inv_productos.existenciaMaxima','inv_productos.ultimaFechaCompra',
-                                                    'inv_productos.precio_compra','inv_productos.precio_venta','inv_productos.costo','inv_productos.fechaInicioDescuento',
-                                                    'inv_productos.fechaFinDescuento','inv_productos.porcientodescuento','inv_productos.ventas','inv_productos.devoluciones',
-                                                    'inv_productos.galeriaImagenes',
-                                                    'categorias.descripcion as categoria',
-                                                    'brands.descripcion as marca',
-                                                    'invtipos_inventarios.descripcion as tipoinventario',
-                                                    'bodegas.descripcion as almacen')->
+                                                    'mov_inventario.inv_productos.titulo','mov_inventario.inv_productos.descripcion','mov_inventario.inv_productos.codigo','mov_inventario.inv_productos.codigo_referencia',
+                                                    'mov_inventario.inv_productos.origen','mov_inventario.inv_productos.existenciaMinima','mov_inventario.inv_productos.existenciaMaxima','mov_inventario.inv_productos.ultimaFechaCompra',
+                                                    'mov_inventario.inv_productos.precio_compra','mov_inventario.inv_productos.precio_venta','mov_inventario.inv_productos.costo','mov_inventario.inv_productos.fechaInicioDescuento',
+                                                    'mov_inventario.inv_productos.fechaFinDescuento','mov_inventario.inv_productos.porcientodescuento','mov_inventario.inv_productos.ventas','mov_inventario.inv_productos.devoluciones',
+                                                    'mov_inventario.inv_productos.galeriaImagenes',
+                                                    'mov_inventario.categorias.descripcion as categoria',
+                                                    'mov_inventario.brands.descripcion as marca',
+                                                    'mov_inventario.invtipos_inventarios.descripcion as tipoinventario',
+                                                    'mov_inventario.bodegas.descripcion as almacen')->
                                              get();                                  
                                              
         if ($pedido == null){

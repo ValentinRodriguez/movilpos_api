@@ -13,7 +13,7 @@ class AddToVeclientesTable extends Migration
      */
     public function up()
     {
-        Schema::table('veclientes', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->table('mov_ventas.veclientes', function (Blueprint $table) {
             $table->smallInteger('id_region')->after('id_zonalocal');
             $table->smallInteger('id_municipio')->after('id_zonalocal');
             $table->smallInteger('id_provincia')->after('id_zonalocal');
@@ -28,7 +28,7 @@ class AddToVeclientesTable extends Migration
      */
     public function down()
     {
-        Schema::table('veclientes', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->table('mov_ventas.veclientes', function (Blueprint $table) {
             $table->dropColumn('id_region');
             $table->dropColumn('id_municipio');
             $table->dropColumn('id_provincia');

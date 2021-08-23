@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\compras;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\co_puerto;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\DB;
+use App\Librerias\compras\co_puerto;
+use App\Http\Controllers\ApiResponseController;
 
 class CoPuertoController extends ApiResponseController
 {

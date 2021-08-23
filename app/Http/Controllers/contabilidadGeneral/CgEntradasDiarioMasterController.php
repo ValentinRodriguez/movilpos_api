@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Http\Controllers\contabilidadGeneral;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\cgTransaccionesContables;
-use App\Librerias\cgEntradasDiarioMaster;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Librerias\Empresa;
+
+use App\Librerias\empresa\Empresa;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\contabilidadGeneral\cgEntradasDiarioMaster;
+use App\Librerias\contabilidadGeneral\cgTransaccionesContables;
 
 class CgEntradasDiarioMasterController extends ApiResponseController
 {
@@ -18,8 +18,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
         get();
 
         foreach ($catalogo as $key => $value) {
-           $detalle= cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$value->ref)->
-            get();
+           $detalle= cgTransaccionesContables::where('cg_transacciones_contables.ref','=',$value->ref)-> get();
             $value->cuentas=$detalle;
         }
 
@@ -74,11 +73,10 @@ class CgEntradasDiarioMasterController extends ApiResponseController
             return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             
-            try{
-            
+            try{            
                 DB::beginTransaction(); 
-                     cgEntradasDiarioMaster::create($datosm); 
-                
+                    cgEntradasDiarioMaster::create($datosm); 
+
                     if (count($request->cuentas) !== 0) {
                         $datosd = null;
                         $cuentas=$request->cuentas;
@@ -115,15 +113,13 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                             if ($validator->fails()) {
                                 $errors = $validator->errors();
                                 return $this->errorResponseParams($errors->all(), $request->urlRequest);                                
-                            }     
-                           // return response()->json($datosd);                                   
+                            }                                       
                             cgTransaccionesContables::create($datosd);                                                   
                         }                        
                     }else{
                         return $this->errorResponse('No hay cuentas agragadas a la transaccion');
                     }             
                 DB::commit();
-
                 return $this->successResponse($datosm, $request->urlRequest);
             }
                 catch (\Exception $e ){
@@ -183,29 +179,26 @@ class CgEntradasDiarioMasterController extends ApiResponseController
             return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
             
-            try{
-            
+            try{            
                 DB::beginTransaction(); 
-
-                $entrada->update($request->all());    
-               
+                $entrada->update($request->all());  
                     if (count($request->cuentas) !== 0) {
                         $datosd = null;
                         $cuentas=$request->cuentas;
                  
                         for ($i=0; $i < count($request->cuentas) ; $i++) {
                            
-                                $datosd = array(
-                                    'cuenta_no'         => $cuentas[$i]['cuenta_no'],
-                                    'departamento'      => $cuentas[$i]['departamento'],
-                                    'num_doc'           => $cuentas[$i]['num_doc'],  
-                                    'cod_aux'           => $cuentas[$i]['cod_aux'],
-                                    'cod_sec'           => $cuentas[$i]['cod_sec'],
-                                    'detalle_1'         => $request->input('detalle'),
-                                    'debito'            => $cuentas[$i]['debito'],
-                                    'credito'           => $cuentas[$i]['credito'],
-                                    "estado"            =>'activo',
-                                    "usuario_modificador"   =>$request->input("usuario_modificador")
+                            $datosd = array(
+                                'cuenta_no'         => $cuentas[$i]['cuenta_no'],
+                                'departamento'      => $cuentas[$i]['departamento'],
+                                'num_doc'           => $cuentas[$i]['num_doc'],  
+                                'cod_aux'           => $cuentas[$i]['cod_aux'],
+                                'cod_sec'           => $cuentas[$i]['cod_sec'],
+                                'detalle_1'         => $request->input('detalle'),
+                                'debito'            => $cuentas[$i]['debito'],
+                                'credito'           => $cuentas[$i]['credito'],
+                                "estado"            =>'activo',
+                                "usuario_modificador"   =>$request->input("usuario_modificador")
                             );
                             
                             $messages = [
@@ -215,8 +208,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
                             ];
 
                             $validator = validator($datosd, [
-                                'cuenta_no'           => 'required'
-                                
+                                'cuenta_no'           => 'required'                                
                             ],$messages);
                         
                             if ($validator->fails()) {
@@ -247,7 +239,7 @@ class CgEntradasDiarioMasterController extends ApiResponseController
         $maxid=0;
         $idsecuencia=0;
         $maxid= cgEntradasDiarioMaster::get('documento')->max();
-       // return $this->successResponse($maxid, $request->urlRequest);
+        
         if ($maxid==null){
             $idsecuencia=1;
         }
@@ -257,8 +249,6 @@ class CgEntradasDiarioMasterController extends ApiResponseController
             
         }
         return $this->successResponse($idsecuencia, $request->urlRequest);
-    
-
     }
 
     public function verReporte($num_oc,$periodo){
@@ -268,33 +258,25 @@ class CgEntradasDiarioMasterController extends ApiResponseController
 
         $entrada = cgTransaccionesContables::where([['cg_transacciones_contables.estado','=','ACTIVO']])-> 
                         join('cg_entradas_diario_masters','cg_entradas_diario_masters.ref','=','cg_transacciones_contables.ref')->
-                        where( [['cg_entradas_diario_masters.documento','=',$num_oc],
-                        ['cg_entradas_diario_masters.periodo','=',$periodo]])->
+                        where( [['cg_entradas_diario_masters.documento','=',$num_oc],['cg_entradas_diario_masters.periodo','=',$periodo]])->
                         select('cg_transacciones_contables.*')->                                
-                                get();
-                             //   return $this->successResponse($entrada, $request->urlRequest);
+                        get();
         if ($entrada == null){
             return $this->errorResponse('No existen datos');
-        }
-        else {
+        } else {
             $empresa = Empresa::orderBy('created_at', 'desc')->first();
             //return response()->json($entrada);
-         foreach ($entrada as $key => $value) {
-            $value->empresa=$empresa;
-           
-            $debito+=$value['debito'];       
-            $credito+=$value['credito'];
-           
-         }
-               
+            foreach ($entrada as $key => $value) {
+                $value->empresa=$empresa;            
+                $debito+=$value['debito'];       
+                $credito+=$value['credito'];            
+            }
         
-        $entrada[0]->tdebito=$debito;
-        $entrada[0]->tcredito=$credito;
-        $aqui=$empresa->moneda;
-     
-          
-          
-           return response()->json($aqui);            
+            $entrada[0]->tdebito=$debito;
+            $entrada[0]->tcredito=$credito;
+            $aqui=$empresa->moneda;
+
+            return response()->json($aqui);            
             // return view('orden_compra', ['datos' => $datos]);
             $pdf = PDF::loadView('entradas_diario', compact('entrada'));
             return $pdf->stream('entradas_diario.pdf');
@@ -302,12 +284,11 @@ class CgEntradasDiarioMasterController extends ApiResponseController
     }
 
     public function verificaEntrada(Request $request){
-        $ref = $request->get('ref');
-       
+        $ref = $request->get('ref');       
 
         $datos = cgTransaccionesContables::where([['cg_transacciones_contables.ref','=',$ref],
-                                         ['estado','=','ACTIVO']])->
-                                  first();      
+                                                  ['estado','=','ACTIVO']])->
+                                           first();      
 
         return $this->successResponse($datos, $request->urlRequest);
     }

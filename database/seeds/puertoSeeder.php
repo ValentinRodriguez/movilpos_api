@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\co_puerto;
+use App\Librerias\compras\co_puerto;
 
 class puertoSeeder extends Seeder
 {

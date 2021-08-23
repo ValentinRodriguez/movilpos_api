@@ -8,7 +8,7 @@ class CreatesucursalesTable extends Migration
 {
     public function up()
     {
-        Schema::create('sucursales', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->create('sucursales', function (Blueprint $table) {
             $table->id();
             $table->integer('cod_cia');
             $table->string('descripcion',100);
@@ -29,6 +29,6 @@ class CreatesucursalesTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('sucursales');
+        Schema::connection('mov_empresa')->dropIfExists('sucursales');
     }
 }

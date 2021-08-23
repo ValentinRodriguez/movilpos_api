@@ -14,7 +14,7 @@ class CreatenoDepartamentosTable extends Migration
      */
     public function up()
     {
-        Schema::create('nodepartamentos', function (Blueprint $table) {
+        Schema::connection('mov_rrhh')->create('mov_rrhh.nodepartamentos', function (Blueprint $table) {
             $table->id();
             $table->string('titulo',100);
             $table->string('descripcion');
@@ -33,6 +33,6 @@ class CreatenoDepartamentosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nodepartamentos');
+        Schema::connection('mov_rrhh')->dropIfExists('mov_rrhh.nodepartamentos');
     }
 }

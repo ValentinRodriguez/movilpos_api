@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\InvProductos;
+use App\Librerias\inventario\InvProductos;
 
 class productosSeeder extends Seeder
 {

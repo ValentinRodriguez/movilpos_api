@@ -8,7 +8,7 @@ class CreateTipoNegocioTable extends Migration
 {
     public function up()
     {
-        Schema::create('tipo_negocio', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->create('tipo_negocio', function (Blueprint $table) {
             $table->id();
             $table->integer('tipo_negocio')->unique();
             $table->text('descripcion');
@@ -21,6 +21,6 @@ class CreateTipoNegocioTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('tipo_negocio');
+        Schema::connection('mov_empresa')->dropIfExists('tipo_negocio');
     }
 }

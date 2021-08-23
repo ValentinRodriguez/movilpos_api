@@ -13,7 +13,7 @@ class CreateCgTipoDocumentosTable extends Migration
      */
     public function up()
     {
-        Schema::create('cg_tipo_documentos', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('cg_tipo_documentos', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',30);
             $table->string('ref',3);
@@ -28,7 +28,7 @@ class CreateCgTipoDocumentosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cg_tipo_documentos');
+        Schema::connection('mov_contabilidad')->dropIfExists('cg_tipo_documentos');
     }
 }
 

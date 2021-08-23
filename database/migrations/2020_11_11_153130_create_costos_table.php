@@ -13,7 +13,7 @@ class CreateCostosTable extends Migration
      */
     public function up()
     {
-        Schema::create('costos', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('costos', function (Blueprint $table) {
             $table->id();
             $table->integer('ventas');
             $table->integer('mes_ini');
@@ -40,6 +40,6 @@ class CreateCostosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('costos');
+        Schema::connection('mov_contabilidad')->dropIfExists('costos');
     }
 }

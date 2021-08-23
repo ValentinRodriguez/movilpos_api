@@ -13,7 +13,7 @@ class CreateCoOrdenesDetallesTable extends Migration
      */
     public function up()
     {
-        Schema::create('co_ordenes_detalles', function (Blueprint $table) {
+        Schema::connection('mov_compras')->create('co_ordenes_detalles', function (Blueprint $table) {
             $table->id();
             $table->integer('num_oc')->foreign('num_oc')->reference('num_oc')->on('co_ordenes_master');
             $table->integer('num_req');
@@ -37,6 +37,6 @@ class CreateCoOrdenesDetallesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('co_ordenes_detalles');
+        Schema::connection('mov_compras')->dropIfExists('co_ordenes_detalles');
     }
 }

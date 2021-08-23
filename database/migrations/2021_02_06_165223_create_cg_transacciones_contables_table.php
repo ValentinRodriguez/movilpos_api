@@ -8,7 +8,7 @@ class CreateCgTransaccionesContablesTable extends Migration
 {
     public function up()
     {
-        Schema::create('cg_transacciones_contables', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('cg_transacciones_contables', function (Blueprint $table) {
             $table->id();
             $table->datetime('fecha')->nullable();
             $table->string('tipo_doc',5)->nullable();
@@ -32,6 +32,6 @@ class CreateCgTransaccionesContablesTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('cg_transacciones_contables');
+        Schema::connection('mov_contabilidad')->dropIfExists('cg_transacciones_contables');
     }
 }

@@ -8,7 +8,7 @@ class CreateCoCuentasProveedoresTable extends Migration
 {
     public function up()
     {
-        Schema::create('co_cuentas_proveedores', function (Blueprint $table) {
+        Schema::connection('mov_compras')->create('co_cuentas_proveedores', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',100);
             $table->integer('cod_sp');
@@ -22,6 +22,6 @@ class CreateCoCuentasProveedoresTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('co_cuentas_proveedores');
+        Schema::connection('mov_compras')->dropIfExists('co_cuentas_proveedores');
     }
 }

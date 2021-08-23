@@ -13,7 +13,7 @@ class CreateModulosTable extends Migration
      */
     public function up()
     {
-        Schema::create('modulos', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('modulos', function (Blueprint $table) {
             $table->id();
             $table->text('modulo');
             $table->integer('orden');
@@ -31,6 +31,6 @@ class CreateModulosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('modulos');
+        Schema::connection('mov_globales')->dropIfExists('modulos');
     }
 }

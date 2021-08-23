@@ -13,7 +13,7 @@ class CreateVeinspeccionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('veinspeccions', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->create('veinspeccions', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion');
             $table->string('tipo_inspeccion');
@@ -31,6 +31,6 @@ class CreateVeinspeccionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('veinspeccions');
+        Schema::connection('mov_ventas')->dropIfExists('veinspeccions');
     }
 }

@@ -8,7 +8,7 @@ class CreateProveedoresTable extends Migration
 {
     public function up()
     {
-        Schema::create('proveedores', function (Blueprint $table) {
+        Schema::connection('mov_compras')->create('proveedores', function (Blueprint $table) {
             $keys = array('cod_sp', 'cod_sp_sec');
             $table->integer('cod_sp');
             $table->integer('cod_sp_sec');
@@ -17,8 +17,8 @@ class CreateProveedoresTable extends Migration
             $table->string('dir_sp');
             $table->integer('id_ciudad');
             $table->integer('id_pais');
-            // $table->foreign('cod_provincia')->references('id_ciudad')->on('ciudades');
-            // $table->foreign('id_pais')->references('id_pais')->on('paises');
+            // $table->foreign('cod_provincia')->references('id_ciudad')->on('mov_globales.ciudades');
+            // $table->foreign('id_pais')->references('id_pais')->on('mov_globales.paises');
             $table->string('tel_sp',20);
             $table->string('fax_sp',20)->nullable();
             $table->string('cont_sp');
@@ -37,6 +37,6 @@ class CreateProveedoresTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('proveedores');
+        Schema::connection('mov_compras')->dropIfExists('proveedores');
     }
 }

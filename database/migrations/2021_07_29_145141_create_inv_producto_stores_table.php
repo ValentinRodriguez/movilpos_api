@@ -13,29 +13,26 @@ class CreateInvProductoStoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('inv_producto_stores', function (Blueprint $table) {
+        Schema::connection('mov_tienda')->create('inv_producto_stores', function (Blueprint $table) {
             $table->id();
             $table->text('titulo');
             $table->integer('tipo_producto');
-            $table->foreign('tipo_producto')->references('id_tipo')->on('tipo_productos');
-            $table->integer('id_tipoinventario');
-            $table->foreign('id_tipoinventario')->references('id_tipoinventario')->on('invtipos_inventarios');
+            // $table->foreign('tipo_producto')->references('id_tipo')->on('vov_inventariotipo_productos');
             $table->integer('id_categoria');
-            $table->foreign('id_categoria')->references('id_categoria')->on('categorias');
+            // $table->foreign('id_categoria')->references('id_categoria')->on('vov_inventariocategorias');
             $table->integer('id_brand');
-            $table->foreign('id_brand')->references('id_brand')->on('brands');
+            // $table->foreign('id_brand')->references('id_brand')->on('vov_inventariobrands');
             $table->text('descripcion');
             $table->integer('id_propiedad');
-            $table->foreign('id_propiedad')->references('id_propiedad')->on('propiedades');
+            // $table->foreign('id_propiedad')->references('id_propiedad')->on('propiedades');
             $table->string('codigo',30)->unique();
-            $table->string('codigo_referencia',20)->nullable();
             $table->string('origen',50)->default('debito');
             $table->integer('existenciaMinima');
             $table->integer('existenciaMaxima')->nullable();
             $table->char('controlDeExistencias',2)->nullable();
             $table->char('descuento',2)->nullable();
             $table->integer('id_bodega')->default(1);
-            $table->foreign('id_bodega')->references('id_bodega')->on('bodegas');
+            // $table->foreign('id_bodega')->references('id_bodega')->on('bodegas');
             $table->string('controlItbis',2);
             $table->text('ultimoproveedor')->nullable();
             $table->integer('cod_sp')->nullable();
@@ -50,11 +47,9 @@ class CreateInvProductoStoresTable extends Migration
             $table->float('ventas')->nullable();
             $table->float('devoluciones')->nullable();            
             $table->text('galeriaImagenes');
-            $table->char('editando', 1)->default('0');
-            $table->text('usuario_editando')->nullable();
             $table->string('estado', 10);
-            $table->text('usuario_creador');
-            $table->text('usuario_modificador')->nullable();
+            $table->string('usuario_creador',50);
+            $table->string('tienda',50);
             $table->timestamps();
         });
     }
@@ -66,6 +61,6 @@ class CreateInvProductoStoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inv_producto_stores');
+        Schema::connection('mov_tienda')->dropIfExists('inv_producto_stores');
     }
 }

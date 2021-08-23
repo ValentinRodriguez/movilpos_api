@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\cgcatalogo;
+use App\Librerias\contabilidadGeneral\cgcatalogo;
 
 class cuentaSeeder extends Seeder
 {
@@ -23,7 +23,7 @@ class cuentaSeeder extends Seeder
                 'selectivo_consumo'  => 'no',
                 'retencion'          => 'no',
                 'codigo_isr'         => 1,
-                'usuario_creador'    => 'movilsoluciones',               
+                'usuario_creador'    => 'movilsoluciones',
                 'estado'             => 'activo',
                 'grupo'              => 'pasivo'
             ],
@@ -42,7 +42,7 @@ class cuentaSeeder extends Seeder
                 'selectivo_consumo'  => 'no',
                 'retencion'          => 'no',
                 'codigo_isr'         => 1,
-                'usuario_creador'    => 'movilsoluciones',               
+                'usuario_creador'    => 'movilsoluciones',
                 'estado'             => 'activo',
                 'grupo'              => 'pasivo'
             ],
@@ -61,7 +61,7 @@ class cuentaSeeder extends Seeder
                 'selectivo_consumo'  => 'no',
                 'retencion'          => 'no',
                 'codigo_isr'         => 1,
-                'usuario_creador'    => 'movilsoluciones',               
+                'usuario_creador'    => 'movilsoluciones',
                 'estado'             => 'activo',
                 'grupo'              => 'pasivo'
             ],
@@ -69,6 +69,6 @@ class cuentaSeeder extends Seeder
 
         foreach ($cgcatalogo as $key => $value) {
             cgcatalogo::create($value);
-        } 
+        }
     }
 }

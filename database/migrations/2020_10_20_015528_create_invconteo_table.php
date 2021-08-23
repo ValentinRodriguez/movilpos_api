@@ -13,7 +13,7 @@ class CreateInvconteoTable extends Migration
      */
     public function up()
     {
-        Schema::create('invconteo', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('invconteo', function (Blueprint $table) {
             $table->id();
             $table->integer('num_doc')->unique();
             $table->date('fecha');
@@ -36,6 +36,6 @@ class CreateInvconteoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invconteo');
+        Schema::connection('mov_inventario')->dropIfExists('invconteo');
     }
 }

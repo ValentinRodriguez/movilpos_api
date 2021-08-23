@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
 use Illuminate\Http\Request;
-use App\Librerias\sectores;
+
+use App\Librerias\globales\sectores;
+use App\Http\Controllers\ApiResponseController;
 
 class sectoresController extends ApiResponseController
 {
@@ -39,9 +39,7 @@ class sectoresController extends ApiResponseController
                             orderBy('sectores.descripcion')->
                             where('sectores.id_ciudad','=',$id)->
                             get();
-                            if ($ciudad == null){
-                                return $this->errorResponse($ciudad);
-                            }
+                            
                             return $this->successResponse($ciudad);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\invTipos;
+use App\Librerias\inventario\invTipos;
 
 class tipoInventarioSeeder extends Seeder
 {

@@ -13,7 +13,7 @@ class CreateTransportistasTable extends Migration
      */
     public function up()
     {
-        Schema::create('transportistas', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('transportistas', function (Blueprint $table) {
             $table->id();
             $table->integer('cod_transportista');
             $table->integer('sec_transp');
@@ -41,6 +41,6 @@ class CreateTransportistasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transportistas');
+        Schema::connection('mov_inventario')->dropIfExists('transportistas');
     }
 }

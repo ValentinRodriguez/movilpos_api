@@ -1,63 +1,63 @@
 <?php
 
 namespace App\Http\Controllers\rrhh;
-use App\Http\Controllers\ApiResponseController;
-
 use Illuminate\Http\Request;
+
+use App\Librerias\rrhh\turnos;
+use App\Librerias\globales\pais;
+use App\Librerias\rrhh\Nopuesto;
+use App\Librerias\rrhh\educacion;
+use App\Librerias\empresa\Empresa;
+use App\Librerias\globales\bancos;
 use Illuminate\Support\Facades\DB;
-use App\Librerias\noempleados;
-use App\Librerias\tipoMonedas;
-use App\Librerias\Nopuesto;
-use App\Librerias\Departamento;
-use App\Librerias\Empresa;
-use App\librerias\pais;
-use App\librerias\bancos;
-use App\librerias\educacion;
-use App\librerias\estadoCivil;
-use App\librerias\tipoEmpleado;
-use App\librerias\tipoSangre;
-use App\librerias\turnos;
-use App\librerias\sucursales;
-use App\librerias\cgcatalogo;
-use App\librerias\areasEmpresa;
+use App\Librerias\rrhh\estadoCivil;
+use App\Librerias\rrhh\noempleados;
+use App\Librerias\rrhh\Departamento;
+use App\Librerias\rrhh\tipoEmpleado;
+use App\Librerias\empresa\sucursales;
+use App\Librerias\empresa\tipoMonedas;
+use App\Librerias\globales\tipoSangre;
+use App\Librerias\empresa\areasEmpresa;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\contabilidadGeneral\cgcatalogo;
 
 class noempleadosController extends ApiResponseController
 {
     public function index(Request $request) {
         $noempleados = noempleados::orderBy('id', 'asc')->
-                                join('nodepartamentos','noempleados.departamento','=','nodepartamentos.id')->
-                                join('nopuestos','noempleados.id_puesto','=','nopuestos.id_puesto')->
-                                join('ciudades','noempleados.id_ciudad','=','ciudades.id_ciudad')->
-                                join('paises','noempleados.id_pais','=','paises.id_pais')->
-                                leftjoin('tipo_monedas','noempleados.id_moneda','=','tipo_monedas.id')->
-                                select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"),
-                                        'nodepartamentos.titulo as depto',
-                                       'nopuestos.descripcion as puesto',
-                                       'ciudades.descripcion as ciudad',
-                                       'paises.descripcion as pais',
-                                       'tipo_monedas.divisa as divisa','tipo_monedas.simbolo as simbolo_moneda'
-                                )->
-                                where('noempleados.estado','=','ACTIVO')->
-                                get();
+                                    join('mov_rrhh.nodepartamentos','mov_rrhh.noempleados.departamento','=','mov_rrhh.nodepartamentos.id')->
+                                    join('nopuestos','mov_rrhh.noempleados.id_puesto','=','nopuestos.id_puesto')->
+                                    join('mov_globales.ciudades','mov_rrhh.noempleados.id_ciudad','=','mov_globales.ciudades.id_ciudad')->
+                                    join('mov_globales.paises','mov_rrhh.noempleados.id_pais','=','mov_globales.paises.id_pais')->
+                                    leftjoin('mov_empresa.tipo_monedas','mov_rrhh.noempleados.id_moneda','=','mov_empresa.tipo_monedas.id')->
+                                    select('mov_rrhh.noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"),
+                                           'mov_rrhh.nodepartamentos.titulo as depto',
+                                            'nopuestos.descripcion as puesto',
+                                            'mov_globales.ciudades.descripcion as ciudad',
+                                            'mov_globales.paises.descripcion as pais',
+                                            'mov_empresa.tipo_monedas.divisa as divisa','mov_empresa.tipo_monedas.simbolo as simbolo_moneda'
+                                    )->
+                                    where('mov_rrhh.noempleados.estado','=','ACTIVO')->
+                                    get();
 
         return $this->successResponse($noempleados, $request->urlRequest);
     }    
 
     public function cajeros(Request $request) {
         $cajero = noempleados::orderBy('id', 'asc')->
-                                join('nodepartamentos','noempleados.departamento','=','nodepartamentos.id')->
-                                join('nopuestos','noempleados.id_puesto','=','nopuestos.id_puesto')->
-                                join('ciudades','noempleados.id_ciudad','=','ciudades.id_ciudad')->
-                                join('paises','noempleados.id_pais','=','paises.id_pais')->
-                                leftjoin('tipo_monedas','noempleados.id_moneda','=','tipo_monedas.id')->
-                                select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"),
-                                       'nodepartamentos.titulo as depto',
+                                join('mov_rrhh.nodepartamentos','mov_rrhh.noempleados.departamento','=','mov_rrhh.nodepartamentos.id')->
+                                join('nopuestos','mov_rrhh.noempleados.id_puesto','=','nopuestos.id_puesto')->
+                                join('mov_globales.ciudades','mov_rrhh.noempleados.id_ciudad','=','mov_globales.ciudades.id_ciudad')->
+                                join('mov_globales.paises','mov_rrhh.noempleados.id_pais','=','mov_globales.paises.id_pais')->
+                                leftjoin('mov_empresa.tipo_monedas','mov_rrhh.noempleados.id_moneda','=','mov_empresa.tipo_monedas.id')->
+                                select('mov_rrhh.noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"),
+                                       'mov_rrhh.nodepartamentos.titulo as depto',
                                        'nopuestos.descripcion as puesto',
-                                       'ciudades.descripcion as ciudad',
-                                       'paises.descripcion as pais',
-                                       'tipo_monedas.divisa as divisa','tipo_monedas.simbolo as simbolo_moneda'
+                                       'mov_globales.ciudades.descripcion as ciudad',
+                                       'mov_globales.paises.descripcion as pais',
+                                       'mov_empresa.tipo_monedas.divisa as divisa','mov_empresa.tipo_monedas.simbolo as simbolo_moneda'
                                 )->
-                                where([['.noempleados.id_puesto','=', 2],['noempleados.estado','=','ACTIVO']])->
+                                where([['.noempleados.id_puesto','=', 2],['mov_rrhh.noempleados.estado','=','ACTIVO']])->
                                 get();
         return $this->successResponse($cajero, $request->urlRequest);
     }
@@ -69,9 +69,9 @@ class noempleadosController extends ApiResponseController
 
     public function show(Request $request,$id){
         // return response()->json($id);
-        $empleado = noempleados::where('noempleados.id','=',$id)->
-                                 join('turnos','turnos.id','=','noempleados.turno')->
-                                 select('noempleados.*','turnos.horario_inicial','turnos.horario_final')
+        $empleado = noempleados::where('mov_rrhh.noempleados.id','=',$id)->
+                                 join('turnos','turnos.id','=','mov_rrhh.noempleados.turno')->
+                                 select('mov_rrhh.noempleados.*','turnos.horario_inicial','turnos.horario_final')
                                  ->first();
         return $this->successResponse($empleado, $request->urlRequest);
     }
@@ -225,15 +225,15 @@ class noempleadosController extends ApiResponseController
     }
 
     public function buscaVendedores(Request $request){
-        $empleado = noempleados::where('noempleados.id_puesto','=',3)->
-                                 select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
+        $empleado = noempleados::where('mov_rrhh.noempleados.id_puesto','=',3)->
+                                 select('mov_rrhh.noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
                                  get();
         return $this->successResponse($empleado, $request->urlRequest);
     }
 
     public function buscaSupervisores(Request $request,$id){
-        $supervisor = noempleados::where([['departamento','=',$id],['noempleados.is_sup','=','si']])->
-                                 select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
+        $supervisor = noempleados::where([['departamento','=',$id],['mov_rrhh.noempleados.is_sup','=','si']])->
+                                 select('mov_rrhh.noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
                                  get();
                                  
         return $this->successResponse($supervisor, $request->urlRequest);
@@ -241,7 +241,7 @@ class noempleadosController extends ApiResponseController
        
     public function buscaCedula(Request $request){
         $cedula = $request->get('cedula');        
-        $empleado = noempleados::where('noempleados.cedula','=',$cedula)->get();
+        $empleado = noempleados::where('mov_rrhh.noempleados.cedula','=',$cedula)->get();
         return $this->successResponse($empleado, $request->urlRequest);
     }
 
@@ -271,7 +271,7 @@ class noempleadosController extends ApiResponseController
             $_empresa = array("label" => 'empresas', "data" => $empresa, "icono" => 'fas fa-dolly-flatbed');
             $_sucursales = array("label" => 'sucursal', "data" => $sucursales, "icono" => 'fas fa-dolly-flatbed');
             $_monedas = array("label" => 'monedas', "data" => $monedas, "icono" => 'fas fa-dolly-flatbed');
-            $_paises = array("label" => 'paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
+            $_paises = array("label" => 'mov_globales.paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
             $_bancos= array("label" => 'bancos', "data" => $bancos, "icono" => 'fas fa-dolly-flatbed');
             $_educacion= array("label" => 'educacion', "data" => $educacion, "icono" => 'fas fa-dolly-flatbed');
             $_estadoCivil= array("label" => 'estadoCivil', "data" => $estadoCivil, "icono" => 'fas fa-dolly-flatbed');

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\areasEmpresa;
+use App\Librerias\empresa\areasEmpresa;
 
 class areasSeeder extends Seeder
 {

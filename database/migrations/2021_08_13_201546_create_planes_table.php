@@ -8,7 +8,7 @@ class CreatePlanesTable extends Migration
 {
     public function up()
     {
-        Schema::create('planes', function (Blueprint $table) {
+        Schema::connection('mov_tienda')->create('planes', function (Blueprint $table) {
             $table->id();
             $table->string('titulo',20);
             $table->char('tipo',1);
@@ -21,6 +21,6 @@ class CreatePlanesTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('planes');
+        Schema::connection('mov_tienda')->dropIfExists('planes');
     }
 }

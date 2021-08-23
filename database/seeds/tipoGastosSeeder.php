@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\cgTipoGastos;
+use App\Librerias\contabilidadGeneral\cgTipoGastos;
 
 class tipoGastosSeeder extends Seeder
 {

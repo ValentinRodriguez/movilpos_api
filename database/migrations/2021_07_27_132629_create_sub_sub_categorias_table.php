@@ -8,7 +8,7 @@ class CreateSubSubCategoriasTable extends Migration
 {
     public function up()
     {
-        Schema::create('sub_sub_categorias', function (Blueprint $table) {
+        Schema::connection('mov_tienda')->create('sub_sub_categorias', function (Blueprint $table) {
             $table->id();
             $table->integer('id_subsubcategoria');
             $table->unique('id_subsubcategoria');
@@ -25,6 +25,6 @@ class CreateSubSubCategoriasTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('sub_sub_categorias');
+        Schema::connection('mov_tienda')->dropIfExists('sub_sub_categorias');
     }
 }

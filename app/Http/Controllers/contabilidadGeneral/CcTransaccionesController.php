@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\contabilidadGeneral;
-use App\Http\Controllers\ApiResponseController;
+use Carbon\Carbon;
 
-use App\Librerias\cc_transacciones;
 use App\Mail\pagosMailable;
-use App\Mail\listaDeudoresMailable;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+use App\Mail\listaDeudoresMailable;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\cuentasXcobrar\cc_transacciones;
 
 class CcTransaccionesController extends ApiResponseController
 {
@@ -85,15 +85,15 @@ class CcTransaccionesController extends ApiResponseController
         // $rango['hasta'] = $date->format('Y-m-d H:i:s');
 
         $deudores = cc_transacciones::select('cc_transacciones.cuenta_no','cc_transacciones.fecha_ven','cc_transacciones.aplica_a',
-                                             'veclientes.nombre','veclientes.email','veclientes.celular','veclientes.telefono_casa',
+                                             'mov_ventas.veclientes.nombre','mov_ventas.veclientes.email','mov_ventas.veclientes.celular','mov_ventas.veclientes.telefono_casa',
                                             DB::Raw('SUM(cc_transacciones.valor - cc_transacciones.monto_desc) as deuda')
                                             )->
-                                    join('veclientes',[['veclientes.tipo_cliente','=','cc_transacciones.tipo_cliente'],
-                                                       ['veclientes.sec_cliente','=','cc_transacciones.sec_cliente']])->
+                                    join('mov_ventas.veclientes',[['mov_ventas.veclientes.tipo_cliente','=','cc_transacciones.tipo_cliente'],
+                                                       ['mov_ventas.veclientes.sec_cliente','=','cc_transacciones.sec_cliente']])->
                                     // wherebetween('cc_transacciones.fecha_ven',[$rango['desde'], $rango['hasta']])->  
                                     where([['cc_transacciones.estado','=','ACTIVO'],['cc_transacciones.fecha_ven','<',$hoy]])-> 
                                     groupby('cc_transacciones.cuenta_no','cc_transacciones.fecha_ven','cc_transacciones.aplica_a',
-                                            'veclientes.nombre','veclientes.email','veclientes.celular','veclientes.telefono_casa')->
+                                            'mov_ventas.veclientes.nombre','mov_ventas.veclientes.email','mov_ventas.veclientes.celular','mov_ventas.veclientes.telefono_casa')->
                                     having('deuda', '>', 0)->
                                     get();
         //return $this->successResponse($deudores, $request->urlRequest);

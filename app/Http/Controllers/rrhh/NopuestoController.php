@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\rrhh;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\Nopuesto;
 use Illuminate\Http\Request;
+
+use App\Librerias\rrhh\Nopuesto;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ApiResponseController;
 
 class NopuestoController extends ApiResponseController
 {

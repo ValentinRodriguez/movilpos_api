@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\coTipoOrden;
+use App\Librerias\compras\coTipoOrden;
 
 class tipoordenseeders extends Seeder
 {

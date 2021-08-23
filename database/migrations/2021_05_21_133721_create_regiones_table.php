@@ -8,7 +8,7 @@ class CreateRegionesTable extends Migration
 {
     public function up()
     {
-        Schema::create('regiones', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('regiones', function (Blueprint $table) {
             $table->id();
             $table->integer('id_region');
             $table->integer('id_pais');
@@ -25,6 +25,6 @@ class CreateRegionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('regiones');
+        Schema::connection('mov_globales')->dropIfExists('regiones');
     }
 }

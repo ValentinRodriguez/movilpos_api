@@ -8,7 +8,7 @@ class CreateSecuenciasTable extends Migration
 {
     public function up()
     {
-        Schema::create('secuencias', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('secuencias', function (Blueprint $table) {
             $table->id();
             $table->integer('documento');
             $table->string('cuenta_no',20);
@@ -28,6 +28,6 @@ class CreateSecuenciasTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('secuencias');
+        Schema::connection('mov_contabilidad')->dropIfExists('secuencias');
     }
 }

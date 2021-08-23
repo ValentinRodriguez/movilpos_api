@@ -13,7 +13,7 @@ class CreateInvseccionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('invsecciones', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('invsecciones', function (Blueprint $table) {
             $table->id();
             $table->integer('id_seccion')->unique();
             $table->integer('id_bodega');
@@ -32,6 +32,6 @@ class CreateInvseccionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invsecciones');
+        Schema::connection('mov_inventario')->dropIfExists('invsecciones');
     }
 }

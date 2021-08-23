@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\Perfiles;
+use App\Librerias\usuarios\Perfiles;
 
 class PerfilesSeeder extends Seeder
 {

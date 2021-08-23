@@ -8,7 +8,7 @@ class CreateRequisicionesMastersTable extends Migration
 {    
     public function up()
     {
-        Schema::create('requisiciones_masters', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('requisiciones_masters', function (Blueprint $table) {
             $table->id();
             $table->integer('num_req');
             $table->date('fech_req');
@@ -30,6 +30,6 @@ class CreateRequisicionesMastersTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('requisiciones_masters');
+        Schema::connection('mov_inventario')->dropIfExists('requisiciones_masters');
     }
 }

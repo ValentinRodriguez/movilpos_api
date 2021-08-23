@@ -13,14 +13,14 @@ class CreateInvusuariosMovimientosTable extends Migration
      */
     public function up()
     {
-        Schema::create('invusuariosmovimientos', function (Blueprint $table) {
+        Schema::connection('mov_usuarios')->create('invusuariosmovimientos', function (Blueprint $table) {
             $table->id();
             $table->integer('id_tipomov')->index();
-            $table->foreign('id_tipomov')->references('id_tipomov')->on('invtiposmovimientos');
+            $table->foreign('id_tipomov')->references('id_tipomov')->on('mov_inventario.invtiposmovimientos');
             $table->string('email',50);
             $table->string('estado',10);
             $table->text('usuario_creador');
-            $table->foreign('email')->references('email')->on('users');
+            $table->foreign('email')->references('email')->on('mov_usuarios.users');
             $table->unique('id_tipomov','email');
             $table->timestamps();
         });
@@ -33,6 +33,6 @@ class CreateInvusuariosMovimientosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invusuariosmovimientos');
+        Schema::connection('mov_usuarios')->dropIfExists('invusuariosmovimientos');
     }
 }

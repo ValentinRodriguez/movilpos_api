@@ -13,7 +13,7 @@ class CreateCcRecibosIngresoMastersTable extends Migration
      */
     public function up()
     {
-        Schema::create('cc_recibos_ingreso_masters', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('cc_recibos_ingreso_masters', function (Blueprint $table) {
             $table->id();
             $table->string('cuenta_no')->nullabel();
             $table->integer('cod_cia')->nullabel();
@@ -53,6 +53,6 @@ class CreateCcRecibosIngresoMastersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cc_recibos_ingreso_masters');
+        Schema::connection('mov_contabilidad')->dropIfExists('cc_recibos_ingreso_masters');
     }
 }

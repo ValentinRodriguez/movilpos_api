@@ -13,7 +13,7 @@ class CreateInvareasTable extends Migration
      */
     public function up()
     {
-        Schema::create('invareas', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->create('invareas', function (Blueprint $table) {
             $table->id('area');
             $table->string('titulo')->nullable();
             $table->string('descripcion')->nullable();
@@ -30,6 +30,6 @@ class CreateInvareasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invareas');
+        Schema::connection('mov_empresa')->dropIfExists('invareas');
     }
 }

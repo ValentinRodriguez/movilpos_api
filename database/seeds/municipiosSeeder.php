@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\municipios;
+use App\Librerias\globales\municipios;
 
 class municipiosSeeder extends Seeder
 {

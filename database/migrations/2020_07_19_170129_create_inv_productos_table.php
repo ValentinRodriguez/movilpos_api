@@ -8,7 +8,7 @@ class CreateInvProductosTable extends Migration
 {
     public function up()
     {
-        Schema::create('inv_productos', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('inv_productos', function (Blueprint $table) {
             $table->id();
             $table->text('titulo');
             $table->integer('tipo_producto');
@@ -65,6 +65,6 @@ class CreateInvProductosTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('inv_productos');
+        Schema::connection('mov_inventario')->dropIfExists('inv_productos');
     }
 }

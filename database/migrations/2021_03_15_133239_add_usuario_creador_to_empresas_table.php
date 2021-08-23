@@ -13,7 +13,7 @@ class AddUsuarioCreadorToEmpresasTable extends Migration
      */
     public function up()
     {
-        Schema::table('empresas', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->table('empresas', function (Blueprint $table) {
             $table->string('usuario_creador')->after('estado');
         });
     }
@@ -25,7 +25,7 @@ class AddUsuarioCreadorToEmpresasTable extends Migration
      */
     public function down()
     {
-        Schema::table('empresas', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->table('empresas', function (Blueprint $table) {
             $table->dropColumn('usuario_creador');
         });
     }

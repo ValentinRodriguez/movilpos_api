@@ -13,7 +13,7 @@ class CrateInvtransaccionesmasterTable extends Migration
      */
     public function up()
     {
-        Schema::create('invtransaccionesmaster', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('invtransaccionesmaster', function (Blueprint $table) {
             $table->id();
             $table->integer('num_doc')->index();
             $table->integer('numerosecuencia')->index();
@@ -42,7 +42,7 @@ class CrateInvtransaccionesmasterTable extends Migration
             $table->integer('cod_tarifa')->nullable();
             $table->text('comentario')->nullable();
             $table->integer('departamento')->foreign()->references('departamento')->on('nodepartamento')->nullable();
-            $table->integer('id_numemp')->foreign()->references('id')->on('noempleados')->nullable();
+            $table->integer('id_numemp')->foreign()->references('id')->on('mov_rrhh.noempleados')->nullable();
             $table->string('nombre_departamento',100)->nullable();
             $table->string('cuenta_no',25)->foreign()->references('cuenta_no')->on('cgcatalogo')->nullable();
             $table->string('descripcion_cuenta',100)->nullable();
@@ -75,6 +75,6 @@ class CrateInvtransaccionesmasterTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invtransaccionesmaster');
+        Schema::connection('mov_inventario')->dropIfExists('invtransaccionesmaster');
     }
 }

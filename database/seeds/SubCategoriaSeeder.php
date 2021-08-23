@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\SubCategoria;
 use Illuminate\Support\Str;
+use App\Librerias\tienda\SubCategoria;
+
 class SubCategoriaSeeder extends Seeder
 {
     public function run()

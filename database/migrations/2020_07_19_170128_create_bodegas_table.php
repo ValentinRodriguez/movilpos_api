@@ -13,14 +13,14 @@ class CreateBodegasTable extends Migration
      */
     public function up()
     {
-        Schema::create('bodegas', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('bodegas', function (Blueprint $table) {
             $table->id();
             $table->integer('id_bodega')->index();
             $table->string('descripcion',100);
             $table->integer('id_pais');
-            // $table->foreign('id_pais')->references('id_pais')->on('paises');
+            // $table->foreign('id_pais')->references('id_pais')->on('mov_globales.paises');
             $table->integer('id_ciudad');
-            // $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
+            // $table->foreign('id_ciudad')->references('id_ciudad')->on('mov_globales.ciudades');
             $table->string('usuario_creador',100);
             $table->string('usuario_modificador',100)->nullable();
             $table->string('estado',100);
@@ -35,6 +35,6 @@ class CreateBodegasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bodegas');
+        Schema::connection('mov_inventario')->dropIfExists('bodegas');
     }
 }

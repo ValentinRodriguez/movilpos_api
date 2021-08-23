@@ -8,7 +8,7 @@ class AddHoraToTurnosTable extends Migration
 {
     public function up()
     {
-        Schema::table('turnos', function (Blueprint $table) {
+        Schema::connection('mov_rrhh')->table('turnos', function (Blueprint $table) {
             $table->datetime('horario_inicial')->after('descripcion')->nullable();
             $table->datetime('horario_final')->after('horario_inicial')->nullable();
         });
@@ -16,7 +16,7 @@ class AddHoraToTurnosTable extends Migration
     
     public function down()
     {
-        Schema::table('turnos', function (Blueprint $table) {
+        Schema::connection('mov_rrhh')->table('turnos', function (Blueprint $table) {
             $table->dropColumn('horario_inicial');
             $table->dropColumn('horario_final');
         });

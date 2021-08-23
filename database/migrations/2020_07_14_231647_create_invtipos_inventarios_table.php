@@ -8,13 +8,13 @@ class CreateInvtiposInventariosTable extends Migration
 {    
     public function up()
     {
-        Schema::create('invtipos_inventarios', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('invtipos_inventarios', function (Blueprint $table) {
             $table->id();
             $table->integer('id_tipoinventario');
             $table->unique('id_tipoinventario')->nullable();
             $table->string('descripcion',500);
             $table->string('cuenta_no',25);
-            $table->foreign('cuenta_no')->references('cuenta_no')->on('cgcatalogo');
+            $table->foreign('cuenta_no')->references('cuenta_no')->on('mov_contabilidad.cgcatalogo');
             $table->string('usuario_creador',500);
             $table->string('usuario_modificador',500)->nullable();
             $table->string('estado',100);
@@ -24,6 +24,6 @@ class CreateInvtiposInventariosTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('invtipos_inventarios');
+        Schema::connection('mov_inventario')->dropIfExists('invtipos_inventarios');
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
 use Illuminate\Http\Request;
-use App\Librerias\regiones;
+
+use App\Librerias\globales\regiones;
+use App\Http\Controllers\ApiResponseController;
 
 class RegionesController extends ApiResponseController
 {
@@ -30,9 +30,7 @@ class RegionesController extends ApiResponseController
                             orderBy('created_at', 'desc')->
                             where('regiones.id_pais','=',$id)->
                             get();
-                            if ($ciudad == null){
-                                return $this->errorResponse($ciudad);
-                            }
+                            
                             return $this->successResponse($ciudad, $request->urlRequest);
     }
 

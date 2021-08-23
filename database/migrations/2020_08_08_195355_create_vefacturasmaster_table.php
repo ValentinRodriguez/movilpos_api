@@ -13,7 +13,7 @@ class CreateVefacturasmasterTable extends Migration
      */
     public function up()
     {
-        Schema::create('vefacturasmaster', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->create('vefacturasmaster', function (Blueprint $table) {
             $table->id();
             $table->integer('factura')->index();
             $table->integer('cod_cia')->foreign('cod_cia')->references('cod_cia')->on('empresas');
@@ -26,16 +26,16 @@ class CreateVefacturasmasterTable extends Migration
             $table->float('tarjeta')->nullable();
             $table->float('efectivo')->nullable();
             $table->float('cheque')->nullable();
-            $table->integer('tipo_cliente')->foreign('tipo_cliente')->references('tipo_cliente')->on('veclientes')->nullable();
-            $table->integer('sec_cliente')->foreign('sec_cliente')->references('sec_cliente')->on('veclientes')->nullable();
+            $table->integer('tipo_cliente')->foreign('tipo_cliente')->references('tipo_cliente')->on('mov_ventas.veclientes')->nullable();
+            $table->integer('sec_cliente')->foreign('sec_cliente')->references('sec_cliente')->on('mov_ventas.veclientes')->nullable();
             $table->text('nombre_cli')->nullable();
             $table->text('direccion')->nullable();
             $table->integer('id_pais')->nullable();
             $table->text('id_ciudad')->nullable();
             $table->text('id_zonalocal')->foreign('id_zonalocal')->references('id_zonalocal')->on('zonaslocal')->nullable();
-            $table->integer('num_emp')->foreign('num_emp')->references('num_emp')->on('noempleados');
-            // $table->foreign('cod_provincia')->references('id_ciudad')->on('ciudades');
-            // $table->foreign('id_pais')->references('id_pais')->on('paises');
+            $table->integer('num_emp')->foreign('num_emp')->references('num_emp')->on('mov_rrhh.noempleados');
+            // $table->foreign('cod_provincia')->references('id_ciudad')->on('mov_globales.ciudades');
+            // $table->foreign('id_pais')->references('id_pais')->on('mov_globales.paises');
             $table->float('total_bruto');
             $table->float('descuento')->nullable();
             $table->float('monto_itbis');
@@ -56,6 +56,6 @@ class CreateVefacturasmasterTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vefacturasmaster');
+        Schema::connection('mov_ventas')->dropIfExists('vefacturasmaster');
     }
 }

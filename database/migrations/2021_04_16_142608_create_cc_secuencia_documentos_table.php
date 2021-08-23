@@ -13,7 +13,7 @@ class CreateCcSecuenciaDocumentosTable extends Migration
      */
     public function up()
     {
-        Schema::create('cc_secuencia_documentos', function (Blueprint $table) {
+        Schema::connection('mov_cuentasxcobrar')->create('cc_secuencia_documentos', function (Blueprint $table) {
             $table->id();
             $table->integer('cod_vend')->nullabel();
             $table->integer('sec_vend')->nullabel();
@@ -33,6 +33,6 @@ class CreateCcSecuenciaDocumentosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cc_secuencia_documentos');
+        Schema::connection('mov_cuentasxcobrar')->dropIfExists('cc_secuencia_documentos');
     }
 }
