@@ -53,6 +53,6 @@ class cgcodigoestadosseed extends Seeder
       ]);
       foreach ($estados as $key => $value) {
         cgcodigoestados::create($value);
-    }
+      }
     }
 }
