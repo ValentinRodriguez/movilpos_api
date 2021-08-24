@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\compras;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\transportistas;
 use App\Librerias\zonas;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Librerias\inventario\transportistas;
+use App\Http\Controllers\ApiResponseController;
 
 class TransportistasController extends ApiResponseController
 {
@@ -77,11 +77,11 @@ class TransportistasController extends ApiResponseController
     
     public function show(Request $request,$id)
     {
-        $zona = Zonas::orderBy('created_at', 'desc')->get();
+        // $zona = Zonas::orderBy('created_at', 'desc')->get();
 
-        $transportista = transportistas::find($id);
-        $transportista->zona = $zona;
-        return $this->successResponse($transportista, $request->urlRequest);
+        // $transportista = transportistas::find($id);
+        // $transportista->zona = $zona;
+        // return $this->successResponse($transportista, $request->urlRequest);
     }
     
     public function update(Request $request, $id)

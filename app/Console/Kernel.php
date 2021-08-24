@@ -10,21 +10,21 @@ use App\Http\Controllers\CcTransaccionesController;
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        //
+        Commands\createDatabases::class
     ];
 
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->call(function(){
-            $Actividades = new ActividadesController;
-            $Actividades->ActividadesVencidas();
-        })->everyMinute();
+        // $schedule->call(function(){
+        //     $Actividades = new ActividadesController;
+        //     $Actividades->ActividadesVencidas();
+        // })->everyMinute();
 
-        $schedule->call(function(){
-            $pagos = new CcTransaccionesController;
-            $pagos->avisoPagos();
-        })->everyMinute();
+        // $schedule->call(function(){
+        //     $pagos = new CcTransaccionesController;
+        //     $pagos->avisoPagos();
+        // })->everyMinute();
     }
     
     protected function commands()

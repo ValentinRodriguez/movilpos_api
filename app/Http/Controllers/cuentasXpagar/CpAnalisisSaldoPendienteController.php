@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\cuentasXpagar;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\cpAnalisisSaldoPendiente;
 use Illuminate\Http\Request;
+
 use Barryvdh\DomPDF\Facade as PDF;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\cuentasXpagar\cpAnalisisSaldoPendiente;
 
 class cpAnalisisSaldoPendienteController extends ApiResponseController
 {

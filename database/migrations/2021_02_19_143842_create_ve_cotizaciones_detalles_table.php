@@ -8,7 +8,7 @@ class CreateVeCotizacionesDetallesTable extends Migration
 {
     public function up()
     {
-        Schema::create('ve_cotizaciones_detalles', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->create('ve_cotizaciones_detalles', function (Blueprint $table) {
             $table->id();
             $table->integer('cod_cia');
             $table->char('ventas',1);
@@ -42,6 +42,6 @@ class CreateVeCotizacionesDetallesTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('ve_cotizaciones_detalles');
+        Schema::connection('mov_ventas')->dropIfExists('ve_cotizaciones_detalles');
     }
 }

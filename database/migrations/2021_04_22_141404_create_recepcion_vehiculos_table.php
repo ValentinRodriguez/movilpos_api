@@ -13,7 +13,7 @@ class CreateRecepcionVehiculosTable extends Migration
      */
     public function up()
     {
-        Schema::create('recepcion_vehiculos', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('recepcion_vehiculos', function (Blueprint $table) {
             $table->id();
             $table->integer('cliente');
             $table->string('recibido',100);
@@ -45,6 +45,6 @@ class CreateRecepcionVehiculosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recepcion_vehiculos');
+        Schema::connection('mov_inventario')->dropIfExists('recepcion_vehiculos');
     }
 }

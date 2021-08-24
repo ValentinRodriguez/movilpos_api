@@ -1,26 +1,26 @@
 <?php
 
 namespace App\Http\Controllers\compras;
-use App\Http\Controllers\ApiResponseController;
-
 use Illuminate\Http\Request;
+
+use App\Librerias\globales\pais;
 use Illuminate\Support\Facades\DB;
-use App\Librerias\proveedores;
-use App\Librerias\cgcatalogo;
-use App\Librerias\ve_CondicionesPago;
-use App\Librerias\tipoMonedas;
-use App\Librerias\tipo_documento;
-use App\Librerias\coTipoProveedores;
-use App\Librerias\coCuentasProveedor;
-use App\Librerias\pais;
+use App\Librerias\compras\proveedores;
+use App\Librerias\empresa\tipoMonedas;
+use App\Librerias\empresa\tipo_documento;
+use App\Librerias\compras\coTipoProveedores;
+use App\Librerias\ventas\ve_CondicionesPago;
+use App\Librerias\compras\coCuentasProveedor;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\contabilidadGeneral\cgcatalogo;
 
 class proveedoresController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        $proveedores = proveedores::join('ciudades', 'ciudades.id_ciudad','=','proveedores.id_ciudad')->
-                             join('paises', 'paises.id_pais','=','proveedores.id_pais')->
-                             select('proveedores.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
+        $proveedores = proveedores::join('mov_globales.ciudades', 'mov_globales.ciudades.id_ciudad','=','proveedores.id_ciudad')->
+                             join('mov_globales.paises', 'mov_globales.paises.id_pais','=','proveedores.id_pais')->
+                             select('proveedores.*','mov_globales.ciudades.descripcion as ciudad','mov_globales.paises.descripcion as pais') ->
                              where('proveedores.estado','=','activo')->
                              get();
      
@@ -329,7 +329,7 @@ class proveedoresController extends ApiResponseController
             $_monedas = array("label" => 'monedas', "data" => $monedas, "icono" => 'fas fa-dolly-flatbed');
             $_tipoProveedor = array("label" => 'tipo-proveedor', "data" => $tipoProveedor, "icono" => 'fas fa-dolly-flatbed');
             $_tipoDocumento = array("label" => 'tipo documento', "data" => $tipoDocumento, "icono" => 'fas fa-dolly-flatbed');
-            $_paises = array("label" => 'paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
+            $_paises = array("label" => 'mov_globales.paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
 
             array_push($respuesta,$_catalogo);
             array_push($respuesta,$_condiciones);

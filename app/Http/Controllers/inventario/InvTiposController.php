@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\invTipos;
-use App\Librerias\InvProductos;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
+use App\Librerias\inventario\invTipos;
+use App\Librerias\inventario\InvProductos;
+use App\Http\Controllers\ApiResponseController;
 
 class InvTiposController extends ApiResponseController
 {
@@ -26,7 +26,7 @@ class InvTiposController extends ApiResponseController
                        "usuario_modificador"=>$request->input("usuario_modificador"),
                        "cuenta_no"          =>$request->input("cuenta_no"),
                        "estado"             =>$request->input("estado"),
-                       );
+        );
 
         $messages = ['required' => 'El campo :attribute es requerido.',
                      'unique'   => 'El campo :attribute debe ser unico',

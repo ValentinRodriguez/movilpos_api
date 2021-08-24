@@ -8,7 +8,7 @@ class CreateTipoDocumentoTable extends Migration
 {    
     public function up()
     {
-        Schema::create('tipo_documento', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->create('tipo_documento', function (Blueprint $table) {
             $table->id();
             $table->integer('tipo_documento');
             $table->unique('tipo_documento');
@@ -23,6 +23,6 @@ class CreateTipoDocumentoTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('tipo_documento');
+        Schema::connection('mov_empresa')->dropIfExists('tipo_documento');
     }
 }

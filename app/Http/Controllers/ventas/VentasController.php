@@ -1,22 +1,16 @@
 <?php
 
 namespace App\Http\Controllers\ventas;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\VentasModel;
 use Illuminate\Http\Request;
+
+use App\Librerias\ventas\VentasModel;
+use App\Http\Controllers\ApiResponseController;
 
 class VentasController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        $ventas = VentasModel::orderBy('created_at', 'desc')->
-                           get();
-
-         if ($ventas == null){
-
-            return $this->errorResponse($ventas);
-        }
+        $ventas = VentasModel::orderBy('created_at', 'desc')->get();
         return $this->successResponse($ventas, $request->urlRequest);
     }
 

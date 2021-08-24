@@ -8,7 +8,7 @@ class CreateVeCondPagosTable extends Migration
 {
     public function up()
     {
-        Schema::create('ve_cond_pagos', function (Blueprint $table) {
+        Schema::connection('mov_ventas')->create('ve_cond_pagos', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',50);
             $table->char('defecto',2);
@@ -23,6 +23,6 @@ class CreateVeCondPagosTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('ve_cond_pagos');
+        Schema::connection('mov_ventas')->dropIfExists('ve_cond_pagos');
     }
 }

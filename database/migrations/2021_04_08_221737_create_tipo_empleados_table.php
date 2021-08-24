@@ -13,7 +13,7 @@ class CreateTipoEmpleadosTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipo_empleados', function (Blueprint $table) {
+        Schema::connection('mov_rrhh')->create('tipo_empleados', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',50);
             $table->string('usuario_creador',50);
@@ -29,6 +29,6 @@ class CreateTipoEmpleadosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipo_empleados');
+        Schema::connection('mov_rrhh')->dropIfExists('tipo_empleados');
     }
 }

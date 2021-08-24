@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\inspeccionesVehiculos;
+use App\Librerias\inventario\inspeccionesVehiculos;
 
 class inspeccionesSeeder extends Seeder
 {    

@@ -8,7 +8,7 @@ class CreateCategoriaStoresTable extends Migration
 {
     public function up()
     {
-        Schema::create('categoria_stores', function (Blueprint $table) {
+        Schema::connection('mov_tienda')->create('categoria_stores', function (Blueprint $table) {
             $table->id();
             $table->integer('id_categoria');
             $table->unique('id_categoria');
@@ -24,6 +24,6 @@ class CreateCategoriaStoresTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('categoria_stores');
+        Schema::connection('mov_tienda')->dropIfExists('categoria_stores');
     }
 }

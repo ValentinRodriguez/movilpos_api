@@ -13,7 +13,7 @@ class CreateCoTipoGastosTable extends Migration
      */
     public function up()
     {
-        Schema::create('co_tipo_gastos', function (Blueprint $table) {
+        Schema::connection('mov_compras')->create('co_tipo_gastos', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateCoTipoGastosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('co_tipo_gastos');
+        Schema::connection('mov_compras')->dropIfExists('co_tipo_gastos');
     }
 }

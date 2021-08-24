@@ -8,7 +8,7 @@ class CreateCgPeriodosFiscalesTable extends Migration
 {
     public function up()
     {
-        Schema::create('cg_periodos_fiscales', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('cg_periodos_fiscales', function (Blueprint $table) {
             $table->id();
             $table->smallInteger('anio');
             $table->smallInteger('mes');
@@ -25,6 +25,6 @@ class CreateCgPeriodosFiscalesTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('cg_periodos_fiscales');
+        Schema::connection('mov_contabilidad')->dropIfExists('cg_periodos_fiscales');
     }
 }

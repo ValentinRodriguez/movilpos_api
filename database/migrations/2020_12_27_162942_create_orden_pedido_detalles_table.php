@@ -13,7 +13,7 @@ class CreateOrdenPedidoDetallesTable extends Migration
      */
     public function up()
     {
-        Schema::create('orden_pedido_detalles', function (Blueprint $table) {
+        Schema::connection('mov_rrhh')->create('orden_pedido_detalles', function (Blueprint $table) {
             $table->id();
             $table->integer('num_oc')->foreign('num_oc')->references('num_oc')->on('orden_pedido_masters');
             $table->smallInteger('secuencia');
@@ -44,6 +44,6 @@ class CreateOrdenPedidoDetallesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orden_pedido_detalles');
+        Schema::connection('mov_rrhh')->dropIfExists('orden_pedido_detalles');
     }
 }

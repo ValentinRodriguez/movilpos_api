@@ -8,7 +8,7 @@ class CreateCuadreCajasTable extends Migration
 {
     public function up()
     {
-        Schema::create('cuadre_cajas', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('cuadre_cajas', function (Blueprint $table) {
             $table->id();
             $table->smallInteger('cajero');
             $table->smallInteger('cod_cia');
@@ -33,6 +33,6 @@ class CreateCuadreCajasTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('cuadre_cajas');
+        Schema::connection('mov_contabilidad')->dropIfExists('cuadre_cajas');
     }
 }

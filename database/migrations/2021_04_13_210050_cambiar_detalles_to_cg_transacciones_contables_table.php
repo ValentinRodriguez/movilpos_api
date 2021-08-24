@@ -8,7 +8,7 @@ class CambiarDetallesToCgTransaccionesContablesTable extends Migration
 {
     public function up()
     {
-        Schema::table('cg_transacciones_contables', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->table('cg_transacciones_contables', function (Blueprint $table) {
             $table->dropColumn('detalle_1');
             $table->dropColumn('detalle_2');          
             $table->text('detalle');  
@@ -17,7 +17,7 @@ class CambiarDetallesToCgTransaccionesContablesTable extends Migration
     
     public function down()
     {
-        Schema::table('cg_transacciones_contables', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->table('cg_transacciones_contables', function (Blueprint $table) {
 
         });
     }

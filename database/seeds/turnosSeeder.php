@@ -1,7 +1,7 @@
 <?php
 
+use App\Librerias\rrhh\turnos;
 use Illuminate\Database\Seeder;
-use App\Librerias\turnos;
 
 class turnosSeeder extends Seeder
 {

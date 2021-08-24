@@ -8,14 +8,14 @@ class CambiarLimiteToEmpresasTable extends Migration
 {
     public function up()
     {
-        Schema::table('empresas', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->table('empresas', function (Blueprint $table) {
            $table->text('limite_usuarios')->nullable()->change();
         });
     }
 
     public function down()
     {
-        Schema::table('empresas', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->table('empresas', function (Blueprint $table) {
            $table->text('limite_usuarios')->change();
         });
     }

@@ -13,7 +13,7 @@ class CreateInvconteodetalleTable extends Migration
      */
     public function up()
     {
-        Schema::create('invconteodetalle', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('invconteodetalle', function (Blueprint $table) {
             $table->id();
             $table->integer('num_doc');
             $table->foreign('num_doc')->references('num_doc')->on('invconteo');
@@ -33,6 +33,6 @@ class CreateInvconteodetalleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invconteodetalle');
+        Schema::connection('mov_inventario')->dropIfExists('invconteodetalle');
     }
 }

@@ -1,19 +1,19 @@
 <?php
 
 namespace App\Http\Controllers\compras;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\co_DireccionesEnvio;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
+use App\Librerias\compras\co_DireccionesEnvio;
+use App\Http\Controllers\ApiResponseController;
 
 class CoDireccionesEnvioController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        $direcciones = co_DireccionesEnvio::join('ciudades', 'ciudades.id_ciudad','=','co_direcciones_envios.id_ciudad')->
-                                        join('paises', 'paises.id_pais','=','co_direcciones_envios.id_pais')->
-                                        select('co_direcciones_envios.*','ciudades.descripcion as ciudad','paises.descripcion as pais') ->
+        $direcciones = co_DireccionesEnvio::join('mov_globales.ciudades', 'mov_globales.ciudades.id_ciudad','=','co_direcciones_envios.id_ciudad')->
+                                        join('mov_globales.paises', 'mov_globales.paises.id_pais','=','co_direcciones_envios.id_pais')->
+                                        select('co_direcciones_envios.*','mov_globales.ciudades.descripcion as ciudad','mov_globales.paises.descripcion as pais') ->
                                         where('co_direcciones_envios.estado','=','activo')->
                                         get();
 

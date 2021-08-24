@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\rrhh;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\turnos;
 use Illuminate\Http\Request;
+
+use App\Librerias\rrhh\turnos;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ApiResponseController;
 
 class TurnosController extends ApiResponseController
 {

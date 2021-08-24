@@ -8,7 +8,7 @@ class CreateCcTransaccionesTable extends Migration
 {
     public function up()
     {
-        Schema::create('cc_transacciones', function (Blueprint $table) {
+        Schema::connection('mov_contabilidad')->create('cc_transacciones', function (Blueprint $table) {
             $table->id();
             $table->string('cuenta_no',8)->nullable();
             $table->smallInteger('cod_cia')->nullable();
@@ -48,6 +48,6 @@ class CreateCcTransaccionesTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('cc_transacciones');
+        Schema::connection('mov_contabilidad')->dropIfExists('cc_transacciones');
     }
 }

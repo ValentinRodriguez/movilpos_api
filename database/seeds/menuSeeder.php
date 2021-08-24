@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\Menu;
 use Illuminate\Support\Facades\DB;
+use App\Librerias\globales\Menu;
 
 class menuSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('menus')->truncate();
+        DB::table('mov_globales.menus')->truncate();
         $menues = array(
 
             // PANEL DE CONTROL 1

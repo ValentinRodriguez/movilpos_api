@@ -1,23 +1,22 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
+use Illuminate\Http\Request;
+
+use App\Librerias\globales\medidas;
+use App\Librerias\inventario\Bodegas;
+use App\Librerias\inventario\invTipos;
+use Illuminate\Support\Facades\Storage;
+use App\Librerias\inventario\BrandsModel;
+use App\Librerias\inventario\InvProductos;
+use App\Librerias\inventario\tipoProducto;
+use App\Librerias\compras\coOrdenesDetalle;
+use App\Librerias\ventas\ordenPedidoDetalle;
+use App\Librerias\inventario\CategoriasModel;
+use App\Librerias\inventario\Propiedadesprod;
 use App\Http\Controllers\ApiResponseController;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Librerias\InvProductos;
-use App\Librerias\Invtransaccdetallemodel;
-use App\Librerias\coOrdenesDetalle;
-use App\Librerias\ordenPedidoDetalle;
-use App\Librerias\invTipos;
-use App\Librerias\CategoriasModel;
-use App\Librerias\BrandsModel;
-use App\Librerias\Bodegas;
-use App\Librerias\tipoProducto;
-use App\Librerias\medidas;
-use App\Librerias\Propiedadesprod;
-
-use App\Librerias\iptb00002;
+use App\Librerias\inventario\Invtransaccdetallemodel;
 
 class InvProductosController extends ApiResponseController
 {
@@ -25,19 +24,6 @@ class InvProductosController extends ApiResponseController
     {
         $productos = InvProductos::ConDetalles();
         return $this->successResponse($productos);
-    }
-
-    public function indexMovil(Request $request)
-    {
-        $productos = iptb00002::where('iptb00002.status_t','=',null)->
-                                join('iptb00020','iptb00020.cod_n','=','iptb00002.cod_n')->
-                                join('iptb00024','iptb00024.cod_tipo','=','iptb00002.cod_tipo')->
-                                join('iptb00029','iptb00029.cod_grupo','=','iptb00002.cod_grupo')->
-                                join('iptb00030','iptb00030.cod_sec','=','iptb00002.cod_sec')->
-                                select('iptb00002.*','iptb00020.producto as condicion','iptb00024.descripcion as modelo',
-                                       'iptb00029.descripcion as marca','iptb00030.descripcion as color')->
-                                get();
-        return $this->successResponse($productos, $request->urlRequest);
     }
 
     public function indexSinExistencia(Request $request)
@@ -325,9 +311,9 @@ class InvProductosController extends ApiResponseController
                                   get();
     
             $bodegas = Bodegas::orderBy('id_bodega', 'asc')->
-                                join('paises','paises.id_pais','=','bodegas.id_pais')->
-                                join('ciudades','ciudades.id_ciudad','=','bodegas.id_ciudad')->
-                                select('bodegas.*','paises.descripcion as pais','ciudades.descripcion as ciudad')->
+                                join('mov_globales.paises','mov_globales.paises.id_pais','=','bodegas.id_pais')->
+                                join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','bodegas.id_ciudad')->
+                                select('bodegas.*','mov_globales.paises.descripcion as pais','mov_globales.ciudades.descripcion as ciudad')->
                                 where('bodegas.estado','=','ACTIVO')->
                                 get();
     

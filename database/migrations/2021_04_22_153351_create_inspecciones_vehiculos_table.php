@@ -13,7 +13,7 @@ class CreateInspeccionesVehiculosTable extends Migration
      */
     public function up()
     {
-        Schema::create('inspecciones_vehiculos', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('inspecciones_vehiculos', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion');
             $table->string('campo');
@@ -29,6 +29,6 @@ class CreateInspeccionesVehiculosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inspecciones_vehiculos');
+        Schema::connection('mov_inventario')->dropIfExists('inspecciones_vehiculos');
     }
 }

@@ -1,17 +1,17 @@
 <?php
 
 namespace App\Http\Controllers\ventas;
-use App\Http\Controllers\ApiResponseController;
 use Illuminate\Http\Request;
+use App\Librerias\globales\pais;
 use Illuminate\Support\Facades\DB;
-use App\librerias\Mclientes;
-use App\librerias\ve_CondicionesPago;
-use App\Librerias\tipo_documento;
-use App\Librerias\noempleados;
-use App\Librerias\tipoNegocio;
-use App\Librerias\tipoClientes;
-use App\Librerias\Nacionalidades;
-use App\Librerias\pais;
+use App\Librerias\rrhh\noempleados;
+use App\Librerias\ventas\Mclientes;
+use App\Librerias\empresa\tipoNegocio;
+use App\Librerias\ventas\tipoClientes;
+use App\Librerias\empresa\tipo_documento;
+use App\Librerias\globales\Nacionalidades;
+use App\Librerias\ventas\ve_CondicionesPago;
+use App\Http\Controllers\ApiResponseController;
 
 class MclientesController extends ApiResponseController
 {
@@ -19,8 +19,8 @@ class MclientesController extends ApiResponseController
         try {
             $respuesta = array();
 
-            $vendedor = noempleados::where('noempleados.id_puesto','=','3')->
-                                    select('noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
+            $vendedor = noempleados::where('mov_rrhh.noempleados.id_puesto','=','3')->
+                                    select('mov_rrhh.noempleados.*',DB::raw("CONCAT(noempleados.primernombre,' ',noempleados.primerapellido) AS nombre_empleado"))->
                                     get();
 
             $tipo_documento = tipo_documento::orderBy('tipo_documento', 'asc')->
@@ -49,7 +49,7 @@ class MclientesController extends ApiResponseController
             $_tipoCliente = array("label" => 'tipo-cliente', "data" => $tipoCliente, "icono" => 'fas fa-dolly-flatbed');
             $_condiciones = array("label" => 'condiciones', "data" => $condiciones, "icono" => 'fas fa-dolly-flatbed');
             $_nacionalidades = array("label" => 'nacionalidades', "data" => $nacionalidades, "icono" => 'fas fa-dolly-flatbed');
-            $_paises = array("label" => 'paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
+            $_paises = array("label" => 'mov_globales.paises', "data" => $paises, "icono" => 'fas fa-dolly-flatbed');
 
             array_push($respuesta,$_vendedor);
             array_push($respuesta,$_tipo_documento);
@@ -67,24 +67,24 @@ class MclientesController extends ApiResponseController
 
     public function index(Request $request)
     {
-        $clientes = Mclientes::join('paises','paises.id_pais','=','veclientes.id_pais')->
-                               join('ciudades','ciudades.id_ciudad','=','veclientes.id_ciudad')->
-                               join('municipios','municipios.id_municipio','=','veclientes.id_municipio')->
-                               join('provincias','provincias.id_provincia','=','veclientes.id_provincia')->
-                               join('regiones','regiones.id_region','=','veclientes.id_region')->
-                               join('nacionalidades','nacionalidades.id','=','veclientes.nacionalidad')->
-                               leftjoin('sectores','sectores.id_sector','=','veclientes.id_sector')->
-                               select('veclientes.*',
-                                      'paises.descripcion as pais',
-                                      'ciudades.descripcion as ciudad',
-                                      'municipios.descripcion as municipio',
-                                      'regiones.descripcion as region',
-                                      'sectores.descripcion as sector',
-                                      'nacionalidades.nacionalidad as nacionalidad_cliente',
-                                      'provincias.descripcion as provincia'
+        $clientes = Mclientes::join('mov_globales.paises','mov_globales.paises.id_pais','=','mov_ventas.veclientes.id_pais')->
+                               join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','mov_ventas.veclientes.id_ciudad')->
+                               join('mov_globales.municipios','mov_globales.municipios.id_municipio','=','mov_ventas.veclientes.id_municipio')->
+                               join('mov_globales.provincias','mov_globales.provincias.id_provincia','=','mov_ventas.veclientes.id_provincia')->
+                               join('mov_globales.regiones','mov_globales.regiones.id_region','=','mov_ventas.veclientes.id_region')->
+                               join('mov_globales.nacionalidades','mov_globales.nacionalidades.id','=','mov_ventas.veclientes.nacionalidad')->
+                               leftjoin('mov_globales.sectores','mov_globales.sectores.id_sector','=','mov_ventas.veclientes.id_sector')->
+                               select('mov_ventas.veclientes.*',
+                                      'mov_globales.paises.descripcion as pais',
+                                      'mov_globales.ciudades.descripcion as ciudad',
+                                      'mov_globales.municipios.descripcion as municipio',
+                                      'mov_globales.regiones.descripcion as region',
+                                      'mov_globales.sectores.descripcion as sector',
+                                      'mov_globales.nacionalidades.nacionalidad as nacionalidad_cliente',
+                                      'mov_globales.provincias.descripcion as provincia'
                                       )->
                                orderBy('created_at', 'desc')->
-                               where('veclientes.estado','=','ACTIVO')->
+                               where('mov_ventas.veclientes.estado','=','ACTIVO')->
                                get();
                                
         return $this->successResponse($clientes, $request->urlRequest);
@@ -283,11 +283,13 @@ class MclientesController extends ApiResponseController
         $num_rnc = $request->get('num_rnc');
         $vendedor =$request->get('vendedor');
         
-        $busqueda = Mclientes::join('paises','paises.id_pais','=','veclientes.id_pais')->
-        join('zonas_local','zonas_local.id_zonalocal','=','veclientes.id_zonalocal')->
-        join('ciudades','ciudades.id_ciudad','=','veclientes.id_ciudad')->
-        select('veclientes.*','paises.descripcion as pais','ciudades.descripcion as ciudad',
-               'zonas_local.descripcion as zona local')->           
+        $busqueda = Mclientes::join('mov_globales.paises','mov_globales.paises.id_pais','=','mov_ventas.veclientes.id_pais')->
+        join('mov_globales.zonas_local','mov_globales.zonas_local.id_zonalocal','=','mov_ventas.veclientes.id_zonalocal')->
+        join('mov_globales.ciudades','mov_globales.ciudades.id_ciudad','=','mov_ventas.veclientes.id_ciudad')->
+        select('mov_ventas.veclientes.*',
+               'mov_globales.paises.descripcion as pais',
+               'mov_globales.ciudades.descripcion as ciudad',
+               'mov_globales.zonas_local.descripcion as zona local')->           
                parametro($parametro)->
                rnc($num_rnc)->
                vendedor($vendedor)->

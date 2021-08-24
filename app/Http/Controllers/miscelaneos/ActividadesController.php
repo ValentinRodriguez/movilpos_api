@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\miscelaneos;
 use App\Http\Controllers\ApiResponseController;
 
-use App\Librerias\Actividades;
+use App\Librerias\miscelaneos\Actividades;
 use App\Mail\actividadesMailable;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
@@ -152,11 +152,11 @@ class ActividadesController extends ApiResponseController
         $rango['hasta'] = $date->format('Y-m-d H:i:s');
         
         $actividades = Actividades::orderBy('created_at', 'desc')-> 
-                                    join('users','users.username','=','actividades.username')->
+                                    join('mov_usuarios.users','mov_usuarios.users.username','=','actividades.username')->
                                     where([['actividades.enviado','=','no'],
                                            ['actividades.estado','=','ACTIVO']])->
                                     wherebetween('actividades.notificacion',[$rango['desde'], $rango['hasta']])->      
-                                    select('actividades.*','users.email')->
+                                    select('actividades.*','mov_usuarios.users.email')->
                                     get();    
                                                               
         if (count($actividades) != 0) {

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\Nacionalidades;
+use App\Librerias\globales\Nacionalidades;
 
 class nacionalidadesSeeder extends Seeder
 {

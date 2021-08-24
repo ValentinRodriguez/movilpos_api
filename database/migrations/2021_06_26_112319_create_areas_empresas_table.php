@@ -8,7 +8,7 @@ class CreateAreasEmpresasTable extends Migration
 {
     public function up()
     {
-        Schema::create('areas_empresas', function (Blueprint $table) {
+        Schema::connection('mov_empresa')->create('areas_empresas', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion',100); 
             $table->smallInteger('cod_cia');
@@ -23,6 +23,6 @@ class CreateAreasEmpresasTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('areas_empresas');
+        Schema::connection('mov_empresa')->dropIfExists('areas_empresas');
     }
 }

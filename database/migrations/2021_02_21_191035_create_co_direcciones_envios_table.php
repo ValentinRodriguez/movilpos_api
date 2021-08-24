@@ -8,7 +8,7 @@ class CreateCoDireccionesEnviosTable extends Migration
 {
     public function up()
     {
-        Schema::create('co_direcciones_envios', function (Blueprint $table) {
+        Schema::connection('mov_compras')->create('co_direcciones_envios', function (Blueprint $table) {
             $table->id();
             $table->text('nombre');
             $table->text('direccion_a');
@@ -25,6 +25,6 @@ class CreateCoDireccionesEnviosTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('co_direcciones_envios');
+        Schema::connection('mov_compras')->dropIfExists('co_direcciones_envios');
     }
 }

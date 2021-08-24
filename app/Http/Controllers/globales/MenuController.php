@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\Menu;
 use Illuminate\Http\Request;
+
+use App\Librerias\globales\Menu;
+use App\Http\Controllers\ApiResponseController;
 
 class MenuController extends ApiResponseController
 {

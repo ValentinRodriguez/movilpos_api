@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\sucursales;
+use App\Librerias\empresa\sucursales;
 
 class sucursalesSeeder extends Seeder
 {

@@ -13,7 +13,7 @@ class CreateCpTransaccionesDetallesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cp_transacciones_detalles', function (Blueprint $table) {
+        Schema::connection('mov_cuentasxpagar')->create('cp_transacciones_detalles', function (Blueprint $table) {
             $table->id();
             $table->datetime('fecha');
             $table->smallInteger('cod_sp');
@@ -45,6 +45,6 @@ class CreateCpTransaccionesDetallesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cp_transacciones_detalles');
+        Schema::connection('mov_cuentasxpagar')->dropIfExists('cp_transacciones_detalles');
     }
 }

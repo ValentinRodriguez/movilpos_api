@@ -1,18 +1,16 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\Perfiles;
 use Illuminate\Http\Request;
+
+use App\Librerias\usuarios\Perfiles;
+use App\Http\Controllers\ApiResponseController;
 
 class PerfilesController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        $perfiles = Perfiles::orderBy('created_at', 'desc')->
-        get();
-
+        $perfiles = Perfiles::orderBy('created_at', 'desc')->get();
         return $this->successResponse($perfiles, $request->urlRequest);
     }
 

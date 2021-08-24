@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\bancos;
+use App\Librerias\globales\bancos;
 class bancosSeeder extends Seeder
 {
     public function run()

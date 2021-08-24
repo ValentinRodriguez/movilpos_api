@@ -13,12 +13,12 @@ class CreateBodegasUsuariosTable extends Migration
      */
     public function up()
     {
-        Schema::create('bodegas_usuarios', function (Blueprint $table) {
+        Schema::connection('mov_usuarios')->create('bodegas_usuarios', function (Blueprint $table) {
             $table->id();
             $table->string('email')->index();
             $table->foreign('email')->references('email')->on('users');
             $table->integer('id_bodega')->index();
-            $table->foreign('id_bodega')->references('id_bodega')->on('bodegas');
+            $table->foreign('id_bodega')->references('id_bodega')->on('mov_inventario.bodegas');
             $table->string('usuario_creador')->index();
             $table->string('estado',10);
             $table->timestamps();
@@ -32,6 +32,6 @@ class CreateBodegasUsuariosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bodegas_usuarios');
+        Schema::connection('mov_usuarios')->dropIfExists('bodegas_usuarios');
     }
 }

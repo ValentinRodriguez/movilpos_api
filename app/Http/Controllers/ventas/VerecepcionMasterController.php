@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\ventas;
-use App\Http\Controllers\ApiResponseController;
-use Illuminate\Support\Facades\DB;
-use App\librerias\verecepcion_master;
-use App\librerias\verecepcion_detalle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Librerias\ventas\verecepcion_master;
+use App\Librerias\ventas\verecepcion_detalle;
+use App\Http\Controllers\ApiResponseController;
 
 class VerecepcionMasterController extends ApiResponseController
 {
@@ -16,7 +16,7 @@ class VerecepcionMasterController extends ApiResponseController
      */
     public function index(Request $request)
     {
-       $recepcion=verecepcion_master::join('verecepcion_detalles','verecepcion_detalles.num_oc','=','verecepcion_master.num_oc')
+       $recepcion = verecepcion_master::join('verecepcion_detalles','verecepcion_detalles.num_oc','=','verecepcion_master.num_oc')
                                         ->join('veclientes',function($join){
                                             $join->on('verecepcion_master.tipo_cliente','=','veclientes.tipo_cliente')->
                                             oron('verecepcion_master.sec_cliente','=','veclientes.sec_cliente');

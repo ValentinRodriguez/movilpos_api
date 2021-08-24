@@ -1,15 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\rrhh;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\areasEmpresa;
-use App\Librerias\Empresa;
-use App\Librerias\sucursales;
-use App\Librerias\Departamento;
-use App\Librerias\noempleados;
 use Illuminate\Http\Request;
+
+use App\Librerias\empresa\Empresa;
 use Illuminate\Support\Facades\DB;
+use App\Librerias\rrhh\noempleados;
+use App\Librerias\rrhh\Departamento;
+use App\Librerias\empresa\sucursales;
+use App\Librerias\empresa\areasEmpresa;
+use App\Http\Controllers\ApiResponseController;
 
 class AreasEmpresaController extends ApiResponseController
 {
@@ -17,11 +17,11 @@ class AreasEmpresaController extends ApiResponseController
     {
         $areas = areasEmpresa::leftjoin('empresas','areas_empresas.cod_cia','=','empresas.cod_cia')->
                                leftjoin('sucursales','sucursales.id','=','areas_empresas.id')->
-                               join('nodepartamentos','nodepartamentos.id','=','areas_empresas.depto')->
+                               join('mov_rrhh.nodepartamentos','mov_rrhh.nodepartamentos.id','=','areas_empresas.depto')->
                                select('areas_empresas.*',
                                       'empresas.nombre as empresa',
                                       'sucursales.descripcion as sucursal',
-                                      'nodepartamentos.descripcion as departamento')->                                
+                                      'mov_rrhh.nodepartamentos.descripcion as departamento')->                                
                                where('areas_empresas.estado','=','ACTIVO')->
                                get();
 

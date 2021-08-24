@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\tipoMonedas;
+use App\Librerias\empresa\tipoMonedas;
 
 class MonedasSeeder extends Seeder
 {

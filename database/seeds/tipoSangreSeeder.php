@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\tipoSangre;
+use App\Librerias\globales\tipoSangre;
 
 class tipoSangreSeeder extends Seeder
 {

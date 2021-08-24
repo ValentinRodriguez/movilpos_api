@@ -11,6 +11,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
   
+    protected $connection = 'mov_usuarios';
+    
     protected $fillable = ['username','name','surname','email','impresora','password','foto','estado','id'];
 
     protected $hidden = ['password', 'remember_token'];

@@ -8,7 +8,7 @@ class CrateZonaslocalTable extends Migration
 {
     public function up()
     {
-        Schema::create('zonas_local', function (Blueprint $table) {
+        Schema::connection('mov_globales')->create('zonas_local', function (Blueprint $table) {
             $table->id();
             $table->integer('id_zonalocal')->unique();
             $table->string('estado',20);
@@ -19,6 +19,6 @@ class CrateZonaslocalTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('zonas_local');
+        Schema::connection('mov_globales')->dropIfExists('zonas_local');
     }
 }

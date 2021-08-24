@@ -13,7 +13,7 @@ class CreateCoOrdenesMastersTable extends Migration
      */
     public function up()
     {
-        Schema::create('co_ordenes_masters', function (Blueprint $table) {
+        Schema::connection('mov_compras')->create('co_ordenes_masters', function (Blueprint $table) {
             $table->id();
             $table->integer('num_oc')->unique();
             $table->date('fecha')->nullable();
@@ -30,9 +30,9 @@ class CreateCoOrdenesMastersTable extends Migration
             $table->integer('id_moneda');
             $table->text('nombre');
             $table->integer('id_pais');
-            // $table->foreign('id_pais')->references('id_pais')->on('paises');
+            // $table->foreign('id_pais')->references('id_pais')->on('mov_globales.paises');
             $table->integer('id_ciudad');
-            // $table->foreign('id_ciudad')->references('id_ciudad')->on('ciudades');
+            // $table->foreign('id_ciudad')->references('id_ciudad')->on('mov_globales.ciudades');
             $table->text('direccion_a');
             $table->text('direccion_b');
             $table->string('telefono',30);
@@ -60,6 +60,6 @@ class CreateCoOrdenesMastersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('co_ordenes_masters');
+        Schema::connection('mov_compras')->dropIfExists('co_ordenes_masters');
     }
 }

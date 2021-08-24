@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\cgcatalogo;
+use App\Librerias\contabilidadGeneral\cgcatalogo;
 
 class cuentaSeeder extends Seeder
 {

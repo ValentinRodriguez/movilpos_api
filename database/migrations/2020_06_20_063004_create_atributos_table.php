@@ -13,7 +13,7 @@ class CreateAtributosTable extends Migration
      */
     public function up()
     {
-        Schema::create('atributos', function (Blueprint $table) {
+        Schema::connection('mov_tienda')->create('atributos', function (Blueprint $table) {
             $table->id();
             $table->integer('id_atributo');
             $table->string('nombre',100);
@@ -34,6 +34,6 @@ class CreateAtributosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('atributos');
+        Schema::connection('mov_tienda')->dropIfExists('atributos');
     }
 }

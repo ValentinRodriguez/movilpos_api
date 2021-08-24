@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\noempleados;
 use Illuminate\Support\Facades\DB;
+use App\Librerias\rrhh\noempleados;
 
 class empleadosSeeder extends Seeder
 {    
     public function run()
     {
 
-        DB::table('noempleados')->truncate();
+        DB::table('mov_rrhh.noempleados')->truncate();
         
         $empleado = array(
             [

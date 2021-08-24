@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\ciudad;
 use Illuminate\Http\Request;
+
+use App\Librerias\globales\ciudad;
+use App\Http\Controllers\ApiResponseController;
 
 class CiudadController extends ApiResponseController
 {
@@ -71,36 +71,12 @@ class CiudadController extends ApiResponseController
     {
         //
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ciudad  $ciudad
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ciudad $ciudad)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ciudad  $ciudad
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, ciudad $ciudad)
     {
         //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\ciudad  $ciudad
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(ciudad $ciudad)
     {
         //

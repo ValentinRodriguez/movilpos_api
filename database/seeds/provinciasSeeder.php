@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Librerias\provincias;
+use App\Librerias\globales\provincias;
 
 class provinciasSeeder extends Seeder
 {

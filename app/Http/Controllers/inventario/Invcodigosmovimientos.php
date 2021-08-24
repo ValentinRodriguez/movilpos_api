@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
-use App\Http\Controllers\ApiResponseController;
-
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
-use App\Librerias\Invtiposmovimientos;
-use App\Librerias\Invcuentasmovimientos;
-use App\Librerias\InvUsuarioMovimiento;
+use App\Librerias\inventario\InvUsuarioMovimiento;
+use App\Librerias\inventario\Invcuentasmovimientos;
+use App\Http\Controllers\ApiResponseController;
+use App\Librerias\inventario\Invtiposmovimientos;
 
 class Invcodigosmovimientos extends ApiResponseController
 {
@@ -16,18 +16,21 @@ class Invcodigosmovimientos extends ApiResponseController
         $codigomov = Invtiposmovimientos::orderby('id_tipomov','ASC')->
                                           where('estado','=','ACTIVO')->get();
 
-        $cuentas = Invcuentasmovimientos::join('cgcatalogo','cgcatalogo.cuenta_no','=','invcuentasmovimientos.cuenta_no')->
+        $cuentas = Invcuentasmovimientos::join('mov_contabilidad.cgcatalogo','mov_contabilidad.cgcatalogo.cuenta_no','=','invcuentasmovimientos.cuenta_no')->
                                           orderby('invcuentasmovimientos.id_tipomov','ASC')->
-                                          select('invcuentasmovimientos.id_tipomov','cgcatalogo.*')->
+                                          select('invcuentasmovimientos.id_tipomov','mov_contabilidad.cgcatalogo.*')->
                                           where('invcuentasmovimientos.estado','=','ACTIVO')->
-                                          where('cgcatalogo.estado','=','ACTIVO')->
+                                          where('mov_contabilidad.cgcatalogo.estado','=','ACTIVO')->
                                           get();
 
-        $usuarios = InvUsuarioMovimiento::join('users','users.email','=','invusuariosmovimientos.email')->
+        $usuarios = InvUsuarioMovimiento::join('mov_usuarios.users','mov_usuarios.users.email','=','invusuariosmovimientos.email')->
                                           orderby('invusuariosmovimientos.id_tipomov','ASC')->
-                                          select('invusuariosmovimientos.*','users.name as name','users.surname as surname','users.username as username')->
+                                          select('invusuariosmovimientos.*',
+                                                 'mov_usuarios.users.name as name',
+                                                 'mov_usuarios.users.surname as surname',
+                                                 'mov_usuarios.users.username as username')->
                                           where('invusuariosmovimientos.estado','=','ACTIVO')->
-                                          where('users.estado','=','ACTIVO')->
+                                          where('mov_usuarios.users.estado','=','ACTIVO')->
                                           get();
 
         $respuesta = array('codigosmov' => $codigomov, 'cuentas' => $cuentas,'usuarios' => $usuarios);
@@ -109,6 +112,7 @@ class Invcodigosmovimientos extends ApiResponseController
                     Invtiposmovimientos::create($datos);
                     
                     $totalCuentas = count($datos['cuenta_no']);
+
                     for ($i=0; $i < $totalCuentas; $i++) {                        
                         $cuentas = array("id_tipomov" => $idsecuencia,
                                          "cuenta_no"  => $datos['cuenta_no'][$i]['cuenta_no'],
@@ -153,17 +157,22 @@ class Invcodigosmovimientos extends ApiResponseController
                                           where([['id_tipomov','=', $id],['estado','=','ACTIVO']])->
                                           get();
 
-        $cuentas = Invcuentasmovimientos::join('cgcatalogo','cgcatalogo.cuenta_no','=','invcuentasmovimientos.cuenta_no')->
+        $cuentas = Invcuentasmovimientos::join('mov_contabilidad.cgcatalogo','mov_contabilidad.cgcatalogo.cuenta_no','=','invcuentasmovimientos.cuenta_no')->
                                         orderby('invcuentasmovimientos.id_tipomov','ASC')->
-                                        select('invcuentasmovimientos.id_tipomov','cgcatalogo.*')->
+                                        select('invcuentasmovimientos.id_tipomov','mov_contabilidad.cgcatalogo.*')->
                                         where([['id_tipomov','=', $id],['invcuentasmovimientos.estado','=','ACTIVO']])->
-                                        where('cgcatalogo.estado','=','ACTIVO')->
+                                        where('mov_contabilidad.cgcatalogo.estado','=','ACTIVO')->
                                         get();
 
-        $usuarios = InvUsuarioMovimiento::join('users','users.email','=','invusuariosmovimientos.email')->
+        $usuarios = InvUsuarioMovimiento::join('mov_usuarios.users','mov_usuarios.users.email','=','invusuariosmovimientos.email')->
                                         orderby('invusuariosmovimientos.id_tipomov','ASC')->
-                                        select('invusuariosmovimientos.*','users.name as name','users.surname as surname','users.username as username')->
-                                        where([['invusuariosmovimientos.id_tipomov','=', $id],['users.estado','=','ACTIVO'],['invusuariosmovimientos.estado','=','ACTIVO']])->
+                                        select('invusuariosmovimientos.*',
+                                               'mov_usuarios.users.name as name',
+                                               'mov_usuarios.users.surname as surname',
+                                               'mov_usuarios.users.username as username')->
+                                        where([['invusuariosmovimientos.id_tipomov','=', $id],
+                                               ['mov_usuarios.users.estado','=','ACTIVO'],
+                                               ['invusuariosmovimientos.estado','=','ACTIVO']])->
                                         get();
 
         $respuesta = array('codigosmov' => $codigomov, 'cuentas' => $cuentas,'usuarios' => $usuarios);

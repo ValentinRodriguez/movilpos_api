@@ -14,12 +14,14 @@ class CreateInvCuentasMovimientosTable extends Migration
      */
     public function up()
     {
-        Schema::create('invcuentasmovimientos', function (Blueprint $table) {
+        Schema::connection('mov_inventario')->create('invcuentasmovimientos', function (Blueprint $table) {
+            // $databaseName = Config::get('database.connections.'.Config::get('database.default'));
+            // $table->foreign('id_tipomov')->references('id_tipomov')->on(new Expression($databaseName['database'] . '.invtiposmovimientos'));
             $table->id();
             $table->integer('id_tipomov');
             $table->string('cuenta_no',25);
-            $table->foreign('cuenta_no')->references('cuenta_no')->on('cgcatalogo');
-            $table->foreign('id_tipomov')->references('id_tipomov')->on('invtiposmovimientos');
+            $table->foreign('cuenta_no')->references('cuenta_no')->on('mov_contabilidad.cgcatalogo');
+            $table->foreign('id_tipomov')->references('id_tipomov')->on('mov_inventario.invtiposmovimientos');
             $table->string('estado',100);
             $table->timestamps();
         });
@@ -32,6 +34,6 @@ class CreateInvCuentasMovimientosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('invcuentasmovimientos');
+        Schema::connection('mov_inventario')->dropIfExists('invcuentasmovimientos');
     }
 }

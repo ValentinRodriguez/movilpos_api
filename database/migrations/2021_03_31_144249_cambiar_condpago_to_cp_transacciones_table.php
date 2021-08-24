@@ -8,7 +8,7 @@ class CambiarCondpagoToCpTransaccionesTable extends Migration
 {
     public function up()
     {
-        Schema::table('cp_transacciones', function (Blueprint $table) {
+        Schema::connection('mov_cuentasxpagar')->table('cp_transacciones', function (Blueprint $table) {
             $table->text('cond_pago')->nullable()->change();
             $table->text('itbis')->nullable()->change();
         });
@@ -16,7 +16,7 @@ class CambiarCondpagoToCpTransaccionesTable extends Migration
     
     public function down()
     {
-        Schema::table('cp_transacciones', function (Blueprint $table) {
+        Schema::connection('mov_cuentasxpagar')->table('cp_transacciones', function (Blueprint $table) {
             $table->text('cond_pago')->change();
             $table->text('itbis')->change();
         });

@@ -13,7 +13,7 @@ class CreateCpTransaccionesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cp_transacciones', function (Blueprint $table) {
+        Schema::connection('mov_cuentasxpagar')->create('cp_transacciones', function (Blueprint $table) {
             $table->id();
             $table->string('num_doc',25);
             $table->date('fecha_orig');
@@ -54,6 +54,6 @@ class CreateCpTransaccionesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cp_transacciones');
+        Schema::connection('mov_cuentasxpagar')->dropIfExists('cp_transacciones');
     }
 }

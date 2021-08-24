@@ -8,7 +8,7 @@ class CreateCoPuertosTable extends Migration
 {
     public function up()
     {
-        Schema::create('co_puertos', function (Blueprint $table) {
+        Schema::connection('mov_compras')->create('co_puertos', function (Blueprint $table) {
             $table->id();
             $table->text('descripcion');
             $table->smallInteger('dias');
@@ -21,6 +21,6 @@ class CreateCoPuertosTable extends Migration
     
     public function down()
     {
-        Schema::dropIfExists('co_puertos');
+        Schema::connection('mov_compras')->dropIfExists('co_puertos');
     }
 }

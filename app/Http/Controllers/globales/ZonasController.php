@@ -1,18 +1,18 @@
 <?php
 
 namespace App\Http\Controllers\globales;
-use App\Http\Controllers\ApiResponseController;
-
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Librerias\zonas;
+
+use App\Librerias\globales\zonas;
+use Illuminate\Support\Facades\DB;
 use App\Librerias\zonas_provincias;
+use App\Http\Controllers\ApiResponseController;
 
 class ZonasController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        $zona = Zonas::orderBy('created_at', 'desc')->get();
+        $zona = zonas::orderBy('created_at', 'desc')->get();
         foreach ($zona as $key => $value) {
             $zonaProvincia = zonas_provincias::join('provincias','provincias.id_provincia','=','zonas_provincias.id_provincia')->
                                                select('zonas_provincias.id_provincia','provincias.descripcion')->

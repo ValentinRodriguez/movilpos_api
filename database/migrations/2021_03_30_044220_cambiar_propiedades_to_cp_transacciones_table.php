@@ -8,14 +8,14 @@ class CambiarPropiedadesToCpTransaccionesTable extends Migration
 {
     public function up()
     {
-        Schema::table('cp_transacciones', function (Blueprint $table) {
+        Schema::connection('mov_cuentasxpagar')->table('cp_transacciones', function (Blueprint $table) {
             $table->text('detalle')->nullable()->change();
         });
     }
 
     public function down()
     {
-        Schema::table('cp_transacciones', function (Blueprint $table) {
+        Schema::connection('mov_cuentasxpagar')->table('cp_transacciones', function (Blueprint $table) {
             $table->text('detalle')->change();
         });
     }

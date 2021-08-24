@@ -1,13 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
-use App\Http\Controllers\ApiResponseController;
+use Illuminate\Http\Request;
 use App\Librerias\SubCategoria;
 use App\Librerias\SubSubCategoria;
-use App\Librerias\CategoriasModel;
-use App\Librerias\InvProductos;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Librerias\inventario\InvProductos;
+use App\Librerias\inventario\CategoriasModel;
+use App\Http\Controllers\ApiResponseController;
 
 class CategoriasController extends ApiResponseController
 {

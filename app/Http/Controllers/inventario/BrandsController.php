@@ -1,21 +1,18 @@
 <?php
 
 namespace App\Http\Controllers\inventario;
-use App\Http\Controllers\ApiResponseController;
-
-use App\Librerias\BrandsModel;
-use App\librerias\invProductos;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
+use App\Librerias\inventario\BrandsModel;
+use App\Librerias\inventario\InvProductos;
+use App\Http\Controllers\ApiResponseController;
 
 class BrandsController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        $brand = BrandsModel::orderBy('id_brand', 'asc')->
-                              where('estado','=','ACTIVO')->
-                              get();
-                              
+        $brand = BrandsModel::orderBy('id_brand', 'asc')->where('estado','=','ACTIVO')->get();                              
         return $this->successResponse($brand, $request->urlRequest);
     }
 
