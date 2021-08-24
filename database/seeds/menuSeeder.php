@@ -66,7 +66,7 @@ class menuSeeder extends Seeder
 
             //MODULO DE CONTABILIDAD GENERAL
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp1','nombre' => 'gestion del catalogo cuentas','descripcion' => 'menu de contabilidad general','url' => 'gestion-catalogo-cuentas','estado' => 'ACTIVO'],
-            ['id_menu' => 2,'modulo' => 7,'status' => 1,'codigo' => 'cgr2','nombre' => 'Diario General','descripcion' => 'menu de contabilidad general','url' => 'diario_general','estado' => 'ACTIVO'],
+            ['id_menu' => 2,'modulo' => 7,'status' => 1,'codigo' => 'cgr2','nombre' => 'Diario General','descripcion' => 'menu de contabilidad general','url' => 'reporte-diario-general','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp3','nombre' => 'periodo fiscales','descripcion' => 'menu de contabilidad general','url' => 'gestion-periodos-fiscales','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp4','nombre' => 'Entradas de diario','descripcion' => 'menu de contabilidad general','url' => 'gestion-entradas-diario','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp5','nombre' => 'Transacciones de pago','descripcion' => 'menu de contabilidad general','url' => 'gestion-transacciones-pago','estado' => 'ACTIVO'],

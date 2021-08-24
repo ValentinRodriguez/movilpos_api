@@ -356,9 +356,9 @@ class proveedoresController extends ApiResponseController
         $moneda = $request->get('moneda');
         $contacto = $request->get('cont_sp');
 
-        $proveedores = proveedores::where([['ve_cond_pagos.estado','=','activo'],
+        $proveedores = proveedores::where([['mov_ventas.ve_cond_pagos.estado','=','activo'],
                                            ['proveedores.estado','=','activo']])->
-                                    join('ve_cond_pagos','ve_cond_pagos.cond_pago','=','proveedores.cond_pago')->          
+                                    join('mov_ventas.ve_cond_pagos','mov_ventas.ve_cond_pagos.cond_pago','=','proveedores.cond_pago')->          
                                     parametro($proveedor)->     
                                     pais($pais)->                    
                                     ciudad($ciudad)->
@@ -369,7 +369,7 @@ class proveedoresController extends ApiResponseController
                                     moneda($moneda)->
                                     contacto($contacto)->
         select('proveedores.nom_sp','proveedores.dir_sp','proveedores.tel_sp','proveedores.email','proveedores.cont_sp',
-               've_cond_pagos.descripcion as condicion_pago')->
+               'mov_ventas.ve_cond_pagos.descripcion as condicion_pago')->
         get();
 
         return $this->successResponse($proveedores, $request->urlRequest); 

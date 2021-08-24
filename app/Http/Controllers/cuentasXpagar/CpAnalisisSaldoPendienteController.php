@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\cuentasXpagar;
 use Illuminate\Http\Request;
-
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\ApiResponseController;
 use App\Librerias\cuentasXpagar\cpAnalisisSaldoPendiente;
