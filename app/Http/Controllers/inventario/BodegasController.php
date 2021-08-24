@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\ApiResponseController;
-use App\librerias\usuarios\User;
+use App\Librerias\User;
 use App\Librerias\globales\pais;
 use App\librerias\usuarios\bodegasUsuarios;
 use App\Librerias\inventario\Bodegas;

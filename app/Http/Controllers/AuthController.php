@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Librerias\usuarios\Rol;
-use App\Librerias\usuarios\User;
+use App\Librerias\User;
 use App\Librerias\empresa\Empresa;
 use Illuminate\Support\Facades\DB;
 use App\Librerias\rrhh\noempleados;
@@ -148,12 +148,12 @@ class AuthController extends Controller
     protected function respondWithToken($token,$email, $sessionId = null)
     {
         if ($email !== null) {
-            $bodegas_permiso = bodegasUsuarios::join('bodegas','bodegas_usuarios.id_bodega','=','bodegas.id_bodega')->
-                                      select('bodegas_usuarios.*','bodegas.descripcion')->
+            $bodegas_permiso = bodegasUsuarios::join('mov_inventario.bodegas','bodegas_usuarios.id_bodega','=','mov_inventario.bodegas.id_bodega')->
+                                      select('bodegas_usuarios.*','mov_inventario.bodegas.descripcion')->
                                       where('bodegas_usuarios.email','=',$email)->
                                       get();
 
-            $empleados = noempleados::where('mov_rrhh.noempleados.email','=',$email)->first();
+            // $empleados = noempleados::where('noempleados.email','=',$email)->first();
             $permisos = Rol::where('rols.email','=',$email)->first();
             $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->first();
         }
@@ -163,7 +163,7 @@ class AuthController extends Controller
             'sessionId' => $sessionId,
             // 'expires_in' => $token->token->expires_at,
             'bodegas_permisos' => $bodegas_permiso,
-            'empleado' => $empleados,
+            // 'empleado' => $empleados,
             'empresa' => $empresa,
             'permisos' => $permisos,
             'user' => auth('web')->user()

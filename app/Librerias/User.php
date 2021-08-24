@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Librerias\usuarios;
+namespace App\Librerias;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
