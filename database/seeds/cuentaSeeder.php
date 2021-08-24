@@ -60,6 +60,7 @@ class cuentaSeeder extends Seeder
                 'catalogo'           => 'no',
                 'selectivo_consumo'  => 'no',
                 'retencion'          => 'no',
+                'estado_resultdado'  => '101',
                 'codigo_isr'         => 1,
                 'usuario_creador'    => 'movilsoluciones',
                 'estado'             => 'activo',

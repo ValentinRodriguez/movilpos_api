@@ -12,8 +12,10 @@ class cgcatalogocontroller extends ApiResponseController
 {
     public function index(Request $request) {
         $catalogo = cgcatalogo::orderBy('cuenta_no', 'asc')->
-                                where('estado','=','ACTIVO')->                                
-                                select('cgcatalogo.*',DB::raw("CONCAT(cgcatalogo.cuenta_no,'-',cgcatalogo.descripcion) AS descripcion_c"))->
+                                leftjoin('cgcodigoestados','cgcatalogo.estado_resultado','=','cgcodigoestados.id_estado')->
+                                where('cgcatalogo.estado','=','ACTIVO')->
+                                select('cgcatalogo.*',DB::raw("CONCAT(cgcatalogo.cuenta_no,'-',cgcatalogo.descripcion) AS descripcion_c"),
+                                                      DB::raw("cgcodigoestados.descripcion_Esp as descripcionEstado"))->
                                 get();
 
         if ($catalogo == null){
@@ -48,7 +50,7 @@ class cgcatalogocontroller extends ApiResponseController
             'unique'   => 'El campo :attribute debe ser unico',
             'numeric'  => 'El campo :attribute debe ser numerico',
         ];
-        
+
         $validator = validator($datos, [
             'cuenta_no'         => 'required',
             'descripcion'       => 'required',
@@ -64,37 +66,42 @@ class cgcatalogocontroller extends ApiResponseController
             'selectivo_consumo' => 'required',
             'retencion'         => 'required',
             'codigo_isr'        => 'required',
-            'cuenta_resultado'  => 'required',   
-            'usuario_creador'   => 'required'  
-        ],$messages);  
-        
+            'cuenta_resultado'  => 'required',
+            'usuario_creador'   => 'required'
+        ],$messages);
+
         if ($validator->fails()) {
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
-            try {                
-                DB::beginTransaction();                
+            try {
+                DB::beginTransaction();
                     cgcatalogo::create($datos);
                 DB::commit();
-                return $this->successResponse($datos, $request->urlRequest);                
+                return $this->successResponse($datos, $request->urlRequest);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e->getMessage(), $request->urlRequest);
-            }            
+            }
         }
     }
-    
+
     public function show(Request $request,$id) {
-        $catalogo = cgcatalogo::find($id);
+        $catalogo = cgcatalogo::
+                                leftjoin('cgcodigoestados','cgcatalogo.estado_resultado','=','cgcodigoestados.id_estado')->
+                                where('cgcatalogo.estado','=','ACTIVO')->
+                                select('cgcatalogo.*',DB::raw("CONCAT(cgcatalogo.cuenta_no,'-',cgcatalogo.descripcion) AS descripcion_c"),
+                                DB::raw("cgcodigoestados.descripcion_Esp as descripcionEstado"))->
+                                find($id);
         if ($catalogo == null){
             return $this->errorResponse($catalogo);
         }
         return $this->successResponse($catalogo, $request->urlRequest);
     }
-    
+
     public function update(Request $request, $id) {
         $datos = $request->all();
-        
+
         $catalogo = cgcatalogo::find($id);
 
         $messages = [
@@ -114,23 +121,23 @@ class cgcatalogocontroller extends ApiResponseController
             "cuenta_resultado"    => 'required',
             'usuario_modificador' => 'required'
         ],$messages);
-        
+
         if ($validator->fails()) {
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{
-            try {                
-                DB::beginTransaction();                
+            try {
+                DB::beginTransaction();
                     $catalogo->update($request->all());
                 DB::commit();
-                return $this->successResponse($catalogo, $request->urlRequest);                
+                return $this->successResponse($catalogo, $request->urlRequest);
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e->getMessage(), $request->urlRequest);
             }
         }
     }
-    
+
     public function destroy(Request $request, $id) {
         $catalogo = cgcatalogo::find($id);
         if ($catalogo == null){
@@ -144,14 +151,14 @@ class cgcatalogocontroller extends ApiResponseController
     {
         $cuenta_no = $request->get('cuenta_no');
 
-        $busqueda = cgcatalogo::orderBy('cuenta_no','asc')->     
+        $busqueda = cgcatalogo::orderBy('cuenta_no','asc')->
                                 where([['cgcatalogo.cuenta_no','=',$cuenta_no],['estado','=','ACTIVO']])->
                                 get();
-                                                        
+
         return $this->successResponse($busqueda, $request->urlRequest);
     }
 
-    
+
     public function busquedaDescripcion(Request $request)
     {
         $descripcion = $request->get('descripcion');
@@ -160,7 +167,7 @@ class cgcatalogocontroller extends ApiResponseController
                                 where([['cgcatalogo.descripcion','=',$descripcion],
                                        ['estado','=','ACTIVO']])->
                                 get();
-                                            
+
         return $this->successResponse($busqueda, $request->urlRequest);
     }
 
