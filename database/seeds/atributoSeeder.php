@@ -56,6 +56,10 @@ class atributoSeeder extends Seeder
                 'descripcion' => 'estado',
                 'atributo' => '[{"label":"Nuevo","value":"nuevo"},{"label":"Usado","value":"usado"}]'
             ],
+            [   'id_atributo' => 8,
+                'descripcion' => 'celular',
+                'atributo' => '[{"label":"Nuevo","value":"nuevo"},{"label":"Usado","value":"usado"}]'
+            ],
         );
 
         foreach ($codigos as $key => $value) {
