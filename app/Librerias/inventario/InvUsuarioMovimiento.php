@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class InvUsuarioMovimiento extends Model
 {
-    protected $connection = 'mov_inventario';
+    protected $connection = 'mov_usuarios';
     protected $table  ='invusuariosmovimientos';
     protected $fillable =['id_tipomov','email','usuario_creador','estado'];
 

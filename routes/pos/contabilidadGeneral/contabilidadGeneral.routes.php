@@ -28,9 +28,11 @@ use Illuminate\Support\Facades\Route;
     // TRANSACCIONES CONTABILIDAD GENERAL
     Route::get('/autollenado/cgtransacciones', 'contabilidadGeneral\CgTransaccionesContablesController@autollenado');
     Route::get('/secuencias/cgtransacciones', 'contabilidadGeneral\CgTransaccionesContablesController@secuencias');
+    Route::apiresource('/cgtransacciones', 'contabilidadGeneral\CgTransaccionesContablesController');
+
+    //REPORTES CONTABILIDAD GENERAL
     Route::post('/gastos-dep/cgtransacciones', 'contabilidadGeneral\CgTransaccionesContablesController@gastosPorDepartamentos');
     Route::post('/mayor-general/cgtransacciones', 'contabilidadGeneral\CgTransaccionesContablesController@mayorGeneral');
-    Route::apiresource('/cgtransacciones', 'contabilidadGeneral\CgTransaccionesContablesController');
 
     //Costos
     Route::apiresource('/costos','contabilidadGeneral\CostosController');
@@ -39,7 +41,7 @@ use Illuminate\Support\Facades\Route;
     Route::get('/autollenado/cuadre-caja', 'contabilidadGeneral\CuadreCajaController@autollenado');
     Route::get('/busqueda/cuadre-caja', 'contabilidadGeneral\CuadreCajaController@busqueda');
     Route::apiresource('/cuadre-caja', 'contabilidadGeneral\CuadreCajaController');
-    
+
     // ESTADOS
     Route::get('/busqueda-estados', 'contabilidadGeneral\CgcodigoestadosController@busqueda');
     Route::apiresource('/estados', 'contabilidadGeneral\CgcodigoestadosController');

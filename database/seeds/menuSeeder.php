@@ -70,6 +70,7 @@ class menuSeeder extends Seeder
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp3','nombre' => 'periodo fiscales','descripcion' => 'menu de contabilidad general','url' => 'gestion-periodos-fiscales','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp4','nombre' => 'Entradas de diario','descripcion' => 'menu de contabilidad general','url' => 'gestion-entradas-diario','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgp5','nombre' => 'Transacciones de pago','descripcion' => 'menu de contabilidad general','url' => 'gestion-transacciones-pago','estado' => 'ACTIVO'],
+            ['id_menu' => 2,'modulo' => 7,'status' => 1,'codigo' => 'cgr10','nombre' => 'Reporte Catalogo Cuentas','descripcion' => 'Imprime Carta de cuentas','url' => 'reporte-catalogo','estado' => 'ACTIVO'],
             ['id_menu' => 2,'modulo' => 7,'status' => 1,'codigo' => 'cgr6','nombre' => 'Gastos por departamento','descripcion' => 'menu de contabilidad general','url' => 'gastos-departamento','estado' => 'ACTIVO'],
             ['id_menu' => 2,'modulo' => 7,'status' => 1,'codigo' => 'cgr7','nombre' => 'reporte mayor general','descripcion' => 'menu de contabilidad general','url' => 'reporte-mayor-general','estado' => 'ACTIVO'],
             ['id_menu' => 1,'modulo' => 7,'status' => 1,'codigo' => 'cgr8','nombre' => 'Cuadre de caja','descripcion' => 'menu de contabilidad general','url' => 'cuadre-caja','estado' => 'ACTIVO'],

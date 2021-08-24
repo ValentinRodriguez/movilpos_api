@@ -20,9 +20,9 @@ class AuthController extends Controller
     {
         $user  = User::orderBy('name', 'asc')->
                        leftjoin('mov_rrhh.noempleados','mov_rrhh.noempleados.email','=','users.email')->
-                       leftjoin('nopuestos','nopuestos.id_puesto','=','mov_rrhh.noempleados.id_puesto')->
+                       leftjoin('mov_rrhh.nopuestos','mov_rrhh.nopuestos.id_puesto','=','mov_rrhh.noempleados.id_puesto')->
                        select('users.*','mov_rrhh.noempleados.primernombre','mov_rrhh.noempleados.segundonombre',
-                              'mov_rrhh.noempleados.primerapellido','mov_rrhh.noempleados.segundoapellido','nopuestos.titulo as puesto')->
+                              'mov_rrhh.noempleados.primerapellido','mov_rrhh.noempleados.segundoapellido','mov_rrhh.nopuestos.titulo as puesto')->
                        where('users.estado','=','ACTIVO')->
                        get();
 
@@ -148,7 +148,7 @@ class AuthController extends Controller
     protected function respondWithToken($token,$email, $sessionId = null)
     {
         if ($email !== null) {
-            $bodegas_permiso = bodegasUsuarios::join('mov_inventario.bodegas','bodegas_usuarios.id_bodega','=','mov_inventario.bodegas.id_bodega')->
+            $bodegas_permiso = bodegasUsuarios::join('mov_inventario.bodegas','bodegas_usuarios.id_bodega','=','bodegas.id_bodega')->
                                       select('bodegas_usuarios.*','mov_inventario.bodegas.descripcion')->
                                       where('bodegas_usuarios.email','=',$email)->
                                       get();
