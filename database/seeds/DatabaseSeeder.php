@@ -55,6 +55,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoriaStoreSeeder::class);
         $this->call(cgcodigoestadosseed::class);
         // this->call(planesSeeder::class);
-        $this->call(atributoSeeder::class);        
+        // $this->call(atributoSeeder::class);        
     }
 }

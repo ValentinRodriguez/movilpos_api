@@ -87,7 +87,7 @@ class InvProductos extends Model
     public function ScopeConDetalles($query)
     {
         return $query-> leftjoin('invtransaccionesdetalle','invtransaccionesdetalle.codigo','=','inv_productos.codigo')->
-                        leftjoin('orden_pedido_detalles','orden_pedido_detalles.codigo','=','inv_productos.codigo')->
+                        leftjoin('mov_ventas.orden_pedido_detalles','mov_ventas.orden_pedido_detalles.codigo','=','inv_productos.codigo')->
                         join('bodegas','bodegas.id_bodega','=','inv_productos.id_bodega')->                        
                         join('categorias','categorias.id_categoria','=','inv_productos.id_categoria')->
                         join('brands','brands.id_brand','=','inv_productos.id_brand')->
@@ -110,9 +110,9 @@ class InvProductos extends Model
                             'bodegas.descripcion as almacen','bodegas.id_bodega',
                             'propiedades.descripcion as propiedad',
 
-                            DB::raw('IFNULL(sum(orden_pedido_detalles.cantidad), 0) as cantidad_orden'),
+                            DB::raw('IFNULL(sum(mov_ventas.orden_pedido_detalles.cantidad), 0) as cantidad_orden'),
 
-                            DB::raw('sum(invtransaccionesdetalle.cantidad1 - IFNULL(orden_pedido_detalles.cantidad,0)) as disponible'),
+                            DB::raw('sum(invtransaccionesdetalle.cantidad1 - IFNULL(mov_ventas.orden_pedido_detalles.cantidad,0)) as disponible'),
                         )-> 
                         where([['inv_productos.estado','=','ACTIVO']])->
                         groupby('inv_productos.id','inv_productos.titulo','inv_productos.descripcion','inv_productos.codigo', 

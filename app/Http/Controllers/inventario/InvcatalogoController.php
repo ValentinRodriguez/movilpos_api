@@ -62,10 +62,10 @@ class InvcatalogoController extends ApiResponseController
                                 join('brands as d','d.id_brand','=','a.id_brand')->
                                 join('invtipos_inventarios as e','e.id_tipoinventario','=','a.id_tipoinventario')->
                                 select('a.codigo as codigo','c.descripcion as categoria','e.descripcion as tipo','a.descripcion as producto',
-                                      'd.descripcion as marca','a.precio_venta as precio' ,'a.costo','a.imagenPrincipal as imagen_principal',
+                                      'd.descripcion as marca','a.precio_venta as precio' ,'a.costo',
                                 DB::raw('sum(b.cantidad) as existencia'),db::raw('sum(a.precio_venta * cantidad)  as valor_ventas '),
                                 db::raw('sum(a.costo * cantidad)  as valor_costo '))->
-                                groupby('a.codigo','c.descripcion','a.descripcion','d.descripcion','e.descripcion','a.imagenPrincipal','a.precio_venta','a.costo','a.created_at')->                       
+                                groupby('a.codigo','c.descripcion','a.descripcion','d.descripcion','e.descripcion','a.precio_venta','a.costo','a.created_at')->                       
                                 orderBy('c.descripcion')->
                                 
                                 codigo($codigo)->

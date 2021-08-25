@@ -12,6 +12,7 @@ class CreateCategoriaStoresTable extends Migration
             $table->id();
             $table->integer('id_categoria');
             $table->unique('id_categoria');
+            $table->text('id_atributo');
             $table->string('descripcion',100);
             $table->string('slug',100);
             $table->string('image',100)->nullable();
