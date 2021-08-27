@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 
     // PLANES
     Route::apiresource('/planes', 'tienda\planesController');
+
+    //atributos
+    Route::get('/atributo-producto', 'tienda\InvProductoStoreController@atributo');

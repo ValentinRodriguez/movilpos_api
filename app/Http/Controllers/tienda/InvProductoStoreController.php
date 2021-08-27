@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\tienda;
 use Illuminate\Http\Request;
 
+use App\Librerias\tienda\atributosStore;
 use App\Librerias\inventario\invProductoStore;
 use App\Http\Controllers\ApiResponseController;
 
@@ -19,6 +20,16 @@ class InvProductoStoreController extends ApiResponseController
         $productos = invProductoStore::where([['usuario_creador','=',''],['tienda','=','']])->get();
         return $this->successResponse($productos);
     }
+
+    public function atributo(Request $request)
+    {
+        $atributo = atributosStore::where('id_atributo','=',$request->get('id_atributo'));
+        if ($atributo == null){
+            return $this->errorResponse($atributo);
+        }
+        return $this->successResponse($atributo, $request->urlRequest);
+    }
+
     public function store(Request $request)
     {        
         $maxid=0;
@@ -276,30 +287,4 @@ class InvProductoStoreController extends ApiResponseController
         return $this->successResponse($productos, $request->urlRequest);
     }
   
-    // public function tiposProductos(Request $request)
-    // {
-    //     $tipos = tipoProducto::orderBy('titulo','asc')->
-    //                            where('estado','=','ACTIVO')->
-    //                            get();
-
-    //     return $this->successResponse($tipos, $request->urlRequest);
-    // }
-
-    // public function medidasProductos(Request $request)
-    // {
-    //     $tipos = medidas::orderBy('titulo','asc')->
-    //                       where('estado','=','ACTIVO')->
-    //                       get();
-
-    //     return $this->successResponse($tipos, $request->urlRequest);
-    // }
-
-    // public function propiedadesProductos(Request $request)
-    // {
-    //     $propiedades = Propiedadesprod::orderBy('titulo','asc')->
-    //                                 where('estado','=','ACTIVO')->
-    //                                 get();
-
-    //     return $this->successResponse($propiedades);
-    // }
 }
