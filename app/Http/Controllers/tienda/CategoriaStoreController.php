@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\tienda;
 use Illuminate\Http\Request;
-use App\Librerias\tienda\SubCategoria;
 use App\Librerias\tienda\CategoriaStore;
+use App\Librerias\tienda\SubCategoria;
 use App\Librerias\tienda\SubSubCategoria;
 use App\Http\Controllers\ApiResponseController;
 
 class CategoriaStoreController extends ApiResponseController
 {
-    public function index()
+    public function allCategorias()
     {
         $categoria = CategoriaStore::orderBy('created_at', 'desc')->
                                      where('estado','=','activo')->
@@ -30,30 +30,36 @@ class CategoriaStoreController extends ApiResponseController
                 }
                 $value->children = $subsubCategoria;
                 $value->depth = 1;
-                $value->url = $value->slug.'/'.$value1->slug;
-                
+                $value->url = $value->slug.'/'.$value1->slug;                
             }
         }
         return $this->successResponse($categoria);
     }
-    
-    public function store(Request $request)
+
+    public function categoria(Request $request,$id)
     {
-        //
+        $categoriaStore = CategoriaStore::find($id);
+        if ($categoriaStore == null){
+            return $this->errorResponse($categoriaStore);
+        }
+        return $this->successResponse($categoriaStore, $request->urlRequest);
     }
-    
-    public function show(CategoriaStore $categoriaStore)
+
+    public function subcategoria(Request $request,$id)
     {
-        //
+        $subCategoria = SubCategoria::find($id);
+        if ($subCategoria == null){
+            return $this->errorResponse($subCategoria);
+        }
+        return $this->successResponse($subCategoria, $request->urlRequest);
     }
-    
-    public function update(Request $request, CategoriaStore $categoriaStore)
+
+    public function subsubcategoria(Request $request,$id)
     {
-        //
-    }
-    
-    public function destroy(CategoriaStore $categoriaStore)
-    {
-        //
+        $subSubCategoria = SubSubCategoria::find($id);
+        if ($subSubCategoria == null){
+            return $this->errorResponse($subSubCategoria);
+        }
+        return $this->successResponse($subSubCategoria, $request->urlRequest);
     }
 }

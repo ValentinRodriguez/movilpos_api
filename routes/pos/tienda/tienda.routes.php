@@ -12,8 +12,17 @@ use Illuminate\Support\Facades\Route;
      Route::apiresource('/productos-plaza', 'tienda\InvProductoStoreController');
 
     // CATEGORIAS
-    Route::apiresource('/categorias-plaza', 'tienda\CategoriaStoreController');
+    Route::get('/categorias-plaza', 'tienda\CategoriaStoreController@allCategorias');
 
+    // CATEGORIAS
+    Route::get('/categoria-plaza/{id}', 'tienda\CategoriaStoreController@categoria');
+
+    // SUBCATEGORIAS
+    Route::get('/subcategoria-plaza/{id}', 'tienda\CategoriaStoreController@subcategoria');
+
+    // SUBSUBCATEGORIAS
+    Route::get('/subsubcategoria-plaza/{id}', 'tienda\CategoriaStoreController@subsubcategoria');
+    
     // PLANES
     Route::apiresource('/planes', 'tienda\planesController');
 
