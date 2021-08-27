@@ -17,7 +17,7 @@ class CreateAtributosStoresTable extends Migration
             $table->id();
             $table->string('descripcion');
             $table->smallInteger('id_atributo');
-            $table->text('atributo');
+            $table->text('atributo')->nullable();
             $table->timestamps();
         });
     }
