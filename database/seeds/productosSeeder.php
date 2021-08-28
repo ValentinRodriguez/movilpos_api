@@ -8,14 +8,14 @@ class productosSeeder extends Seeder
 {
     public function run()
     {
-        $count = 200;
+        $count = 5000;
         $galeria = InvProductos::get();
         $galeria[0]['galeriaImagenes'];
         // Log::debug($galeria[0]['galeriaImagenes']);
         for ($i=0; $i < $count; $i++) { 
             $codigo = 1332 + $i;
             $productos = array(
-                'titulo' => 'testfgfgfgfg','tipo_producto' => 1,'id_tipoinventario' => 1,
+                'titulo' => $this->RandomString(),'tipo_producto' => 1,'id_tipoinventario' => rand(1,6),
                 'id_categoria' => rand(3,6),'id_brand' => rand(3,6),'descripcion' => 'testfgfgfgfg',
                 'chasis' => '5TDZK3EH9AS004144','motor' => '3.5L V6 SFI','fabricacion' => 2018,
                 'asientos' => 1,'id_propiedad' => rand(3,6),'codigo' => $codigo,
@@ -27,5 +27,15 @@ class productosSeeder extends Seeder
             );
             InvProductos::create($productos);
         }
+    }
+
+    function RandomString()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randstring = '';
+        for ($i = 0; $i < 15; $i++) {
+            $randstring = $characters[rand(0, strlen($characters) - 1)];
+        }
+        return $randstring;
     }
 }

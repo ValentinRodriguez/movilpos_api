@@ -15,8 +15,10 @@ class InvcatalogoController extends ApiResponseController
                         join('inv_productos as a','b.codigo','=','a.codigo')->
                         join('categorias as c','c.id_categoria','=','a.id_categoria')->
                         join('brands as d','d.id_brand','=','a.id_brand')->
-                        select('c.descripcion as descripcion categoria','a.descripcion as descripcion producto',
-                               'd.descripcion as Marca','a.precio_venta as precio',
+                        join('propiedades as e','e.id_propiedad','=','a.id_propiedad')->
+                        
+                        select('c.descripcion as categoria','a.descripcion as producto',
+                               'd.descripcion as marca','a.precio_venta as precio','e.descripcion as propiedad',
                                DB::raw('sum(b.cantidad) as cantidad'),
                                DB::raw('sum(a.precio_venta * cantidad) as total'))->
                         groupby('c.descripcion','a.descripcion','d.descripcion','a.precio_venta','a.created_at')->                       
@@ -61,8 +63,9 @@ class InvcatalogoController extends ApiResponseController
                                 join('categorias as c','c.id_categoria','=','a.id_categoria')->
                                 join('brands as d','d.id_brand','=','a.id_brand')->
                                 join('invtipos_inventarios as e','e.id_tipoinventario','=','a.id_tipoinventario')->
+                                join('propiedades as f','f.id_propiedad','=','a.id_propiedad')->
                                 select('a.codigo as codigo','c.descripcion as categoria','e.descripcion as tipo','a.descripcion as producto',
-                                      'd.descripcion as marca','a.precio_venta as precio' ,'a.costo',
+                                      'd.descripcion as marca','a.precio_venta as precio' ,'a.costo','f.descripcion as propiedad',
                                 DB::raw('sum(b.cantidad) as existencia'),db::raw('sum(a.precio_venta * cantidad)  as valor_ventas '),
                                 db::raw('sum(a.costo * cantidad)  as valor_costo '))->
                                 groupby('a.codigo','c.descripcion','a.descripcion','d.descripcion','e.descripcion','a.precio_venta','a.costo','a.created_at')->                       
