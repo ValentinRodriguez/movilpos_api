@@ -9,8 +9,8 @@ class productosSeeder extends Seeder
     public function run()
     {
         $count = 30;
-        $galeria = InvProductos::get();
-        $galeria[0]['galeriaImagenes'];
+        $producto = InvProductos::get();
+        $producto[0]['galeriaImagenes'];
         // Log::debug($galeria[0]['galeriaImagenes']);
         for ($i=0; $i < $count; $i++) { 
             $codigo = 1332 + $i;
@@ -22,7 +22,7 @@ class productosSeeder extends Seeder
                 'codigo_referencia' => 546925,'origen' => 'importado','existenciaMinima' => 1 ,
                 'controlDeExistencias' => 'si','descuento' => 'si','id_bodega' => 1,
                 'controlItbis' => 'si','precio_compra' => 80,'precio_venta' => 500,'costo' => 100,
-                'galeriaImagenes' => $galeria[0]['galeriaImagenes'],
+                'galeriaImagenes' => $producto[0]['galeriaImagenes'],
                 'editando' => 0,'estado' => 'activo','usuario_creador' => 'movilsoluciones'
             );
             InvProductos::create($productos);
