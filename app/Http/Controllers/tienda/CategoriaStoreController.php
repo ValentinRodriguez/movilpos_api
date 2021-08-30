@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\tienda;
 use Illuminate\Http\Request;
-use App\Librerias\tienda\CategoriaStore;
+use Illuminate\Support\Facades\Log;
 use App\Librerias\tienda\SubCategoria;
+use App\Librerias\tienda\CategoriaStore;
 use App\Librerias\tienda\SubSubCategoria;
 use App\Http\Controllers\ApiResponseController;
+use App\Librerias\tienda\atributosStore;
 
 class CategoriaStoreController extends ApiResponseController
 {
@@ -57,6 +59,16 @@ class CategoriaStoreController extends ApiResponseController
     public function subsubcategoria(Request $request,$id)
     {
         $subSubCategoria = SubSubCategoria::find($id);
+        $atributos = [];
+        
+        foreach (json_decode($subSubCategoria['id_atributo']) as $key => $value) {
+            Log::debug($value);  
+            $atributo = atributosStore::where('id_atributo','=',$value)->first();
+            array_push($atributos,$atributo);
+        }
+
+        $subSubCategoria['atributo'] = $atributos;
+        
         if ($subSubCategoria == null){
             return $this->errorResponse($subSubCategoria);
         }

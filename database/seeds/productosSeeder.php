@@ -8,7 +8,7 @@ class productosSeeder extends Seeder
 {
     public function run()
     {
-        $count = 5000;
+        $count = 30;
         $galeria = InvProductos::get();
         $galeria[0]['galeriaImagenes'];
         // Log::debug($galeria[0]['galeriaImagenes']);
