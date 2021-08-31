@@ -34,15 +34,17 @@ class atributoSeeder extends Seeder
             ],
             [   'id_atributo' => 7,
                 'descripcion' => 'estado',
-                'atributo' => '[{"label":"Nuevo","value":false},{"label":"Usado","value":false}]'
+                'tipo' => 'radio',
+                'atributo' => '[{"label":"Nuevo","value":"nuevo"},{"label":"Usado","value":"usado"}]'
             ],
             [   'id_atributo' => 8,
                 'descripcion' => 'celular',
                 'atributo' => '[{"label":"Nuevo","value":false},{"label":"Usado","value":false}]'
             ],
             [   'id_atributo' => 9,
-            'descripcion' => 'marca',
-            'atributo' => '[{"label":"marca 1","value":false},{"label":"marca 2","value":false},{"label":"marca 3","value":false}]'
+                'tipo' => 'radio',
+                'descripcion' => 'marca',
+                'atributo' => '[{"label":"marca 1","value":false},{"label":"marca 2","value":false},{"label":"marca 3","value":false}]'
             ],
             [   'id_atributo' => 10,
             'descripcion' => 'material',

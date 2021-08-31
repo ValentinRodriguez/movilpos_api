@@ -15,7 +15,8 @@ class CreateAtributosStoresTable extends Migration
     {
         Schema::connection('mov_tienda')->create('atributos_stores', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion');
+            $table->char('tipo',10)->nullable();
+            $table->text('descripcion');
             $table->smallInteger('id_atributo');
             $table->text('atributo')->nullable();
             $table->timestamps();
