@@ -94,7 +94,7 @@ class atributoSeeder extends Seeder
                 'atributo' => '[{"label":"Megapixeles","value":false}]'
             ],
             [   'id_atributo' => 11,
-                'tipo' => 'number',
+                'tipo' => 'select',
                 'descripcion' => 'edad',
                 'atributo' => '[{"label":"0-11 meses","value":false},
                                 {"label":"1-3 años","value":false},
@@ -110,7 +110,7 @@ class atributoSeeder extends Seeder
                 'atributo' => '[{"label":"Megapixeles","value":false}]'
             ],
             ['id_atributo' => 13,
-                'descripcion' => 'pantalla-t',
+                'descripcion' => 'pantalla',
                 'tipo' => 'select',
                 'atributo' => '[{ "label" :"≤4.0 pulgadas", "value":false},
                                 { "label" :"4 pulgadas", "value":false},
@@ -134,7 +134,7 @@ class atributoSeeder extends Seeder
                             ]'
             ],
             ['id_atributo' => 14,
-                'descripcion' => 'pantalla-r',
+                'descripcion' => 'resolucion',
                 'tipo' => 'select',
                 'atributo' => '[{ "label" : "1440X3040", "value":false},
                                 { "label" : "960X480", "value":false},
@@ -159,17 +159,17 @@ class atributoSeeder extends Seeder
                             ]'
             ],
             [   'id_atributo' => 15,
-                'descripcion' => 'auto-modelo',
+                'descripcion' => 'modelo automovil',
                 'tipo' => 'select',
                 'atributo' => '[{"label":"Megapixeles","value":false}]'
             ],
             [   'id_atributo' => 16,
-                'descripcion' => 'auto-marca',
+                'descripcion' => 'marca automovil',
                 'tipo' => 'select',
                 'atributo' => '[{"label":"Megapixeles","value":false}]'
             ],
             [   'id_atributo' => 17,
-                'descripcion' => 'auto-anio',
+                'descripcion' => 'año',
                 'tipo' => 'select',
                 'atributo' => '[{"label":"Megapixeles","value":false}]'
             ],
