@@ -43,34 +43,12 @@ class InvProductoStoreController extends ApiResponseController
             $idsecuencia = $idsecuencia + 1;
         }
         
-        $datos = array(
-            "titulo"                =>$request->input("titulo"),                      
-            "asientosAd"            =>$request->input("asientosAd"),
-            "id_propiedad"          =>$request->input("id_propiedad"),
-            "id_tipoinventario"     =>$request->input("id_tipoinventario"),
-            "id_categoria"          =>$request->input("id_categoria"),
-            "id_brand"              =>$request->input("id_brand"),
-            "descripcion"           =>$request->input("descripcion"),
-            "tipo_producto"         =>$request->input("tipo_producto"),
-            "codigo"                =>$request->input("codigo"),
-            "codigo_referencia"     =>$request->input("codigo_referencia"),
-            "origen"                =>$request->input("origen"),
-            "existenciaMaxima"      =>$request->input("existenciaMaxima"),
-            "existenciaMinima"      =>$request->input("existenciaMinima"),
-            "controlDeExistencias"  =>$request->input("controlDeExistencias"),
-            // "referencia"            =>$request->input("referencia"),
-            "id_bodega"             =>$request->input("id_bodega"),
-            "controlItbis"          =>$request->input("controlItbis"),
-            "precio_compra"         =>$request->input("precio_compra"),
-            "precio_venta"          =>$request->input("precio_venta"),
-            "costo"                 =>$request->input("costo"),
-            "galeriaImagenes"       =>$request->input("galeriaImagenes"),
-            "descuento"             =>$request->input("descuento"),
-            "porcientodescuento"    =>$request->input("porcientodescuento"),
-            "estado"                =>$request->input("estado"),
-            "usuario_creador"       =>$request->input("usuario_creador")
-        );
-        return response()->json($datos);
+        $datos = $request->all();
+        
+        // if ($request->hasFile($datos['general']['galeriaImagenes'][0])) {
+        //     return response()->json($datos['general']['galeriaImagenes']);            
+        // }
+        return response()->json('no hay');
         // SI EL EL TIPO DE PRODUCTO ES DIGITAL
         if ($datos["tipo_producto"] == 2) {
             $datos["id_brand"] = 2;
