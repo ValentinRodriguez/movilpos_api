@@ -20,20 +20,21 @@ class CategoriaStoreController extends ApiResponseController
         foreach ($categoria as $key => $value1) {
             $subCategoria = SubCategoria::where('id_categoria','=',$value1->id_categoria)->get();
             $value1->children = $subCategoria;
+            $value1->items = $subCategoria;
             $value1->depth = 0;
             $value1->url = $value1->slug;
 
-            foreach ($subCategoria as $key => $value) {
-                $subsubCategoria = SubSubCategoria::where('id_subcategoria','=',$value->id_subcategoria)->get();
+            // foreach ($subCategoria as $key => $value) {
+            //     $subsubCategoria = SubSubCategoria::where('id_subcategoria','=',$value->id_subcategoria)->get();
 
-                foreach ($subsubCategoria as $key => $value2) {
-                    $value2->depth = 2;
-                    $value2->url = $value->slug.'/'.$value1->slug.'/'.$value2->slug;
-                }
-                $value->children = $subsubCategoria;
-                $value->depth = 1;
-                $value->url = $value->slug.'/'.$value1->slug;                
-            }
+            //     foreach ($subsubCategoria as $key => $value2) {
+            //         $value2->depth = 2;
+            //         $value2->url = $value->slug.'/'.$value1->slug.'/'.$value2->slug;
+            //     }
+            //     $value->children = $subsubCategoria;
+            //     $value->depth = 1;
+            //     $value->url = $value->slug.'/'.$value1->slug;                
+            // }
         }
         return $this->successResponse($categoria);
     }
@@ -50,9 +51,21 @@ class CategoriaStoreController extends ApiResponseController
     public function subcategoria(Request $request,$id)
     {
         $subCategoria = SubCategoria::find($id);
+
         if ($subCategoria == null){
             return $this->errorResponse($subCategoria);
         }
+
+        $atributos = [];
+        
+        foreach (json_decode($subCategoria['id_atributo']) as $key => $value) {
+            Log::debug($value);  
+            $atributo = atributosStore::where('id_atributo','=',$value)->first();
+            array_push($atributos,$atributo);
+        }
+
+        $subCategoria['atributo'] = $atributos;
+        
         return $this->successResponse($subCategoria, $request->urlRequest);
     }
 
