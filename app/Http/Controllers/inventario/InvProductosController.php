@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\inventario;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
 use App\Librerias\globales\medidas;
 use App\Librerias\inventario\Bodegas;
 use App\Librerias\inventario\invTipos;
@@ -14,8 +15,8 @@ use App\Librerias\compras\coOrdenesDetalle;
 use App\Librerias\ventas\ordenPedidoDetalle;
 use App\Librerias\inventario\CategoriasModel;
 use App\Librerias\inventario\Propiedadesprod;
-use App\Http\Controllers\ApiResponseController;
 
+use App\Http\Controllers\ApiResponseController;
 use App\Librerias\inventario\Invtransaccdetallemodel;
 
 class InvProductosController extends ApiResponseController
@@ -131,8 +132,10 @@ class InvProductosController extends ApiResponseController
                 }
                         
             try {   
-                InvProductos::create($datos);              
-                return $this->successResponse($datos, $request->urlRequest);
+                DB::beginTransaction();
+                    InvProductos::create($datos);              
+                    return $this->successResponse($datos, $request->urlRequest);                
+                DB::commit();
             } catch (\Exception $e ){
                 return $this->errorResponse($e->getMessage(), $request->urlRequest);
             } 

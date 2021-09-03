@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\tienda;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
 use App\Librerias\tienda\atributosStore;
 use App\Librerias\inventario\invProductoStore;
 use App\Http\Controllers\ApiResponseController;
@@ -43,28 +44,10 @@ class InvProductoStoreController extends ApiResponseController
             $idsecuencia = $idsecuencia + 1;
         }
         
-        $datos = $request->all();
+        $datos = $request->all();  
         
-        // if ($request->hasFile($datos['general']['galeriaImagenes'][0])) {
-        //     return response()->json($datos['general']['galeriaImagenes']);            
-        // }
-        return response()->json('no hay');
-        // SI EL EL TIPO DE PRODUCTO ES DIGITAL
-        if ($datos["tipo_producto"] == 2) {
-            $datos["id_brand"] = 2;
-            $datos["id_categoria"] = 2;
-            $datos["id_propiedad"] = 2;
-        }
-
-        // SI EL EL TIPO DE PRODUCTO ES SERVICIO
-        if ($datos["tipo_producto"] == 3) {
-            $datos["id_brand"] = 1;
-            $datos["id_categoria"] = 1;
-            $datos["id_propiedad"] = 1;
-        }
-
-        $codigo =  $datos["tipo_producto"].$datos["id_categoria"].$datos["id_brand"].$idsecuencia;
-        $datos["codigo"] = $codigo;
+        // $codigo =  $datos["tipo_producto"].$datos["id_categoria"].$datos["id_brand"].$idsecuencia;
+        // $datos["codigo"] = $codigo;
         
         $messages = [
              'required' => 'El campo :attribute es requerido.',
@@ -75,71 +58,43 @@ class InvProductoStoreController extends ApiResponseController
         ];
         
         $validator = validator($datos, [
-            "titulo"                => 'required|string',
-            "chasis"                => 'required_if:tipo_producto,1',
-            "asientos"              => 'required_if:tipo_producto,1',
-            "id_propiedad"          => 'required_if:tipo_producto,1',
-            "id_tipoinventario"     => 'required_if:tipo_producto,1',
-            "id_categoria"          => 'required',
-            "id_brand"              => 'required',
-            "descripcion"           => 'required|string',
-            "tipo_producto"         => 'required|string',
-            "codigo"                => 'required',
-            "descuento"             => 'required',
-            "origen"                => 'required_if:tipo_producto,1',
-            'existenciaMinima'      => 'required_if:tipo_producto,1',
-            "controlDeExistencias"  => 'required_if:tipo_producto,1',
-            "referencia"            => 'string',
-            "id_bodega"             => 'required_if:tipo_producto,1',
-            "controlItbis"          => 'required|string',
-            "precio_compra"         => 'required_if:tipo_producto,1',
-            "precio_venta"          => 'required_if:tipo_producto,1|numeric',
-            "costo"                 => 'required_if:tipo_producto,1',
-            "estado"                => 'required|string',
-            "usuario_creador"       => 'required|string'
+            "cantidadLim"   => '',
+            "categoria"   => 'required',
+            "descripcion"   => 'required',
+            "documentosDigitales"   => '',
+            "fechaLimDescarga"   => '',
+            "fecha_rebaja"   => '',
+            "limDescargas"   => '',
+            "precio"   => 'required',
+            "precio_rebajado"   => '',
+            "stock"   => 'required',
+            "tipo"   => 'required',
+            "titulo"   => 'required'
         ],$messages);
         
         if ($validator->fails()) {
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all(), $request->urlRequest);
-        }else {                
-            if ($datos['tipo_producto'] != 1) {
-                $datos['chasis'] = 'no requerido';
-                $datos['motor'] = 'no requerido';
-                $datos['fabricacion'] = 'XXXXX';
-                $datos['asientos'] = 0;
-                $datos['propiedad'] = 'no requerido';
-                $datos['id_categoria'] = 1;
-                $datos['existenciaMinima'] = 0;
-                $datos['existenciaMaxima'] = 0;
-                $datos['id_bodega'] = 1;
-            }
-            // return response()->json($request->imagesSec);
-            // if ($request->imagesSec !== 0) {
-            //     $galeriaImagenes = [];
-            //     $imagesSec =  $request->imagesSec;
+        }else {      
+            if (intval($request->imageLength) !== 0) {
+                $galeriaImagenes = [];
+                $imageLength =  $request->imageLength;
 
-            //     for ($i=0; $i < $imagesSec; $i++) {
-            //         $img[$i] = $request->file('galeriaImagenes'.$i);
-
-            //         $nombreImagen2 = uniqid().'.'.$img[$i]->getClientOriginalExtension();
-
-            //         $tempImage = $img[$i]->storeAs('uploads', 'productos/'.$nombreImagen2, 'public');
-            //         array_push($galeriaImagenes, $tempImage);
-            //     }
-            //     $datos['galeriaImagenes'] = json_encode($galeriaImagenes);
-            // }
-            
-            if ($request->hasFile('galeriaImagenes')) {
-                // Storage::delete('public/'.$producto->imagen);
-                $imagen = $request->file('galeriaImagenes');
-                $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
-                $datos['galeriaImagenes'] = $request->file('galeriaImagenes')->storeAs('uploads', 'productos/'.$nombreImagen, 'public');
-            }
-            
+                for ($i=0; $i < $imageLength; $i++) {
+                    $img[$i] = $request->file('galeriaImagenes'.$i);
+                    $nombreImagen2 = uniqid().'.'.$img[$i]->getClientOriginalExtension();
+                    $tempImage = $img[$i]->storeAs('uploads', 'tienda/imagenes/'.$nombreImagen2, 'public');
+                    array_push($galeriaImagenes, $tempImage);
+                }                    
+                $datos['galeriaImagenes'] = json_encode($galeriaImagenes);
+            }     
+            $datos['atributos'] = json_decode($datos['atributos']);
+            // return response()->json($datos);
             try {   
-                invProductoStore::create($datos);              
-                return $this->successResponse($datos, $request->urlRequest);
+                DB::beginTransaction();                
+                    invProductoStore::create($datos);              
+                    return $this->successResponse($datos, $request->urlRequest);
+                DB::commit();
             }
             catch (\Exception $e ){
                 return $this->errorResponse($e->getMessage(), $request->urlRequest);
