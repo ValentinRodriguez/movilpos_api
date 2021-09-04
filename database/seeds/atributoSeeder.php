@@ -14,28 +14,28 @@ class atributoSeeder extends Seeder
             [   'id_atributo' => 1,
                 'descripcion' => 'talla',
                 'tipo' => 'checkbox',
-                'atributo' => '[{"label":"S","value":false},
-                                {"label":"M","value":false},
-                                {"label":"L","value":false},
-                                {"label":"XL","value":false},
-                                {"label":"XXL","value":false},
-                                {"label":"XXXL","value":false}
+                'atributo' => '[{"label":"S","code":"s"},
+                                {"label":"M","code":"m"},
+                                {"label":"L","code":"l"},
+                                {"label":"XL","code":"xl"},
+                                {"label":"XXL","code":"xxl"},
+                                {"label":"XXXL","code":"xxxl"}
                                 ]'
             ],
-            [   'id_atributo' => 2,
-                'descripcion' => 'medida',
-                'tipo' => 'radio',
-                'atributo' => '[{"label":"CM"},
-                                {"label":"PG"},
-                                {"label":"YDS"},
-                                {"label":"MTS"}
-                            ]'
-            ],
+            // [   'id_atributo' => 2,
+            //     'descripcion' => 'medida',
+            //     'tipo' => 'radio',
+            //     'atributo' => '[{"label":"CM"},
+            //                     {"label":"PG"},
+            //                     {"label":"YDS"},
+            //                     {"label":"MTS"}
+            //                 ]'
+            // ],
             [   'id_atributo' => 3,
                 'descripcion' => 'estado',
-                'tipo' => 'radio',
-                'atributo' => '[{"label":"Nuevo"},
-                                {"label":"Usado"}]'
+                'tipo' => 'select',
+                'atributo' => '[{"label":"Nuevo","code":"n"},
+                                {"label":"Usado","code":"u"}]'
             ],
             [   'id_atributo' => 4,
                 'descripcion' => 'material',
@@ -57,12 +57,12 @@ class atributoSeeder extends Seeder
                 'descripcion' => 'actividad',
                 'tipo' => 'select',
                 'atributo' => '[{"label":"Ciclismo"}]'
-            ],           
-            [   'id_atributo' => 7,
-                'descripcion' => 'color',
-                'tipo' => 'color',
-                'atributo' => '[{"value":""}]'
-            ],
+            ]           
+            // [   'id_atributo' => 7,
+            //     'descripcion' => 'color',
+            //     'tipo' => 'color',
+            //     'atributo' => '[{"value":""}]'
+            // ],
         );
 
         foreach ($codigos as $key => $value) {
