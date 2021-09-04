@@ -46,9 +46,8 @@ class InvProductoStoreController extends ApiResponseController
         
         $datos = $request->all();  
         
-        // $codigo =  $datos["tipo_producto"].$datos["id_categoria"].$datos["id_brand"].$idsecuencia;
-        // $datos["codigo"] = $codigo;
-        
+        $datos["codigo"] = $datos["codigo"].$idsecuencia.'-'.time();
+        // return response()->json($datos);
         $messages = [
              'required' => 'El campo :attribute es requerido.',
              'unique'   => 'El campo :attribute debe ser unico',
@@ -82,7 +81,7 @@ class InvProductoStoreController extends ApiResponseController
 
                 for ($i=0; $i < $imageLength; $i++) {
                     $img[$i] = $request->file('galeriaImagenes'.$i);
-                    $nombreImagen2 = uniqid().'.'.$img[$i]->getClientOriginalExtension();
+                    $nombreImagen2 = time().'-'.uniqid().'.'.$img[$i]->getClientOriginalExtension();
                     $tempImage = $img[$i]->storeAs('uploads', 'tienda/imagenes/'.$nombreImagen2, 'public');
                     array_push($galeriaImagenes, $tempImage);
                 }                    

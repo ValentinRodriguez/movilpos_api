@@ -123,7 +123,7 @@ class InvProductosController extends ApiResponseController
 
                     for ($i=0; $i < $imageLength; $i++) {
                         $img[$i] = $request->file('galeriaImagenes'.$i);
-                        $nombreImagen2 = uniqid().'.'.$img[$i]->getClientOriginalExtension();
+                        $nombreImagen2 = time().'-'.uniqid().'.'.$img[$i]->getClientOriginalExtension();
                         // return response()->json($img[$i]->getClientOriginalName());
                         $tempImage = $img[$i]->storeAs('uploads', 'productos/'.$nombreImagen2, 'public');
                         array_push($galeriaImagenes, $tempImage);

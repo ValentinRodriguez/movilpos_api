@@ -39,24 +39,26 @@ class atributoSeeder extends Seeder
             ],
             [   'id_atributo' => 4,
                 'descripcion' => 'material',
-                'tipo' => 'select',
-                'atributo' => '[{"label":"Oro"},{"label":"Plata"},{"label":"Bronce"}]'
+                'tipo' => 'complete',
+                'atributo' => '[{"label":"Oro","value":"oro"},
+                                {"label":"Plata","value":"plata"},
+                                {"label":"Bronce","value":"bronce"}]'
             ],
             [   'id_atributo' => 5,
-                'tipo' => 'select',
+                'tipo' => 'complete',
                 'descripcion' => 'edad',
-                'atributo' => '[{"label":"0-11 meses","value":false},
-                                {"label":"1-3 años","value":false},
-                                {"label":"4-7 años","value":false},
-                                {"label":"7-12 años","value":false},
-                                {"label":"13-17 años","value":false},
-                                {"label":"+18 años","value":false}
+                'atributo' => '[{"label":"0-11 meses","value":"0-11"},
+                                {"label":"1-3 años","value":"1-3"},
+                                {"label":"4-7 años","value":"4-7"},
+                                {"label":"7-12 años","value":"7-12"},
+                                {"label":"13-17 años","value":"13-17"},
+                                {"label":"+18 años","value":"+18"}
                             ]'
             ],
             [   'id_atributo' => 6,
                 'descripcion' => 'actividad',
                 'tipo' => 'select',
-                'atributo' => '[{"label":"Ciclismo"}]'
+                'atributo' => '[{"label":"Ciclismo", "value":"ciclismo"}]'
             ]           
             // [   'id_atributo' => 7,
             //     'descripcion' => 'color',
