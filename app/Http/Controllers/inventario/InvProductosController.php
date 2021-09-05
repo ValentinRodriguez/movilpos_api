@@ -78,7 +78,7 @@ class InvProductosController extends ApiResponseController
         
         $validator = validator($datos, [
             "titulo"                => 'required|string',
-            "chasis"                => 'required_if:tipo_producto,1',
+            "chasis"                => '',
             "asientos"              => 'required_if:tipo_producto,1',
             "id_propiedad"          => 'required_if:tipo_producto,1',
             "id_tipoinventario"     => 'required_if:tipo_producto,1',

@@ -4,19 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCodigoInvProductoStoresTable extends Migration
+class AddComposicionInvProductoStoresTable extends Migration
 {
     public function up()
     {
         Schema::connection('mov_tienda')->table('inv_producto_stores', function (Blueprint $table) {
-            $table->char('codigo',50)->after('titulo')->nullable()->unique();
+            $table->text('composicion')->after('descripcion')->nullable();
         });
     }
 
     public function down()
     {
         Schema::connection('mov_tienda')->table('inv_producto_stores', function (Blueprint $table) {
-            $table->dropColumn('codigo');
+            $table->dropColumn('composicion');
         });
     }
 }

@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 use App\Librerias\tienda\atributosStore;
-use App\Librerias\inventario\invProductoStore;
+use App\Librerias\tienda\invProductoStore;
 use App\Http\Controllers\ApiResponseController;
 
 class InvProductoStoreController extends ApiResponseController
@@ -53,21 +53,21 @@ class InvProductoStoreController extends ApiResponseController
              'unique'   => 'El campo :attribute debe ser unico',
              'numeric'  => 'El campo :attribute debe ser numerico',
              'min'      => 'El campo :attribute debe tener minimo 10 caracteres',
-             'required_if' => 'El campo :attribute es requerido cuando :other es fisico'
+             'required_if' => 'El campo :attribute es requerido cuando :other es basico'
         ];
         
         $validator = validator($datos, [
             "cantidadLim"   => '',
+            "tipo"   => 'required',
             "categoria"   => 'required',
             "descripcion"   => 'required',
             "documentosDigitales"   => '',
             "fechaLimDescarga"   => '',
             "fecha_rebaja"   => '',
             "limDescargas"   => '',
-            "precio"   => 'required',
+            "precio"   => 'required_if:tipo,basico| required_if:tipo,digital',
             "precio_rebajado"   => '',
-            "stock"   => 'required',
-            "tipo"   => 'required',
+            "stock"   => 'required_if:tipo,basico',
             "titulo"   => 'required'
         ],$messages);
         
@@ -75,24 +75,23 @@ class InvProductoStoreController extends ApiResponseController
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else {      
-            if (intval($request->imageLength) !== 0) {
-                $galeriaImagenes = [];
-                $imageLength =  $request->imageLength;
-
-                for ($i=0; $i < $imageLength; $i++) {
-                    $img[$i] = $request->file('galeriaImagenes'.$i);
-                    $nombreImagen2 = time().'-'.uniqid().'.'.$img[$i]->getClientOriginalExtension();
-                    $tempImage = $img[$i]->storeAs('uploads', 'tienda/imagenes/'.$nombreImagen2, 'public');
-                    array_push($galeriaImagenes, $tempImage);
-                }                    
-                $datos['galeriaImagenes'] = json_encode($galeriaImagenes);
-            }     
-            $datos['atributos'] = json_decode($datos['atributos']);
-            // return response()->json($datos);
+            
             try {   
-                DB::beginTransaction();                
-                    invProductoStore::create($datos);              
-                    return $this->successResponse($datos, $request->urlRequest);
+                DB::beginTransaction();                   
+                    if (intval($request->imageLength) !== 0) {
+                        $galeriaImagenes = [];
+                        $imageLength =  $request->imageLength;
+        
+                        for ($i=0; $i < $imageLength; $i++) {
+                            $img[$i] = $request->file('galeriaImagenes'.$i);
+                            $nombreImagen2 = time().'-'.uniqid().'.'.$img[$i]->getClientOriginalExtension();
+                            $tempImage = $img[$i]->storeAs('uploads', 'tienda/imagenes/'.$nombreImagen2, 'public');
+                            array_push($galeriaImagenes, $tempImage);
+                        }                    
+                        $datos['galeriaImagenes'] = json_encode($galeriaImagenes);
+                    }     
+                    $producto = invProductoStore::create($datos); 
+                    return $this->successResponse($producto, $request->urlRequest);
                 DB::commit();
             }
             catch (\Exception $e ){
@@ -139,24 +138,7 @@ class InvProductoStoreController extends ApiResponseController
         if ($validator->fails()) {
             $errors = $validator->errors();            
             return $this->errorResponseParams($errors->all(), $request->urlRequest);
-        }else{      
-
-            // if (intval($request->imagesSec) !== 0) {
-
-            //     $galeriaImagenes = [];
-            //     $imagesSec =  $request->imagesSec;
-
-            //     for ($i=0; $i < $imagesSec; $i++) {
-            //         $img[$i] = $request->file('galeriaImagenes'.$i);
-
-            //         $nombreImagen2 = uniqid().'.'.$img[$i]->getClientOriginalExtension();
-
-            //         $tempImage = $img[$i]->storeAs('uploads', 'productos/'.$nombreImagen2, 'public');
-            //         array_push($galeriaImagenes, $tempImage);
-            //     }
-            //     $datos['galeriaImagenes'] = json_encode($galeriaImagenes);
-            // }
-            
+        }else{                 
             
             if ($request->hasFile('galeriaImagenes')) {
                 // return response()->json(1);

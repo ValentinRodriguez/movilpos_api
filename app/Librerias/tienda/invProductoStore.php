@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Librerias\inventario;
+namespace App\Librerias\tienda;
 use Illuminate\Database\Eloquent\Model;
 
 class invProductoStore extends Model
@@ -9,5 +9,5 @@ class invProductoStore extends Model
 
     protected $fillable = ["cantidadLim","categoria","descripcion","documentosDigitales",
                             "fechaLimDescarga","fecha_rebaja","limDescargas","precio","precio_rebajado","stock","tipo",    
-                            "titulo","codigo"];
+                            "titulo","codigo","atributos","galeriaImagenes","rating","composicion"];
 }

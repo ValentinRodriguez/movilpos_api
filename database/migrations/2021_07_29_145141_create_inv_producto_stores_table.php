@@ -19,13 +19,14 @@ class CreateInvProductoStoresTable extends Migration
             $table->smallInteger('cantidadLim')->nullable();
             $table->smallInteger('categoria');
             $table->text('descripcion');
+            $table->integer('rating')->nullable();
             $table->text('documentosDigitales')->nullable();
             $table->date('fechaLimDescarga')->nullable();
             $table->date('fecha_rebaja')->nullable();
             $table->smallInteger('limDescargas')->nullable();
-            $table->float('precio');
+            $table->float('precio')->default(0);
             $table->float('precio_rebajado')->nullable();
-            $table->smallInteger('stock');
+            $table->smallInteger('stock')->default(0);
             $table->string('tipo',15);
             $table->timestamps();
         });
