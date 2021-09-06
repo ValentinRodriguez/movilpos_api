@@ -15,8 +15,8 @@ class SubCategoriaSeeder extends Seeder
             // SERVICIO
             ['id_subcategoria' => 67, 'id_categoria' => 1,  'id_atributo' => '[]', 'slug' => Str::slug('Clases o tutoría'),  'descripcion' => 'Clases o tutoría','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
             
-            // DIGITALES
-            ['id_subcategoria' => 66, 'id_categoria' => 2,  'id_atributo' => '[]', 'slug' => Str::slug('Producto Digital'),  'descripcion' => 'Producto Digital','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
+            // // DIGITALES
+            // ['id_subcategoria' => 66, 'id_categoria' => 2,  'id_atributo' => '[]', 'slug' => Str::slug('Producto Digital'),  'descripcion' => 'Producto Digital','usuario_creador' => 'movilsoluciones','estado' => 'activo'],
 
             // ROPA MUJER
             ['id_subcategoria' => 1, 'id_categoria' => 4,  'id_atributo' => '["1","3","4","5","6"]', 'slug' => Str::slug('Ropa'),  'descripcion' => 'Ropa','usuario_creador' => 'movilsoluciones','estado' => 'activo'],

@@ -14,8 +14,8 @@ class CategoriaStoreSeeder extends Seeder
     public function run()
     {
         $data = array(
-            ['id_categoria' => 1,  'id_atributo' => '', 'descripcion' => 'servicio', 'codigo' => 'SER', 'slug' => Str::slug('servicio') , 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
-            ['id_categoria' => 2,  'id_atributo' => '', 'descripcion' => 'digital', 'codigo' => 'DIG', 'slug' => Str::slug('digital'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
+            ['id_categoria' => 1,  'id_atributo' => '', 'descripcion' => 'Servicio ó Digital', 'codigo' => 'SRVDG', 'slug' => Str::slug('servicio') , 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
+            // ['id_categoria' => 2,  'id_atributo' => '', 'descripcion' => 'digital', 'codigo' => 'DIG', 'slug' => Str::slug('digital'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
             ['id_categoria' => 3,  'id_atributo' => '', 'descripcion' => 'categoria generica', 'codigo' => 'CG', 'slug' => Str::slug('categoria generica'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],
             
             ['id_categoria' => 4,  'id_atributo' => '["7","1","9"]', 'descripcion' => 'Ropa de mujer', 'codigo' => 'ROPM', 'slug' => Str::slug('Ropa de mujer'), 'usuario_creador' => 'movilsoluciones', 'estado' => 'activo'],

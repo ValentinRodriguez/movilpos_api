@@ -9,5 +9,5 @@ class invProductoStore extends Model
 
     protected $fillable = ["cantidadLim","categoria","descripcion","documentosDigitales",
                             "fechaLimDescarga","fecha_rebaja","limDescargas","precio","precio_rebajado","stock","tipo",    
-                            "titulo","codigo","atributos","galeriaImagenes","rating","composicion"];
+                            "titulo","codigo","atributos","galeriaImagenes","rating","composicion","estado"];
 }

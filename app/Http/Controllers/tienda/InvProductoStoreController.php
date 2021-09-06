@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\tienda;
 use Illuminate\Http\Request;
-
+use App\Rules\stockRequeridoSi;
 use Illuminate\Support\Facades\DB;
 use App\Librerias\tienda\atributosStore;
 use App\Librerias\tienda\invProductoStore;
@@ -12,7 +12,7 @@ class InvProductoStoreController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        $productos = invProductoStore::all();
+        $productos = invProductoStore::where('estado','=','activo')->get();
         return $this->successResponse($productos);
     }
 
@@ -47,7 +47,7 @@ class InvProductoStoreController extends ApiResponseController
         $datos = $request->all();  
         
         $datos["codigo"] = $datos["codigo"].$idsecuencia.'-'.time();
-        // return response()->json($datos);
+        // return response()->json($datos):
         $messages = [
              'required' => 'El campo :attribute es requerido.',
              'unique'   => 'El campo :attribute debe ser unico',
@@ -67,7 +67,7 @@ class InvProductoStoreController extends ApiResponseController
             "limDescargas"   => '',
             "precio"   => 'required_if:tipo,basico| required_if:tipo,digital',
             "precio_rebajado"   => '',
-            "stock"   => 'required_if:tipo,basico',
+            "stock"   => 'required_unless:categoria,1',
             "titulo"   => 'required'
         ],$messages);
         
@@ -116,42 +116,52 @@ class InvProductoStoreController extends ApiResponseController
         return $this->successResponse($producto, $request->urlRequest);
     }
 
-    public function updateProducts(Request $request, $id)
+    public function updateProduct(Request $request, $id)
     {
         $producto = invProductoStore::find($id);
         
         $datos = $request->all();
-
+        // return response()->json($datos);
         $messages = [
-             'required' => 'El campo :attribute es requerido.',
-             'unique'   => 'El campo :attribute debe ser unico',
-             'numeric'  => 'El campo :attribute debe ser numerico',
-        ];
-
-        $validator = validator($datos, [            
-            'id_categoria'        => 'required',
-            'id_tipoinventario'   => 'required',
-            'id_brand'            => 'required',
-            'usuario_modificador' => 'required'
-        ],$messages);        
+            'required' => 'El campo :attribute es requerido.',
+            'unique'   => 'El campo :attribute debe ser unico',
+            'numeric'  => 'El campo :attribute debe ser numerico',
+            'min'      => 'El campo :attribute debe tener minimo 10 caracteres',
+            'required_if' => 'El campo :attribute es requerido cuando :other es basico'
+       ];
+       
+       $validator = validator($datos, [
+           "cantidadLim"   => '',
+           "tipo"   => 'required',
+           "categoria"   => 'required',
+           "descripcion"   => 'required',
+           "documentosDigitales"   => '',
+           "fechaLimDescarga"   => '',
+           "fecha_rebaja"   => '',
+           "limDescargas"   => '',
+           "precio"   => 'required_if:tipo,basico| required_if:tipo,digital',
+           "precio_rebajado"   => '',
+           "stock"   => 'required_unless:categoria,1',
+           "titulo"   => 'required'
+       ],$messages);     
 
         if ($validator->fails()) {
             $errors = $validator->errors();            
             return $this->errorResponseParams($errors->all(), $request->urlRequest);
-        }else{                 
-            
-            if ($request->hasFile('galeriaImagenes')) {
-                // return response()->json(1);
-                // Storage::delete('public/'.$producto->imagen);
-                $imagen = $request->file('galeriaImagenes');
-                $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
-                $datos['galeriaImagenes'] = $request->file('galeriaImagenes')->storeAs('uploads', 'productos/'.$nombreImagen, 'public');
-            }
-
-            foreach ($datos as $key => $value) {
-                if ($value == "null") {
-                    $datos[$key] = null;
-                }
+        }else{    
+            if (intval($request->imageLength) !== 0) {
+                $galeriaImagenes = [];
+                $imageLength =  $request->imageLength;
+                
+                for ($i=0; $i < $imageLength; $i++) {
+                    $img[$i] = $request->file('galeriaImagenes'.$i);
+                    $nombreImagen2 = time().'-'.uniqid().'.'.$img[$i]->getClientOriginalExtension().'jpg';
+                    // return response()->json($img[$i]->getClientOriginalExtension()); 
+                           
+                    $tempImage = $img[$i]->storeAs('uploads', 'tienda/imagenes/'.$nombreImagen2, 'public');
+                    array_push($galeriaImagenes, $tempImage);
+                }                    
+                $datos['galeriaImagenes'] = json_encode($galeriaImagenes);
             }           
             // return response()->json($datos);
             $producto->update($datos);
@@ -162,29 +172,11 @@ class InvProductoStoreController extends ApiResponseController
     public function destroy(Request $request, $id)
     {
         $producto = invProductoStore::where('id','=',$id)->first();
-        
+        // return response()->json($producto);
         if ($producto == null){
             return $this->errorResponse(null,"Registro no Existe");
         }
-        else{
-            // $transaccion = Invtransaccdetallemodel::where([['codigo','=',$producto->codigo],['estado','=','activo']])->first();
-            
-            // if ($transaccion <> null){
-            //     return $this->errorResponse("No puedes eliminar este producto, tiene transacciones en inventario");
-            // }
-
-            // $pedido = ordenPedidoDetalle::where([['codigo','=',$producto->codigo],['estado','=','activo']])->first();
-            
-            // if ($pedido <> null){
-            //     return $this->errorResponse("No puedes eliminar este producto, tiene ordenes de pedido en proceso");
-            // }
-
-            // $compra = coOrdenesDetalle::where([['codigo','=',$producto->codigo],['estado','=','activo']])->first();
-
-            // if ($compra <> null){
-            //     return $this->errorResponse("No puedes eliminar este producto, tiene ordenes de compra en proceso");
-            // }
-            
+        else{            
             $producto->update(['estado' => 'ELIMINADO']);
             return $this->successResponse(null, $request->urlRequest,"Registro Eliminado");
         }

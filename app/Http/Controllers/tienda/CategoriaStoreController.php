@@ -50,11 +50,10 @@ class CategoriaStoreController extends ApiResponseController
 
     public function subcategoria(Request $request,$id)
     {
-        $subCategoria = SubCategoria::find($id)->
-        join('categoria_stores','categoria_stores.id_categoria','sub_categorias.id_categoria')->
+        $subCategoria = SubCategoria::find($id);
+        $codigo = CategoriaStore::where('id_categoria','=',$subCategoria['id_categoria'])->first();
+        $subCategoria->codigo = $codigo->codigo;
         
-        select('sub_categorias.*','categoria_stores.codigo')->first();
-
         if ($subCategoria == null){
             return $this->errorResponse($subCategoria);
         }

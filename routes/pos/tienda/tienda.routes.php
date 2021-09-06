@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
     // Route::apiresource('/woocommerce', 'tienda\WooCommerceController');
 
      // CATEGORIAS
+     Route::post('/productos-plaza/{id}', 'tienda\InvProductoStoreController@updateProduct');
      Route::apiresource('/productos-plaza', 'tienda\InvProductoStoreController');
 
     // CATEGORIAS
