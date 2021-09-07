@@ -16,6 +16,11 @@ use App\Librerias\usuarios\bodegasUsuarios;
 
 class AuthController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api');
+    // }
+
     public function index(Request $request)
     {
         $user  = User::orderBy('name', 'asc')->
@@ -56,10 +61,10 @@ class AuthController extends Controller
         }
     }
 
-    public function signup(SignUpRequest $request)
+    public function signup(Request $request)
     {
         $datos = $request->all();
-         
+        
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
@@ -70,7 +75,7 @@ class AuthController extends Controller
             "name"                  => 'required|string',
             "surname"               => 'required|string',
             "password"              => 'required|string|confirmed',
-            "email"                 => 'required|unique:users',
+            "email"                 => 'required|unique:mov_usuarios.users',
             "username"              => 'required|string',
             "estado"                => 'required|string',
         ],$messages);
@@ -85,7 +90,7 @@ class AuthController extends Controller
                 $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
                 $datos['foto']=$request->file('foto')->storeAs('uploads', 'usuarios/'.$nombreImagen, 'public');
             }
-
+            // return response()->json($datos);
             try {     
                 DB::beginTransaction();
                     $user = User::create($datos);
@@ -136,8 +141,8 @@ class AuthController extends Controller
     protected function respondWithTokenStore($token, $user, $sessionId = null)
     {
         $data = [
-            'access_token' => $token->accessToken,
-            'token_expires_at' => $token->token->expires_at,
+            'access_token' => $token,
+            // 'token_expires_at' => $token->token->expires_at,
             'sessionId' => $sessionId,
             'user' => $user
         ];
