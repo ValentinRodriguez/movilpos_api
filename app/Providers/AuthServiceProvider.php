@@ -27,18 +27,18 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         Passport::routes();
 
-        Passport::personalAccessClientId(
-            config('passport.personal_access_client.id')
-        );
+        // Passport::personalAccessClientId(
+        //     config('passport.personal_access_client.id')
+        // );
     
-        Passport::personalAccessClientSecret(
-            config('passport.personal_access_client.secret')
-        );
+        // Passport::personalAccessClientSecret(
+        //     config('passport.personal_access_client.secret')
+        // );
 
         // Passport::tokensExpireIn(now()->addDays(15));
 
         // Passport::refreshTokensExpireIn(now()->addDays(30));
     
-        Passport::personalAccessTokensExpireIn(now()->addDays(3));
+        // Passport::personalAccessTokensExpireIn(now()->addDays(3));
     }
 }

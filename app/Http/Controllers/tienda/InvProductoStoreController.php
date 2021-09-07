@@ -10,6 +10,11 @@ use App\Http\Controllers\ApiResponseController;
 
 class InvProductoStoreController extends ApiResponseController
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index(Request $request)
     {
         $productos = invProductoStore::where('estado','=','activo')->get();

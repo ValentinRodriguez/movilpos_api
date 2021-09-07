@@ -30,6 +30,6 @@ class CreateAtributosStoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('atributos_stores');
+        Schema::connection('mov_tienda')->dropIfExists('atributos_stores');
     }
 }
