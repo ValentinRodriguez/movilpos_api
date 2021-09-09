@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SignUpRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
 use App\Librerias\usuarios\bodegasUsuarios;
 
 class AuthController extends Controller
@@ -39,51 +40,41 @@ class AuthController extends Controller
     {                
         try {  
             $credentials = $request->only('email', 'password');
-
-            $request->validate([
-                'email'    => 'required|string|email',
-                'password' => 'required|string'
-            ]);
-
-            $user = User::where('email',$request->email)->firstOrfail();
-
-            if (Hash::check($request->email,$user->password)) {
-                // return response()->json(array("data" => true, "code" => 200, "msj" => 'Credenciales Correctas'), 200);
-                // $response = Http::withHeaders([
-                //     'Accept'=> 'application/json'
-                // ])->post('http://movilsoluciones_pos.test:8090/oauth/token',[
-                //     'grant_type' => 'password',
-                //     'client_id'=> '94562785-2323-4fff-a5fe-8da3c162e028',
-                //     'client_secret'=> 'TGYIK7dQiua6ZunDQtf3yUUQmmhlY2kpsq7Hq2MJ',
-                //     'username'=> $request->email,
-                //     'password'=> $request->password
-                // ]);
-                // return response()->json(array("data" => true, "code" => 200, "msj" => 'Credenciales Correctas'), 200);
-            } else {
+            
+            if (!Auth::guard('web')->attempt($credentials)) {
                 return response()->json(array("data" => false, "code" => 401, "msj" => 'Credenciales Incorrectas'), 401);
             }
+            /**
+             * @var User $user
+             */
+            $user = Auth::guard('web')->user();
+            $token = $user->createToken($user->email);
+            // return response()->json($token);
+            $sessionId = md5(uniqid());
             
-            // if (!Auth::guard('web')->attempt($credentials)) {
-            //     return response()->json(array("data" => false, "code" => 401, "msj" => 'Credenciales Incorrectas'), 401);
-            // }
-            // /**
-            //  * @var User $user
-            //  */
-            // $user = Auth::guard('web')->user();
-            // $token = $user->createToken($user->email);
-            // // return response()->json($token);
-            // $sessionId = md5(uniqid());
+            Log::debug($request->input("store"));
             
-            // Log::debug($request->input("store"));
-            
-            // if (!$request->input("store")) {
-            //     return $this->respondWithToken($token, $user, $sessionId);
-            // } else {
-            //     return $this->respondWithTokenStore($token, $user, $sessionId);
-            // }
+            if (!$request->input("store")) {
+                return $this->respondWithToken($token, $user, $sessionId);
+            } else {
+                return $this->respondWithTokenStore($token, $user, $sessionId);
+            }
         } catch (\Exception $e ){
             return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
         }
+    }
+
+    public function token(Request $request)
+    {
+        $request->request->add([
+            'grant_type' => 'password',
+            'client_id' => config('auth.passport.client_id'),
+            'client_secret' => config('auth.passport.client_secret'),
+        ]);
+
+        $proxy = Request::create('oauth/token', 'post');
+
+        return Route::dispatch($proxy);
     }
 
     public function signup(Request $request)
@@ -158,7 +149,7 @@ class AuthController extends Controller
         }  
     }
 
-    public function me()
+    public function user()
     {
         return response()->json(auth()->user());
     }
