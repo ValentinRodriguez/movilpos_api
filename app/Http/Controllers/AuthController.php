@@ -4,17 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Librerias\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use App\Librerias\usuarios\Rol;
 use App\Librerias\empresa\Empresa;
 use Illuminate\Support\Facades\DB;
-use App\Librerias\rrhh\noempleados;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SignUpRequest;
 use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Route;
 use App\Librerias\usuarios\bodegasUsuarios;
+use App\Http\Requests\SignUpRequest;
+use Illuminate\Support\Facades\Log;
+use App\Librerias\rrhh\noempleados;
 
 class AuthController extends Controller
 {
