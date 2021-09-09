@@ -39,26 +39,35 @@ class AuthController extends Controller
     public function login(Request $request)
     {                
         try {  
-            $credentials = $request->only('email', 'password');
+            // $credentials = $request->only('email', 'password');
             
-            if (!Auth::guard('web')->attempt($credentials)) {
-                return response()->json(array("data" => false, "code" => 401, "msj" => 'Credenciales Incorrectas'), 401);
+            $request->validate([
+                'email' => 'required|email|string',
+                'password' => 'required|string'
+            ]);
+
+            $user = User::where('email','=',$request->email)->firstOrFail();
+
+            if(Hash::check($request->password,$user->password)) {
+                return response()->json(array("data" => $user, "code" => 200, "msj" => 'Credenciales Correctas'), 200);
+            }else{
+                return response()->json(array("data" => null, "code" => 401, "msj" => 'Credenciales Incorrectas'), 401);                
             }
-            /**
-             * @var User $user
-             */
-            $user = Auth::guard('web')->user();
-            $token = $user->createToken($user->email);
-            // return response()->json($token);
-            $sessionId = md5(uniqid());
+            // /**
+            //  * @var User $user
+            //  */
+            // $user = Auth::guard('web')->user();
+            // $token = $user->createToken($user->email);
+            // // return response()->json($token);
+            // $sessionId = md5(uniqid());
             
-            Log::debug($request->input("store"));
+            // Log::debug($request->input("store"));
             
-            if (!$request->input("store")) {
-                return $this->respondWithToken($token, $user, $sessionId);
-            } else {
-                return $this->respondWithTokenStore($token, $user, $sessionId);
-            }
+            // if (!$request->input("store")) {
+            //     return $this->respondWithToken($token, $user, $sessionId);
+            // } else {
+            //     return $this->respondWithTokenStore($token, $user, $sessionId);
+            // }
         } catch (\Exception $e ){
             return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
         }

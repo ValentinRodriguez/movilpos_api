@@ -21,7 +21,7 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::post('cambia', 'AuthController@cambia');
     Route::post('act/usuario/{id}', 'AuthController@actualizar');
-    Route::post('me', 'AuthController@me');
+    Route::post('user', 'AuthController@user');
     Route::apiresource('users','AuthController');
 
     // DGII
