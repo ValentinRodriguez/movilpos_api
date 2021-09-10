@@ -66,8 +66,9 @@ class AuthController extends Controller
 
     public function token(Request $request)
     {
+        // return response()->json($request->username);
         $request->request->add([
-            'username' => $request->email,
+            'username' => $request->username,
             'password'=> $request->password,
             'grant_type' => 'password',
             'client_id' => config('auth.passport.client_id'),
@@ -176,7 +177,7 @@ class AuthController extends Controller
             // 'empleado' => $empleados,
             'empresa' => $empresa,
             'permisos' => $permisos,
-            'user' => auth('web')->user()
+            'user' => $user
         ];
 
         return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
