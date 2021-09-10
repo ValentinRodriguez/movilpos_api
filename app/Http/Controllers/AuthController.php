@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Librerias\User;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
+// use Illuminate\Routing\Route;
 use App\Librerias\usuarios\Rol;
 use App\Librerias\empresa\Empresa;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-// use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
 use App\Librerias\usuarios\bodegasUsuarios;
 use App\Http\Requests\SignUpRequest;
@@ -40,7 +40,6 @@ class AuthController extends Controller
     public function login(Request $request)
     {                
         try {  
-            // $credentials = $request->only('email', 'password');
             
             $request->validate([
                 'email' => 'required|email|string',
@@ -48,27 +47,18 @@ class AuthController extends Controller
             ]);
 
             $user = User::where('email','=',$request->email)->firstOrFail();
+            $sessionId = md5(uniqid());
 
-            if(Hash::check($request->password,$user->password)) {
-                return response()->json(array("data" => $user, "code" => 200, "msj" => 'Credenciales Correctas'), 200);
+            if(Hash::check($request->password,$user->password)) {  
+                if (!$request->input("store")) {
+                    return $this->respondWithToken($user, $sessionId);
+                } else {
+                    $this->token($request);
+                }
             }else{
                 return response()->json(array("data" => null, "code" => 401, "msj" => 'Credenciales Incorrectas'), 401);                
             }
-            // /**
-            //  * @var User $user
-            //  */
-            // $user = Auth::guard('web')->user();
-            // $token = $user->createToken($user->email);
-            // // return response()->json($token);
-            // $sessionId = md5(uniqid());
             
-            // Log::debug($request->input("store"));
-            
-            // if (!$request->input("store")) {
-            //     return $this->respondWithToken($token, $user, $sessionId);
-            // } else {
-            //     return $this->respondWithTokenStore($token, $user, $sessionId);
-            // }
         } catch (\Exception $e ){
             return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
         }
@@ -77,9 +67,12 @@ class AuthController extends Controller
     public function token(Request $request)
     {
         $request->request->add([
+            'username' => $request->email,
+            'password'=> $request->password,
             'grant_type' => 'password',
             'client_id' => config('auth.passport.client_id'),
             'client_secret' => config('auth.passport.client_secret'),
+            'scope'=> '*'
         ]);
 
         $proxy = Request::create('oauth/token', 'post');
@@ -164,35 +157,21 @@ class AuthController extends Controller
         return response()->json(auth()->user());
     }
 
-    protected function respondWithTokenStore($token, $user, $sessionId = null)
+    protected function respondWithToken($user, $sessionId = null)
     {
-        $data = [
-            'access_token' => $token,
-            // 'token_expires_at' => $token->token->expires_at,
-            'sessionId' => $sessionId,
-            'user' => $user
-        ];
-
-        return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
-    }
-
-    protected function respondWithToken($token,$email, $sessionId = null)
-    {
-        if ($email !== null) {
+        if ($user->email !== null) {
             $bodegas_permiso = bodegasUsuarios::join('mov_inventario.bodegas','bodegas_usuarios.id_bodega','=','bodegas.id_bodega')->
                                       select('bodegas_usuarios.*','mov_inventario.bodegas.descripcion')->
-                                      where('bodegas_usuarios.email','=',$email)->
+                                      where('bodegas_usuarios.email','=',$user->email)->
                                       get();
 
-            // $empleados = noempleados::where('noempleados.email','=',$email)->first();
-            $permisos = Rol::where('rols.email','=',$email)->first();
+            // $empleados = noempleados::where('noempleados.email','=',$user->email)->first();
+            $permisos = Rol::where('rols.email','=',$user->email)->first();
             $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->first();
         }
 
         $data = [
-            'access_token' => $token,
             'sessionId' => $sessionId,
-            // 'expires_in' => $token->token->expires_at,
             'bodegas_permisos' => $bodegas_permiso,
             // 'empleado' => $empleados,
             'empresa' => $empresa,

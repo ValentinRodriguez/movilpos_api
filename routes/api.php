@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 // RUTAS DEL LOGIN NUEVAMENTE
 Route::post('login', 'AuthController@login');
 Route::post('signup', 'AuthController@signup');
+Route::post('auth/token', 'AuthController@token');
 
 Route::group([
     'middleware' => ['auth:api']
