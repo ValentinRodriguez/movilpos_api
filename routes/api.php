@@ -11,6 +11,7 @@ Route::post('auth/token', 'AuthController@token');
 Route::group([
     'middleware' => ['auth:api']
 ], function ($router) {   
+    Route::get('crypt-key', 'AuthController@getCryptKey');
     Route::post('logout', 'AuthController@logout');
     Route::get('users/{id}','AuthController@show');
     Route::get('busqueda/users','AuthController@busqueda');

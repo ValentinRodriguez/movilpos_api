@@ -8,14 +8,15 @@ use Illuminate\Http\Request;
 use App\Librerias\usuarios\Rol;
 use App\Librerias\empresa\Empresa;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Hash;
-use App\Librerias\usuarios\bodegasUsuarios;
-use App\Http\Requests\SignUpRequest;
-use Illuminate\Support\Facades\Log;
 use App\Librerias\rrhh\noempleados;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\SignUpRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
+use App\Librerias\usuarios\mySessions;
+use App\Librerias\usuarios\bodegasUsuarios;
 
 class AuthController extends Controller
 {
@@ -46,12 +47,20 @@ class AuthController extends Controller
                 'password' => 'required|string'
             ]);
 
-            $user = User::where('email','=',$request->email)->firstOrFail();
+            $user = User::where('email','=',$request->email)->first();
             $sessionId = md5(uniqid());
 
             if(Hash::check($request->password,$user->password)) {  
+                $datos = array('session' => $sessionId,'usuario' => $user->username);
+                
+                $existe = mySessions::where('usuario','=',$user->username)->first();
+                if ($existe != null) {
+                    $existe->delete();                    
+                }
+                mySessions::create($datos);
+
                 if (!$request->input("store")) {
-                    return $this->respondWithToken($user, $sessionId);
+                    return $this->respondWithToken($user,$sessionId);
                 } else {
                     $this->token($request);
                 }
@@ -79,6 +88,12 @@ class AuthController extends Controller
         $proxy = Request::create('oauth/token', 'post');
 
         return Route::dispatch($proxy);
+    }
+
+    public function getCryptKey(Request $request) {
+        $username = $request->get('username');
+        $data  = mySessions::where('usuario','=',$username)->get();
+        return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
     }
 
     public function signup(Request $request)
@@ -158,7 +173,7 @@ class AuthController extends Controller
         return response()->json(auth()->user());
     }
 
-    protected function respondWithToken($user, $sessionId = null)
+    protected function respondWithToken($user,$sessionId)
     {
         if ($user->email !== null) {
             $bodegas_permiso = bodegasUsuarios::join('mov_inventario.bodegas','bodegas_usuarios.id_bodega','=','bodegas.id_bodega')->
