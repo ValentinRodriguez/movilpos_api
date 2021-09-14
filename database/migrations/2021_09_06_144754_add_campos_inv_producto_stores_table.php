@@ -15,8 +15,7 @@ class AddCamposInvProductoStoresTable extends Migration
     {
         Schema::connection('mov_tienda')->table('inv_producto_stores', function (Blueprint $table) {
             $table->string('estado',20)->after('tipo');
-            $table->string('vendedor',50)->after('titulo');
-            $table->string('tienda',50)->after('titulo');
+            $table->integer('tienda',50)->after('titulo');
         });
     }
 
@@ -29,7 +28,6 @@ class AddCamposInvProductoStoresTable extends Migration
     {
         Schema::connection('mov_tienda')->table('inv_producto_stores', function (Blueprint $table) {
             $table->dropColumn('estado');
-            $table->dropColumn('vendedor');
             $table->dropColumn('tienda');
         });
     }

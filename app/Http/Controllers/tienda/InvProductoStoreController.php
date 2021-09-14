@@ -17,7 +17,10 @@ class InvProductoStoreController extends ApiResponseController
 
     public function index(Request $request)
     {
-        $productos = invProductoStore::where('estado','=','activo')->get();
+        // return response()->json($request->all()); 
+        // ['usuario_creador','=',$request->usuario_creador],
+        $productos = invProductoStore::where([['tienda','=',$request->empresa],
+                                              ['estado','=','activo']])->get();
         return $this->successResponse($productos);
     }
 
@@ -52,7 +55,7 @@ class InvProductoStoreController extends ApiResponseController
         $datos = $request->all();  
         
         $datos["codigo"] = $datos["codigo"].$idsecuencia.'-'.time();
-        // return response()->json($datos):
+        // return response()->json($datos);
         $messages = [
              'required' => 'El campo :attribute es requerido.',
              'unique'   => 'El campo :attribute debe ser unico',
@@ -66,6 +69,7 @@ class InvProductoStoreController extends ApiResponseController
             "tipo"   => 'required',
             "categoria"   => 'required',
             "descripcion"   => 'required',
+            "tienda"   => 'required',
             "documentosDigitales"   => '',
             "fechaLimDescarga"   => '',
             "fecha_rebaja"   => '',
@@ -126,7 +130,7 @@ class InvProductoStoreController extends ApiResponseController
         $producto = invProductoStore::find($id);
         
         $datos = $request->all();
-        // return response()->json($datos);
+        
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
@@ -139,13 +143,9 @@ class InvProductoStoreController extends ApiResponseController
            "cantidadLim"   => '',
            "tipo"   => 'required',
            "categoria"   => 'required',
-           "descripcion"   => 'required',
-           "documentosDigitales"   => '',
-           "fechaLimDescarga"   => '',
-           "fecha_rebaja"   => '',
-           "limDescargas"   => '',
-           "precio"   => 'required_if:tipo,basico| required_if:tipo,digital',
-           "precio_rebajado"   => '',
+           "descripcion"   => 'required',    
+           "tienda" => 'required',
+           "precio"   => 'required_if:tipo,basico| required_if:tipo,digital',         
            "stock"   => 'required_unless:categoria,1',
            "titulo"   => 'required'
        ],$messages);     

@@ -11,6 +11,7 @@ class UsuarioSeeder extends Seeder
             'username'  => 'movilsoluciones' ,
             'name'      => 'usuario',
             'surname'   => 'prueba',
+            'empresa'   => 1,
             'surname'   => 'prueba',
             'id_numemp' => 1,
             'email'     => 'valentinrodriguez1427@gmail.com',

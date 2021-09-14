@@ -4,19 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Librerias\User;
 use Illuminate\Http\Request;
-// use Illuminate\Routing\Route;
 use App\Librerias\usuarios\Rol;
 use App\Librerias\empresa\Empresa;
 use Illuminate\Support\Facades\DB;
-use App\Librerias\rrhh\noempleados;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SignUpRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
-use App\Librerias\usuarios\mySessions;
 use App\Librerias\usuarios\bodegasUsuarios;
 
 class AuthController extends Controller
@@ -41,8 +36,7 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {                
-        try {  
-            
+        try {              
             $request->validate([
                 'email' => 'required|email|string',
                 'password' => 'required|string'
@@ -52,14 +46,6 @@ class AuthController extends Controller
             $sessionId = md5(uniqid());
 
             if(Hash::check($request->password,$user->password)) {  
-                $datos = array('session' => $sessionId,'usuario' => $user->username);
-                
-                $existe = mySessions::where('usuario','=',$user->username)->first();
-                if ($existe != null) {
-                    $existe->delete();                    
-                }
-                mySessions::create($datos);
-
                 if (!$request->input("store")) {
                     return $this->respondWithToken($user,$sessionId);
                 } else {
@@ -76,7 +62,6 @@ class AuthController extends Controller
 
     public function token(Request $request)
     {
-        // return response()->json($request->username);
         $request->request->add([
             'username' => $request->username,
             'password'=> $request->password,
@@ -87,14 +72,7 @@ class AuthController extends Controller
         ]);
 
         $proxy = Request::create('oauth/token', 'post');
-
         return Route::dispatch($proxy);
-    }
-
-    public function getCryptKey(Request $request) {
-        $username = $request->get('username');
-        $data  = mySessions::where('usuario','=',$username)->get();
-        return response()->json(array("data" => $data, "code" => 200, "msj" => "Respuesta Exitosa"), 200);
     }
 
     public function signup(Request $request)
@@ -132,10 +110,8 @@ class AuthController extends Controller
                     $user = User::create($datos);
                     $sessionId = md5(uniqid());
                     // $token = $user->createToken($datos['email']);
-                DB::commit();
-                
-                return $this->respondWithToken($user, $sessionId);          
-
+                DB::commit();                
+                return $this->respondWithToken($user, $sessionId);  
             } catch (\Exception $e ){
                 return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
             }
@@ -145,8 +121,7 @@ class AuthController extends Controller
     public function logout()
     {
         $user = auth()->user();
-        $accessToken = Auth::user()->token()->revoke();
-
+        $accessToken = $user->token()->revoke();
         return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
     }
 
@@ -177,7 +152,7 @@ class AuthController extends Controller
 
             // $empleados = noempleados::where('noempleados.email','=',$user->email)->first();
             $permisos = Rol::where('rols.email','=',$user->email)->first();
-            $empresa = Empresa::orderBy('created_at', 'desc')->where('estado','=','activo')->first();
+            $empresa = Empresa::where([['id','=',$user->empresa],['estado','=','activo']])->first();
         }
 
         $data = [
