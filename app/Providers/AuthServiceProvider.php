@@ -26,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         Passport::routes();
+        Passport::tokensExpireIn(now()->addDays(1));
 
         // Passport::personalAccessClientId(
         //     config('passport.personal_access_client.id')
@@ -35,7 +36,6 @@ class AuthServiceProvider extends ServiceProvider
         //     config('passport.personal_access_client.secret')
         // );
 
-        // Passport::tokensExpireIn(now()->addDays(15));
 
         // Passport::refreshTokensExpireIn(now()->addDays(30));
     

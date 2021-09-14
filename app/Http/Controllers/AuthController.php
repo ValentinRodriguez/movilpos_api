@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SignUpRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Librerias\usuarios\mySessions;
 use App\Librerias\usuarios\bodegasUsuarios;
@@ -125,17 +126,15 @@ class AuthController extends Controller
                 $nombreImagen = uniqid().'.'.$imagen->getClientOriginalExtension();
                 $datos['foto']=$request->file('foto')->storeAs('uploads', 'usuarios/'.$nombreImagen, 'public');
             }
-            // return response()->json($datos);
+            
             try {     
                 DB::beginTransaction();
                     $user = User::create($datos);
                     $sessionId = md5(uniqid());
-                    $token = $user->createToken($datos['email']);
+                    // $token = $user->createToken($datos['email']);
                 DB::commit();
                 
-                // Log::debug($datos);
-                // return response()->json(array("data" => '', "code" => 200, "msj" => "Respuesta Exitosa"), 200);
-                return $this->respondWithTokenStore($token, $user, $sessionId);          
+                return $this->respondWithToken($user, $sessionId);          
 
             } catch (\Exception $e ){
                 return response()->json(array("data" => null, "code" => 501, "msj" => $e->getMessage()), 501);
@@ -145,13 +144,8 @@ class AuthController extends Controller
     
     public function logout()
     {
-        /**
-         * @var User $user
-         */
-        $user = Auth::user();
-        $userToken = $user->token();
-        $userToken->delete();
-        // return response()->json($user);
+        $user = auth()->user();
+        $accessToken = Auth::user()->token()->revoke();
 
         return response()->json(array("data" => true, "code" => 200, "msj" => "Usuario Deslogueado"), 200);
     }
