@@ -14,7 +14,11 @@ class ActividadesController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        $actividades = Actividades::orderBy('created_at', 'desc')->where('estado','=','ACTIVO')->get();
+        // return response()->json($request);
+        $actividades = Actividades::orderBy('created_at', 'desc')->
+                                    where([['estado','=','ACTIVO'],['username','=',$request['usuario_creador']]])->
+                                    get();
+
         return $this->successResponse($actividades, $request->urlRequest);
     }
 
@@ -26,7 +30,7 @@ class ActividadesController extends ApiResponseController
             "end"             =>$request->input("end"),
             "notificacion"    =>$request->input("notificacion"),
             "url"             =>$request->input("url"),
-            "username"        =>$request->input("username"),
+            "username"        =>'',
             "enviado"         =>$request->input("enviado"),
             "estado"          =>$request->input("estado")
         );
@@ -41,7 +45,6 @@ class ActividadesController extends ApiResponseController
             'title'        => 'required',
             'start'        => 'required',
             'notificacion' => 'required',
-            'username'     => 'required',
             'estado'       => 'required'
         ],$messages);
 
@@ -51,7 +54,8 @@ class ActividadesController extends ApiResponseController
         }else{            
             try {       
                 // return response()->json($datos);         
-                DB::beginTransaction();              
+                DB::beginTransaction();  
+                    $datos['username'] = $request['usuario_creador'];
                     Actividades::create($datos);
                 DB::commit();
                 return $this->successResponse($datos, $request->urlRequest);
@@ -139,16 +143,15 @@ class ActividadesController extends ApiResponseController
         return $this->successResponse($categoria, $request->urlRequest);
     }
 
-    public function ActividadesVencidas(Request $request)
+    public function ActividadesVencidas()
     {
         $rango = array();
         $date = new DateTime;
-        $rango['actual'] = $date->format('Y-m-d H:i:s'); 
 
-        $date->modify('-5 minute');
+        $date->modify('-1 hour');
         $rango['desde'] = $date->format('Y-m-d H:i:s');
 
-        $date->modify('+10 hour');
+        $date->modify('+2 hour');
         $rango['hasta'] = $date->format('Y-m-d H:i:s');
         
         $actividades = Actividades::orderBy('created_at', 'desc')-> 
@@ -164,9 +167,9 @@ class ActividadesController extends ApiResponseController
                 Mail::to($value->email)->send(new actividadesMailable($actividades));
                 Actividades::where('id', $value->id)->update(['enviado' => 'si']);
             }
-            return $this->successResponse($actividades, $request->urlRequest);
+            return $this->successResponse($actividades);
         }else{
-            return $this->successResponse(1, $request->urlRequest);
+            return $this->successResponse(1);
         }
     }
 }
