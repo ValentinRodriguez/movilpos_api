@@ -15,6 +15,7 @@ class CreateActividadesTable extends Migration
             $table->datetime('end')->nullable();
             $table->datetime('notificacion');
             $table->string('username');
+            $table->string('email')->nullable();
             // $table->foreign('username')->references('username')->on('mov_usuarios.users');
             $table->char('enviado',2)->nullable();
             $table->string('estado',50);

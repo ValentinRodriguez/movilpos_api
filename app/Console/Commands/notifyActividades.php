@@ -51,11 +51,10 @@ class notifyActividades extends Command
         $rango['hasta'] = $date->format('Y-m-d H:i:s');
         
         $actividades = Actividades::orderBy('created_at', 'desc')-> 
-                                    join('mov_usuarios.users','mov_usuarios.users.username','=','actividades.username')->
                                     where([['actividades.enviado','=','no'],
                                            ['actividades.estado','=','ACTIVO']])->
                                     wherebetween('actividades.notificacion',[$rango['desde'], $rango['hasta']])->      
-                                    select('actividades.*','mov_usuarios.users.email')->
+                                    select('actividades.*')->
                                     get();    
                                                               
         foreach ($actividades as $key => $value) {

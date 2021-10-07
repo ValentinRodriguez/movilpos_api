@@ -14,7 +14,7 @@ class ActividadesController extends ApiResponseController
 {
     public function index(Request $request)
     {
-        // return response()->json($request);
+    // return response()->json($request);
         $actividades = Actividades::orderBy('created_at', 'desc')->
                                     where([['estado','=','ACTIVO'],['username','=',$request['usuario_creador']]])->
                                     get();
@@ -30,11 +30,12 @@ class ActividadesController extends ApiResponseController
             "end"             =>$request->input("end"),
             "notificacion"    =>$request->input("notificacion"),
             "url"             =>$request->input("url"),
-            "username"        =>'',
+            "username"        =>$request->input("username"),
+            "email"           =>$request->input("email"),
             "enviado"         =>$request->input("enviado"),
             "estado"          =>$request->input("estado")
         );
-
+        // return response()->json($datos); 
         $messages = [
             'required' => 'El campo :attribute es requerido.',
             'unique'   => 'El campo :attribute debe ser unico',
@@ -55,7 +56,7 @@ class ActividadesController extends ApiResponseController
             try {       
                 // return response()->json($datos);         
                 DB::beginTransaction();  
-                    $datos['username'] = $request['usuario_creador'];
+                    // $datos['username'] = $request['usuario_creador'];
                     Actividades::create($datos);
                 DB::commit();
                 return $this->successResponse($datos, $request->urlRequest);
@@ -134,11 +135,12 @@ class ActividadesController extends ApiResponseController
 
     public function busqueda(Request $request)
     {
-        $parametro = $request->get('categoria');
+        $usuario = $request->get('username');
+        // $email = $request->get('usuario');
+
         $categoria = Actividades::orderBy('created_at', 'desc')->
-                                      parametro($parametro)->
-                                      where('estado','=','activo')->
-                                      get();
+                                  where([['estado','=','ACTIVO'],['username','=',$usuario]])->
+                                  get();
 
         return $this->successResponse($categoria, $request->urlRequest);
     }
