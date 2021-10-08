@@ -14,7 +14,7 @@ class ActividadesController extends ApiResponseController
 {
     public function index(Request $request)
     {
-    // return response()->json($request);
+        // return response()->json($request);
         $actividades = Actividades::orderBy('created_at', 'desc')->
                                     where([['estado','=','ACTIVO'],['username','=',$request['usuario_creador']]])->
                                     get();
@@ -30,8 +30,6 @@ class ActividadesController extends ApiResponseController
             "end"             =>$request->input("end"),
             "notificacion"    =>$request->input("notificacion"),
             "url"             =>$request->input("url"),
-            "username"        =>$request->input("username"),
-            "email"           =>$request->input("email"),
             "enviado"         =>$request->input("enviado"),
             "estado"          =>$request->input("estado")
         );
@@ -56,7 +54,7 @@ class ActividadesController extends ApiResponseController
             try {       
                 // return response()->json($datos);         
                 DB::beginTransaction();  
-                    // $datos['username'] = $request['usuario_creador'];
+                    $datos['username'] = $request['usuario_creador'];
                     Actividades::create($datos);
                 DB::commit();
                 return $this->successResponse($datos, $request->urlRequest);
@@ -100,7 +98,6 @@ class ActividadesController extends ApiResponseController
             'title'        => 'required',
             'start'        => 'required',
             'notificacion' => 'required',
-            'username'     => 'required',
             'estado'       => 'required'
         ],$messages);
 
@@ -108,8 +105,7 @@ class ActividadesController extends ApiResponseController
             $errors = $validator->errors();
             return $this->errorResponseParams($errors->all(), $request->urlRequest);
         }else{            
-            try {       
-                // return response()->json($datos);         
+            try {              
                 DB::beginTransaction();              
                     $actividad->update($datos);
                 DB::commit();
