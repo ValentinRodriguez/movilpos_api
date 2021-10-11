@@ -41,12 +41,12 @@ class restartDB extends Command
         $dbs = array(
             "failed_jobs", 
             "migrations", 
-            "oauth_access_tokens", 
-            "oauth_auth_codes", 
-            "oauth_clients", 
-            "oauth_personal_access_clients", 
-            "oauth_refresh_tokens", 
-            "websockets_statistics_entries"
+            // "oauth_access_tokens", 
+            // "oauth_auth_codes", 
+            // "oauth_clients", 
+            // "oauth_personal_access_clients", 
+            // "oauth_refresh_tokens", 
+            // "websockets_statistics_entries"
         );
         foreach ($dbs as $key => $value) {
             DB::statement('SET FOREIGN_KEY_CHECKS = 0');        
